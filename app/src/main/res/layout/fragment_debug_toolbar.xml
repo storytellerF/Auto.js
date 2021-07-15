@@ -8,6 +8,7 @@
 
     <org.autojs.autojs.ui.widget.ToolbarMenuItem
         android:id="@+id/step_over"
+        android:tag="step_over"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         app:icon="@drawable/ic_debug_step_over"
@@ -15,6 +16,7 @@
 
     <org.autojs.autojs.ui.widget.ToolbarMenuItem
         android:id="@+id/step_into"
+        android:tag="step_into"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         app:icon="@drawable/ic_debug_step_into"
@@ -22,6 +24,7 @@
 
     <org.autojs.autojs.ui.widget.ToolbarMenuItem
         android:id="@+id/step_out"
+        android:tag="step_out"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         app:icon="@drawable/ic_debug_step_out"
@@ -29,6 +32,7 @@
 
     <org.autojs.autojs.ui.widget.ToolbarMenuItem
         android:id="@+id/resume_script"
+        android:tag="resume_script"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         app:icon="@drawable/ic_play_arrow_white_48dp"
@@ -37,6 +41,7 @@
 
     <org.autojs.autojs.ui.widget.ToolbarMenuItem
         android:id="@+id/stop_script"
+        android:tag="stop_script"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         app:icon="@drawable/ic_close_white_48dp"

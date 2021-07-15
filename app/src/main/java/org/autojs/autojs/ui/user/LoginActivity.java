@@ -1,53 +1,73 @@
 package org.autojs.autojs.ui.user;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.afollestad.materialdialogs.MaterialDialog;
-import org.autojs.autojs.R;
-import org.autojs.autojs.network.NodeBB;
-import org.autojs.autojs.network.UserService;
-import org.autojs.autojs.ui.BaseActivity;
 import com.stardust.theme.ThemeColorManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-import org.w3c.dom.Node;
+import org.androidannotations.api.builder.ActivityIntentBuilder;
+import org.androidannotations.api.builder.PostActivityStarter;
+import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.ActivityLoginBinding;
+import org.autojs.autojs.network.NodeBB;
+import org.autojs.autojs.network.UserService;
+import org.autojs.autojs.ui.BaseActivity;
+
+import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Stardust on 2017/9/20.
  */
-@EActivity(R.layout.activity_login)
 public class LoginActivity extends BaseActivity {
 
-    @ViewById(R.id.username)
-    TextView mUserName;
-
-    @ViewById(R.id.password)
-    TextView mPassword;
-
-    @ViewById(R.id.login)
-    View mLogin;
-
-    @AfterViews
-    void setUpViews() {
-        setToolbarAsBack(getString(R.string.text_login));
-        ThemeColorManager.addViewBackground(mLogin);
+    private ActivityLoginBinding inflate;
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inflate = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(inflate.getRoot());
+        setUpViews();
+        inflate.login.setOnClickListener(view -> login());
+        inflate.forgotPassword.setOnClickListener(view -> forgotPassword());
     }
 
-    @Click(R.id.login)
+    public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context context) {
+        return new ActivityIntentBuilder<I>(context,LoginActivity.class) {
+            @Override
+            public PostActivityStarter startForResult(int requestCode) {
+                context.startActivity(intent);
+                return null;
+            }
+        };
+    }
+
+    void setUpViews() {
+        setToolbarAsBack(getString(R.string.text_login));
+        ThemeColorManager.addViewBackground(inflate.login);
+    }
+
     void login() {
-        String userName = mUserName.getText().toString();
-        String password = mPassword.getText().toString();
+        String userName = Objects.requireNonNull(inflate.username.getText()).toString();
+        String password = Objects.requireNonNull(inflate.password.getText()).toString();
         if (!checkNotEmpty(userName, password)) {
             return;
         }
@@ -56,7 +76,7 @@ public class LoginActivity extends BaseActivity {
                 .content(R.string.text_logining)
                 .cancelable(false)
                 .show();
-        UserService.getInstance().login(userName, password)
+        Disposable subscribe = UserService.getInstance().login(userName, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -66,14 +86,14 @@ public class LoginActivity extends BaseActivity {
                         }
                         , error -> {
                             dialog.dismiss();
-                            mPassword.setError(NodeBB.getErrorMessage(error, LoginActivity.this, R.string.text_login_fail));
+                            inflate.password.setError(NodeBB.getErrorMessage(error, LoginActivity.this, R.string.text_login_fail));
                         });
+        compositeDisposable.add(subscribe);
 
     }
 
-    @Click(R.id.forgot_password)
     void forgotPassword() {
-        WebActivity_.intent(this)
+        WebActivity.intent(this)
                 .extra(WebActivity.EXTRA_URL, NodeBB.BASE_URL + "reset")
                 .extra(Intent.EXTRA_TITLE, getString(R.string.text_reset_password))
                 .start();
@@ -81,11 +101,11 @@ public class LoginActivity extends BaseActivity {
 
     private boolean checkNotEmpty(String userName, String password) {
         if (userName.isEmpty()) {
-            mUserName.setError(getString(R.string.text_username_cannot_be_empty));
+            inflate.username.setError(getString(R.string.text_username_cannot_be_empty));
             return false;
         }
         if (password.isEmpty()) {
-            mUserName.setError(getString(R.string.text_password_cannot_be_empty));
+            inflate.username.setError(getString(R.string.text_password_cannot_be_empty));
             return false;
         }
         return true;
@@ -97,11 +117,16 @@ public class LoginActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_register) {
-            RegisterActivity_.intent(this).start();
+            RegisterActivity.intent(this).start();
             finish();
         }
         return super.onOptionsItemSelected(item);

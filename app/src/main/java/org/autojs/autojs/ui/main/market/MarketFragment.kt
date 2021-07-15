@@ -10,11 +10,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stardust.autojs.workground.WrapContentLinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_market.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.autojs.autojs.R
+import org.autojs.autojs.databinding.FragmentMarketBinding
 import org.autojs.autojs.network.TopicService
 import org.autojs.autojs.network.entity.topic.AppInfo
 import org.autojs.autojs.network.entity.topic.Post
@@ -26,16 +26,17 @@ import org.joda.time.format.DateTimeFormat
 class MarketFragment : ViewPagerFragment(0) {
 
     private val mTopics = ArrayList<Topic>()
-
+    lateinit var inflate:FragmentMarketBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_market, container, false)
+        inflate= FragmentMarketBinding.inflate(inflater)
+        return inflate.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        topicsView.layoutManager = WrapContentLinearLayoutManager(context)
-        topicsView.adapter = Adapter()
-        swipeRefreshLayout.setOnRefreshListener {
+        inflate.topicsView.layoutManager = WrapContentLinearLayoutManager(context)
+        inflate.topicsView.adapter = Adapter()
+        inflate.swipeRefreshLayout.setOnRefreshListener {
             refresh()
         }
         refresh()
@@ -43,13 +44,13 @@ class MarketFragment : ViewPagerFragment(0) {
 
     private fun refresh() {
         GlobalScope.launch(Dispatchers.Main) {
-            swipeRefreshLayout.isRefreshing = true
+            inflate.swipeRefreshLayout.isRefreshing = true
             try {
                 val topics = TopicService.getScriptsTopics()
                 mTopics.clear()
                 mTopics.addAll(topics)
-                topicsView.adapter!!.notifyDataSetChanged()
-                swipeRefreshLayout.isRefreshing = false
+                inflate.topicsView.adapter!!.notifyDataSetChanged()
+                inflate.swipeRefreshLayout.isRefreshing = false
             } catch (e: Exception) {
                 e.printStackTrace()
             }

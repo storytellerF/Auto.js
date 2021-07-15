@@ -3,18 +3,17 @@ package org.autojs.autojs.ui.main.community;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
-
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.snackbar.Snackbar;
 import android.util.AttributeSet;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
-import android.widget.Toast;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.autojs.autojs.Pref;
 import org.autojs.autojs.R;
-import org.autojs.autojs.network.NodeBB;
 import org.autojs.autojs.model.script.Scripts;
+import org.autojs.autojs.network.NodeBB;
 import org.autojs.autojs.network.download.DownloadManager;
 import org.autojs.autojs.ui.common.OptionListView;
 import org.autojs.autojs.ui.common.ScriptOperations;
@@ -23,9 +22,9 @@ import org.autojs.autojs.ui.widget.EWebView;
 
 import java.util.regex.Pattern;
 
-import butterknife.OnClick;
-import butterknife.Optional;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Stardust on 2017/10/19.
@@ -33,6 +32,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class CommunityWebView extends EWebView {
 
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String mUrl;
     private BottomSheetDialog mBottomSheetDialog;
 
@@ -55,21 +55,22 @@ public class CommunityWebView extends EWebView {
         mUrl = url;
         String fileName = DownloadManager.parseFileNameLocally(url);
         mBottomSheetDialog = new BottomSheetDialog(getContext());
-        mBottomSheetDialog.setContentView(new OptionListView.Builder(getContext())
+        OptionListView build = new OptionListView.Builder(getContext())
                 .title(fileName)
                 .item(R.id.save, R.drawable.ic_file_download_black_48dp, R.string.text_download)
                 .item(R.id.run, R.drawable.ic_play_arrow_white_48dp, R.string.text_run)
                 .bindItemClick(this)
-                .build());
+                .build();
+        mBottomSheetDialog.setContentView(build);
         mBottomSheetDialog.show();
     }
 
     @SuppressLint("CheckResult")
-    @Optional
-    @OnClick(R.id.save)
+    public
+        //@OnClick(R.id.save)
     void save() {
         dismissBottomSheetDialog();
-        new ScriptOperations(getContext(), CommunityWebView.this)
+        Disposable subscribe = new ScriptOperations(getContext(), CommunityWebView.this)
                 .download(mUrl)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(file ->
@@ -81,14 +82,18 @@ public class CommunityWebView extends EWebView {
                             error.printStackTrace();
                             Snackbar.make(CommunityWebView.this, R.string.text_download_failed, Snackbar.LENGTH_SHORT).show();
                         });
+        compositeDisposable.add(subscribe);
     }
 
-    @SuppressLint("CheckResult")
-    @Optional
-    @OnClick(R.id.run)
-    void run() {
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        compositeDisposable.dispose();
+    }
+
+    public void run() {
         dismissBottomSheetDialog();
-        new ScriptOperations(getContext(), CommunityWebView.this)
+        Disposable subscribe = new ScriptOperations(getContext(), CommunityWebView.this)
                 .temporarilyDownload(mUrl)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(file -> {
@@ -96,8 +101,9 @@ public class CommunityWebView extends EWebView {
                     Scripts.INSTANCE.run(file);
                 }, error -> {
                     error.printStackTrace();
-                    Snackbar.make(CommunityWebView.this, R.string.text_download_failed, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(CommunityWebView.this, R.string.text_download_failed, Snackbar.LENGTH_SHORT).show();
                 });
+        compositeDisposable.add(subscribe);
     }
 
     private void dismissBottomSheetDialog() {

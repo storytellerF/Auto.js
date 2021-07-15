@@ -21,22 +21,21 @@ import com.stardust.autojs.execution.ScriptExecutionListener;
 import com.stardust.autojs.execution.SimpleScriptExecutionListener;
 import com.stardust.autojs.script.AutoFileSource;
 import com.stardust.autojs.workground.WrapContentLinearLayoutManager;
+import com.storyteller_f.bandage.Bandage;
+import com.storyteller_f.bandage.Click;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import org.autojs.autojs.R;
 import org.autojs.autojs.autojs.AutoJs;
+import org.autojs.autojs.databinding.TaskListRecyclerViewItemBinding;
 import org.autojs.autojs.storage.database.ModelChange;
 import org.autojs.autojs.timing.TimedTaskManager;
 import org.autojs.autojs.ui.timing.TimedTaskSettingActivity;
-import org.autojs.autojs.ui.timing.TimedTaskSettingActivity_;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.ThemeColorRecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
@@ -55,7 +54,7 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
     private Adapter mAdapter;
     private Disposable mTimedTaskChangeDisposable;
     private Disposable mIntentTaskChangeDisposable;
-    private ScriptExecutionListener mScriptExecutionListener = new SimpleScriptExecutionListener() {
+    private final ScriptExecutionListener mScriptExecutionListener = new SimpleScriptExecutionListener() {
         @Override
         public void onStart(final ScriptExecution execution) {
             post(() -> mAdapter.notifyChildInserted(0, mRunningTaskGroup.addTask(execution)));
@@ -205,38 +204,34 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
 
     class TaskViewHolder extends ChildViewHolder<Task> {
 
-        @BindView(R.id.first_char)
-        TextView mFirstChar;
-        @BindView(R.id.name)
-        TextView mName;
-        @BindView(R.id.desc)
-        TextView mDesc;
-
         private Task mTask;
         private GradientDrawable mFirstCharBackground;
+        private final TaskListRecyclerViewItemBinding bind;
 
         TaskViewHolder(View itemView) {
             super(itemView);
+            bind = TaskListRecyclerViewItemBinding.bind(itemView);
+            bind.stop.setTag("stop");
+            Bandage.bind(this,itemView);
             itemView.setOnClickListener(this::onItemClick);
-            ButterKnife.bind(this, itemView);
-            mFirstCharBackground = (GradientDrawable) mFirstChar.getBackground();
+            mFirstCharBackground = (GradientDrawable) bind.firstChar.getBackground();
         }
 
         public void bind(Task task) {
             mTask = task;
-            mName.setText(task.getName());
-            mDesc.setText(task.getDesc());
+            bind.name.setText(task.getName());
+            bind.desc.setText(task.getDesc());
             if (AutoFileSource.ENGINE.equals(mTask.getEngineName())) {
-                mFirstChar.setText("R");
+                bind.firstChar.setText("R");
                 mFirstCharBackground.setColor(getResources().getColor(R.color.color_r));
             } else {
-                mFirstChar.setText("J");
+                bind.firstChar.setText("J");
                 mFirstCharBackground.setColor(getResources().getColor(R.color.color_j));
             }
         }
 
 
-        @OnClick(R.id.stop)
+        @Click(tag = "stop")
         void stop() {
             if (mTask != null) {
                 mTask.cancel();
@@ -248,14 +243,14 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
                 Task.PendingTask task = (Task.PendingTask) mTask;
                 String extra = task.getTimedTask() == null ? TimedTaskSettingActivity.EXTRA_INTENT_TASK_ID
                         : TimedTaskSettingActivity.EXTRA_TASK_ID;
-                TimedTaskSettingActivity_.intent(getContext())
+                TimedTaskSettingActivity.intent(getContext())
                         .extra(extra, task.getId())
                         .start();
             }
         }
     }
 
-    private class TaskGroupViewHolder extends ParentViewHolder<TaskGroup, Task> {
+    private static class TaskGroupViewHolder extends ParentViewHolder<TaskGroup, Task> {
 
         TextView title;
         ImageView icon;

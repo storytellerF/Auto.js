@@ -43,7 +43,7 @@ public class EditIntentActivity extends BaseActivity {
         Intent intent = getIntent();
         Uri uri = intent.getData();
         String path = null;
-        if (uri.getScheme().equals(ContentResolver.SCHEME_FILE)) {
+        if (ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
             path = uri.getPath();
         } else {
             int i = uri.getPath().indexOf(EXTERNAL_FILES);

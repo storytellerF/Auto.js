@@ -14,7 +14,7 @@ import com.stardust.view.accessibility.NodeInfo;
 
 public class ReadOnlyUiObject extends UiObject {
 
-    private NodeInfo mNodeInfo;
+    private final NodeInfo mNodeInfo;
 
     public ReadOnlyUiObject(NodeInfo info) {
         super(null, info.getDepth(), -1);
@@ -88,15 +88,10 @@ public class ReadOnlyUiObject extends UiObject {
         return desc();
     }
 
-
+    @NonNull
     @Override
     public Rect bounds() {
         return mNodeInfo.getBoundsInScreen();
-    }
-
-    @Override
-    public Rect boundsInParent() {
-        return mNodeInfo.getBoundsInParent();
     }
 
     @Override
@@ -125,10 +120,10 @@ public class ReadOnlyUiObject extends UiObject {
         return drawingOrder();
     }
 
-    @Override
-    public void getBoundsInParent(Rect outBounds) {
-        outBounds.set(mNodeInfo.getBoundsInParent());
-    }
+//    @Override
+//    public void getBoundsInParent(Rect outBounds) {
+//        outBounds.set(mNodeInfo.getBoundsInParent());
+//    }
 
     @Override
     public void getBoundsInScreen(Rect outBounds) {

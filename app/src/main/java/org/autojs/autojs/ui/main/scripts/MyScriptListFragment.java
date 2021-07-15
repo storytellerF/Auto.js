@@ -3,29 +3,31 @@ package org.autojs.autojs.ui.main.scripts;
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.annotation.Nullable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stardust.app.GlobalAppContext;
 import com.stardust.util.IntentUtil;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
 import org.autojs.autojs.Pref;
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.FragmentMyScriptListBinding;
 import org.autojs.autojs.external.fileprovider.AppFileProvider;
 import org.autojs.autojs.model.explorer.ExplorerDirPage;
 import org.autojs.autojs.model.explorer.Explorers;
 import org.autojs.autojs.model.script.Scripts;
 import org.autojs.autojs.tool.SimpleObserver;
 import org.autojs.autojs.ui.common.ScriptOperations;
-import org.autojs.autojs.ui.explorer.ExplorerView;
 import org.autojs.autojs.ui.main.FloatingActionMenu;
 import org.autojs.autojs.ui.main.QueryEvent;
 import org.autojs.autojs.ui.main.ViewPagerFragment;
 import org.autojs.autojs.ui.project.ProjectConfigActivity;
-import org.autojs.autojs.ui.project.ProjectConfigActivity_;
 import org.autojs.autojs.ui.viewmodel.ExplorerItemList;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -35,17 +37,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 /**
  * Created by Stardust on 2017/3/13.
  */
-@EFragment(R.layout.fragment_my_script_list)
 public class MyScriptListFragment extends ViewPagerFragment implements FloatingActionMenu.OnFloatingActionButtonClickListener {
 
     private static final String TAG = "MyScriptListFragment";
+    private FragmentMyScriptListBinding inflate;
 
     public MyScriptListFragment() {
         super(0);
     }
-
-    @ViewById(R.id.script_file_list)
-    ExplorerView mExplorerView;
 
     private FloatingActionMenu mFloatingActionMenu;
 
@@ -55,14 +54,22 @@ public class MyScriptListFragment extends ViewPagerFragment implements FloatingA
         EventBus.getDefault().register(this);
     }
 
-    @AfterViews
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        inflate = FragmentMyScriptListBinding.inflate(inflater);
+        setUpViews();
+        return inflate.getRoot();
+    }
+
     void setUpViews() {
         ExplorerItemList.SortConfig sortConfig = ExplorerItemList.SortConfig.from(PreferenceManager.getDefaultSharedPreferences(getContext()));
-        mExplorerView.setSortConfig(sortConfig);
-        mExplorerView.setExplorer(Explorers.workspace(), ExplorerDirPage.createRoot(Pref.getScriptDirPath()));
-        mExplorerView.setOnItemClickListener((view, item) -> {
+        inflate.scriptFileList.setSortConfig(sortConfig);
+        inflate.scriptFileList.setExplorer(Explorers.workspace(), ExplorerDirPage.createRoot(Pref.getScriptDirPath()));
+        inflate.scriptFileList.setOnItemClickListener((view, item) -> {
+            Log.i(TAG, "setUpViews: onclick");
             if (item.isEditable()) {
-                Scripts.INSTANCE.edit(getActivity(), item.toScriptFile());
+                Scripts.INSTANCE.edit(getContext(), item.toScriptFile());
             } else {
                 IntentUtil.viewFile(GlobalAppContext.get(), item.getPath(), AppFileProvider.AUTHORITY);
             }
@@ -104,8 +111,8 @@ public class MyScriptListFragment extends ViewPagerFragment implements FloatingA
             mFloatingActionMenu.collapse();
             return true;
         }
-        if (mExplorerView.canGoBack()) {
-            mExplorerView.goBack();
+        if (inflate.scriptFileList.canGoBack()) {
+            inflate.scriptFileList.goBack();
             return true;
         }
         return false;
@@ -125,17 +132,17 @@ public class MyScriptListFragment extends ViewPagerFragment implements FloatingA
             return;
         }
         if (event == QueryEvent.CLEAR) {
-            mExplorerView.setFilter(null);
+            inflate.scriptFileList.setFilter(null);
             return;
         }
         String query = event.getQuery();
-        mExplorerView.setFilter((item -> item.getName().contains(query)));
+        inflate.scriptFileList.setFilter((item -> item.getName().contains(query)));
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mExplorerView.getSortConfig().saveInto(PreferenceManager.getDefaultSharedPreferences(getContext()));
+        inflate.scriptFileList.getSortConfig().saveInto(PreferenceManager.getDefaultSharedPreferences(getContext()));
     }
 
     @Override
@@ -154,24 +161,22 @@ public class MyScriptListFragment extends ViewPagerFragment implements FloatingA
 
     @Override
     public void onClick(FloatingActionButton button, int pos) {
-        if (mExplorerView == null)
-            return;
         switch (pos) {
             case 0:
-                new ScriptOperations(getContext(), mExplorerView, mExplorerView.getCurrentPage())
+                new ScriptOperations(getContext(), inflate.scriptFileList, inflate.scriptFileList.getCurrentPage())
                         .newDirectory();
                 break;
             case 1:
-                new ScriptOperations(getContext(), mExplorerView, mExplorerView.getCurrentPage())
+                new ScriptOperations(getContext(), inflate.scriptFileList, inflate.scriptFileList.getCurrentPage())
                         .newFile();
                 break;
             case 2:
-                new ScriptOperations(getContext(), mExplorerView, mExplorerView.getCurrentPage())
+                new ScriptOperations(getContext(), inflate.scriptFileList, inflate.scriptFileList.getCurrentPage())
                         .importFile();
                 break;
             case 3:
-                ProjectConfigActivity_.intent(getContext())
-                        .extra(ProjectConfigActivity.EXTRA_PARENT_DIRECTORY, mExplorerView.getCurrentPage().getPath())
+                ProjectConfigActivity.intent(getContext())
+                        .extra(ProjectConfigActivity.EXTRA_PARENT_DIRECTORY, inflate.scriptFileList.getCurrentPage().getPath())
                         .extra(ProjectConfigActivity.EXTRA_NEW_PROJECT, true)
                         .start();
                 break;

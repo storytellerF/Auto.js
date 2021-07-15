@@ -1,20 +1,18 @@
 package org.autojs.autojs.ui.edit;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.stardust.app.OnActivityResultDelegate;
 import com.stardust.autojs.core.permission.OnRequestPermissionsResultCallback;
@@ -24,21 +22,20 @@ import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.pio.PFiles;
 
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.ActivityEditBinding;
 import org.autojs.autojs.storage.file.TmpScriptFiles;
+import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 import org.autojs.autojs.tool.Observers;
 import org.autojs.autojs.ui.BaseActivity;
-import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-import org.autojs.autojs.ui.main.MainActivity_;
+import org.autojs.autojs.ui.main.MainActivity;
 
 import java.io.File;
 import java.io.IOException;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.autojs.autojs.ui.edit.EditorView.EXTRA_CONTENT;
@@ -49,18 +46,15 @@ import static org.autojs.autojs.ui.edit.EditorView.EXTRA_READ_ONLY;
 /**
  * Created by Stardust on 2017/1/29.
  */
-@EActivity(R.layout.activity_edit)
 public class EditActivity extends BaseActivity implements OnActivityResultDelegate.DelegateHost, PermissionRequestProxyActivity {
 
-    private OnActivityResultDelegate.Mediator mMediator = new OnActivityResultDelegate.Mediator();
     private static final String LOG_TAG = "EditActivity";
-
-    @ViewById(R.id.editor_view)
-    EditorView mEditorView;
-
+    private final OnActivityResultDelegate.Mediator mMediator = new OnActivityResultDelegate.Mediator();
+    private final RequestPermissionCallbacks mRequestPermissionCallbacks = new RequestPermissionCallbacks();
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private EditorMenu mEditorMenu;
-    private RequestPermissionCallbacks mRequestPermissionCallbacks = new RequestPermissionCallbacks();
     private boolean mNewTask;
+    private ActivityEditBinding inflate;
 
     public static void editFile(Context context, String path, boolean newTask) {
         editFile(context, null, path, newTask);
@@ -85,7 +79,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     }
 
     private static Intent newIntent(Context context, boolean newTask) {
-        Intent intent = new Intent(context, EditActivity_.class);
+        Intent intent = new Intent(context, EditActivity.class);
         if (newTask || !(context instanceof Activity)) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
@@ -95,17 +89,19 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        inflate = ActivityEditBinding.inflate(getLayoutInflater());
+        setContentView(inflate.getRoot());
+        setUpViews();
         mNewTask = (getIntent().getFlags() & Intent.FLAG_ACTIVITY_NEW_TASK) != 0;
     }
 
-    @SuppressLint("CheckResult")
-    @AfterViews
     void setUpViews() {
-        mEditorView.handleIntent(getIntent())
+        Disposable subscribe = inflate.editorView.handleIntent(getIntent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Observers.emptyConsumer(),
                         ex -> onLoadFileError(ex.getMessage()));
-        mEditorMenu = new EditorMenu(mEditorView);
+        compositeDisposable.add(subscribe);
+        mEditorMenu = new EditorMenu(inflate.editorView);
         setUpToolbar();
     }
 
@@ -132,7 +128,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     }
 
     private void setUpToolbar() {
-        BaseActivity.setToolbarAsBack(this, R.id.toolbar, mEditorView.getName());
+        BaseActivity.setToolbarAsBack(this, R.id.toolbar, inflate.editorView.getName());
     }
 
     @Override
@@ -149,7 +145,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         Log.d(LOG_TAG, "onPrepareOptionsMenu: " + menu);
-        boolean isScriptRunning = mEditorView.getScriptExecutionId() != ScriptExecution.NO_ID;
+        boolean isScriptRunning = inflate.editorView.getScriptExecutionId() != ScriptExecution.NO_ID;
         MenuItem forceStopItem = menu.findItem(R.id.action_force_stop);
         forceStopItem.setEnabled(isScriptRunning);
         return super.onPrepareOptionsMenu(menu);
@@ -192,14 +188,14 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
 
     @Override
     public void onBackPressed() {
-        if (!mEditorView.onBackPressed()) {
+        if (!inflate.editorView.onBackPressed()) {
             super.onBackPressed();
         }
     }
 
     @Override
     public void finish() {
-        if (mEditorView.isTextChanged()) {
+        if (inflate.editorView.isTextChanged()) {
             showExitConfirmDialog();
             return;
         }
@@ -213,7 +209,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
             super.finish();
         }
         if (mNewTask) {
-            startActivity(new Intent(this, MainActivity_.class));
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
@@ -225,7 +221,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
                 .negativeText(R.string.text_save_and_exit)
                 .neutralText(R.string.text_exit_directly)
                 .onNegative((dialog, which) -> {
-                    mEditorView.saveFile();
+                    inflate.editorView.saveFile();
                     finishAndRemoveFromRecents();
                 })
                 .onNeutral((dialog, which) -> finishAndRemoveFromRecents())
@@ -234,7 +230,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
 
     @Override
     protected void onDestroy() {
-        mEditorView.destroy();
+        inflate.editorView.destroy();
         super.onDestroy();
     }
 
@@ -246,16 +242,17 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         mMediator.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (!mEditorView.isTextChanged()) {
+        if (!inflate.editorView.isTextChanged()) {
             return;
         }
-        String text = mEditorView.getEditor().getText();
+        String text = inflate.editorView.getEditor().getText();
         if (text.length() < 256 * 1024) {
             outState.putString("text", text);
         } else {
@@ -270,9 +267,10 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     private File saveToTmpFile(String text) {
         try {
             File tmp = TmpScriptFiles.create(this);
-            Observable.just(text)
+            Disposable subscribe = Observable.just(text)
                     .observeOn(Schedulers.io())
                     .subscribe(t -> PFiles.write(tmp, t));
+            compositeDisposable.add(subscribe);
             return tmp;
         } catch (IOException e) {
             e.printStackTrace();
@@ -285,16 +283,17 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
         super.onRestoreInstanceState(savedInstanceState);
         String text = savedInstanceState.getString("text");
         if (text != null) {
-            mEditorView.setRestoredText(text);
+            inflate.editorView.setRestoredText(text);
             return;
         }
         String path = savedInstanceState.getString("path");
         if (path != null) {
-            Observable.just(path)
+            Disposable subscribe = Observable.just(path)
                     .observeOn(Schedulers.io())
                     .map(PFiles::read)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(t -> mEditorView.getEditor().setText(t), Throwable::printStackTrace);
+                    .subscribe(t -> inflate.editorView.getEditor().setText(t), Throwable::printStackTrace);
+            compositeDisposable.add(subscribe);
         }
     }
 

@@ -54,7 +54,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:src="@drawable/ic_more_vert_black_24dp"
-            android:tint="#A9AAAB"/>
+            app:tint="#A9AAAB" />
 
 
     </LinearLayout>

@@ -9,11 +9,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.FloatingManualDialogBinding;
 import org.autojs.autojs.ui.widget.EWebView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Stardust on 2017/10/24.
@@ -21,22 +18,16 @@ import butterknife.OnClick;
 
 public class ManualDialog {
 
-    @BindView(R.id.title)
-    TextView mTitle;
-
-    @BindView(R.id.eweb_view)
-    EWebView mEWebView;
-
-    @BindView(R.id.pin_to_left)
-    View mPinToLeft;
-
     Dialog mDialog;
-    private Context mContext;
+    private final Context mContext;
+    private final FloatingManualDialogBinding bind;
 
     public ManualDialog(Context context) {
         mContext = context;
         View view = View.inflate(context, R.layout.floating_manual_dialog, null);
-        ButterKnife.bind(this, view);
+        bind = FloatingManualDialogBinding.bind(view);
+        bind.close.setOnClickListener(view1 -> close());
+        bind.fullscreen.setOnClickListener(view1 -> viewInNewActivity());
         mDialog = new MaterialDialog.Builder(context)
                 .customView(view, false)
                 .build();
@@ -45,17 +36,17 @@ public class ManualDialog {
 
 
     public ManualDialog title(String title) {
-        mTitle.setText(title);
+        bind.title.setText(title);
         return this;
     }
 
     public ManualDialog url(String url) {
-        mEWebView.getWebView().loadUrl(url);
+        bind.ewebView.getWebView().loadUrl(url);
         return this;
     }
 
     public ManualDialog pinToLeft(View.OnClickListener listener) {
-        mPinToLeft.setOnClickListener(v -> {
+        bind.pinToLeft.setOnClickListener(v -> {
             mDialog.dismiss();
             listener.onClick(v);
         });
@@ -67,16 +58,14 @@ public class ManualDialog {
         return this;
     }
 
-    @OnClick(R.id.close)
     void close() {
         mDialog.dismiss();
     }
 
-    @OnClick(R.id.fullscreen)
     void viewInNewActivity() {
         mDialog.dismiss();
-        DocumentationActivity_.intent(mContext)
-                .extra(DocumentationActivity.EXTRA_URL, mEWebView.getWebView().getUrl())
+        DocumentationActivity.intent(mContext)
+                .extra(DocumentationActivity.EXTRA_URL, bind.ewebView.getWebView().getUrl())
                 .start();
     }
 

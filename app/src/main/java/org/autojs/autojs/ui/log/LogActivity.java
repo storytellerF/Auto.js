@@ -1,43 +1,46 @@
 package org.autojs.autojs.ui.log;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.View;
 
-import com.stardust.autojs.core.console.ConsoleView;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.console.ConsoleImpl;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+import org.autojs.autojs.IntentWrapper;
 import org.autojs.autojs.R;
 import org.autojs.autojs.autojs.AutoJs;
+import org.autojs.autojs.databinding.ActivityLogBinding;
 import org.autojs.autojs.ui.BaseActivity;
 
-@EActivity(R.layout.activity_log)
 public class LogActivity extends BaseActivity {
 
-    @ViewById(R.id.console)
-    ConsoleView mConsoleView;
-
     private ConsoleImpl mConsoleImpl;
+    private ActivityLogBinding inflate;
+
+    public static IntentWrapper intent(Context mainActivity) {
+        return new IntentWrapper(mainActivity,new Intent(mainActivity,LogActivity.class));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        inflate = ActivityLogBinding.inflate(getLayoutInflater());
+        setContentView(inflate.getRoot());
+        setupViews();
+        inflate.fab.setOnClickListener(view -> clearConsole());
         applyDayNightMode();
     }
 
-    @AfterViews
     void setupViews() {
         setToolbarAsBack(getString(R.string.text_log));
         mConsoleImpl = AutoJs.getInstance().getGlobalConsole();
-        mConsoleView.setConsole(mConsoleImpl);
-        mConsoleView.findViewById(R.id.input_container).setVisibility(View.GONE);
+        inflate.console.setConsole(mConsoleImpl);
+        inflate.console.findViewById(R.id.input_container).setVisibility(View.GONE);
     }
 
-    @Click(R.id.fab)
     void clearConsole() {
         mConsoleImpl.clear();
     }

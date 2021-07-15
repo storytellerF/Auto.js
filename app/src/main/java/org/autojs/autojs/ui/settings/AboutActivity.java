@@ -1,38 +1,47 @@
 package org.autojs.autojs.ui.settings;
 
 import android.annotation.SuppressLint;
-import android.widget.TextView;
+import android.os.Bundle;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import org.autojs.autojs.tool.IntentTool;
-import org.autojs.autojs.ui.BaseActivity;
-import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
-import com.stardust.util.IntentUtil;
-import com.tencent.bugly.crashreport.CrashReport;
+import androidx.annotation.Nullable;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.stardust.util.IntentUtil;
+import com.storyteller_f.bandage.Bandage;
+import com.storyteller_f.bandage.Click;
+
+import org.androidannotations.annotations.EActivity;
 import org.autojs.autojs.BuildConfig;
 import org.autojs.autojs.R;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+import org.autojs.autojs.databinding.ActivityAboutBinding;
+import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
+import org.autojs.autojs.tool.IntentTool;
+import org.autojs.autojs.ui.BaseActivity;
 
 /**
  * Created by Stardust on 2017/2/2.
  */
-@EActivity(R.layout.activity_about)
 public class AboutActivity extends BaseActivity {
 
-    private static final String TAG = "AboutActivity";
-    @ViewById(R.id.version)
-    TextView mVersion;
-
     private int mLolClickCount = 0;
+    private ActivityAboutBinding inflate;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inflate = ActivityAboutBinding.inflate(getLayoutInflater());
+        inflate.include.github.setTag("github");
+        inflate.include.qq.setTag("qq");
+        inflate.include.email.setTag("email");
+        inflate.share.setTag("share");
+        inflate.icon.setTag("icon");
+        inflate.include.developer.setTag("developer");
+        Bandage.bind(this,inflate.getRoot());
+        setContentView(inflate.getRoot());
+        setUpViews();
+    }
 
-    @AfterViews
     void setUpViews() {
         setVersionName();
         setToolbarAsBack(getString(R.string.text_about));
@@ -40,15 +49,15 @@ public class AboutActivity extends BaseActivity {
 
     @SuppressLint("SetTextI18n")
     private void setVersionName() {
-        mVersion.setText("Version " + BuildConfig.VERSION_NAME);
+        inflate.version.setText("Version " + BuildConfig.VERSION_NAME);
     }
 
-    @Click(R.id.github)
+    @Click(tag = "github")
     void openGitHub() {
         IntentTool.browse(this, getString(R.string.my_github));
     }
 
-    @Click(R.id.qq)
+    @Click(tag = "qq")
     void openQQToChatWithMe() {
         String qq = getString(R.string.qq);
         if (!IntentUtil.chatWithQQ(this, qq)) {
@@ -56,19 +65,19 @@ public class AboutActivity extends BaseActivity {
         }
     }
 
-    @Click(R.id.email)
+    @Click(tag = "email")
     void openEmailToSendMe() {
         String email = getString(R.string.email);
         IntentUtil.sendMailTo(this, email);
     }
 
 
-    @Click(R.id.share)
+    @Click(tag = "share")
     void share() {
         IntentUtil.shareText(this, getString(R.string.share_app));
     }
 
-    @Click(R.id.icon)
+    @Click(tag = "icon")
     void lol() {
         mLolClickCount++;
         //Toast.makeText(this, R.string.text_lll, Toast.LENGTH_LONG).show();
@@ -89,11 +98,11 @@ public class AboutActivity extends BaseActivity {
                 .title("Crash Test")
                 .positiveText("Crash")
                 .onPositive((dialog, which) -> {
-                    CrashReport.testJavaCrash();
+//                    CrashReport.testJavaCrash();
                 }).show();
     }
 
-    @Click(R.id.developer)
+    @Click(tag = "developer")
     void hhh() {
         Toast.makeText(this, R.string.text_it_is_the_developer_of_app, Toast.LENGTH_LONG).show();
     }

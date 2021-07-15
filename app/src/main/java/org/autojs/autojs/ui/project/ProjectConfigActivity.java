@@ -1,27 +1,29 @@
 package org.autojs.autojs.ui.project;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.stardust.autojs.project.ProjectConfig;
 import com.stardust.pio.PFiles;
+import com.storyteller_f.bandage.Bandage;
+import com.storyteller_f.bandage.Click;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+import org.androidannotations.api.builder.ActivityIntentBuilder;
+import org.androidannotations.api.builder.PostActivityStarter;
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.ActivityProjectConfigBinding;
 import org.autojs.autojs.model.explorer.ExplorerDirPage;
 import org.autojs.autojs.model.explorer.ExplorerFileItem;
 import org.autojs.autojs.model.explorer.Explorers;
@@ -29,7 +31,6 @@ import org.autojs.autojs.model.project.ProjectTemplate;
 import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 import org.autojs.autojs.ui.BaseActivity;
 import org.autojs.autojs.ui.shortcut.ShortcutIconSelectActivity;
-import org.autojs.autojs.ui.shortcut.ShortcutIconSelectActivity_;
 import org.autojs.autojs.ui.widget.SimpleTextWatcher;
 
 import java.io.File;
@@ -38,9 +39,10 @@ import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-@EActivity(R.layout.activity_project_config)
 public class ProjectConfigActivity extends BaseActivity {
 
     public static final String EXTRA_PARENT_DIRECTORY = "parent_directory";
@@ -52,37 +54,32 @@ public class ProjectConfigActivity extends BaseActivity {
     private static final int REQUEST_CODE = 12477;
     private static final Pattern REGEX_PACKAGE_NAME = Pattern.compile("^([A-Za-z][A-Za-z\\d_]*\\.)+([A-Za-z][A-Za-z\\d_]*)$");
 
-
-    @ViewById(R.id.project_location)
-    EditText mProjectLocation;
-
-    @ViewById(R.id.app_name)
-    EditText mAppName;
-
-    @ViewById(R.id.package_name)
-    EditText mPackageName;
-
-    @ViewById(R.id.version_name)
-    EditText mVersionName;
-
-    @ViewById(R.id.version_code)
-    EditText mVersionCode;
-
-    @ViewById(R.id.main_file_name)
-    EditText mMainFileName;
-
-    @ViewById(R.id.icon)
-    ImageView mIcon;
-
     private File mDirectory;
     private File mParentDirectory;
     private ProjectConfig mProjectConfig;
     private boolean mNewProject;
     private Bitmap mIconBitmap;
+    private ActivityProjectConfigBinding inflate;
+
+    public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context mContext) {
+        return new ActivityIntentBuilder<I>(mContext, ProjectConfigActivity.class) {
+            @Override
+            public PostActivityStarter startForResult(int requestCode) {
+                context.startActivity(intent);
+                return null;
+            }
+        };
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        inflate = ActivityProjectConfigBinding.inflate(getLayoutInflater());
+        setContentView(inflate.getRoot());
+        setupViews();
+        inflate.fab.setTag("fab");
+        inflate.icon.setTag("icon");
+        Bandage.bind(this,inflate.getRoot());
         mNewProject = getIntent().getBooleanExtra(EXTRA_NEW_PROJECT, false);
         String parentDirectory = getIntent().getStringExtra(EXTRA_PARENT_DIRECTORY);
         if (mNewProject) {
@@ -110,55 +107,55 @@ public class ProjectConfigActivity extends BaseActivity {
         }
     }
 
-    @AfterViews
     void setupViews() {
         if (mProjectConfig == null) {
             return;
         }
         setToolbarAsBack(mNewProject ? getString(R.string.text_new_project) : mProjectConfig.getName());
         if (mNewProject) {
-            mAppName.addTextChangedListener(new SimpleTextWatcher(s ->
-                    mProjectLocation.setText(new File(mParentDirectory, s.toString()).getPath()))
+            inflate.appName.addTextChangedListener(new SimpleTextWatcher(s ->
+                    inflate.projectLocation.setText(new File(mParentDirectory, s.toString()).getPath()))
             );
         } else {
-            mAppName.setText(mProjectConfig.getName());
-            mVersionCode.setText(String.valueOf(mProjectConfig.getVersionCode()));
-            mPackageName.setText(mProjectConfig.getPackageName());
-            mVersionName.setText(mProjectConfig.getVersionName());
-            mMainFileName.setText(mProjectConfig.getMainScriptFile());
-            mProjectLocation.setVisibility(View.GONE);
+            inflate.appName.setText(mProjectConfig.getName());
+            inflate.versionCode.setText(String.valueOf(mProjectConfig.getVersionCode()));
+            inflate.packageName.setText(mProjectConfig.getPackageName());
+            inflate.versionName.setText(mProjectConfig.getVersionName());
+            inflate.mainFileName.setText(mProjectConfig.getMainScriptFile());
+            inflate.projectLocation.setVisibility(View.GONE);
             String icon = mProjectConfig.getIcon();
             if (icon != null) {
                 Glide.with(this)
                         .load(new File(mDirectory, icon))
-                        .into(mIcon);
+                        .into(inflate.icon);
             }
         }
     }
 
     @SuppressLint("CheckResult")
-    @Click(R.id.fab)
+    @Click(tag="fab")
     void commit() {
         if (!checkInputs()) {
             return;
         }
         syncProjectConfig();
         if (mIconBitmap != null) {
-            saveIcon(mIconBitmap)
+            Disposable subscribe = saveIcon(mIconBitmap)
                     .subscribe(ignored -> saveProjectConfig(), e -> {
                         e.printStackTrace();
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
+            compositeDisposable.add(subscribe);
         } else {
             saveProjectConfig();
         }
 
     }
-
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
     @SuppressLint("CheckResult")
     private void saveProjectConfig() {
         if (mNewProject) {
-            new ProjectTemplate(mProjectConfig, mDirectory)
+            Disposable subscribe = new ProjectTemplate(mProjectConfig, mDirectory)
                     .newProject()
                     .subscribe(ignored -> {
                         Explorers.workspace().notifyChildrenChanged(new ExplorerDirPage(mParentDirectory, null));
@@ -167,8 +164,9 @@ public class ProjectConfigActivity extends BaseActivity {
                         e.printStackTrace();
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
+            compositeDisposable.add(subscribe);
         } else {
-            Observable.fromCallable(() -> {
+            Disposable subscribe = Observable.fromCallable(() -> {
                 PFiles.write(ProjectConfig.configFileOfDir(mDirectory.getPath()),
                         mProjectConfig.toJson());
                 return Void.TYPE;
@@ -183,23 +181,24 @@ public class ProjectConfigActivity extends BaseActivity {
                         e.printStackTrace();
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
+            compositeDisposable.add(subscribe);
         }
     }
 
-    @Click(R.id.icon)
+    @Click(tag = "icon")
     void selectIcon() {
-        ShortcutIconSelectActivity_.intent(this)
+        ShortcutIconSelectActivity.intent(this)
                 .startForResult(REQUEST_CODE);
     }
 
     private void syncProjectConfig() {
-        mProjectConfig.setName(mAppName.getText().toString());
-        mProjectConfig.setVersionCode(Integer.parseInt(mVersionCode.getText().toString()));
-        mProjectConfig.setVersionName(mVersionName.getText().toString());
-        mProjectConfig.setMainScriptFile(mMainFileName.getText().toString());
-        mProjectConfig.setPackageName(mPackageName.getText().toString());
+        mProjectConfig.setName(inflate.appName.getText().toString());
+        mProjectConfig.setVersionCode(Integer.parseInt(inflate.versionCode.getText().toString()));
+        mProjectConfig.setVersionName(inflate.versionName.getText().toString());
+        mProjectConfig.setMainScriptFile(inflate.mainFileName.getText().toString());
+        mProjectConfig.setPackageName(inflate.packageName.getText().toString());
         if (mNewProject) {
-            String location = mProjectLocation.getText().toString();
+            String location = inflate.projectLocation.getText().toString();
             mDirectory = new File(location);
         }
         //mProjectConfig.getLaunchConfig().setHideLogs(true);
@@ -207,10 +206,10 @@ public class ProjectConfigActivity extends BaseActivity {
 
     private boolean checkInputs() {
         boolean inputValid = true;
-        inputValid &= checkNotEmpty(mAppName);
-        inputValid &= checkNotEmpty(mVersionCode);
-        inputValid &= checkNotEmpty(mVersionName);
-        inputValid &= checkPackageNameValid(mPackageName);
+        inputValid &= checkNotEmpty(inflate.appName);
+        inputValid &= checkNotEmpty(inflate.versionCode);
+        inputValid &= checkNotEmpty(inflate.versionName);
+        inputValid &= checkPackageNameValid(inflate.packageName);
         return inputValid;
     }
 
@@ -242,6 +241,7 @@ public class ProjectConfigActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;
         }
@@ -249,7 +249,7 @@ public class ProjectConfigActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bitmap -> {
-                            mIcon.setImageBitmap(bitmap);
+                            inflate.icon.setImageBitmap(bitmap);
                             mIconBitmap = bitmap;
                         },
                         Throwable::printStackTrace);

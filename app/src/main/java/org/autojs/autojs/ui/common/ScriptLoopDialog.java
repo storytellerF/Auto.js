@@ -1,22 +1,20 @@
 package org.autojs.autojs.ui.common;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.stardust.app.DialogUtils;
 import com.stardust.app.GlobalAppContext;
 
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.DialogScriptLoopBinding;
 import org.autojs.autojs.model.script.ScriptFile;
 import org.autojs.autojs.model.script.Scripts;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.util.Objects;
+
 
 /**
  * Created by Stardust on 2017/7/8.
@@ -24,17 +22,9 @@ import butterknife.ButterKnife;
 
 public class ScriptLoopDialog {
 
-    private ScriptFile mScriptFile;
-    private MaterialDialog mDialog;
-
-    @BindView(R.id.loop_times)
-    EditText mLoopTimes;
-
-    @BindView(R.id.loop_interval)
-    EditText mLoopInterval;
-
-    @BindView(R.id.loop_delay)
-    EditText mLoopDelay;
+    private final ScriptFile mScriptFile;
+    private final MaterialDialog mDialog;
+    private final DialogScriptLoopBinding bind;
 
 
     public ScriptLoopDialog(Context context, ScriptFile file) {
@@ -46,14 +36,14 @@ public class ScriptLoopDialog {
                 .positiveText(R.string.ok)
                 .onPositive((dialog, which) -> startScriptRunningLoop())
                 .build();
-        ButterKnife.bind(this, view);
+        bind = DialogScriptLoopBinding.bind(view);
     }
 
     private void startScriptRunningLoop() {
         try {
-            int loopTimes = Integer.parseInt(mLoopTimes.getText().toString());
-            float loopInterval = Float.parseFloat(mLoopInterval.getText().toString());
-            float loopDelay = Float.parseFloat(mLoopDelay.getText().toString());
+            int loopTimes = Integer.parseInt(Objects.requireNonNull(bind.loopTimes.getText()).toString());
+            float loopInterval = Float.parseFloat(Objects.requireNonNull(bind.loopInterval.getText()).toString());
+            float loopDelay = Float.parseFloat(Objects.requireNonNull(bind.loopDelay.getText()).toString());
             Scripts.INSTANCE.runRepeatedly(mScriptFile, loopTimes, (long) (1000L * loopDelay), (long) (loopInterval * 1000L));
         } catch (NumberFormatException e) {
             GlobalAppContext.toast(R.string.text_number_format_error);

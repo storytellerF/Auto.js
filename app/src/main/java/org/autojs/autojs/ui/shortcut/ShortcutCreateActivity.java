@@ -10,29 +10,29 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
+import android.view.View;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.ShortcutCreateDialogBinding;
 import org.autojs.autojs.external.ScriptIntents;
 import org.autojs.autojs.external.shortcut.Shortcut;
 import org.autojs.autojs.external.shortcut.ShortcutActivity;
 import org.autojs.autojs.external.shortcut.ShortcutManager;
 import org.autojs.autojs.model.script.ScriptFile;
-import org.autojs.autojs.tool.BitmapTool;
 import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
+import org.autojs.autojs.tool.BitmapTool;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import java.util.Objects;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -43,17 +43,10 @@ public class ShortcutCreateActivity extends AppCompatActivity {
 
     public static final String EXTRA_FILE = "file";
     private static final String LOG_TAG = "ShortcutCreateActivity";
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ScriptFile mScriptFile;
     private boolean mIsDefaultIcon = true;
-
-    @BindView(R.id.name)
-    TextView mName;
-
-    @BindView(R.id.icon)
-    ImageView mIcon;
-
-    @BindView(R.id.use_android_n_shortcut)
-    CheckBox mUseAndroidNShortcut;
+    private ShortcutCreateDialogBinding bind;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,10 +57,11 @@ public class ShortcutCreateActivity extends AppCompatActivity {
 
     private void showDialog() {
         View view = View.inflate(this, R.layout.shortcut_create_dialog, null);
-        ButterKnife.bind(this, view);
-        mUseAndroidNShortcut.setVisibility(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ?
+        bind = ShortcutCreateDialogBinding.bind(view);
+        bind.useAndroidNShortcut.setVisibility(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ?
                 View.VISIBLE : View.GONE);
-        mName.setText(mScriptFile.getSimplifiedName());
+        bind.name.setText(mScriptFile.getSimplifiedName());
+        bind.icon.setOnClickListener(view1 -> selectIcon());
         new ThemeColorMaterialDialogBuilder(this)
                 .customView(view, false)
                 .title(R.string.text_send_shortcut)
@@ -80,17 +74,14 @@ public class ShortcutCreateActivity extends AppCompatActivity {
                 .show();
     }
 
-
-    @OnClick(R.id.icon)
     void selectIcon() {
-        ShortcutIconSelectActivity_.intent(this)
+        ShortcutIconSelectActivity.intent(this)
                 .startForResult(21209);
     }
 
-
     @SuppressLint("NewApi") //for fool android studio
     private void createShortcut() {
-        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1 && mUseAndroidNShortcut.isChecked())
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1 && bind.useAndroidNShortcut.isChecked())
                 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createShortcutByShortcutManager();
             return;
@@ -99,10 +90,10 @@ public class ShortcutCreateActivity extends AppCompatActivity {
         if (mIsDefaultIcon) {
             shortcut.iconRes(R.drawable.ic_node_js_black);
         } else {
-            Bitmap bitmap = BitmapTool.drawableToBitmap(mIcon.getDrawable());
+            Bitmap bitmap = BitmapTool.drawableToBitmap(bind.icon.getDrawable());
             shortcut.icon(bitmap);
         }
-        shortcut.name(mName.getText().toString())
+        shortcut.name(Objects.requireNonNull(bind.name.getText()).toString())
                 .targetClass(ShortcutActivity.class)
                 .extras(new Intent().putExtra(ScriptIntents.EXTRA_KEY_PATH, mScriptFile.getPath()))
                 .send();
@@ -114,7 +105,7 @@ public class ShortcutCreateActivity extends AppCompatActivity {
         if (mIsDefaultIcon) {
             icon = Icon.createWithResource(this, R.drawable.ic_file_type_js);
         } else {
-            Bitmap bitmap = BitmapTool.drawableToBitmap(mIcon.getDrawable());
+            Bitmap bitmap = BitmapTool.drawableToBitmap(bind.icon.getDrawable());
             icon = Icon.createWithBitmap(bitmap);
         }
         PersistableBundle extras = new PersistableBundle(1);
@@ -124,24 +115,24 @@ public class ShortcutCreateActivity extends AppCompatActivity {
                 .setAction(Intent.ACTION_MAIN);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ShortcutManager.getInstance(this).addPinnedShortcut(mName.getText(), mScriptFile.getPath(), icon, intent);
+            ShortcutManager.getInstance(this).addPinnedShortcut(bind.name.getText(), mScriptFile.getPath(), icon, intent);
         } else {
-            ShortcutManager.getInstance(this).addDynamicShortcut(mName.getText(), mScriptFile.getPath(), icon, intent);
+            ShortcutManager.getInstance(this).addDynamicShortcut(bind.name.getText(), mScriptFile.getPath(), icon, intent);
         }
 
     }
 
-
     @SuppressLint("CheckResult")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;
         }
         String packageName = data.getStringExtra(ShortcutIconSelectActivity.EXTRA_PACKAGE_NAME);
         if (packageName != null) {
             try {
-                mIcon.setImageDrawable(getPackageManager().getApplicationIcon(packageName));
+                bind.icon.setImageDrawable(getPackageManager().getApplicationIcon(packageName));
                 mIsDefaultIcon = false;
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
@@ -149,18 +140,16 @@ public class ShortcutCreateActivity extends AppCompatActivity {
             return;
         }
         Uri uri = data.getData();
-        if(uri == null){
+        if (uri == null) {
             return;
         }
-        Observable.fromCallable(() -> BitmapFactory.decodeStream(getContentResolver().openInputStream(uri)))
+        Disposable decode_stream = Observable.fromCallable(() -> BitmapFactory.decodeStream(getContentResolver().openInputStream(uri)))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((bitmap -> {
-                    mIcon.setImageBitmap(bitmap);
+                    bind.icon.setImageBitmap(bitmap);
                     mIsDefaultIcon = false;
-                }), error -> {
-                    Log.e(LOG_TAG, "decode stream", error);
-                });
-
+                }), error -> Log.e(LOG_TAG, "decode stream", error));
+        compositeDisposable.add(decode_stream);
     }
 }

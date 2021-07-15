@@ -1,9 +1,6 @@
 package org.autojs.autojs.ui.common;
 
 import android.content.Context;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +9,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.autojs.autojs.R;
+import org.autojs.autojs.ui.main.community.CommunityWebView;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Stardust on 2017/10/20.
@@ -26,10 +27,32 @@ import butterknife.ButterKnife;
 public class OptionListView extends LinearLayout {
 
 
+    private final ArrayList<Integer> mIds = new ArrayList<>();
+    private final ArrayList<Integer> mIcons = new ArrayList<>();
+    private final ArrayList<String> mTexts = new ArrayList<>();
+    private CommunityWebView mOnItemClickTarget;
+    private TextView mTitleView;
+    public OptionListView(Context context) {
+        super(context);
+    }
+
+    public OptionListView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mTitleView = findViewById(R.id.title);
+        RecyclerView mOptionList = findViewById(R.id.list);
+        mOptionList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mOptionList.setAdapter(new Adapter());
+    }
+
     public static class Builder {
 
-        private OptionListView mOptionListView;
-        private Context mContext;
+        private final OptionListView mOptionListView;
+        private final Context mContext;
 
         public Builder(Context context) {
             mContext = context;
@@ -47,7 +70,7 @@ public class OptionListView extends LinearLayout {
             return this;
         }
 
-        public Builder bindItemClick(Object target) {
+        public Builder bindItemClick(CommunityWebView target) {
             mOptionListView.mOnItemClickTarget = target;
             return this;
         }
@@ -67,32 +90,20 @@ public class OptionListView extends LinearLayout {
         }
     }
 
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView icon;
+        TextView text;
 
-    private ArrayList<Integer> mIds = new ArrayList<>();
-    private ArrayList<Integer> mIcons = new ArrayList<>();
-    private ArrayList<String> mTexts = new ArrayList<>();
-    private Object mOnItemClickTarget;
-    private RecyclerView mOptionList;
-    private TextView mTitleView;
+        public ViewHolder(View itemView) {
+            super(itemView);
+            icon = itemView.findViewById(R.id.icon);
+            text = itemView.findViewById(R.id.text);
+        }
 
-    public OptionListView(Context context) {
-        super(context);
-    }
-
-    public OptionListView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        mTitleView = (TextView) findViewById(R.id.title);
-        mOptionList = (RecyclerView) findViewById(R.id.list);
-        mOptionList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mOptionList.setAdapter(new Adapter());
     }
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
+        @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.operation_dialog_item, parent, false));
@@ -103,29 +114,18 @@ public class OptionListView extends LinearLayout {
             holder.itemView.setId(mIds.get(position));
             holder.text.setText(mTexts.get(position));
             holder.icon.setImageResource(mIcons.get(position));
-            if (mOnItemClickTarget != null) {
-                ButterKnife.bind(mOnItemClickTarget, holder.itemView);
-            }
+            holder.itemView.setOnClickListener(view -> {
+                if (mIds.get(position)==R.id.run){
+                    mOnItemClickTarget.run();
+                }else {
+                    mOnItemClickTarget.save();
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
             return mIds.size();
         }
-    }
-
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.icon)
-        ImageView icon;
-        @BindView(R.id.text)
-        TextView text;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
     }
 }

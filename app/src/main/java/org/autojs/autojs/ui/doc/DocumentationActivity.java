@@ -1,33 +1,49 @@
 package org.autojs.autojs.ui.doc;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.webkit.WebView;
 
+import androidx.annotation.Nullable;
+
+import org.androidannotations.api.builder.ActivityIntentBuilder;
+import org.androidannotations.api.builder.PostActivityStarter;
 import org.autojs.autojs.Pref;
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.ActivityDocumentationBinding;
 import org.autojs.autojs.ui.BaseActivity;
-import org.autojs.autojs.ui.widget.EWebView;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
 
 /**
  * Created by Stardust on 2017/10/24.
  */
-@EActivity(R.layout.activity_documentation)
 public class DocumentationActivity extends BaseActivity {
 
     public static final String EXTRA_URL = "url";
 
-    @ViewById(R.id.eweb_view)
-    EWebView mEWebView;
-
     WebView mWebView;
+    private ActivityDocumentationBinding inflate;
 
-    @AfterViews
+    public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context mContext) {
+        return new ActivityIntentBuilder<I>(mContext, DocumentationActivity.class) {
+            @Override
+            public PostActivityStarter startForResult(int requestCode) {
+                context.startActivity(intent);
+                return null;
+            }
+        };
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inflate = ActivityDocumentationBinding.inflate(getLayoutInflater());
+        setContentView(inflate.getRoot());
+        setUpViews();
+    }
+
     void setUpViews() {
         setToolbarAsBack(getString(R.string.text_tutorial));
-        mWebView = mEWebView.getWebView();
+        mWebView = inflate.ewebView.getWebView();
         String url = getIntent().getStringExtra(EXTRA_URL);
         if (url == null) {
             url = Pref.getDocumentationUrl() + "index.html";

@@ -3,18 +3,19 @@ package org.autojs.autojs.external.tasker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.storyteller_f.bandage.Click;
 import com.twofortyfouram.locale.sdk.client.ui.activity.AbstractAppCompatPluginActivity;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.ActivityTaskerEditBinding;
 import org.autojs.autojs.external.ScriptIntents;
 import org.autojs.autojs.model.explorer.ExplorerDirPage;
 import org.autojs.autojs.model.explorer.Explorers;
@@ -32,8 +33,17 @@ public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
 
     private String mSelectedScriptFilePath;
     private String mPreExecuteScript;
+    private ActivityTaskerEditBinding inflate;
 
-    @AfterViews
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inflate = ActivityTaskerEditBinding.inflate(getLayoutInflater());
+        setContentView(inflate.getRoot());
+        inflate.editScript.setTag("edit_script");
+        setUpViews();
+    }
+
     void setUpViews() {
         BaseActivity.setToolbarAsBack(this, R.id.toolbar, getString(R.string.text_please_choose_a_script));
         initScriptListRecyclerView();
@@ -41,7 +51,7 @@ public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
 
 
     private void initScriptListRecyclerView() {
-        ExplorerView explorerView = (ExplorerView) findViewById(R.id.script_list);
+        ExplorerView explorerView = findViewById(R.id.script_list);
         explorerView.setExplorer(Explorers.external(), ExplorerDirPage.createRoot(Environment.getExternalStorageDirectory()));
         explorerView.setOnItemClickListener((view, item) -> {
             mSelectedScriptFilePath = item.getPath();
@@ -50,7 +60,7 @@ public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
     }
 
 
-    @Click(R.id.edit_script)
+    @Click(tag = "edit_script")
     void editPreExecuteScript() {
         TaskerScriptEditActivity.edit(this, getString(R.string.text_pre_execute_script), getString(R.string.summary_pre_execute_script), mPreExecuteScript == null ? "" : mPreExecuteScript);
     }
@@ -110,6 +120,7 @@ public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             mPreExecuteScript = data.getStringExtra(EXTRA_CONTENT);
         }

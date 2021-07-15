@@ -1,13 +1,22 @@
 package org.autojs.autojs.ui.user;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.androidannotations.api.builder.ActivityIntentBuilder;
+import org.androidannotations.api.builder.PostActivityStarter;
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.ActivityRegisterBinding;
+import org.autojs.autojs.external.foreground.ForegroundService;
 import org.autojs.autojs.network.NodeBB;
 import org.autojs.autojs.network.UserService;
 import org.autojs.autojs.ui.BaseActivity;
@@ -19,38 +28,47 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Stardust on 2017/10/26.
  */
-@EActivity(R.layout.activity_register)
 public class RegisterActivity extends BaseActivity {
 
-    @ViewById(R.id.email)
-    TextView mEmail;
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
+    private ActivityRegisterBinding inflate;
 
-    @ViewById(R.id.username)
-    TextView mUserName;
+    public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context context) {
+        return new ActivityIntentBuilder<I>(context,RegisterActivity.class) {
+            @Override
+            public PostActivityStarter startForResult(int requestCode) {
+                context.startActivity(intent);
+                return null;
+            }
+        };
+    }
 
-    @ViewById(R.id.password)
-    TextView mPassword;
-
-    @ViewById(R.id.register)
-    View mRegister;
-
+    @Override
+    protected void onCreate(@Nullable  Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inflate = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(inflate.getRoot());
+        setUpViews();
+        inflate.register.setOnClickListener(view -> login());
+    }
 
     @AfterViews
     void setUpViews() {
         setToolbarAsBack(getString(R.string.text_register));
-        ThemeColorManager.addViewBackground(mRegister);
+        ThemeColorManager.addViewBackground(inflate.register);
     }
 
-    @Click(R.id.register)
     void login() {
-        String email = mEmail.getText().toString();
-        String userName = mUserName.getText().toString();
-        String password = mPassword.getText().toString();
+        String email = inflate.email.getText().toString();
+        String userName = inflate.username.getText().toString();
+        String password = inflate.password.getText().toString();
         if (!validateInput(email, userName, password)) {
             return;
         }
@@ -59,7 +77,7 @@ public class RegisterActivity extends BaseActivity {
                 .content(R.string.text_registering)
                 .cancelable(false)
                 .show();
-        UserService.getInstance().register(email, userName, password)
+        Disposable subscribe = UserService.getInstance().register(email, userName, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -68,8 +86,9 @@ public class RegisterActivity extends BaseActivity {
                         }
                         , error -> {
                             dialog.dismiss();
-                            mPassword.setError(NodeBB.getErrorMessage(error, RegisterActivity.this, R.string.text_register_fail));
+                            inflate.password.setError(NodeBB.getErrorMessage(error, RegisterActivity.this, R.string.text_register_fail));
                         });
+        compositeDisposable.add(subscribe);
 
     }
 
@@ -80,23 +99,23 @@ public class RegisterActivity extends BaseActivity {
 
     private boolean validateInput(String email, String userName, String password) {
         if (email.isEmpty()) {
-            mEmail.setError(getString(R.string.text_email_cannot_be_empty));
+            inflate.email.setError(getString(R.string.text_email_cannot_be_empty));
             return false;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            mEmail.setError(getString(R.string.text_email_format_error));
+            inflate.email.setError(getString(R.string.text_email_format_error));
             return false;
         }
         if (userName.isEmpty()) {
-            mUserName.setError(getString(R.string.text_username_cannot_be_empty));
+            inflate.username.setError(getString(R.string.text_username_cannot_be_empty));
             return false;
         }
         if (password.isEmpty()) {
-            mUserName.setError(getString(R.string.text_password_cannot_be_empty));
+            inflate.username.setError(getString(R.string.text_password_cannot_be_empty));
             return false;
         }
         if (password.length() < 6) {
-            mPassword.setError(getString(R.string.nodebb_error_change_password_error_length));
+            inflate.password.setError(getString(R.string.nodebb_error_change_password_error_length));
             return false;
         }
         return true;

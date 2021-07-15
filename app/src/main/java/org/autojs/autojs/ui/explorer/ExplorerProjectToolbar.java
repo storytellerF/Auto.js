@@ -1,38 +1,34 @@
 package org.autojs.autojs.ui.explorer;
 
 import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import android.util.AttributeSet;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.stardust.autojs.project.ProjectConfig;
 import com.stardust.autojs.project.ProjectLauncher;
 import com.stardust.pio.PFile;
+import com.storyteller_f.bandage.Bandage;
+import com.storyteller_f.bandage.Click;
 
 import org.autojs.autojs.R;
 import org.autojs.autojs.autojs.AutoJs;
+import org.autojs.autojs.databinding.ExplorerProjectToolbarBinding;
 import org.autojs.autojs.model.explorer.ExplorerChangeEvent;
 import org.autojs.autojs.model.explorer.ExplorerItem;
 import org.autojs.autojs.model.explorer.Explorers;
 import org.autojs.autojs.ui.project.BuildActivity;
-import org.autojs.autojs.ui.project.BuildActivity_;
 import org.autojs.autojs.ui.project.ProjectConfigActivity;
-import org.autojs.autojs.ui.project.ProjectConfigActivity_;
 import org.greenrobot.eventbus.Subscribe;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class ExplorerProjectToolbar extends CardView {
 
-    private ProjectConfig mProjectConfig;
     private PFile mDirectory;
 
-    @BindView(R.id.project_name)
-    TextView mProjectName;
+    private ExplorerProjectToolbarBinding inflate;
 
     public ExplorerProjectToolbar(Context context) {
         super(context);
@@ -50,19 +46,20 @@ public class ExplorerProjectToolbar extends CardView {
     }
 
     private void init() {
+        inflate = ExplorerProjectToolbarBinding.inflate(LayoutInflater.from(getContext()), this, true);
         inflate(getContext(), R.layout.explorer_project_toolbar, this);
-        ButterKnife.bind(this);
+        Bandage.bind(this,inflate.getRoot());
         setOnClickListener(view -> edit());
     }
 
     public void setProject(PFile dir) {
-        mProjectConfig = ProjectConfig.fromProjectDir(dir.getPath());
+        ProjectConfig mProjectConfig = ProjectConfig.fromProjectDir(dir.getPath());
         if(mProjectConfig == null){
             setVisibility(GONE);
             return;
         }
         mDirectory = dir;
-        mProjectName.setText(mProjectConfig.getName());
+        inflate.projectName.setText(mProjectConfig.getName());
     }
 
     public void refresh() {
@@ -71,7 +68,7 @@ public class ExplorerProjectToolbar extends CardView {
         }
     }
 
-    @OnClick(R.id.run)
+    @Click(tag = "run")
     void run() {
         try {
             new ProjectLauncher(mDirectory.getPath())
@@ -82,14 +79,14 @@ public class ExplorerProjectToolbar extends CardView {
         }
     }
 
-    @OnClick(R.id.build)
+    @Click(tag = "build")
     void build() {
-        BuildActivity_.intent(getContext())
+        BuildActivity.intent(getContext())
                 .extra(BuildActivity.EXTRA_SOURCE, mDirectory.getPath())
                 .start();
     }
 
-    @OnClick(R.id.sync)
+    @Click(tag = "sync")
     void sync() {
 
     }
@@ -119,7 +116,7 @@ public class ExplorerProjectToolbar extends CardView {
     }
 
     void edit() {
-        ProjectConfigActivity_.intent(getContext())
+        ProjectConfigActivity.intent(getContext())
                 .extra(ProjectConfigActivity.EXTRA_DIRECTORY, mDirectory.getPath())
                 .start();
     }

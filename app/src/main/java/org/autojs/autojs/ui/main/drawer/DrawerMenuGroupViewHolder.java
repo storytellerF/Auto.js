@@ -1,6 +1,5 @@
 package org.autojs.autojs.ui.main.drawer;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,11 +12,11 @@ import org.autojs.autojs.ui.widget.BindableViewHolder;
 
 public class DrawerMenuGroupViewHolder extends BindableViewHolder<DrawerMenuItem> {
 
-    private TextView mTextView;
+    private final TextView mTextView;
 
     public DrawerMenuGroupViewHolder(View itemView) {
         super(itemView);
-        mTextView = (TextView) itemView.findViewById(R.id.title);
+        mTextView = itemView.findViewById(R.id.title);
     }
 
     @Override

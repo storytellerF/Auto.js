@@ -5,18 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
-import androidx.core.util.Pair;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import android.view.View;
+import androidx.core.util.Pair;
 
 import com.stardust.theme.app.ColorSelectActivity;
 import com.stardust.theme.preference.ThemeColorPreferenceFragment;
 import com.stardust.theme.util.ListBuilder;
 import com.stardust.util.MapBuilder;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.ActivitySettingsBinding;
 import org.autojs.autojs.ui.BaseActivity;
 import org.autojs.autojs.ui.error.IssueReporterActivity;
 import org.autojs.autojs.ui.update.UpdateCheckDialog;
@@ -24,6 +24,7 @@ import org.autojs.autojs.ui.update.UpdateCheckDialog;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import de.psdev.licensesdialog.LicenseResolver;
 import de.psdev.licensesdialog.LicensesDialog;
@@ -32,7 +33,6 @@ import de.psdev.licensesdialog.licenses.License;
 /**
  * Created by Stardust on 2017/2/2.
  */
-@EActivity(R.layout.activity_settings)
 public class SettingsActivity extends BaseActivity {
 
     private static final List<Pair<Integer, Integer>> COLOR_ITEMS = new ListBuilder<Pair<Integer, Integer>>()
@@ -66,7 +66,14 @@ public class SettingsActivity extends BaseActivity {
         ColorSelectActivity.startColorSelect(context, context.getString(R.string.mt_color_picker_title), colorItems);
     }
 
-    @AfterViews
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActivitySettingsBinding inflate = ActivitySettingsBinding.inflate(getLayoutInflater());
+        setContentView(inflate.getRoot());
+        setUpUI();
+    }
+
     void setUpUI() {
         setUpToolbar();
         getFragmentManager().beginTransaction().replace(R.id.fragment_setting, new PreferenceFragment()).commit();
@@ -76,13 +83,8 @@ public class SettingsActivity extends BaseActivity {
         Toolbar toolbar = $(R.id.toolbar);
         toolbar.setTitle(R.string.text_setting);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
 
@@ -105,8 +107,8 @@ public class SettingsActivity extends BaseActivity {
                     .put(getString(R.string.text_check_for_updates), () -> new UpdateCheckDialog(getActivity())
                             .show())
                     .put(getString(R.string.text_issue_report), () -> startActivity(new Intent(getActivity(), IssueReporterActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)))
-                    .put(getString(R.string.text_about_me_and_repo), () -> startActivity(new Intent(getActivity(), AboutActivity_.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)))
-                    .put(getString(R.string.text_licenses), () -> showLicenseDialog())
+                    .put(getString(R.string.text_about_me_and_repo), () -> startActivity(new Intent(getActivity(), AboutActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)))
+                    .put(getString(R.string.text_licenses), this::showLicenseDialog)
                     .build();
         }
 

@@ -50,7 +50,7 @@ open class UiObject(info: Any?, private val allocator: AccessibilityNodeInfoAllo
     open fun parent(): UiObject? {
         try {
             val parent = super.getParent() ?: return null
-            return UiObject(parent.info, mDepth - 1, -1)
+            return UiObject(parent.unwrap(), mDepth - 1, -1)
         } catch (e: IllegalStateException) {
             // FIXME: 2017/5/5
             return null
@@ -61,7 +61,7 @@ open class UiObject(info: Any?, private val allocator: AccessibilityNodeInfoAllo
     open fun child(i: Int): UiObject? {
         try {
             val child = super.getChild(i) ?: return null
-            return UiObject(child.info, mDepth + 1, i)
+            return UiObject(child.unwrap(), mDepth + 1, i)
         } catch (e: IllegalStateException) {
             // FIXME: 2017/5/5
             return null
@@ -97,9 +97,9 @@ open class UiObject(info: Any?, private val allocator: AccessibilityNodeInfoAllo
         return AccessibilityNodeInfoHelper.getBoundsInScreen(this)
     }
 
-    open fun boundsInParent(): Rect {
-        return AccessibilityNodeInfoHelper.getBoundsInParent(this)
-    }
+//    open fun boundsInParent(): Rect {
+//        return AccessibilityNodeInfoHelper.getBoundsInParent(this)
+//    }
 
     open fun drawingOrder(): Int {
         return drawingOrder
@@ -164,55 +164,55 @@ open class UiObject(info: Any?, private val allocator: AccessibilityNodeInfoAllo
     }
 
     fun click(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_CLICK)
+        return performAction(ACTION_CLICK)
     }
 
     fun longClick(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_LONG_CLICK)
+        return performAction(ACTION_LONG_CLICK)
     }
 
     fun accessibilityFocus(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_ACCESSIBILITY_FOCUS)
+        return performAction(ACTION_ACCESSIBILITY_FOCUS)
     }
 
     fun clearAccessibilityFocus(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_CLEAR_ACCESSIBILITY_FOCUS)
+        return performAction(ACTION_CLEAR_ACCESSIBILITY_FOCUS)
     }
 
     fun focus(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_FOCUS)
+        return performAction(ACTION_FOCUS)
     }
 
     fun clearFocus(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_CLEAR_FOCUS)
+        return performAction(ACTION_CLEAR_FOCUS)
     }
 
     fun copy(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_COPY)
+        return performAction(ACTION_COPY)
     }
 
     fun paste(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_PASTE)
+        return performAction(ACTION_PASTE)
     }
 
     fun select(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_SELECT)
+        return performAction(ACTION_SELECT)
     }
 
     fun cut(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_CUT)
+        return performAction(ACTION_CUT)
     }
 
     fun collapse(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_COLLAPSE)
+        return performAction(ACTION_COLLAPSE)
     }
 
     fun expand(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_EXPAND)
+        return performAction(ACTION_EXPAND)
     }
 
     fun dismiss(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_DISMISS)
+        return performAction(ACTION_DISMISS)
     }
 
     fun show(): Boolean {
@@ -220,11 +220,11 @@ open class UiObject(info: Any?, private val allocator: AccessibilityNodeInfoAllo
     }
 
     fun scrollForward(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD)
+        return performAction(ACTION_SCROLL_FORWARD)
     }
 
     fun scrollBackward(): Boolean {
-        return performAction(AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD)
+        return performAction(ACTION_SCROLL_BACKWARD)
     }
 
     fun scrollUp(): Boolean {

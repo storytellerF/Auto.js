@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.stardust.R;
@@ -18,6 +19,7 @@ import java.io.File;
 
 
 public class IntentUtil {
+    private static final String TAG = "IntentUtil";
 
     public static boolean chatWithQQ(Context context, String qq) {
         try {
@@ -157,6 +159,7 @@ public class IntentUtil {
     }
 
     public static boolean viewFile(Context context, String path, String mimeType, String fileProviderAuthority) {
+        Log.d(TAG, "viewFile() called with: context = [" + context + "], path = [" + path + "], mimeType = [" + mimeType + "], fileProviderAuthority = [" + fileProviderAuthority + "]");
         try {
             Uri uri = getUriOfFile(context, path, fileProviderAuthority);
             context.startActivity(new Intent(Intent.ACTION_VIEW)

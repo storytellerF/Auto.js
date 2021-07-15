@@ -55,9 +55,9 @@ object AccessibilityNodeInfoHelper {
         return rect
     }
 
-    fun getBoundsInParent(nodeInfo: AccessibilityNodeInfoCompat): Rect {
-        val rect = Rect()
-        nodeInfo.getBoundsInParent(rect)
-        return rect
-    }
+//    fun getBoundsInParent(nodeInfo: AccessibilityNodeInfoCompat): Rect {
+//        val rect = Rect()
+//        nodeInfo.getBoundsInParent(rect)
+//        return rect
+//    }
 }

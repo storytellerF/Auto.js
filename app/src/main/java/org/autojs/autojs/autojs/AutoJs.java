@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Looper;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.stardust.app.GlobalAppContext;
@@ -15,24 +16,22 @@ import com.stardust.autojs.runtime.accessibility.AccessibilityConfig;
 import com.stardust.autojs.runtime.api.AppUtils;
 import com.stardust.autojs.runtime.exception.ScriptException;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
+import com.stardust.view.accessibility.AccessibilityService;
+import com.stardust.view.accessibility.LayoutInspector;
+import com.stardust.view.accessibility.NodeInfo;
 
 import org.autojs.autojs.BuildConfig;
 import org.autojs.autojs.Pref;
 import org.autojs.autojs.R;
 import org.autojs.autojs.external.fileprovider.AppFileProvider;
 import org.autojs.autojs.pluginclient.DevPluginService;
+import org.autojs.autojs.tool.AccessibilityServiceTool;
 import org.autojs.autojs.ui.floating.FloatyWindowManger;
 import org.autojs.autojs.ui.floating.FullScreenFloatyWindow;
 import org.autojs.autojs.ui.floating.layoutinspector.LayoutBoundsFloatyWindow;
 import org.autojs.autojs.ui.floating.layoutinspector.LayoutHierarchyFloatyWindow;
-import org.autojs.autojs.ui.log.LogActivity_;
-import org.autojs.autojs.ui.settings.SettingsActivity_;
-
-import com.stardust.view.accessibility.AccessibilityService;
-import com.stardust.view.accessibility.LayoutInspector;
-import com.stardust.view.accessibility.NodeInfo;
-
-import org.autojs.autojs.tool.AccessibilityServiceTool;
+import org.autojs.autojs.ui.log.LogActivity;
+import org.autojs.autojs.ui.settings.SettingsActivity;
 
 
 /**
@@ -42,23 +41,6 @@ import org.autojs.autojs.tool.AccessibilityServiceTool;
 public class AutoJs extends com.stardust.autojs.AutoJs {
 
     private static AutoJs instance;
-
-    public static AutoJs getInstance() {
-        return instance;
-    }
-
-
-    public synchronized static void initInstance(Application application) {
-        if (instance != null) {
-            return;
-        }
-        instance = new AutoJs(application);
-    }
-
-    private interface LayoutInspectFloatyWindow {
-        FullScreenFloatyWindow create(NodeInfo nodeInfo);
-    }
-
     private BroadcastReceiver mLayoutInspectBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -78,6 +60,7 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
         }
     };
 
+
     private AutoJs(final Application application) {
         super(application);
         getScriptEngineService().registerGlobalScriptExecutionListener(new ScriptExecutionGlobalListener());
@@ -85,6 +68,17 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
         intentFilter.addAction(LayoutBoundsFloatyWindow.class.getName());
         intentFilter.addAction(LayoutHierarchyFloatyWindow.class.getName());
         LocalBroadcastManager.getInstance(application).registerReceiver(mLayoutInspectBroadcastReceiver, intentFilter);
+    }
+
+    public static AutoJs getInstance() {
+        return instance;
+    }
+
+    public synchronized static void initInstance(Application application) {
+        if (instance != null) {
+            return;
+        }
+        instance = new AutoJs(application);
     }
 
     private void capture(LayoutInspectFloatyWindow window) {
@@ -180,11 +174,15 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
     @Override
     protected ScriptRuntime createRuntime() {
         ScriptRuntime runtime = super.createRuntime();
-        runtime.putProperty("class.settings", SettingsActivity_.class);
-        runtime.putProperty("class.console", LogActivity_.class);
+        runtime.putProperty("class.settings", SettingsActivity.class);
+        runtime.putProperty("class.console", LogActivity.class);
         runtime.putProperty("broadcast.inspect_layout_bounds", LayoutBoundsFloatyWindow.class.getName());
         runtime.putProperty("broadcast.inspect_layout_hierarchy", LayoutHierarchyFloatyWindow.class.getName());
         return runtime;
+    }
+
+    private interface LayoutInspectFloatyWindow {
+        FullScreenFloatyWindow create(NodeInfo nodeInfo);
     }
 
 }

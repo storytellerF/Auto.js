@@ -6,13 +6,14 @@ import org.autojs.autojs.network.entity.notification.Notification;
 import org.autojs.autojs.network.entity.notification.NotificationResponse;
 import org.autojs.autojs.network.entity.user.User;
 import com.stardust.util.Objects;
-import com.tencent.bugly.crashreport.CrashReport;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import okhttp3.ResponseBody;
@@ -79,7 +80,7 @@ public class UserService {
         User old = mUser;
         mUser = user;
         if(mUser != null){
-            CrashReport.setUserId(mUser.getUid());
+//            CrashReport.setUserId(mUser.getUid());
         }
         if (!Objects.equals(old, mUser)) {
             if (user == null) {
@@ -91,7 +92,7 @@ public class UserService {
 
     public Observable<Boolean> refreshOnlineStatus() {
         PublishSubject<Boolean> online = PublishSubject.create();
-        mRetrofit.create(UserApi.class)
+        Disposable subscribe = mRetrofit.create(UserApi.class)
                 .me()
                 .subscribeOn(Schedulers.io())
                 .subscribe(user -> {
@@ -103,9 +104,10 @@ public class UserService {
                     online.onNext(false);
                     online.onComplete();
                 });
+        compositeDisposable.add(subscribe);
         return online;
     }
-
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
     public Observable<ResponseBody> logout() {
         return NodeBB.getInstance()
                 .getXCsrfToken()

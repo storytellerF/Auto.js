@@ -2,33 +2,34 @@ package org.autojs.autojs.ui.edit;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.google.android.material.snackbar.Snackbar;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.pio.PFiles;
+import com.stardust.util.ClipboardUtil;
+import com.stardust.util.IntentUtil;
 
 import org.autojs.autojs.R;
 import org.autojs.autojs.model.indices.AndroidClass;
 import org.autojs.autojs.model.indices.ClassSearchingItem;
-import org.autojs.autojs.ui.project.BuildActivity;
-import org.autojs.autojs.ui.project.BuildActivity_;
+import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 import org.autojs.autojs.ui.common.NotAskAgainDialog;
 import org.autojs.autojs.ui.edit.editor.CodeEditor;
-import org.autojs.autojs.ui.log.LogActivity_;
-import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
-
-import com.stardust.util.ClipboardUtil;
-import com.stardust.util.IntentUtil;
+import org.autojs.autojs.ui.log.LogActivity;
+import org.autojs.autojs.ui.project.BuildActivity;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Stardust on 2017/9/28.
@@ -37,9 +38,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 @SuppressLint("CheckResult")
 public class EditorMenu {
 
-    private EditorView mEditorView;
-    private Context mContext;
-    private CodeEditor mEditor;
+    private final EditorView mEditorView;
+    private final Context mContext;
+    private final CodeEditor mEditor;
 
     public EditorMenu(EditorView editorView) {
         mEditorView = editorView;
@@ -48,102 +49,98 @@ public class EditorMenu {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_log:
-                showLog();
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_log) {
+            showLog();
+            return true;
+        } else if (itemId == R.id.action_force_stop) {
+            forceStop();
+            return true;
+        } else {
+            if (onEditOptionsSelected(item)) {
                 return true;
-            case R.id.action_force_stop:
-                forceStop();
+            }
+            if (onJumpOptionsSelected(item)) {
                 return true;
-            default:
-                if (onEditOptionsSelected(item)) {
-                    return true;
-                }
-                if (onJumpOptionsSelected(item)) {
-                    return true;
-                }
-                if (onMoreOptionsSelected(item)) {
-                    return true;
-                }
-                if (onDebugOptionsSelected(item)) {
-                    return true;
-                }
+            }
+            if (onMoreOptionsSelected(item)) {
+                return true;
+            }
+            return onDebugOptionsSelected(item);
         }
-        return false;
     }
 
     private boolean onDebugOptionsSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_breakpoint:
-                mEditor.addOrRemoveBreakpointAtCurrentLine();
-                return true;
-            case R.id.action_launch_debugger:
-                new NotAskAgainDialog.Builder(mEditorView.getContext(), "editor.debug.long_click_hint")
-                        .title(R.string.text_alert)
-                        .content(R.string.hint_long_click_run_to_debug)
-                        .positiveText(R.string.ok)
-                        .show();
-                mEditorView.debug();
-                return true;
-            case R.id.action_remove_all_breakpoints:
-                mEditor.removeAllBreakpoints();
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_breakpoint) {
+            mEditor.addOrRemoveBreakpointAtCurrentLine();
+            return true;
+        } else if (itemId == R.id.action_launch_debugger) {
+            new NotAskAgainDialog.Builder(mEditorView.getContext(), "editor.debug.long_click_hint")
+                    .title(R.string.text_alert)
+                    .content(R.string.hint_long_click_run_to_debug)
+                    .positiveText(R.string.ok)
+                    .show();
+            mEditorView.debug();
+            return true;
+        } else if (itemId == R.id.action_remove_all_breakpoints) {
+            mEditor.removeAllBreakpoints();
+            return true;
         }
         return false;
     }
 
     private boolean onJumpOptionsSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_jump_to_line:
-                jumpToLine();
-                return true;
-            case R.id.action_jump_to_start:
-                mEditor.jumpToStart();
-                return true;
-            case R.id.action_jump_to_end:
-                mEditor.jumpToEnd();
-                return true;
-            case R.id.action_jump_to_line_start:
-                mEditor.jumpToLineStart();
-                return true;
-            case R.id.action_jump_to_line_end:
-                mEditor.jumpToLineEnd();
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_jump_to_line) {
+            jumpToLine();
+            return true;
+        } else if (itemId == R.id.action_jump_to_start) {
+            mEditor.jumpToStart();
+            return true;
+        } else if (itemId == R.id.action_jump_to_end) {
+            mEditor.jumpToEnd();
+            return true;
+        } else if (itemId == R.id.action_jump_to_line_start) {
+            mEditor.jumpToLineStart();
+            return true;
+        } else if (itemId == R.id.action_jump_to_line_end) {
+            mEditor.jumpToLineEnd();
+            return true;
         }
         return false;
     }
 
 
     private boolean onMoreOptionsSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_console:
-                showConsole();
-                return true;
-            case R.id.action_import_java_class:
-                importJavaPackageOrClass();
-                return true;
-            case R.id.action_editor_text_size:
-                mEditorView.selectTextSize();
-                return true;
-            case R.id.action_editor_theme:
-                mEditorView.selectEditorTheme();
-                return true;
-            case R.id.action_open_by_other_apps:
-                openByOtherApps();
-                return true;
-            case R.id.action_info:
-                showInfo();
-                return true;
-            case R.id.action_build_apk:
-                startBuildApkActivity();
-                return true;
-
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_console) {
+            showConsole();
+            return true;
+        } else if (itemId == R.id.action_import_java_class) {
+            importJavaPackageOrClass();
+            return true;
+        } else if (itemId == R.id.action_editor_text_size) {
+            mEditorView.selectTextSize();
+            return true;
+        } else if (itemId == R.id.action_editor_theme) {
+            mEditorView.selectEditorTheme();
+            return true;
+        } else if (itemId == R.id.action_open_by_other_apps) {
+            openByOtherApps();
+            return true;
+        } else if (itemId == R.id.action_info) {
+            showInfo();
+            return true;
+        } else if (itemId == R.id.action_build_apk) {
+            startBuildApkActivity();
+            return true;
         }
         return false;
     }
 
     private void importJavaPackageOrClass() {
-        mEditor.getSelection()
+        Disposable subscribe = mEditor.getSelection()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s ->
                         new ClassSearchDialogBuilder(mContext)
@@ -152,7 +149,9 @@ public class EditorMenu {
                                 .title(R.string.text_search_java_class)
                                 .show()
                 );
+        compositeDisposable.add(subscribe);
     }
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
 
     private void showClassSearchingItem(MaterialDialog dialog, ClassSearchingItem item) {
         String title;
@@ -189,40 +188,41 @@ public class EditorMenu {
     }
 
     private void startBuildApkActivity() {
-        BuildActivity_.intent(mContext)
+        BuildActivity.intent(mContext)
                 .extra(BuildActivity.EXTRA_SOURCE, mEditorView.getUri().getPath())
                 .start();
     }
 
 
     private boolean onEditOptionsSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_find_or_replace:
-                findOrReplace();
-                return true;
-            case R.id.action_copy_all:
-                copyAll();
-                return true;
-            case R.id.action_copy_line:
-                copyLine();
-                return true;
-            case R.id.action_delete_line:
-                deleteLine();
-                return true;
-            case R.id.action_clear:
-                mEditor.setText("");
-                return true;
-            case R.id.action_beautify:
-                beautifyCode();
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_find_or_replace) {
+            findOrReplace();
+            return true;
+        } else if (itemId == R.id.action_copy_all) {
+            copyAll();
+            return true;
+        } else if (itemId == R.id.action_copy_line) {
+            copyLine();
+            return true;
+        } else if (itemId == R.id.action_delete_line) {
+            deleteLine();
+            return true;
+        } else if (itemId == R.id.action_clear) {
+            mEditor.setText("");
+            return true;
+        } else if (itemId == R.id.action_beautify) {
+            beautifyCode();
+            return true;
         }
         return false;
     }
 
     private void jumpToLine() {
-        mEditor.getLineCount()
+        Disposable subscribe = mEditor.getLineCount()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::showJumpDialog);
+        compositeDisposable.add(subscribe);
     }
 
     private void showJumpDialog(final int lineCount) {
@@ -244,14 +244,14 @@ public class EditorMenu {
     }
 
     private void showInfo() {
-        Observable.zip(Observable.just(mEditor.getText()), mEditor.getLineCount(), (text, lineCount) -> {
+        Disposable subscribe = Observable.zip(Observable.just(mEditor.getText()), mEditor.getLineCount(), (text, lineCount) -> {
             String size = PFiles.getHumanReadableSize(text.length());
             return String.format(Locale.getDefault(), mContext.getString(R.string.format_editor_info),
                     text.length(), lineCount, size);
         })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::showInfo);
-
+        compositeDisposable.add(subscribe);
     }
 
     private void showInfo(String info) {
@@ -271,17 +271,18 @@ public class EditorMenu {
     }
 
     private void paste() {
-        mEditor.insert(ClipboardUtil.getClip(mContext).toString());
+        mEditor.insert(Objects.requireNonNull(ClipboardUtil.getClip(mContext)).toString());
     }
 
     private void findOrReplace() {
-        mEditor.getSelection()
+        Disposable subscribe = mEditor.getSelection()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s ->
                         new FindOrReplaceDialogBuilder(mContext, mEditorView)
                                 .setQueryIfNotEmpty(s)
                                 .show()
                 );
+        compositeDisposable.add(subscribe);
 
     }
 
@@ -292,7 +293,7 @@ public class EditorMenu {
 
 
     private void showLog() {
-        LogActivity_.intent(mContext).start();
+        LogActivity.intent(mContext).start();
     }
 
     private void showConsole() {

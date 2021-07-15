@@ -20,7 +20,6 @@ import com.stardust.app.DialogUtils;
 import com.stardust.app.GlobalAppContext;
 import com.stardust.pio.PFiles;
 import com.stardust.pio.UncheckedIOException;
-import com.tencent.bugly.crashreport.BuglyLog;
 
 import org.autojs.autojs.Pref;
 import org.autojs.autojs.R;
@@ -37,7 +36,7 @@ import org.autojs.autojs.model.script.Scripts;
 import org.autojs.autojs.network.download.DownloadManager;
 import org.autojs.autojs.ui.filechooser.FileChooserDialogBuilder;
 import org.autojs.autojs.ui.shortcut.ShortcutCreateActivity;
-import org.autojs.autojs.ui.timing.TimedTaskSettingActivity_;
+import org.autojs.autojs.ui.timing.TimedTaskSettingActivity;
 import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 
 import org.reactivestreams.Publisher;
@@ -323,7 +322,7 @@ public class ScriptOperations {
 
 
     public Observable<ScriptFile> download(String url) {
-        BuglyLog.i(LOG_TAG, "dir = " + Pref.getScriptDirPath() + ", sdcard = " + Environment.getExternalStorageDirectory() + ", url = " + url);
+//        BuglyLog.i(LOG_TAG, "dir = " + Pref.getScriptDirPath() + ", sdcard = " + Environment.getExternalStorageDirectory() + ", url = " + url);
         String fileName = DownloadManager.parseFileNameLocally(url);
         return new FileChooserDialogBuilder(mContext)
                 .title(R.string.text_select_save_path)
@@ -367,7 +366,7 @@ public class ScriptOperations {
     }
 
     public void timedTask(ScriptFile scriptFile) {
-        TimedTaskSettingActivity_.intent(mContext)
+        TimedTaskSettingActivity.intent(mContext)
                 .extra(ScriptIntents.EXTRA_KEY_PATH, scriptFile.getPath())
                 .start();
     }

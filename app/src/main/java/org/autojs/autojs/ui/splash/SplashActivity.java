@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 
 import org.autojs.autojs.R;
 import org.autojs.autojs.ui.BaseActivity;
-import org.autojs.autojs.ui.main.MainActivity_;
+import org.autojs.autojs.ui.main.MainActivity;
 
 /**
  * Created by Stardust on 2017/7/7.
@@ -55,7 +55,7 @@ public class SplashActivity extends BaseActivity {
             return;
         }
         mAlreadyEnterNextActivity = true;
-        MainActivity_.intent(this).start();
+        MainActivity.intent(this).start();
         finish();
     }
 

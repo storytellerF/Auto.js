@@ -14,13 +14,13 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import org.autojs.autojs.R;
-import org.autojs.autojs.ui.main.MainActivity_;
+import org.autojs.autojs.ui.main.MainActivity;
 
 public class ForegroundService extends Service {
 
 
     private static final int NOTIFICATION_ID = 1;
-    private static final String CHANEL_ID = ForegroundService.class.getName() + ".foreground";
+    private static final String CHANNEL_ID = ForegroundService.class.getName() + ".foreground";
 
     public static void start(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -54,14 +54,14 @@ public class ForegroundService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel();
         }
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, MainActivity_.intent(this).get(), 0);
-        return new NotificationCompat.Builder(this, CHANEL_ID)
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, MainActivity.intent(this).get(), 0);
+        return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getString(R.string.foreground_notification_title))
                 .setContentText(getString(R.string.foreground_notification_text))
                 .setSmallIcon(R.drawable.autojs_material)
                 .setWhen(System.currentTimeMillis())
                 .setContentIntent(contentIntent)
-                .setChannelId(CHANEL_ID)
+                .setChannelId(CHANNEL_ID)
                 .setVibrate(new long[0])
                 .build();
     }
@@ -72,7 +72,7 @@ public class ForegroundService extends Service {
         assert manager != null;
         CharSequence name = getString(R.string.foreground_notification_channel_name);
         String description = getString(R.string.foreground_notification_channel_name);
-        NotificationChannel channel = new NotificationChannel(CHANEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
         channel.setDescription(description);
         channel.enableLights(false);
         manager.createNotificationChannel(channel);

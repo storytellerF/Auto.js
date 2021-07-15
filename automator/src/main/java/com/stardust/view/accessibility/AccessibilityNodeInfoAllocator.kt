@@ -25,7 +25,7 @@ open class AccessibilityNodeInfoAllocator {
 
     open fun getChild(parent: AccessibilityNodeInfoCompat, i: Int): AccessibilityNodeInfoCompat {
         val compat = parent.getChild(i)
-        add(compat.info as AccessibilityNodeInfo)
+        add(compat.unwrap() as AccessibilityNodeInfo)
         return compat
     }
 
@@ -36,7 +36,7 @@ open class AccessibilityNodeInfoAllocator {
 
     open fun getParent(n: AccessibilityNodeInfoCompat): AccessibilityNodeInfoCompat {
         val compat = n.parent
-        add(compat.info as AccessibilityNodeInfo)
+        add(compat.unwrap() as AccessibilityNodeInfo)
         return compat
     }
 
@@ -73,7 +73,7 @@ open class AccessibilityNodeInfoAllocator {
     }
 
     open fun recycle(nodeInfo: AccessibilityNodeInfoCompat) {
-        recycle(nodeInfo.info as AccessibilityNodeInfo)
+        recycle(nodeInfo.unwrap() as AccessibilityNodeInfo)
     }
 
     open fun recycleAll(): Int {
@@ -106,7 +106,7 @@ open class AccessibilityNodeInfoAllocator {
             if (nodeInfo is AccessibilityNodeInfo) {
                 mAccessibilityNodeInfoList[nodeInfo] = stackTrace
             } else if (nodeInfo is AccessibilityNodeInfoCompat) {
-                mAccessibilityNodeInfoList[nodeInfo.info as AccessibilityNodeInfo] = stackTrace
+                mAccessibilityNodeInfoList[nodeInfo.unwrap() as AccessibilityNodeInfo] = stackTrace
             }
         }
     }
@@ -174,7 +174,7 @@ open class AccessibilityNodeInfoAllocator {
 
         fun recycleList(root: AccessibilityNodeInfo, list: List<AccessibilityNodeInfo>) {
             for (nodeInfo in list) {
-                if (nodeInfo !== root && nodeInfo != null) {
+                if (nodeInfo !== root) {
                     //// FIXME: 2017/5/1 Issue #180
                     nodeInfo.recycle()
                 }

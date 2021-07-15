@@ -2,11 +2,15 @@ package org.autojs.autojs.ui.edit.toolbar;
 
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.stardust.autojs.execution.ScriptExecution;
@@ -15,22 +19,24 @@ import com.stardust.autojs.rhino.debug.Debugger;
 import com.stardust.autojs.rhino.debug.Dim;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 import com.stardust.pio.PFiles;
+import com.storyteller_f.bandage.Bandage;
+import com.storyteller_f.bandage.Click;
 
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
+import org.androidannotations.api.builder.FragmentBuilder;
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.FragmentDebugToolbarBinding;
 import org.autojs.autojs.ui.edit.EditorView;
 import org.autojs.autojs.ui.edit.debug.CodeEvaluator;
 import org.autojs.autojs.ui.edit.debug.DebugBar;
 import org.autojs.autojs.ui.edit.debug.DebuggerSingleton;
 import org.autojs.autojs.ui.edit.debug.WatchingVariable;
 import org.autojs.autojs.ui.edit.editor.CodeEditor;
+import org.autojs.autojs.ui.edit.keyboard.FunctionsKeyboardHelper;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.List;
 
-@EFragment(R.layout.fragment_debug_toolbar)
 public class DebugToolbarFragment extends ToolbarFragment implements DebugCallback, CodeEditor.CursorChangeCallback, CodeEvaluator {
 
     private static final String LOG_TAG = "DebugToolbarFragment";
@@ -61,11 +67,32 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
             mDebugger.clearAllBreakpoints();
         }
     };
+    private FragmentDebugToolbarBinding inflate;
+
+    public static <I extends FragmentBuilder<I, DebugToolbarFragment>> FragmentBuilder<I, DebugToolbarFragment> builder() {
+        return new FragmentBuilder<I, DebugToolbarFragment>() {
+
+            @Override
+            public DebugToolbarFragment build() {
+                DebugToolbarFragment searchToolbarFragment=new DebugToolbarFragment();
+                searchToolbarFragment.setArguments(args);
+                return searchToolbarFragment;
+            }
+        };
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mHandler = new Handler();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        inflate = FragmentDebugToolbarBinding.inflate(inflater, container, false);
+        return inflate.getRoot();
     }
 
     @Override
@@ -85,6 +112,8 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
             mEditorView.exitDebugging();
         }
         Log.d(LOG_TAG, "onViewCreated");
+        Bandage.bind(this,view);
+
     }
 
     private void setupEditor() {
@@ -126,30 +155,30 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
         debugBar.setCodeEvaluator(null);
     }
 
-    @Click(R.id.step_over)
+    @Click(tag = "step_over")
     void stepOver() {
         setInterrupted(false);
         mDebugger.stepOver();
     }
 
-    @Click(R.id.step_into)
+    @Click(tag = "step_into")
     void stepInto() {
         setInterrupted(false);
         mDebugger.stepInto();
     }
 
-    @Click(R.id.step_out)
+    @Click(tag = "step_out")
     void stepOut() {
         setInterrupted(false);
         mDebugger.stepOut();
     }
 
-    @Click(R.id.stop_script)
+    @Click(tag = "stop_script")
     void stopScript() {
         mEditorView.forceStop();
     }
 
-    @Click(R.id.resume_script)
+    @Click(tag = "resume_script")
     void resumeScript() {
         setInterrupted(false);
         mDebugger.resume();

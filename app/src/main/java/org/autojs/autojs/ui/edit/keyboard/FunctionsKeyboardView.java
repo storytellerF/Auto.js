@@ -5,13 +5,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -20,6 +13,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.autojs.autojs.R;
 import org.autojs.autojs.model.indices.Module;
@@ -33,8 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
@@ -43,28 +42,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class FunctionsKeyboardView extends FrameLayout {
 
-    public interface ClickCallback {
-        void onModuleLongClick(Module module);
-
-        void onPropertyClick(Module m, Property property);
-
-        void onPropertyLongClick(Module m, Property property);
-    }
-
     private static final int SPAN_COUNT = 4;
-    @BindView(R.id.module_list)
     RecyclerView mModulesView;
-
-    @BindView(R.id.properties)
     RecyclerView mPropertiesView;
-
     private List<Module> mModules;
-    private Map<Module, List<Integer>> mSpanSizes = new HashMap<>();
+    private final Map<Module, List<Integer>> mSpanSizes = new HashMap<>();
     private Module mSelectedModule;
     private View mSelectedModuleView;
     private Paint mPaint;
     private ClickCallback mClickCallback;
-
     public FunctionsKeyboardView(@NonNull Context context) {
         super(context);
         init();
@@ -92,7 +78,8 @@ public class FunctionsKeyboardView extends FrameLayout {
 
     private void init() {
         inflate(getContext(), R.layout.functions_keyboard_view, this);
-        ButterKnife.bind(this);
+        mPropertiesView = findViewById(R.id.properties);
+        mModulesView = findViewById(R.id.module_list);
         initModulesView();
         initPropertiesView();
     }
@@ -182,7 +169,6 @@ public class FunctionsKeyboardView extends FrameLayout {
                 });
     }
 
-
     private void setSelectedModule(Module module, @Nullable View moduleView) {
         mSelectedModule = module;
         if (mSelectedModuleView != null) {
@@ -200,6 +186,14 @@ public class FunctionsKeyboardView extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (mModules == null)
             loadModules();
+    }
+
+    public interface ClickCallback {
+        void onModuleLongClick(Module module);
+
+        void onPropertyClick(Module m, Property property);
+
+        void onPropertyLongClick(Module m, Property property);
     }
 
     private class ModuleViewHolder extends RecyclerView.ViewHolder {

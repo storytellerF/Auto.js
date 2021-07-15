@@ -20,7 +20,7 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
 
     private val children = ArrayList<NodeInfo>()
     val boundsInScreen = Rect()
-    val boundsInParent = Rect()
+//    val boundsInParent = Rect()
 
     var id: String? = null
     var idHex: String? = null
@@ -88,7 +88,7 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
         scrollable = node.isScrollable
         visibleToUser = node.visibleToUser()
         node.getBoundsInScreen(boundsInScreen)
-        node.getBoundsInParent(boundsInParent)
+//        node.getBoundsInParent(boundsInParent)
         bounds = boundsToString(boundsInScreen)
         indexInParent = node.indexInParent()
         if (resources != null && packageName != null && fullId != null) {
@@ -111,7 +111,7 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
         return className + "{" +
                 "childCount=" + children.size +
                 ", mBoundsInScreen=" + boundsInScreen +
-                ", mBoundsInParent=" + boundsInParent +
+//                ", mBoundsInParent=" + boundsInParent +
                 ", id='" + id + '\''.toString() +
                 ", desc='" + desc + '\''.toString() +
                 ", packageName='" + packageName + '\''.toString() +

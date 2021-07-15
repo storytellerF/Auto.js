@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
               android:layout_height="48dp"
               android:gravity="center_vertical"
               android:orientation="horizontal"
@@ -34,7 +35,8 @@
         android:background="?selectableItemBackgroundBorderless"
         android:padding="6dp"
         android:src="@drawable/ic_play_arrow_white_48dp"
-        android:tint="#606366"/>
+        android:tag="run"
+        app:tint="#606366" />
 
     <ImageView
         android:id="@+id/build"
@@ -44,7 +46,8 @@
         android:background="?selectableItemBackgroundBorderless"
         android:padding="6dp"
         android:src="@drawable/ic_build_apk"
-        android:tint="#606366"/>
+        android:tag="build"
+        app:tint="#606366" />
 
     <ImageView
         android:id="@+id/sync"
@@ -54,6 +57,7 @@
         android:background="?selectableItemBackgroundBorderless"
         android:padding="6dp"
         android:src="@drawable/ic_sync"
-        android:tint="#606366"/>
+        android:tag="build"
+        app:tint="#606366" />
 
 </LinearLayout>

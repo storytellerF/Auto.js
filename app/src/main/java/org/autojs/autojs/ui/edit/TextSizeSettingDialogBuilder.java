@@ -1,17 +1,16 @@
 package org.autojs.autojs.ui.edit;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.SeekBar;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import org.autojs.autojs.R;
-import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.DialogTextSizeSettingBinding;
+import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 
 /**
  * Created by Stardust on 2018/2/24.
@@ -20,6 +19,8 @@ import butterknife.ButterKnife;
 public class TextSizeSettingDialogBuilder extends ThemeColorMaterialDialogBuilder implements SeekBar.OnSeekBarChangeListener {
 
 
+    private final DialogTextSizeSettingBinding bind;
+
     public interface PositiveCallback {
 
         void onPositive(int value);
@@ -27,24 +28,18 @@ public class TextSizeSettingDialogBuilder extends ThemeColorMaterialDialogBuilde
 
     private static final int MIN = 8;
 
-    @BindView(R.id.seekbar)
-    SeekBar mSeekBar;
-
-    @BindView(R.id.preview_text)
-    TextView mPreviewText;
-
     private int mTextSize;
     private MaterialDialog mMaterialDialog;
 
     public TextSizeSettingDialogBuilder(@NonNull Context context) {
         super(context);
         View view = View.inflate(context, R.layout.dialog_text_size_setting, null);
+        bind = DialogTextSizeSettingBinding.bind(view);
         customView(view, false);
         title(R.string.text_text_size);
         positiveText(R.string.ok);
         negativeText(R.string.cancel);
-        ButterKnife.bind(this, view);
-        mSeekBar.setOnSeekBarChangeListener(this);
+        bind.seekbar.setOnSeekBarChangeListener(this);
     }
 
     private void setTextSize(int textSize) {
@@ -55,11 +50,11 @@ public class TextSizeSettingDialogBuilder extends ThemeColorMaterialDialogBuilde
         } else {
             title(title);
         }
-        mPreviewText.setTextSize(textSize);
+        bind.previewText.setTextSize(textSize);
     }
 
     public TextSizeSettingDialogBuilder initialValue(int value) {
-        mSeekBar.setProgress(value - MIN);
+        bind.seekbar.setProgress(value - MIN);
         return this;
     }
 
