@@ -2,11 +2,19 @@ package org.autojs.autojs.ui.main.community;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import org.autojs.autojs.R;
+import org.autojs.autojs.databinding.FragmentCommunityBinding;
 import org.autojs.autojs.network.NodeBB;
 import org.autojs.autojs.ui.main.QueryEvent;
 import org.autojs.autojs.ui.main.ViewPagerFragment;
@@ -23,8 +31,10 @@ import java.net.URLEncoder;
 /**
  * Created by Stardust on 2017/8/22.
  */
-@EFragment(R.layout.fragment_community)
 public class CommunityFragment extends ViewPagerFragment implements BackPressedHandler {
+    private static final String TAG = "CommunityFragment";
+
+    private FragmentCommunityBinding inflate;
 
     public static class LoadUrl {
         public final String url;
@@ -45,8 +55,6 @@ public class CommunityFragment extends ViewPagerFragment implements BackPressedH
 
     private static final String POSTS_PAGE_PATTERN = "[\\S\\s]+/topic/[0-9]+/[\\S\\s]+";
 
-    @ViewById(R.id.eweb_view)
-    CommunityWebView mEWebView;
     WebView mWebView;
 
     public CommunityFragment() {
@@ -54,15 +62,28 @@ public class CommunityFragment extends ViewPagerFragment implements BackPressedH
         setArguments(new Bundle());
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
+        inflate = FragmentCommunityBinding.inflate(getLayoutInflater());
+        return inflate.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setUpViews();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         EventBus.getDefault().register(this);
     }
-
-    @AfterViews
     void setUpViews() {
-        mWebView = mEWebView.getWebView();
+        Log.d(TAG, "setUpViews() called");
+        mWebView = inflate.ewebView.getWebView();
         String url = "https://www.autojs.org/";
         Bundle savedWebViewState = getArguments().getBundle("savedWebViewState");
         if (savedWebViewState != null) {

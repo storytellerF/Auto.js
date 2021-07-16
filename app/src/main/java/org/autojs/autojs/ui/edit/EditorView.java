@@ -213,7 +213,6 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
     }
 
 
-    @SuppressLint("CheckResult")
     private Observable<String> loadUri(final Uri uri) {
         inflate.editor.setProgress(true);
         return Observable.fromCallable(() -> PFiles.read(getContext().getContentResolver().openInputStream(uri)))

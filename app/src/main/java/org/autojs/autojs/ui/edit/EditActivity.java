@@ -47,7 +47,7 @@ import static org.autojs.autojs.ui.edit.EditorView.EXTRA_READ_ONLY;
  * Created by Stardust on 2017/1/29.
  */
 public class EditActivity extends BaseActivity implements OnActivityResultDelegate.DelegateHost, PermissionRequestProxyActivity {
-
+    private static final String TAG = "EditActivity";
     private static final String LOG_TAG = "EditActivity";
     private final OnActivityResultDelegate.Mediator mMediator = new OnActivityResultDelegate.Mediator();
     private final RequestPermissionCallbacks mRequestPermissionCallbacks = new RequestPermissionCallbacks();
@@ -88,6 +88,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
         super.onCreate(savedInstanceState);
         inflate = ActivityEditBinding.inflate(getLayoutInflater());
         setContentView(inflate.getRoot());
