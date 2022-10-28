@@ -2,24 +2,20 @@
 
 [中文Readme](https://github.com/hyb1996/Auto.js/blob/master/Readme-cn.md)
 
-## Important
-
-**The open source version of Auto.js is no longer maintained (see [Auto.js Pro FAQ](https://g.pro.autojs.org/faq) for the reason). Get [Auto.js Pro](https://play.google.com/store/apps/details?id=org.autojs.autojspro) to obtain latest updates. For more information, see [Auto.js Pro Documentation](https://g.pro.autojs.org/docs) and [Auto.js Pro Features](https://g.pro.autojs.org/features).**
-
 ## Introduction
 
-> Translated by Google Translation.
+**Automation & Workflow Javascript IDE**
 
-A JavaScript IDE on the Android platform that supports accessibility services, and its development goals are JsBox and Workflow.
+A JavaScript IDE on the Android platform that supports Node.js, accessibility services, and its development goals are JsBox and Workflow.
 
-And the [VS Code Extension](https://github.com/hyb1996/Auto.js-VSCode-Extension) which can provide basic functions for desktop development.
+And the [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=hyb1996.auto-js-pro-ext) which can provide basic functions for desktop development.
 
 Download: 
 * [Google Play](https://play.google.com/store/apps/details?id=org.autojs.autojspro)
 
-* [Coolapk](http://www.coolapk.com/apk/org.autojs.autojspro)
+* [Offical Website](https://pro.autojs.org)
 
-Documentation: https://g.pro.autojs.org/docs
+Documentation: https://pro.autojs.org/docs/en
 
 ### Features
 1. Easy-to-use automatic operation functions implemented by accessibility services
@@ -37,12 +33,6 @@ This software is different from software such as button wizard, the main differe
 2. Auto.js has better compatibility. The coordinate-based button sprites and script sprites are prone to resolution problems, while the control-based Auto.js does not have this problem.
 3. Auto.js does not need root permissions to perform most tasks. Only related functions that require precise coordinates to click and slide require root privileges
 4. Auto.js can provide functions such as interface writing, not only exists as a scripting software
-
-
-### Information
-* Official forum: [autojs.org](http://www.autojs.org)
-* Documentation: You can view the online documentation [here](https://hyb1996.github.io/AutoJs-Docs/). The current documentation is still incomplete.
-* Examples: You can view some examples [here](https://github.com/hyb1996/Auto.js/tree/master/app/src/main/assets/sample), or view and run them directly in the app.
 
 ### Screenshot
 
