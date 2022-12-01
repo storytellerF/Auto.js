@@ -1,7 +1,7 @@
 {
-  "versionCode": 8000,
-  "versionName": "Pro 8.7.6",
-  "releaseNotes": "**Auto.js免费版已不再维护，建议使用Pro 8.7版本**\n* dex加密、snapshot等增强的加密方式、自定义签名、更小的打包体积\n* 可视化UI编辑、专业级单步调试、全新界面与编辑器\n* 新增大量API，压缩、加解密、OCR、加速找色等，修复大量问题\n* V9版本将支持Node.js，敬请期待",
+  "versionCode": 9000,
+  "versionName": "Pro 9.2.13",
+  "releaseNotes": "**重大更新！浏览器访问官网pro.autojs.org即可下载！**\n全新nodejs模式加密，强度更高，目前未被破解\n内置OCR！支持Paddle和MLKitOCR，支持打包\n新增全分辨率找图、特征匹配API\n插件商店上线，且插件支持打包后免安装\nPro 9还支持Node.js引擎、多Tab工作区等几十个新功能，上百个问题修复和优化，等你体验",
   "downloads" : [
 	{
 	  "name": "官网下载",
