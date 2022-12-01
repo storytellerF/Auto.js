@@ -14,13 +14,13 @@ object Pref {
     private const val KEY_FIRST_USING = "key_first_using"
     private var sPreferences: SharedPreferences? = null
 
-    val preferences: SharedPreferences
+    private val preferences: SharedPreferences
         get() {
-            return sPreferences ?: {
+            return sPreferences ?: run {
                 val pref = PreferenceManager.getDefaultSharedPreferences(GlobalAppContext.get())
                 sPreferences = pref
                 pref
-            }()
+            }
         }
 
     val isFirstUsing: Boolean
