@@ -56,13 +56,13 @@ dependencies {
     // OpenCv
 //    api(name: 'opencv-3.4.3', ext: 'aar')
     // OkHttp
-    api 'com.squareup.okhttp3:okhttp:4.9.0'
+    api 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'
     // JDeferred
     api 'org.jdeferred:jdeferred-android-aar:1.2.6'
     //RootShell
     api 'com.github.Stericson:RootShell:1.6'
     // Gson
-    api 'com.google.code.gson:gson:2.8.7'
+    api 'com.google.code.gson:gson:2.10'
     // log4j
     api group: 'de.mindpipe.android', name: 'android-logging-log4j', version: '1.0.3'
     api group: 'log4j', name: 'log4j', version: '1.2.17'
