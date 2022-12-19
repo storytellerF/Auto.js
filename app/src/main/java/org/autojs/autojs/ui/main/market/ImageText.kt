@@ -25,9 +25,7 @@ class ImageText : LinearLayout {
     }
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
+        context, attrs, defStyleAttr
     ) {
         init(attrs)
     }
@@ -43,7 +41,7 @@ class ImageText : LinearLayout {
         a.getString(R.styleable.ImageText_text)?.let {
             inflate.textView.text = it
         }
-        val iconResId = a.getResourceId(R.styleable.ImageText_src, 0)
+        val iconResId = a.getResourceId(R.styleable.ImageText_it_src, 0)
         if (iconResId != 0) {
             inflate.imageView.setImageResource(iconResId)
         }

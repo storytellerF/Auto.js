@@ -1,5 +1,7 @@
 package org.autojs.autojs.external.tasker;
 
+import static org.autojs.autojs.ui.edit.EditorView.EXTRA_CONTENT;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,13 +24,10 @@ import org.autojs.autojs.model.explorer.Explorers;
 import org.autojs.autojs.ui.BaseActivity;
 import org.autojs.autojs.ui.explorer.ExplorerView;
 
-import static org.autojs.autojs.ui.edit.EditorView.EXTRA_CONTENT;
-
 
 /**
  * Created by Stardust on 2017/3/27.
  */
-@EActivity(R.layout.activity_tasker_edit)
 public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
 
     private String mSelectedScriptFilePath;
@@ -51,7 +50,7 @@ public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
 
 
     private void initScriptListRecyclerView() {
-        ExplorerView explorerView = findViewById(R.id.script_list);
+        ExplorerView explorerView = (ExplorerView) findViewById(R.id.script_list);
         explorerView.setExplorer(Explorers.external(), ExplorerDirPage.createRoot(Environment.getExternalStorageDirectory()));
         explorerView.setOnItemClickListener((view, item) -> {
             mSelectedScriptFilePath = item.getPath();

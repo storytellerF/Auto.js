@@ -2,19 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
-def AAVersion = '4.5.2'
-def SupportLibVersion = '30.0.2'
-
-configurations.all {
-    resolutionStrategy {
-        force "com.android.support:appcompat-v7:${SupportLibVersion}"
-        force "com.android.support:support-v4:${SupportLibVersion}"
-    }
-}
+def AAVersion = '4.8.0'
 
 android {
-    compileSdkVersion versions.compile
-    buildToolsVersion versions.buildTool
+    compileSdk 33
     defaultConfig {
         applicationId "org.autojs.autojs"
         minSdkVersion versions.mini
@@ -94,21 +85,21 @@ repositories {
 }
 
 dependencies {
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.1-alpha01', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.5.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     testImplementation 'junit:junit:4.13.2'
     // Kotlin
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
     // Android Annotations
-    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
+    kapt "org.androidannotations:androidannotations:$AAVersion"
     implementation "org.androidannotations:androidannotations-api:$AAVersion"
     // Android supports
-    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.5.0-alpha01'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     // Personal libraries
     implementation 'com.github.hyb1996:MutableTheme:1.0.0'
@@ -128,9 +119,11 @@ dependencies {
         exclude group: 'com.android.support'
     })
     //MultiLevelListView
-    implementation 'com.github.hyb1996:android-multi-level-listview:1.1'
+    implementation ('com.github.hyb1996:android-multi-level-listview:1.1', {
+        exclude group: 'androidx.appcompat'
+    })
     //Licenses Dialog
-    implementation 'de.psdev.licensesdialog:licensesdialog:1.8.1'
+    implementation 'de.psdev.licensesdialog:licensesdialog:2.2.0'
     //Expandable RecyclerView
     implementation 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
     //FlexibleDivider
@@ -138,13 +131,13 @@ dependencies {
     //???
     implementation 'com.wang.avi:library:2.1.3'
     //Commons-lang
-    implementation 'org.apache.commons:commons-lang3:3.11'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     //Expandable RecyclerView
     implementation 'com.thoughtbot:expandablerecyclerview:1.3'
     implementation 'com.github.hyb1996:Auto.js-ApkBuilder:1.0.1'
     // RxJava
-    implementation "io.reactivex.rxjava2:rxjava:2.2.9"
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
@@ -152,18 +145,18 @@ dependencies {
     implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
     //Glide
-    implementation('com.github.bumptech.glide:glide:4.8.0', {
+    implementation('com.github.bumptech.glide:glide:4.14.2', {
         exclude group: 'com.android.support'
     })
-    annotationProcessor  'com.github.bumptech.glide:compiler:4.12.0'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
     //joda time
-    implementation 'joda-time:joda-time:2.9.9'
+    implementation 'joda-time:joda-time:2.12.2'
     // Tasker Plugin
 //    implementation 'com.twofortyfouram:android-plugin-client-sdk-for-locale:4.0.3'
-    implementation group: 'com.twofortyfouram', name: 'android-plugin-client-sdk-for-locale', version: '[4.0.3, 5.0]'
+    implementation group: 'com.twofortyfouram', name: 'android-plugin-client-sdk-for-locale', version: '4.0.3'
 
     // Flurry
-    implementation 'com.flurry.android:analytics:7.0.0@aar'
+    implementation 'com.flurry.android:analytics:14.0.0@aar'
     // Bugly
 //    implementation 'com.tencent.bugly:crashreport:2.6.6'
     // MaterialDialogCommon
@@ -171,9 +164,9 @@ dependencies {
         exclude group: 'com.android.support'
     })
     // Android job
-    implementation 'com.evernote:android-job:1.2.6'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    implementation 'com.evernote:android-job:1.4.3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
     // Optional, if you use support library fragments:
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 //    implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
@@ -181,4 +174,6 @@ dependencies {
     implementation project(':common')
     implementation project(':autojs')
     implementation project(':bandage')
+    implementation('com.github.aakira:expandable-layout:1.6.0@aar')
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

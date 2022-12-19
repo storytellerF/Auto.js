@@ -117,7 +117,8 @@ class GlobalActionAutomator(private val mHandler: Handler?, private val serviceP
     private fun gesturesWithoutHandler(description: GestureDescription): Boolean {
         prepareLooperIfNeeded()
         val result = VolatileBox(false)
-        val handler = Handler(Looper.myLooper())
+        val myLooper = Looper.myLooper() ?: return false
+        val handler = Handler(myLooper)
         service.dispatchGesture(description, object : AccessibilityService.GestureResultCallback() {
             override fun onCompleted(gestureDescription: GestureDescription) {
                 result.set(true)

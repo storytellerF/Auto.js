@@ -5,8 +5,8 @@
              android:background="?android:divider"
              android:paddingTop="@dimen/divider_drawer_menu_group">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/title"
+    <TextView
+        android:id="@+id/title"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="?android:windowBackground"

@@ -59,7 +59,6 @@ public class RegisterActivity extends BaseActivity {
         inflate.register.setOnClickListener(view -> login());
     }
 
-    @AfterViews
     void setUpViews() {
         setToolbarAsBack(getString(R.string.text_register));
         ThemeColorManager.addViewBackground(inflate.register);
