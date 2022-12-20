@@ -26,6 +26,7 @@ import dalvik.system.DexClassLoader;
  * Created by Stardust on 2017/4/5.
  */
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoader {
 
 
@@ -35,7 +36,7 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
     private final File mCacheDir;
 
     /**
-     * Create a new instance with the given parent classloader and cache dierctory
+     * Create a new instance with the given parent classloader and cache directory
      *
      * @param parent the parent
      * @param dir    the cache directory
@@ -99,7 +100,6 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
             final File classFile = generateTempFile(jar.getPath(), false);
             final ZipFile zipFile = new ZipFile(classFile);
             final ZipFile jarFile = new ZipFile(jar);
-            //noinspection unchecked
             for (FileHeader header : (List<FileHeader>) jarFile.getFileHeaders()) {
                 if (!header.isDirectory()) {
                     final ZipParameters parameters = new ZipParameters();
