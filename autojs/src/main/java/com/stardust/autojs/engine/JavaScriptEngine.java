@@ -1,5 +1,8 @@
 package com.stardust.autojs.engine;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.autojs.script.ScriptSource;
@@ -12,14 +15,16 @@ public abstract class JavaScriptEngine extends ScriptEngine.AbstractScriptEngine
     private ScriptRuntime mRuntime;
     private Object mExecArgv;
 
+    @Nullable
     @Override
-    public Object execute(JavaScriptSource scriptSource) {
+    public Object execute(@NonNull JavaScriptSource scriptSource) {
         if ((scriptSource.getExecutionMode() & JavaScriptSource.EXECUTION_MODE_AUTO) != 0) {
             getRuntime().ensureAccessibilityServiceEnabled();
         }
         return doExecution(scriptSource);
     }
 
+    @Nullable
     protected abstract Object doExecution(JavaScriptSource scriptSource);
 
     public ScriptRuntime getRuntime() {
@@ -39,6 +44,7 @@ public abstract class JavaScriptEngine extends ScriptEngine.AbstractScriptEngine
         mRuntime.timers.getMainTimer().postDelayed(() -> mRuntime.events.emit(eventName, args), 0);
     }
 
+    @Nullable
     public ScriptSource getSource() {
         return (ScriptSource) getTag(TAG_SOURCE);
     }
@@ -60,6 +66,7 @@ public abstract class JavaScriptEngine extends ScriptEngine.AbstractScriptEngine
         super.destroy();
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "ScriptEngine@" + Integer.toHexString(hashCode()) + "{" +

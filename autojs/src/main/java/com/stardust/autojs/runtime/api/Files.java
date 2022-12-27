@@ -1,5 +1,8 @@
 package com.stardust.autojs.runtime.api;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.pio.PFileInterface;
 import com.stardust.pio.PFiles;
@@ -22,7 +25,8 @@ public class Files {
     }
 
     // FIXME: 2018/10/16 is not correct in sub-directory?
-    public String path(String relativePath) {
+    @Nullable
+    public String path(@Nullable String relativePath) {
         String cwd = cwd();
         if (cwd == null || relativePath == null || relativePath.startsWith("/"))
             return relativePath;
@@ -41,11 +45,13 @@ public class Files {
         return relativePath.endsWith(File.separator) ? path + "/" : path;
     }
 
+    @Nullable
     public String cwd() {
         return mRuntime.engines.myEngine().cwd();
     }
 
-    public PFileInterface open(String path, String mode, String encoding, int bufferSize) {
+    @Nullable
+    public PFileInterface open(String path, @NonNull String mode, String encoding, int bufferSize) {
         return PFiles.open(path(path), mode, encoding, bufferSize);
     }
 
@@ -81,15 +87,18 @@ public class Files {
         return PFiles.ensureDir(path(path));
     }
 
+    @NonNull
     public String read(String path, String encoding) {
         return PFiles.read(path(path), encoding);
     }
 
 
+    @NonNull
     public String read(String path) {
         return PFiles.read(path(path));
     }
 
+    @NonNull
     public String readAssets(String path, String encoding) {
         try {
             return PFiles.read(mRuntime.getUiHandler().getContext().getAssets().open(path), encoding);
@@ -98,10 +107,12 @@ public class Files {
         }
     }
 
+    @NonNull
     public String readAssets(String path) {
         return readAssets(path, "UTF-8");
     }
 
+    @NonNull
     public byte[] readBytes(String path) {
         return PFiles.readBytes(path(path));
     }
@@ -146,14 +157,17 @@ public class Files {
         return PFiles.move(path(path), newPath);
     }
 
-    public String getExtension(String fileName) {
+    @NonNull
+    public String getExtension(@NonNull String fileName) {
         return PFiles.getExtension(fileName);
     }
 
+    @NonNull
     public String getName(String filePath) {
         return PFiles.getName(filePath);
     }
 
+    @NonNull
     public String getNameWithoutExtension(String filePath) {
         return PFiles.getNameWithoutExtension(filePath);
     }
@@ -166,14 +180,17 @@ public class Files {
         return PFiles.removeDir(path(path));
     }
 
+    @NonNull
     public String getSdcardPath() {
         return PFiles.getSdcardPath();
     }
 
+    @NonNull
     public String[] listDir(String path) {
         return PFiles.listDir(path(path));
     }
 
+    @NonNull
     public String[] listDir(String path, Func1<String, Boolean> filter) {
         return PFiles.listDir(path(path), filter);
     }
@@ -190,15 +207,18 @@ public class Files {
         return PFiles.isEmptyDir(path(path));
     }
 
+    @NonNull
     public static String join(String parent, String... child) {
         return PFiles.join(parent, child);
     }
 
+    @NonNull
     public String getHumanReadableSize(long bytes) {
         return PFiles.getHumanReadableSize(bytes);
     }
 
-    public String getSimplifiedPath(String path) {
+    @NonNull
+    public String getSimplifiedPath(@NonNull String path) {
         return PFiles.getSimplifiedPath(path);
     }
 

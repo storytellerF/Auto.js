@@ -21,27 +21,27 @@ public class JsSpinner extends androidx.appcompat.widget.AppCompatSpinner {
     private int mEntryTextStyle = -1;
     private int mEntryTextColor = 0;
 
-    public JsSpinner(Context context) {
+    public JsSpinner(@NonNull Context context) {
         super(context);
     }
 
-    public JsSpinner(Context context, int mode) {
+    public JsSpinner(@NonNull Context context, int mode) {
         super(context, mode);
     }
 
-    public JsSpinner(Context context, AttributeSet attrs) {
+    public JsSpinner(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public JsSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
+    public JsSpinner(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public JsSpinner(Context context, AttributeSet attrs, int defStyleAttr, int mode) {
+    public JsSpinner(@NonNull Context context, AttributeSet attrs, int defStyleAttr, int mode) {
         super(context, attrs, defStyleAttr, mode);
     }
 
-    public JsSpinner(Context context, AttributeSet attrs, int defStyleAttr, int mode, Resources.Theme popupTheme) {
+    public JsSpinner(@NonNull Context context, AttributeSet attrs, int defStyleAttr, int mode, Resources.Theme popupTheme) {
         super(context, attrs, defStyleAttr, mode, popupTheme);
     }
 

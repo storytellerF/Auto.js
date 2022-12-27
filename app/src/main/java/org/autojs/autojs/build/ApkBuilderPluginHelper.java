@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.pio.UncheckedIOException;
 
 import org.autojs.autojs.BuildConfig;
@@ -27,7 +29,7 @@ public class ApkBuilderPluginHelper {
         return DeveloperUtils.checkSignature(context, PLUGIN_PACKAGE_NAME);
     }
 
-    public static InputStream openTemplateApk(Context context) {
+    public static InputStream openTemplateApk(@NonNull Context context) {
         try {
             if (DEBUG_APK_PLUGIN && BuildConfig.DEBUG) {
                 return context.getAssets().open(TEMPLATE_APK_PATH);
@@ -41,7 +43,7 @@ public class ApkBuilderPluginHelper {
         }
     }
 
-    public static int getPluginVersion(Context context) {
+    public static int getPluginVersion(@NonNull Context context) {
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(PLUGIN_PACKAGE_NAME, 0);
             return info.versionCode;

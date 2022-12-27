@@ -10,13 +10,17 @@ import java.net.InetAddress;
 
 import static android.content.Context.WIFI_SERVICE;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Created by Stardust on 2017/5/11.
  */
 
 public class WifiTool {
 
-    public static String getWifiAddress(Context context) {
+    @Nullable
+    public static String getWifiAddress(@NonNull Context context) {
         WifiManager wifiMgr = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
         if(wifiMgr == null){
             return null;
@@ -26,7 +30,8 @@ public class WifiTool {
         return Formatter.formatIpAddress(ip);
     }
 
-    public static String getRouterIp(Context context){
+    @Nullable
+    public static String getRouterIp(@NonNull Context context){
         WifiManager wifiService = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if(wifiService == null){
             return null;

@@ -1,5 +1,6 @@
 package org.autojs.autojs.model.script;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.stardust.autojs.script.AutoFileSource;
@@ -21,19 +22,19 @@ public class ScriptFile extends PFile {
 
     private int mType = -1;
 
-    public ScriptFile(String path) {
+    public ScriptFile(@NonNull String path) {
         super(path);
     }
 
-    public ScriptFile(String parent, String name) {
+    public ScriptFile(String parent, @NonNull String name) {
         super(parent, name);
     }
 
-    public ScriptFile(File parent, String child) {
+    public ScriptFile(File parent, @NonNull String child) {
         super(parent, child);
     }
 
-    public ScriptFile(File file) {
+    public ScriptFile(@NonNull File file) {
         super(file.getPath());
     }
 
@@ -54,6 +55,7 @@ public class ScriptFile extends PFile {
         return new ScriptFile(p);
     }
 
+    @NonNull
     public ScriptSource toSource() {
         if (getType() == TYPE_JAVA_SCRIPT) {
             return new JavaScriptFileSource(this);

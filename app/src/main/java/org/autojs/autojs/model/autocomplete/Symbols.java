@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.autocomplete;
 
+import androidx.annotation.NonNull;
+
 import java.util.Arrays;
 
 /**
@@ -12,6 +14,7 @@ public class Symbols {
             "\"", "(", ")", "=", ";", "/", "{", "}", "!", "|", "&", "-",
             "[", "]", "+", "-", "<", ">", "\\", "*", "?"));
 
+    @NonNull
     public static CodeCompletions getSymbols() {
         return sSymbols;
     }

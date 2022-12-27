@@ -1,11 +1,15 @@
 package org.autojs.autojs.ui.edit.debug;
 
+import androidx.annotation.Nullable;
+
 public class WatchingVariable {
 
     private String mDisplayName;
     private String mName;
     private final boolean mPinned;
+    @Nullable
     private String mValue;
+    @Nullable
     private String mSingleLineValue;
 
     public WatchingVariable(String displayName, String name, boolean pinned) {
@@ -22,15 +26,17 @@ public class WatchingVariable {
         return mPinned;
     }
 
+    @Nullable
     public String getValue() {
         return mValue;
     }
 
-    public void setValue(String value) {
+    public void setValue(@Nullable String value) {
         mValue = value;
         mSingleLineValue = value == null ? null : value.replaceAll("\n", " ");
     }
 
+    @Nullable
     public String getSingleLineValue() {
         return mSingleLineValue;
     }

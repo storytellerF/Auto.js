@@ -7,6 +7,9 @@ import android.os.Parcelable;
 import android.text.Layout;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Created by Stardust on 2018/2/13.
  */
@@ -16,7 +19,7 @@ public class LayoutHelper {
 
     private static final Rect sTempRect = new Rect();
 
-    public static long getLineRangeForDraw(Layout layout, Canvas canvas) {
+    public static long getLineRangeForDraw(@NonNull Layout layout, @NonNull Canvas canvas) {
         int dtop, dbottom;
         synchronized (sTempRect) {
             if (!canvas.getClipBounds(sTempRect)) {
@@ -54,7 +57,7 @@ public class LayoutHelper {
     }
 
 
-    public static int getLineOfChar(Layout layout, int charIndex) {
+    public static int getLineOfChar(@NonNull Layout layout, int charIndex) {
         int low = 0;
         int high = layout.getLineCount() - 1;
         while (low < high) {
@@ -72,7 +75,7 @@ public class LayoutHelper {
         return low;
     }
 
-    public static int getVisibleLineAt(Layout layout, float x, float y) {
+    public static int getVisibleLineAt(@Nullable Layout layout, float x, float y) {
         if(layout == null) {
             return -1;
         }

@@ -1,5 +1,7 @@
 package com.stardust.autojs.rhino;
 
+import androidx.annotation.Nullable;
+
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.GeneratedClassLoader;
 import org.mozilla.javascript.SecurityController;
@@ -16,6 +18,7 @@ public class NoSecurityController extends SecurityController implements Serializ
         return Context.getCurrentContext().createClassLoader(classLoader);
     }
 
+    @Nullable
     @Override
     public Object getDynamicSecurityDomain(Object o) {
         return null;

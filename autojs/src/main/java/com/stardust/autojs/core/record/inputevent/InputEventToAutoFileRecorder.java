@@ -2,6 +2,8 @@ package com.stardust.autojs.core.record.inputevent;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 
 import com.stardust.autojs.core.inputevent.InputEventCodes;
@@ -27,10 +29,12 @@ public class InputEventToAutoFileRecorder extends InputEventRecorder {
     private static final String LOG_TAG = "InputEventToAutoFileRec";
     private double mLastEventTime;
     private int mTouchDevice = -1;
+    @NonNull
     private final DataOutputStream mDataOutputStream;
+    @NonNull
     private final File mTmpFile;
 
-    public InputEventToAutoFileRecorder(Context context) {
+    public InputEventToAutoFileRecorder(@NonNull Context context) {
         try {
             mTmpFile = new File(context.getCacheDir(), SimpleDateFormat.getDateTimeInstance().format(new Date()) + ".auto");
             mTmpFile.deleteOnExit();
@@ -63,7 +67,7 @@ public class InputEventToAutoFileRecorder extends InputEventRecorder {
 
     }
 
-    private void convertEventOrThrow(InputEventObserver.InputEvent event) throws IOException {
+    private void convertEventOrThrow(@NonNull InputEventObserver.InputEvent event) throws IOException {
         if (mLastEventTime == 0) {
             mLastEventTime = event.time;
         } else if (event.time - mLastEventTime > 0.001) {
@@ -118,10 +122,12 @@ public class InputEventToAutoFileRecorder extends InputEventRecorder {
         mDataOutputStream.writeInt(value);
     }
 
+    @Nullable
     public String getCode() {
         return null;
     }
 
+    @NonNull
     @Override
     public String getPath() {
         return mTmpFile.getAbsolutePath();

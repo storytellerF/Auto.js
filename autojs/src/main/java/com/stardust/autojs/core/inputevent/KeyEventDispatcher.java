@@ -1,5 +1,7 @@
 package com.stardust.autojs.core.inputevent;
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -20,6 +22,7 @@ public class KeyEventDispatcher {
 
     private final CopyOnWriteArrayList<OnKeyListener> mOnKeyListeners = new CopyOnWriteArrayList<>();
 
+    @NonNull
     public static KeyEventDispatcher getSingleton() {
         return sSingleton;
     }

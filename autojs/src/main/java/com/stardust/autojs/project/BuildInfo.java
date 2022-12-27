@@ -1,6 +1,8 @@
 package com.stardust.autojs.project;
 
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.zip.CRC32;
@@ -43,6 +45,7 @@ public class BuildInfo {
         mBuildId = buildId;
     }
 
+    @NonNull
     public static BuildInfo generate(long buildNumber) {
         BuildInfo info = new BuildInfo();
         info.setBuildNumber(buildNumber);
@@ -51,6 +54,7 @@ public class BuildInfo {
         return info;
     }
 
+    @NonNull
     private static String generateBuildId(long buildNumber, long buildTime) {
         CRC32 crc32 = new CRC32();
         crc32.update((buildNumber + "" + buildTime).getBytes());

@@ -78,7 +78,7 @@ public class FindOrReplaceDialogBuilder extends ThemeColorMaterialDialogBuilder 
         }
     }
 
-    private void findOrReplace(MaterialDialog dialog) {
+    private void findOrReplace(@NonNull MaterialDialog dialog) {
         String keywords = Objects.requireNonNull(bind.keywords.getText()).toString();
         if (keywords.isEmpty()) {
             return;
@@ -103,6 +103,7 @@ public class FindOrReplaceDialogBuilder extends ThemeColorMaterialDialogBuilder 
 
     }
 
+    @NonNull
     public FindOrReplaceDialogBuilder setQueryIfNotEmpty(String s) {
         if (!TextUtils.isEmpty(s))
             bind.keywords.setText(s);

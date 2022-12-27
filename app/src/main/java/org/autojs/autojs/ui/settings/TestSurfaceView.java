@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import androidx.annotation.Nullable;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,6 +21,7 @@ public class TestSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     private volatile boolean mDrawing = true;
     private static final String LOG_TAG = "TestSurfaceView";
+    @Nullable
     private ExecutorService mDrawingThreadPool;
 
     public TestSurfaceView(Context context) {

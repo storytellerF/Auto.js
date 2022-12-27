@@ -1,5 +1,8 @@
 package com.stardust.util;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Timer;
@@ -12,15 +15,19 @@ import java.util.TimerTask;
 public class SimpleCache<T> {
 
     public interface Supplier<T> {
+        @Nullable
         T get(String key);
     }
 
     private final long mPersistTime;
+    @NonNull
     private final LimitedHashMap<String, Item<T>> mCache;
+    @NonNull
     private final Timer mCacheCheckTimer;
+    @NonNull
     private final Supplier<T> mSupplier;
 
-    public SimpleCache(long persistTime, int cacheSize, long checkInterval, Supplier<T> supplier) {
+    public SimpleCache(long persistTime, int cacheSize, long checkInterval, @Nullable Supplier<T> supplier) {
         mPersistTime = persistTime;
         mCache = new LimitedHashMap<>(cacheSize);
         mSupplier = supplier == null ? new NullSupplier<T>() : supplier;
@@ -36,6 +43,7 @@ public class SimpleCache<T> {
         mCache.put(key, new Item<>(value));
     }
 
+    @Nullable
     public synchronized T get(String key) {
         Item<T> item = mCache.get(key);
         if (item == null) {
@@ -48,6 +56,7 @@ public class SimpleCache<T> {
         return item.value;
     }
 
+    @Nullable
     public T get(String key, T defaultValue) {
         T value = get(key);
         if (value == null) {
@@ -56,7 +65,8 @@ public class SimpleCache<T> {
         return value;
     }
 
-    public T get(String key, Supplier<T> supplier) {
+    @Nullable
+    public T get(String key, @NonNull Supplier<T> supplier) {
         T value = get(key);
         if (value == null) {
             value = supplier.get(key);
@@ -108,6 +118,7 @@ public class SimpleCache<T> {
 
     private static class NullSupplier<T> implements Supplier<T> {
 
+        @Nullable
         @Override
         public T get(String key) {
             return null;

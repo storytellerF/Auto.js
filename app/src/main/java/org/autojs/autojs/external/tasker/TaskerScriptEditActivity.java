@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.autojs.autojs.R;
@@ -31,7 +32,7 @@ public class TaskerScriptEditActivity extends BaseActivity {
     public static final String EXTRA_TASK_ID = TaskReceiver.EXTRA_TASK_ID;
     private ActivityTaskerScriptEditBinding inflate;
 
-    public static void edit(Activity activity, String title, String summary, String content) {
+    public static void edit(@NonNull Activity activity, String title, String summary, String content) {
         activity.startActivityForResult(new Intent(activity, TaskerScriptEditActivity.class)
                 .putExtra(EXTRA_CONTENT, content)
                 .putExtra("summary", summary)
@@ -60,6 +61,7 @@ public class TaskerScriptEditActivity extends BaseActivity {
         BaseActivity.setToolbarAsBack(this, R.id.toolbar, inflate.editorView.getName());
     }
 
+    @NonNull
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override

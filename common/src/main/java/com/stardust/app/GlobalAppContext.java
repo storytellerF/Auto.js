@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import android.widget.Toast;
 
@@ -19,7 +21,7 @@ public class GlobalAppContext {
     private static Context sApplicationContext;
     private static Handler sHandler;
 
-    public static void set(Application a) {
+    public static void set(@NonNull Application a) {
         sHandler = new Handler(Looper.getMainLooper());
         sApplicationContext = a.getApplicationContext();
     }

@@ -1,5 +1,7 @@
 package com.stardust.autojs.core.console;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.util.UiHandler;
 
 import org.apache.log4j.Level;
@@ -25,7 +27,7 @@ public class GlobalConsole extends ConsoleImpl {
     }
 
     @Override
-    public String println(int level, CharSequence charSequence) {
+    public String println(int level, @NonNull CharSequence charSequence) {
         String log = String.format(Locale.getDefault(), "%s/%s: %s",
                 DATE_FORMAT.format(new Date()), getLevelChar(level), charSequence.toString());
         LOGGER.log(toLog4jLevel(level), log);
@@ -34,6 +36,7 @@ public class GlobalConsole extends ConsoleImpl {
         return log;
     }
 
+    @NonNull
     private Priority toLog4jLevel(int level) {
         switch (level) {
             case android.util.Log.VERBOSE:
@@ -52,6 +55,7 @@ public class GlobalConsole extends ConsoleImpl {
         throw new IllegalArgumentException("invalid level = " + level);
     }
 
+    @NonNull
     private String getLevelChar(int level) {
         switch (level) {
             case android.util.Log.VERBOSE:

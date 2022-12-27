@@ -3,6 +3,9 @@ package com.stardust.autojs.runtime.api;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.engine.RootAutomatorEngine;
 import com.stardust.util.ScreenMetrics;
 
@@ -17,6 +20,7 @@ public abstract class AbstractShell {
         public String error;
         public String result;
 
+        @NonNull
         @Override
         public String toString() {
             return "ShellResult{" +
@@ -37,6 +41,7 @@ public abstract class AbstractShell {
     private ScreenMetrics mScreenMetrics;
 
     private final boolean mRoot;
+    @Nullable
     protected Context mContext;
 
     public AbstractShell() {
@@ -47,7 +52,7 @@ public abstract class AbstractShell {
         this(null, root);
     }
 
-    public AbstractShell(Context context, boolean root) {
+    public AbstractShell(@Nullable Context context, boolean root) {
         mContext = context;
         mRoot = root;
         if (context != null)

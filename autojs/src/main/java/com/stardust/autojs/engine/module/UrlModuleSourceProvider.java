@@ -1,5 +1,8 @@
 package com.stardust.autojs.engine.module;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.mozilla.javascript.commonjs.module.provider.DefaultUrlConnectionExpiryCalculator;
 import org.mozilla.javascript.commonjs.module.provider.ModuleSource;
 import org.mozilla.javascript.commonjs.module.provider.ModuleSourceProviderBase;
@@ -88,6 +91,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
                 urlConnectionSecurityDomainProvider;
     }
 
+    @Nullable
     @Override
     protected ModuleSource loadFromPrivilegedLocations(
             String moduleId, Object validator)
@@ -95,6 +99,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
         return loadFromPathList(moduleId, validator, privilegedUris);
     }
 
+    @Nullable
     @Override
     protected ModuleSource loadFromFallbackLocations(
             String moduleId, Object validator)
@@ -102,8 +107,9 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
         return loadFromPathList(moduleId, validator, fallbackUris);
     }
 
+    @Nullable
     private ModuleSource loadFromPathList(String moduleId,
-                                          Object validator, Iterable<URI> paths)
+                                          Object validator, @Nullable Iterable<URI> paths)
             throws IOException, URISyntaxException {
         if (paths == null) {
             return null;
@@ -118,8 +124,9 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
         return null;
     }
 
+    @Nullable
     @Override
-    protected ModuleSource loadFromUri(URI uri, URI base, Object validator)
+    protected ModuleSource loadFromUri(@NonNull URI uri, URI base, Object validator)
             throws IOException, URISyntaxException {
         // We expect modules to have a ".js" file name extension ...
         URI fullUri = new URI(uri + ".js");
@@ -130,7 +137,8 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
                 source : loadFromActualUri(uri, base, validator);
     }
 
-    protected ModuleSource loadFromActualUri(URI uri, URI base, Object validator)
+    @Nullable
+    protected ModuleSource loadFromActualUri(@NonNull URI uri, @Nullable URI base, Object validator)
             throws IOException {
         final URL url = new URL(base == null ? null : base.toURL(), uri.toString());
         final long request_time = System.currentTimeMillis();
@@ -170,13 +178,13 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
         }
     }
 
-    protected Reader getReader(URLConnection urlConnection)
+    protected Reader getReader(@NonNull URLConnection urlConnection)
             throws IOException {
         return new InputStreamReader(urlConnection.getInputStream(),
                 getCharacterEncoding(urlConnection));
     }
 
-    protected String getCharacterEncoding(URLConnection urlConnection) {
+    protected String getCharacterEncoding(@NonNull URLConnection urlConnection) {
         final ParsedContentType pct = new ParsedContentType(
                 urlConnection.getContentType());
         final String encoding = pct.getEncoding();
@@ -190,13 +198,14 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
         return "utf-8";
     }
 
+    @Nullable
     protected Object getSecurityDomain(URLConnection urlConnection) {
         return urlConnectionSecurityDomainProvider == null ? null :
                 urlConnectionSecurityDomainProvider.getSecurityDomain(
                         urlConnection);
     }
 
-    private void close(URLConnection urlConnection) {
+    private void close(@NonNull URLConnection urlConnection) {
         try {
             urlConnection.getInputStream().close();
         } catch (IOException e) {
@@ -223,7 +232,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
      * @return a connection to the URL.
      * @throws IOException if an I/O error occurs.
      */
-    protected URLConnection openUrlConnection(URL url) throws IOException {
+    protected URLConnection openUrlConnection(@NonNull URL url) throws IOException {
         return url.openConnection();
     }
 
@@ -238,10 +247,11 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
 
         private final URI uri;
         private final long lastModified;
+        @Nullable
         private final String entityTags;
         private long expiry;
 
-        public URLValidator(URI uri, URLConnection urlConnection,
+        public URLValidator(URI uri, @NonNull URLConnection urlConnection,
                             long request_time, UrlConnectionExpiryCalculator
                                     urlConnectionExpiryCalculator) {
             this.uri = uri;
@@ -251,7 +261,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
                     urlConnectionExpiryCalculator);
         }
 
-        boolean updateValidator(URLConnection urlConnection, long request_time,
+        boolean updateValidator(@NonNull URLConnection urlConnection, long request_time,
                                 UrlConnectionExpiryCalculator urlConnectionExpiryCalculator)
                 throws IOException {
             boolean isResourceChanged = isResourceChanged(urlConnection);
@@ -271,8 +281,8 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
             return lastModified != urlConnection.getLastModified();
         }
 
-        private long calculateExpiry(URLConnection urlConnection,
-                                     long request_time, UrlConnectionExpiryCalculator
+        private long calculateExpiry(@NonNull URLConnection urlConnection,
+                                     long request_time, @Nullable UrlConnectionExpiryCalculator
                                              urlConnectionExpiryCalculator) {
             if ("no-cache".equals(urlConnection.getHeaderField("Pragma"))) {
                 return 0L;
@@ -307,7 +317,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
                     urlConnectionExpiryCalculator.calculateExpiry(urlConnection);
         }
 
-        private int getMaxAge(String cacheControl) {
+        private int getMaxAge(@NonNull String cacheControl) {
             final int maxAgeIndex = cacheControl.indexOf("max-age");
             if (maxAgeIndex == -1) {
                 return -1;
@@ -330,7 +340,8 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
             }
         }
 
-        private String getEntityTags(URLConnection urlConnection) {
+        @Nullable
+        private String getEntityTags(@NonNull URLConnection urlConnection) {
             final List<String> etags = urlConnection.getHeaderFields().get("ETag");
             if (etags == null || etags.isEmpty()) {
                 return null;
@@ -348,7 +359,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase {
             return this.uri.equals(uri);
         }
 
-        void applyConditionals(URLConnection urlConnection) {
+        void applyConditionals(@NonNull URLConnection urlConnection) {
             if (lastModified != 0L) {
                 urlConnection.setIfModifiedSince(lastModified);
             }

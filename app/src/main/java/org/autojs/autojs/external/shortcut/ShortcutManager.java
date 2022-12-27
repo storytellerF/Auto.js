@@ -7,6 +7,7 @@ import android.content.pm.ShortcutInfo;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import java.util.Collections;
@@ -21,16 +22,18 @@ public class ShortcutManager {
 
 
     private static ShortcutManager sInstance;
+    @NonNull
     private final Context mContext;
+    @NonNull
     private final android.content.pm.ShortcutManager mShortcutManager;
 
 
-    public ShortcutManager(Context context) {
+    public ShortcutManager(@NonNull Context context) {
         mContext = context;
         mShortcutManager = (android.content.pm.ShortcutManager) context.getSystemService(Context.SHORTCUT_SERVICE);
     }
 
-    public static ShortcutManager getInstance(Context context) {
+    public static ShortcutManager getInstance(@NonNull Context context) {
         if (sInstance == null) {
             sInstance = new ShortcutManager(context);
         }
@@ -39,7 +42,7 @@ public class ShortcutManager {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void addPinnedShortcut(CharSequence label, String id, Icon icon, Intent intent) {
+    public void addPinnedShortcut(CharSequence label, @NonNull String id, Icon icon, Intent intent) {
         if (!mShortcutManager.isRequestPinShortcutSupported()) {
             return;
         }
@@ -60,7 +63,7 @@ public class ShortcutManager {
                 .build();
     }
 
-    private int getRequestCode(String id) {
+    private int getRequestCode(@NonNull String id) {
         return id.hashCode() >>> 16;
     }
 

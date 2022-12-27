@@ -3,6 +3,8 @@ package com.stardust.autojs.core.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/12/3.
  */
@@ -12,10 +14,11 @@ public class LocalStorage {
     private static final String NAME_PREFIX = "autojs.localstorage.";
     private final SharedPreferences mSharedPreferences;
 
-    public LocalStorage(Context context, String name) {
+    public LocalStorage(@NonNull Context context, String name) {
         mSharedPreferences = context.getSharedPreferences(NAME_PREFIX + name, Context.MODE_PRIVATE);
     }
 
+    @NonNull
     public LocalStorage put(String key, String value) {
         mSharedPreferences.edit()
                 .putString(key, value)
@@ -23,6 +26,7 @@ public class LocalStorage {
         return this;
     }
 
+    @NonNull
     public LocalStorage put(String key, long value) {
         mSharedPreferences.edit()
                 .putLong(key, value)
@@ -30,6 +34,7 @@ public class LocalStorage {
         return this;
     }
 
+    @NonNull
     public LocalStorage put(String key, boolean value) {
         mSharedPreferences.edit()
                 .putBoolean(key, value)

@@ -61,8 +61,10 @@ public class ShortcutIconSelectActivity extends BaseActivity {
     private PackageManager mPackageManager;
     private final List<AppItem> mAppList = new ArrayList<>();
 
+    @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context mContext) {
         return new ActivityIntentBuilder<I>(mContext, ShortcutIconSelectActivity.class) {
+            @Nullable
             @Override
             public PostActivityStarter startForResult(int requestCode) {
                 context.startActivity(intent);
@@ -99,8 +101,9 @@ public class ShortcutIconSelectActivity extends BaseActivity {
                 });
         compositeDisposable.add(subscribe);
     }
+    @NonNull
     CompositeDisposable compositeDisposable=new CompositeDisposable();
-    private void selectApp(AppItem appItem) {
+    private void selectApp(@NonNull AppItem appItem) {
         setResult(RESULT_OK, new Intent()
                 .putExtra(EXTRA_PACKAGE_NAME, appItem.info.packageName));
         finish();
@@ -134,7 +137,8 @@ public class ShortcutIconSelectActivity extends BaseActivity {
         }
     }
 
-    public static Observable<Bitmap> getBitmapFromIntent(Context context, Intent data) {
+    @NonNull
+    public static Observable<Bitmap> getBitmapFromIntent(@NonNull Context context, @NonNull Intent data) {
         String packageName = data.getStringExtra(EXTRA_PACKAGE_NAME);
         if (packageName != null) {
             return Observable.fromCallable(() -> {
@@ -155,7 +159,7 @@ public class ShortcutIconSelectActivity extends BaseActivity {
         Drawable icon;
         ApplicationInfo info;
 
-        public AppItem(ApplicationInfo info) {
+        public AppItem(@NonNull ApplicationInfo info) {
             this.info = info;
             icon = info.loadIcon(mPackageManager);
         }
@@ -165,7 +169,7 @@ public class ShortcutIconSelectActivity extends BaseActivity {
 
         ImageView icon;
 
-        public AppIconViewHolder(View itemView) {
+        public AppIconViewHolder(@NonNull View itemView) {
             super(itemView);
             icon = (ImageView) itemView;
             icon.setOnClickListener(v -> selectApp(mAppList.get(getAdapterPosition())));
@@ -177,13 +181,13 @@ public class ShortcutIconSelectActivity extends BaseActivity {
 
         @Override
         @NonNull
-        public AppIconViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public AppIconViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new AppIconViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.app_icon_list_item, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(AppIconViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull AppIconViewHolder holder, int position) {
             holder.icon.setImageDrawable(mAppList.get(position).icon);
         }
 

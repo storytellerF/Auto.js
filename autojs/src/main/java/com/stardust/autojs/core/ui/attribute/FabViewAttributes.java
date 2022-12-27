@@ -3,6 +3,8 @@ package com.stardust.autojs.core.ui.attribute;
 import android.graphics.Color;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 
@@ -22,6 +24,7 @@ public class FabViewAttributes extends ImageViewAttributes {
         registerBooleanAttr("useCompatPadding", getView()::setUseCompatPadding);
     }
 
+    @NonNull
     @Override
     public FloatingActionButton getView() {
         return (FloatingActionButton) super.getView();

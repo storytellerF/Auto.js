@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -58,15 +59,19 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
     private static final String LOG_TAG = "BuildActivity";
     private static final Pattern REGEX_PACKAGE_NAME = Pattern.compile("^([A-Za-z][A-Za-z\\d_]*\\.)+([A-Za-z][A-Za-z\\d_]*)$");
 
+    @NonNull
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ProjectConfig mProjectConfig;
+    @Nullable
     private MaterialDialog mProgressDialog;
     private String mSource;
     private boolean mIsDefaultIcon = true;
     private ActivityBuildBinding inflate;
 
+    @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context mContext) {
         return new ActivityIntentBuilder<I>(mContext, BuildActivity.class) {
+            @Nullable
             @Override
             public PostActivityStarter startForResult(int requestCode) {
                 context.startActivity(intent);
@@ -126,7 +131,7 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
                 "https://i.autojs.org/autojs/plugin/%d.apk", ApkBuilderPluginHelper.getSuitablePluginVersion()));
     }
 
-    private void setupWithSourceFile(ScriptFile file) {
+    private void setupWithSourceFile(@NonNull ScriptFile file) {
         String dir = file.getParent();
         if (dir.startsWith(getFilesDir().getPath())) {
             dir = Pref.getScriptDirPath();
@@ -154,7 +159,7 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
                 .show();
     }
 
-    private void setSource(File file) {
+    private void setSource(@NonNull File file) {
         if (!file.isDirectory()) {
             inflate.sourcePath.setText(file.getPath());
             return;
@@ -210,7 +215,7 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
         return inputValid;
     }
 
-    private boolean checkPackageNameValid(EditText editText) {
+    private boolean checkPackageNameValid(@NonNull EditText editText) {
         Editable text = editText.getText();
         String hint = Objects.requireNonNull(((TextInputLayout) editText.getParent().getParent()).getHint()).toString();
         if (TextUtils.isEmpty(text)) {
@@ -225,7 +230,7 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
 
     }
 
-    private boolean checkNotEmpty(EditText editText) {
+    private boolean checkNotEmpty(@NonNull EditText editText) {
         if (!TextUtils.isEmpty(editText.getText()) || !editText.isShown())
             return true;
         // TODO: 2017/12/8 more beautiful ways?
@@ -269,7 +274,7 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
                 );
     }
 
-    private ApkBuilder callApkBuilder(File tmpDir, File outApk, ApkBuilder.AppConfig appConfig) throws Exception {
+    private ApkBuilder callApkBuilder(@NonNull File tmpDir, @NonNull File outApk, @NonNull ApkBuilder.AppConfig appConfig) throws Exception {
         InputStream templateApk = ApkBuilderPluginHelper.openTemplateApk(BuildActivity.this);
         return new ApkBuilder(templateApk, outApk, tmpDir.getPath())
                 .setProgressCallback(BuildActivity.this)
@@ -288,7 +293,7 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
                 .show();
     }
 
-    private void onBuildFailed(Throwable error) {
+    private void onBuildFailed(@NonNull Throwable error) {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
@@ -297,7 +302,7 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
         Log.e(LOG_TAG, "Build failed", error);
     }
 
-    private void onBuildSuccessful(File outApk) {
+    private void onBuildSuccessful(@NonNull File outApk) {
         mProgressDialog.dismiss();
         mProgressDialog = null;
         new MaterialDialog.Builder(this)
@@ -342,7 +347,7 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
 
     @SuppressLint("CheckResult")
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;

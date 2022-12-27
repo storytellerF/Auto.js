@@ -1,5 +1,7 @@
 package com.stardust.concurrent;
 
+import androidx.annotation.NonNull;
+
 import java.lang.reflect.Array;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -38,10 +40,12 @@ public class ConcurrentArrayList<T> {
         return mSize.get();
     }
 
+    @NonNull
     public Object getArrayResizeLock() {
         return mArrayResizeLock;
     }
 
+    @NonNull
     @SuppressWarnings("unchecked")
     private T[] newArray(int size) {
         return (T[]) Array.newInstance(mTClass, size);

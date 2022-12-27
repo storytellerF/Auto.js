@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class OperationDialogBuilder extends MaterialDialog.Builder {
 
+    @NonNull
     private final RecyclerView mOperations;
     private final ArrayList<Integer> mIds = new ArrayList<>();
     private final ArrayList<Integer> mIcons = new ArrayList<>();
@@ -42,7 +43,7 @@ public class OperationDialogBuilder extends MaterialDialog.Builder {
             }
 
             @Override
-            public void onBindViewHolder(ViewHolder holder, int position) {
+            public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
                 holder.itemView.setId(mIds.get(position));
                 holder.text.setText(mTexts.get(position));
                 holder.icon.setImageResource(mIcons.get(position));
@@ -78,10 +79,12 @@ public class OperationDialogBuilder extends MaterialDialog.Builder {
         customView(mOperations, false);
     }
 
+    @NonNull
     public OperationDialogBuilder item(int id, int iconRes, int textRes) {
         return item(id, iconRes, getContext().getString(textRes));
     }
 
+    @NonNull
     public OperationDialogBuilder item(int id, int iconRes, String text) {
         mIds.add(id);
         mIcons.add(iconRes);
@@ -89,6 +92,7 @@ public class OperationDialogBuilder extends MaterialDialog.Builder {
         return this;
     }
 
+    @NonNull
     public OperationDialogBuilder bindItemClick(CircularMenu target) {
         mOnItemClickTarget = target;
         return this;
@@ -99,7 +103,7 @@ public class OperationDialogBuilder extends MaterialDialog.Builder {
         ImageView icon;
         TextView text;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             icon = itemView.findViewById(R.id.icon);
             text = itemView.findViewById(R.id.text);

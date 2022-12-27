@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -24,7 +26,9 @@ import java.util.List;
 public class AppUtils {
 
     private final Context mContext;
+    @Nullable
     private volatile WeakReference<Activity> mCurrentActivity = new WeakReference<>(null);
+    @Nullable
     private final String mFileProviderAuthority;
 
     public AppUtils(Context context) {
@@ -51,7 +55,7 @@ public class AppUtils {
     }
 
     @ScriptInterface
-    public void sendLocalBroadcastSync(Intent intent) {
+    public void sendLocalBroadcastSync(@NonNull Intent intent) {
         LocalBroadcastManager.getInstance(mContext).sendBroadcastSync(intent);
     }
 
@@ -63,6 +67,7 @@ public class AppUtils {
         return launchPackage(pkg);
     }
 
+    @Nullable
     @ScriptInterface
     public String getPackageName(String appName) {
         PackageManager packageManager = mContext.getPackageManager();
@@ -75,6 +80,7 @@ public class AppUtils {
         return null;
     }
 
+    @Nullable
     @ScriptInterface
     public String getAppName(String packageName) {
         PackageManager packageManager = mContext.getPackageManager();
@@ -92,6 +98,7 @@ public class AppUtils {
         return IntentUtil.goToAppDetailSettings(mContext, packageName);
     }
 
+    @Nullable
     @ScriptInterface
     public String getFileProviderAuthority() {
         return mFileProviderAuthority;
@@ -110,21 +117,21 @@ public class AppUtils {
     }
 
     @ScriptInterface
-    public void viewFile(String path) {
+    public void viewFile(@Nullable String path) {
         if (path == null)
             throw new NullPointerException("path == null");
         IntentUtil.viewFile(mContext, path, mFileProviderAuthority);
     }
 
     @ScriptInterface
-    public void editFile(String path) {
+    public void editFile(@Nullable String path) {
         if (path == null)
             throw new NullPointerException("path == null");
         IntentUtil.editFile(mContext, path, mFileProviderAuthority);
     }
 
     @ScriptInterface
-    public void openUrl(String url) {
+    public void openUrl(@NonNull String url) {
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://" + url;
         }

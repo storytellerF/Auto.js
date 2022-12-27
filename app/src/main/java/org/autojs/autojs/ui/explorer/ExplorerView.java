@@ -92,6 +92,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
     protected ExplorerItem mSelectedItem;
     private Explorer mExplorer;
     private final Stack<ExplorerPageState> mPageStateHistory = new Stack<>();
+    @NonNull
     private ExplorerPageState mCurrentPageState = new ExplorerPageState();
     private boolean mDirSortMenuShowing = false;
     private int mDirectorySpanSize = 2;
@@ -116,7 +117,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
         loadItemList();
     }
 
-    private void setCurrentPageState(ExplorerPageState currentPageState) {
+    private void setCurrentPageState(@NonNull ExplorerPageState currentPageState) {
         mCurrentPageState = currentPageState;
         if (mCurrentPageState.page instanceof ExplorerProjectPage) {
             mProjectToolbar.setVisibility(VISIBLE);
@@ -153,7 +154,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
         mExplorer.registerChangeListener(this);
     }
 
-    public void setExplorer(Explorer explorer, ExplorerPage rootPage, ExplorerPage currentPage) {
+    public void setExplorer(Explorer explorer, ExplorerPage rootPage, @NonNull ExplorerPage currentPage) {
         if (mExplorer != null)
             mExplorer.unregisterChangeListener(this);
         mExplorer = explorer;
@@ -163,7 +164,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
         enterChildPage(currentPage);
     }
 
-    public void enterChildPage(ExplorerPage childPage) {
+    public void enterChildPage(@NonNull ExplorerPage childPage) {
         ScriptFile root = mCurrentPageState.page.toScriptFile();
         ScriptFile dir = childPage.toScriptFile();
         Stack<ScriptFile> dirs = new Stack<>();
@@ -270,7 +271,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
     }
 
     @Subscribe
-    public void onExplorerChange(ExplorerChangeEvent event) {
+    public void onExplorerChange(@NonNull ExplorerChangeEvent event) {
         Log.d(LOG_TAG, "on explorer change: " + event);
         if ((event.getAction() == ExplorerChangeEvent.ALL)) {
             loadItemList();
@@ -320,7 +321,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
     }
 
     @Override
-    public boolean onMenuItemClick(MenuItem item) {
+    public boolean onMenuItemClick(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.rename) {
             new ScriptOperations(getContext(), this, getCurrentPage())
@@ -370,6 +371,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
         return true;
     }
 
+    @NonNull
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     protected void notifyOperated() {
@@ -412,7 +414,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
     }
 
 
-    protected BindableViewHolder<?> onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+    protected BindableViewHolder<?> onCreateViewHolder(@NonNull LayoutInflater inflater, ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_ITEM) {
             return new ExplorerItemViewHolder(inflater.inflate(R.layout.script_file_list_file, parent, false));
         } else if (viewType == VIEW_TYPE_PAGE) {
@@ -499,9 +501,10 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
 
         GradientDrawable mFirstCharBackground;
         private ExplorerItem mExplorerItem;
+        @NonNull
         private final ScriptFileListFileBinding bind;
 
-        ExplorerItemViewHolder(View itemView) {
+        ExplorerItemViewHolder(@NonNull View itemView) {
             super(itemView);
             bind = ScriptFileListFileBinding.bind(itemView);
             mFirstCharBackground = (GradientDrawable) bind.firstChar.getBackground();
@@ -512,7 +515,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
         }
 
         @Override
-        public void bind(ExplorerItem item, int position) {
+        public void bind(@NonNull ExplorerItem item, int position) {
             mExplorerItem = item;
             bind.name.setText(ExplorerViewHelper.getDisplayName(item));
             bind.desc.setText(PFiles.getHumanReadableSize(item.getSize()));
@@ -564,9 +567,10 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
 
     protected class ExplorerPageViewHolder extends BindableViewHolder<ExplorerPage> {
         private ExplorerPage mExplorerPage;
+        @NonNull
         private final ScriptFileListDirectoryBinding bind;
 
-        ExplorerPageViewHolder(View itemView) {
+        ExplorerPageViewHolder(@NonNull View itemView) {
             super(itemView);
             bind = ScriptFileListDirectoryBinding.bind(itemView);
             bind.item.setOnClickListener(view -> onItemClick());
@@ -599,9 +603,10 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
     class CategoryViewHolder extends BindableViewHolder<Boolean> {
 
         private boolean mIsDir;
+        @NonNull
         private final ScriptFileListCategoryBinding bind;
 
-        CategoryViewHolder(View itemView) {
+        CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             bind = ScriptFileListCategoryBinding.bind(itemView);
             bind.order.setOnClickListener(view -> changeSortOrder());

@@ -3,6 +3,8 @@ package com.stardust.autojs.core.database;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import androidx.annotation.NonNull;
+
 import java.sql.ResultSet;
 
 public class Transaction {
@@ -17,7 +19,7 @@ public class Transaction {
         mDatabase = database;
     }
 
-    public void executeSql(String sqlStatement, String[] arguments, StatementCallback callback, StatementErrorCallback errorCallback){
+    public void executeSql(String sqlStatement, String[] arguments, @NonNull StatementCallback callback, StatementErrorCallback errorCallback){
         Cursor cursor = mDatabase.rawQuery(sqlStatement,  arguments);
         callback.handleEvent(this, DatabaseResultSet.fromCursor(cursor));
     }

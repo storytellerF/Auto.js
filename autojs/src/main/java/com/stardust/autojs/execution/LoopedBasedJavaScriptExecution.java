@@ -1,5 +1,8 @@
 package com.stardust.autojs.execution;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.engine.LoopBasedJavaScriptEngine;
 import com.stardust.autojs.engine.ScriptEngine;
 import com.stardust.autojs.engine.ScriptEngineManager;
@@ -17,7 +20,8 @@ public class LoopedBasedJavaScriptExecution extends RunnableScriptExecution {
     }
 
 
-    protected Object doExecution(final ScriptEngine engine) {
+    @Nullable
+    protected Object doExecution(@NonNull final ScriptEngine engine) {
         engine.setTag(ScriptEngine.TAG_SOURCE, getSource());
         getListener().onStart(this);
         long delay = getConfig().getDelay();
@@ -43,6 +47,7 @@ public class LoopedBasedJavaScriptExecution extends RunnableScriptExecution {
         return null;
     }
 
+    @NonNull
     @Override
     public JavaScriptSource getSource() {
         return (JavaScriptSource) super.getSource();

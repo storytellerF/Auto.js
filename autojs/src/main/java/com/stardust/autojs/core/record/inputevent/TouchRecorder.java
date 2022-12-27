@@ -2,6 +2,8 @@ package com.stardust.autojs.core.record.inputevent;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.core.inputevent.InputEventObserver;
 import com.stardust.autojs.core.record.Recorder;
 
@@ -33,6 +35,7 @@ public class TouchRecorder extends Recorder.AbstractRecorder {
         mInputEventRecorder.start();
     }
 
+    @NonNull
     protected InputEventRecorder createInputEventRecorder() {
         return new InputEventToAutoFileRecorder(mContext);
     }

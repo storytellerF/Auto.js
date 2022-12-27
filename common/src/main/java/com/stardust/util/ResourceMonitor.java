@@ -5,6 +5,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.util.SparseArray;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.BuildConfig;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +30,7 @@ public final class ResourceMonitor {
         sUnclosedResourceDetectedHandler = unclosedResourceDetectedHandler;
     }
 
-    public static void onOpen(ResourceMonitor.Resource resource) {
+    public static void onOpen(@NonNull ResourceMonitor.Resource resource) {
         if (!sEnabled) {
             return;
         }
@@ -48,7 +50,7 @@ public final class ResourceMonitor {
         map.put(resourceId, exception);
     }
 
-    public static void onClose(ResourceMonitor.Resource resource) {
+    public static void onClose(@NonNull ResourceMonitor.Resource resource) {
         if (!sEnabled) {
             return;
         }
@@ -58,7 +60,7 @@ public final class ResourceMonitor {
         }
     }
 
-    public static void onFinalize(ResourceMonitor.Resource resource) {
+    public static void onFinalize(@NonNull ResourceMonitor.Resource resource) {
         if (!sEnabled) {
             return;
         }
@@ -96,7 +98,7 @@ public final class ResourceMonitor {
     }
 
     public static final class UnclosedResourceException extends RuntimeException {
-        public UnclosedResourceException(Resource resource) {
+        public UnclosedResourceException(@NonNull Resource resource) {
             super("id = " + resource.getResourceId() + ", resource = " + resource);
         }
 
@@ -114,6 +116,7 @@ public final class ResourceMonitor {
     }
 
     public interface ExceptionCreator {
+        @NonNull
         Exception create(Resource resource);
     }
 

@@ -40,7 +40,7 @@ public class TimedTaskScheduler {
                 .subscribe(timedTask -> scheduleTaskIfNeeded(context, timedTask, force));
     }
 
-    public static void scheduleTaskIfNeeded(Context context, TimedTask timedTask, boolean force) {
+    public static void scheduleTaskIfNeeded(Context context, @NonNull TimedTask timedTask, boolean force) {
         long millis = timedTask.getNextTime();
         if ((!force && timedTask.isScheduled()) || millis - System.currentTimeMillis() > SCHEDULE_TASK_MIN_TIME) {
             return;
@@ -50,7 +50,7 @@ public class TimedTaskScheduler {
                 .notifyTaskScheduled(timedTask);
     }
 
-    private synchronized static void scheduleTask(Context context, TimedTask timedTask, long millis, boolean force) {
+    private synchronized static void scheduleTask(Context context, @NonNull TimedTask timedTask, long millis, boolean force) {
         if (!force && timedTask.isScheduled()) {
             return;
         }
@@ -69,7 +69,7 @@ public class TimedTaskScheduler {
                 .schedule();
     }
 
-    public static void cancel(TimedTask timedTask) {
+    public static void cancel(@NonNull TimedTask timedTask) {
         int cancelCount = JobManager.instance().cancelAllForTag(String.valueOf(timedTask.getId()));
         Log.d(LOG_TAG, "cancel task: task = " + timedTask + ", cancel = " + cancelCount);
     }
@@ -89,7 +89,7 @@ public class TimedTaskScheduler {
         checkTasks(context, true);
     }
 
-    private static void runTask(Context context, TimedTask task) {
+    private static void runTask(Context context, @NonNull TimedTask task) {
         Log.d(LOG_TAG, "run task: task = " + task);
         Intent intent = task.createIntent();
         ScriptIntents.handleIntent(context, intent);

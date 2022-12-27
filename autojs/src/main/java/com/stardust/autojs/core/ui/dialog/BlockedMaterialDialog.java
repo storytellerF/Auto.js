@@ -6,6 +6,7 @@ import android.content.ContextWrapper;
 import android.os.Build;
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.view.WindowManager;
@@ -27,7 +28,7 @@ import com.stardust.util.UiHandler;
 
 public class BlockedMaterialDialog extends MaterialDialog {
 
-    protected BlockedMaterialDialog(MaterialDialog.Builder builder) {
+    protected BlockedMaterialDialog(@NonNull MaterialDialog.Builder builder) {
         super(builder);
     }
 
@@ -45,7 +46,7 @@ public class BlockedMaterialDialog extends MaterialDialog {
         super.show();
     }
 
-    private boolean isActivityContext(Context context) {
+    private boolean isActivityContext(@Nullable Context context) {
         if (context == null)
             return false;
         if (context instanceof Activity) {
@@ -66,7 +67,7 @@ public class BlockedMaterialDialog extends MaterialDialog {
         private final ScriptBridges mScriptBridges;
         private boolean mNotified = false;
 
-        public Builder(Context context, ScriptRuntime runtime, Object callback) {
+        public Builder(@NonNull Context context, @NonNull ScriptRuntime runtime, Object callback) {
             super(context);
             super.theme(Theme.LIGHT);
             mUiHandler = runtime.uiHandler;
@@ -77,6 +78,7 @@ public class BlockedMaterialDialog extends MaterialDialog {
             }
         }
 
+        @NonNull
         public MaterialDialog.Builder input(@Nullable CharSequence hint, @Nullable CharSequence prefill, boolean allowEmptyInput) {
             super.input(hint, prefill, allowEmptyInput, (dialog, input) -> setAndNotify(input.toString()));
             cancelListener(dialog -> setAndNotify(null));
@@ -122,12 +124,14 @@ public class BlockedMaterialDialog extends MaterialDialog {
             }
         }
 
+        @NonNull
         public Builder alert() {
             dismissListener(dialog -> setAndNotify(null));
             onAny((dialog, which) -> setAndNotify(null));
             return this;
         }
 
+        @NonNull
         public Builder confirm() {
             dismissListener(dialog -> setAndNotify(false));
             onAny((dialog, which) -> {
@@ -136,12 +140,14 @@ public class BlockedMaterialDialog extends MaterialDialog {
             return this;
         }
 
+        @NonNull
         public MaterialDialog.Builder itemsCallback() {
             dismissListener(dialog -> setAndNotify(-1));
             super.itemsCallback((dialog, itemView, position, text) -> setAndNotify(position));
             return this;
         }
 
+        @NonNull
         public MaterialDialog.Builder itemsCallbackMultiChoice(@Nullable Integer[] selectedIndices) {
             dismissListener(dialog -> setAndNotify(new int[0]));
             super.itemsCallbackMultiChoice(selectedIndices, (dialog, which, text) -> {
@@ -151,6 +157,7 @@ public class BlockedMaterialDialog extends MaterialDialog {
             return this;
         }
 
+        @NonNull
         public MaterialDialog.Builder itemsCallbackSingleChoice(int selectedIndex) {
             dismissListener(dialog -> setAndNotify(-1));
             super.itemsCallbackSingleChoice(selectedIndex, (dialog, itemView, which, text) -> {
@@ -161,6 +168,7 @@ public class BlockedMaterialDialog extends MaterialDialog {
         }
 
 
+        @Nullable
         public Object showAndGet() {
             if (Looper.myLooper() == Looper.getMainLooper()) {
                 super.show();
@@ -174,6 +182,7 @@ public class BlockedMaterialDialog extends MaterialDialog {
             }
         }
 
+        @NonNull
         @Override
         public MaterialDialog build() {
             return new BlockedMaterialDialog(this);

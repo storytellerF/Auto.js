@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
@@ -30,17 +31,17 @@ public class ExplorerProjectToolbar extends CardView {
 
     private ExplorerProjectToolbarBinding inflate;
 
-    public ExplorerProjectToolbar(Context context) {
+    public ExplorerProjectToolbar(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public ExplorerProjectToolbar(Context context, @Nullable AttributeSet attrs) {
+    public ExplorerProjectToolbar(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ExplorerProjectToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ExplorerProjectToolbar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -52,7 +53,7 @@ public class ExplorerProjectToolbar extends CardView {
         setOnClickListener(view -> edit());
     }
 
-    public void setProject(PFile dir) {
+    public void setProject(@NonNull PFile dir) {
         ProjectConfig mProjectConfig = ProjectConfig.fromProjectDir(dir.getPath());
         if(mProjectConfig == null){
             setVisibility(GONE);
@@ -104,7 +105,7 @@ public class ExplorerProjectToolbar extends CardView {
     }
 
     @Subscribe
-    public void onExplorerChange(ExplorerChangeEvent event) {
+    public void onExplorerChange(@NonNull ExplorerChangeEvent event) {
         if (mDirectory == null) {
             return;
         }

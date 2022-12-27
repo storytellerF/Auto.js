@@ -9,6 +9,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.pio.PFiles;
 import org.autojs.autojs.R;
 import org.autojs.autojs.external.ScriptIntents;
@@ -26,7 +28,7 @@ public class ScriptWidget extends AppWidgetProvider {
     private static final String LOG_TAG = "ScriptWidget";
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    public void onUpdate(@NonNull Context context, AppWidgetManager appWidgetManager, @NonNull int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         Set<Integer> appWidgetIdSet = new HashSet<>();
         for (int appWidgetId : appWidgetIds) {
@@ -37,7 +39,7 @@ public class ScriptWidget extends AppWidgetProvider {
             ScriptWidgets.removeAllNotIn(appWidgetIdSet);
     }
 
-    static boolean updateWidget(Context context, int widgetId, String path) {
+    static boolean updateWidget(@NonNull Context context, int widgetId, String path) {
         if (TextUtils.isEmpty(path) || widgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             return false;
         }

@@ -1,5 +1,7 @@
 package org.autojs.autojs.network.entity.user;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
@@ -678,6 +680,7 @@ public class User {
         return username;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return

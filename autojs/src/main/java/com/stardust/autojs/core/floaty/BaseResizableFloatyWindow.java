@@ -2,6 +2,7 @@ package com.stardust.autojs.core.floaty;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.view.View;
@@ -28,6 +29,7 @@ public class BaseResizableFloatyWindow extends ResizableFloatyWindow {
 
     public interface ViewSupplier {
 
+        @NonNull
         View inflate(Context context, ViewGroup parent);
 
     }
@@ -37,12 +39,12 @@ public class BaseResizableFloatyWindow extends ResizableFloatyWindow {
     private int mOffset;
 
 
-    public BaseResizableFloatyWindow(Context context, ViewSupplier viewSupplier) {
+    public BaseResizableFloatyWindow(@NonNull Context context, ViewSupplier viewSupplier) {
         this(new MyFloaty(context, viewSupplier));
         mOffset = context.getResources().getDimensionPixelSize(R.dimen.floaty_window_offset);
     }
 
-    private BaseResizableFloatyWindow(MyFloaty floaty) {
+    private BaseResizableFloatyWindow(@NonNull MyFloaty floaty) {
         super(floaty);
     }
 
@@ -50,6 +52,7 @@ public class BaseResizableFloatyWindow extends ResizableFloatyWindow {
         return mInflateException.blockedGetOrThrow(ScriptInterruptedException.class);
     }
 
+    @NonNull
     @Override
     protected WindowBridge onCreateWindowBridge(WindowManager.LayoutParams params) {
         return new WindowBridge.DefaultImpl(params, getWindowManager(), getWindowView()) {
@@ -102,7 +105,7 @@ public class BaseResizableFloatyWindow extends ResizableFloatyWindow {
     }
 
     @Override
-    protected void onViewCreated(View view) {
+    protected void onViewCreated(@NonNull View view) {
         super.onViewCreated(view);
         mCloseButton = view.findViewById(R.id.close);
     }
@@ -143,13 +146,13 @@ public class BaseResizableFloatyWindow extends ResizableFloatyWindow {
 
         @Nullable
         @Override
-        public View getResizerView(View view) {
+        public View getResizerView(@NonNull View view) {
             return view.findViewById(R.id.resizer);
         }
 
         @Nullable
         @Override
-        public View getMoveCursorView(View view) {
+        public View getMoveCursorView(@NonNull View view) {
             return view.findViewById(R.id.move_cursor);
         }
     }

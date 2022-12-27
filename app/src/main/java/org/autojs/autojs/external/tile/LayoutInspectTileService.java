@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
@@ -86,5 +88,6 @@ public abstract class LayoutInspectTileService extends TileService implements La
 
     }
 
+    @NonNull
     protected abstract FullScreenFloatyWindow onCreateWindow(NodeInfo capture);
 }

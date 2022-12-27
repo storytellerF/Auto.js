@@ -1,5 +1,8 @@
 package com.stardust.autojs.rhino;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.NativeJavaClass;
 import org.mozilla.javascript.NativeObject;
@@ -21,13 +24,14 @@ public class NativeJavaClassWithPrototype extends NativeJavaClass {
     }
 
     @Override
-    public boolean has(String name, Scriptable start) {
+    public boolean has(@NonNull String name, Scriptable start) {
         return mProperties.containsKey(name) || super.has(name, start) || (prototype != null && prototype.has(name, start))
                 || name.equals("prototype");
     }
 
+    @Nullable
     @Override
-    public Object get(String name, Scriptable start) {
+    public Object get(@NonNull String name, Scriptable start) {
         if (name.equals("prototype")) {
             return prototype;
         }
@@ -51,6 +55,7 @@ public class NativeJavaClassWithPrototype extends NativeJavaClass {
         return prototype.get(name, start);
     }
 
+    @Nullable
     private Object unwrapValue(Object value) {
         if (value == NULL)
             return null;
@@ -58,7 +63,7 @@ public class NativeJavaClassWithPrototype extends NativeJavaClass {
     }
 
     @Override
-    public void put(String name, Scriptable start, Object value) {
+    public void put(@NonNull String name, Scriptable start, Object value) {
         if (name.equals("prototype")) {
             prototype = (Scriptable) value;
             return;
@@ -77,13 +82,14 @@ public class NativeJavaClassWithPrototype extends NativeJavaClass {
         }
     }
 
-    private Object wrapValue(Object value) {
+    @Nullable
+    private Object wrapValue(@Nullable Object value) {
         if (value == null)
             return NULL;
         return value;
     }
 
-    private static boolean memberNotFound(EvaluatorException e) {
+    private static boolean memberNotFound(@NonNull EvaluatorException e) {
         return e.getMessage() != null && e.getMessage().startsWith("Java class \"com.stardust.autojs.rhino.NativeJavaObjectWithPrototype\"");
     }
 

@@ -8,6 +8,9 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.enhancedfloaty.FloatyService;
 import com.stardust.enhancedfloaty.FloatyWindow;
 import com.stardust.enhancedfloaty.WindowBridge;
@@ -62,11 +65,13 @@ public class CircularMenuWindow extends FloatyWindow {
         }
     }
 
+    @Nullable
     @Override
     protected View onCreateView(FloatyService floatyService) {
         return null;
     }
 
+    @Nullable
     @Override
     protected WindowManager.LayoutParams onCreateWindowLayoutParams() {
         return null;
@@ -102,6 +107,7 @@ public class CircularMenuWindow extends FloatyWindow {
         }
     }
 
+    @NonNull
     private WindowManager.LayoutParams createWindowLayoutParams() {
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,

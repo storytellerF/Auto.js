@@ -3,6 +3,8 @@ package com.stardust.autojs.rhino;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 
 import org.mozilla.javascript.Context;
@@ -31,6 +33,7 @@ public class InterruptibleAndroidContextFactory extends AndroidContextFactory {
         }
     }
 
+    @NonNull
     @Override
     protected Context makeContext() {
         Context cx = new AutoJsContext(this);

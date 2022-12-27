@@ -1,5 +1,6 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
@@ -31,7 +32,7 @@ public class ToolbarInflater<V extends Toolbar> extends BaseViewInflater<V> {
     }
 
     @Override
-    public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull V view, @NonNull String attr, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         switch (attr) {
 
             case "logo":

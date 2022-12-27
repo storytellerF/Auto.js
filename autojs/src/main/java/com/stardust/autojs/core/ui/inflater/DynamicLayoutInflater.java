@@ -61,7 +61,9 @@ public class DynamicLayoutInflater {
 
     private static final String LOG_TAG = "DynamicLayoutInflater";
 
+    @NonNull
     private Map<String, ViewInflater<?>> mViewAttrSetters = new HashMap<>();
+    @NonNull
     private Map<String, ViewCreator<?>> mViewCreators = new HashMap<>();
     private Context mContext;
     private final ResourceParser mResourceParser;
@@ -75,7 +77,7 @@ public class DynamicLayoutInflater {
     }
 
     @SuppressWarnings("IncompleteCopyConstructor")
-    public DynamicLayoutInflater(DynamicLayoutInflater inflater) {
+    public DynamicLayoutInflater(@NonNull DynamicLayoutInflater inflater) {
         this.mResourceParser = inflater.mResourceParser;
         this.mContext = inflater.mContext;
         this.mViewAttrSetters = new HashMap<>(inflater.mViewAttrSetters);
@@ -130,7 +132,7 @@ public class DynamicLayoutInflater {
         registerViewAttrSetter(JsTabLayout.class.getName(), new TabLayoutInflater<>(mResourceParser));
     }
 
-    public void registerViewAttrSetter(String fullName, ViewInflater<?> inflater) {
+    public void registerViewAttrSetter(String fullName, @NonNull ViewInflater<?> inflater) {
         mViewAttrSetters.put(fullName, inflater);
         ViewCreator<?> creator = inflater.getCreator();
         if (creator != null) {
@@ -159,12 +161,13 @@ public class DynamicLayoutInflater {
         return mLayoutInflaterDelegate.afterInflation(context, doInflation(context, xml, parent, attachToParent), xml, parent);
     }
 
+    @NonNull
     public InflateContext newInflateContext(){
         return new InflateContext();
     }
 
 
-    protected View doInflation(InflateContext context, String xml, @Nullable ViewGroup parent, boolean attachToParent) {
+    protected View doInflation(InflateContext context, @NonNull String xml, @Nullable ViewGroup parent, boolean attachToParent) {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setNamespaceAware(true);
@@ -187,7 +190,7 @@ public class DynamicLayoutInflater {
         }
     }
 
-    public View inflate(InflateContext context, Node node, @Nullable ViewGroup parent, boolean attachToParent) {
+    public View inflate(InflateContext context, @NonNull Node node, @Nullable ViewGroup parent, boolean attachToParent) {
         View view = doInflation(context, node, parent, attachToParent);
         if (view instanceof ShouldCallOnFinishInflate) {
             ((ShouldCallOnFinishInflate) view).onFinishDynamicInflate();
@@ -195,7 +198,7 @@ public class DynamicLayoutInflater {
         return view;
     }
 
-    protected View doInflation(InflateContext context, Node node, @Nullable ViewGroup parent, boolean attachToParent) {
+    protected View doInflation(InflateContext context, @NonNull Node node, @Nullable ViewGroup parent, boolean attachToParent) {
         View view = mLayoutInflaterDelegate.beforeInflateView(context, node, parent, attachToParent);
         if (view != null)
             return view;
@@ -218,7 +221,7 @@ public class DynamicLayoutInflater {
     }
 
     @SuppressWarnings("unchecked")
-    protected void applyPendingAttributesOfChildren(InflateContext context, ViewGroupInflater inflater, ViewGroup view) {
+    protected void applyPendingAttributesOfChildren(InflateContext context, @NonNull ViewGroupInflater inflater, ViewGroup view) {
         if (mLayoutInflaterDelegate.beforeApplyPendingAttributesOfChildren(context, inflater, view)) {
             return;
         }
@@ -228,8 +231,9 @@ public class DynamicLayoutInflater {
     }
 
 
+    @Nullable
     @SuppressWarnings("unchecked")
-    public ViewInflater<View> applyAttributes(InflateContext context, View view, HashMap<String, String> attrs, @Nullable ViewGroup parent) {
+    public ViewInflater<View> applyAttributes(InflateContext context, @NonNull View view, @NonNull HashMap<String, String> attrs, @Nullable ViewGroup parent) {
         ViewInflater<View> inflater = (ViewInflater<View>) getViewInflater(view);
         if (mLayoutInflaterDelegate.beforeApplyAttributes(context, view, inflater, attrs, parent)) {
             return inflater;
@@ -240,7 +244,7 @@ public class DynamicLayoutInflater {
     }
 
     @Nullable
-    public ViewInflater<?> getViewInflater(View view) {
+    public ViewInflater<?> getViewInflater(@NonNull View view) {
         ViewInflater<?> setter = mViewAttrSetters.get(view.getClass().getName());
         Class c = view.getClass();
         while (setter == null && c != View.class) {
@@ -250,7 +254,7 @@ public class DynamicLayoutInflater {
         return setter;
     }
 
-    protected void inflateChildren(InflateContext context, ViewInflater<View> inflater, Node node, ViewGroup parent) {
+    protected void inflateChildren(InflateContext context, @NonNull ViewInflater<View> inflater, @NonNull Node node, ViewGroup parent) {
         if (mLayoutInflaterDelegate.beforeInflateChildren(context, inflater, node, parent)) {
             return;
         }
@@ -261,7 +265,7 @@ public class DynamicLayoutInflater {
         mLayoutInflaterDelegate.afterInflateChildren(context, inflater, node, parent);
     }
 
-    public void inflateChildren(InflateContext context, Node node, ViewGroup parent) {
+    public void inflateChildren(InflateContext context, @NonNull Node node, ViewGroup parent) {
         NodeList nodeList = node.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node currentNode = nodeList.item(i);
@@ -270,14 +274,15 @@ public class DynamicLayoutInflater {
         }
     }
 
-    protected View doCreateView(InflateContext context, Node node, String viewName, ViewGroup parent, HashMap<String, String> attrs) {
+    protected View doCreateView(InflateContext context, Node node, @NonNull String viewName, ViewGroup parent, @NonNull HashMap<String, String> attrs) {
         View view = mLayoutInflaterDelegate.beforeCreateView(context, node, viewName, parent, attrs);
         if (view != null)
             return view;
         return mLayoutInflaterDelegate.afterCreateView(context, createViewForName(viewName, attrs), node, viewName, parent, attrs);
     }
 
-    public View createViewForName(String name, HashMap<String, String> attrs) {
+    @NonNull
+    public View createViewForName(@NonNull String name, @NonNull HashMap<String, String> attrs) {
         try {
             if (name.equals("View")) {
                 return new View(mContext);
@@ -304,7 +309,8 @@ public class DynamicLayoutInflater {
     }
 
 
-    public HashMap<String, String> getAttributesMap(Node currentNode) {
+    @NonNull
+    public HashMap<String, String> getAttributesMap(@NonNull Node currentNode) {
         NamedNodeMap attributeMap = currentNode.getAttributes();
         int attributeCount = attributeMap.getLength();
         HashMap<String, String> attributes = new HashMap<>(attributeCount);
@@ -317,7 +323,7 @@ public class DynamicLayoutInflater {
     }
 
     @SuppressWarnings("unchecked")
-    protected void applyAttributes(InflateContext context, View view, ViewInflater<View> setter, Map<String, String> attrs, @Nullable ViewGroup parent) {
+    protected void applyAttributes(InflateContext context, @NonNull View view, @Nullable ViewInflater<View> setter, @NonNull Map<String, String> attrs, @Nullable ViewGroup parent) {
         if (setter != null) {
             for (Map.Entry<String, String> entry : attrs.entrySet()) {
                 String[] attr = entry.getKey().split(":");
@@ -336,7 +342,7 @@ public class DynamicLayoutInflater {
 
     }
 
-    protected void applyAttribute(InflateContext context, ViewInflater<View> inflater, View view, String ns, String attrName, String value, ViewGroup parent, Map<String, String> attrs) {
+    protected void applyAttribute(InflateContext context, @NonNull ViewInflater<View> inflater, View view, String ns, String attrName, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         if (mLayoutInflaterDelegate.beforeApplyAttribute(context, inflater, view, ns, attrName, value, parent, attrs)) {
             return;
         }
@@ -350,7 +356,7 @@ public class DynamicLayoutInflater {
 
     }
 
-    public boolean isDynamicValue(String value) {
+    public boolean isDynamicValue(@NonNull String value) {
         int i = value.indexOf("{{");
         if (i < 0)
             return false;

@@ -7,6 +7,9 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -25,16 +28,17 @@ public class ToolbarMenuItem extends LinearLayout {
     private final int mColorEnabled;
     private ImageView mImageView;
     private TextView mTextView;
+    @Nullable
     private Drawable mEnabledDrawable, mDisabledDrawable;
 
-    public ToolbarMenuItem(Context context, AttributeSet attrs) {
+    public ToolbarMenuItem(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         mColorDisabled = ContextCompat.getColor(context, R.color.toolbar_disabled);
         mColorEnabled = ContextCompat.getColor(context, R.color.toolbar);
         init(attrs);
     }
 
-    public ToolbarMenuItem(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ToolbarMenuItem(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mColorDisabled = ContextCompat.getColor(context, R.color.toolbar_disabled);
         mColorEnabled = ContextCompat.getColor(context, R.color.toolbar);
@@ -42,7 +46,7 @@ public class ToolbarMenuItem extends LinearLayout {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ToolbarMenuItem(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ToolbarMenuItem(@NonNull Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         mColorDisabled = ContextCompat.getColor(context, R.color.toolbar_disabled);
         mColorEnabled = ContextCompat.getColor(context, R.color.toolbar);
@@ -89,7 +93,8 @@ public class ToolbarMenuItem extends LinearLayout {
         }
     }
 
-    public static Drawable tintDrawable(Drawable drawable, int color) {
+    @Nullable
+    public static Drawable tintDrawable(@Nullable Drawable drawable, int color) {
         if (drawable == null || drawable.getConstantState() == null)
             return null;
         Drawable res = drawable.getConstantState().newDrawable().mutate();

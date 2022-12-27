@@ -3,6 +3,9 @@ package com.stardust.autojs.project;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -59,7 +62,8 @@ public class ProjectConfig {
     private List<String> mFeatures = new ArrayList<>();
 
 
-    public static ProjectConfig fromJson(String json) {
+    @Nullable
+    public static ProjectConfig fromJson(@Nullable String json) {
         if (json == null) {
             return null;
         }
@@ -70,7 +74,7 @@ public class ProjectConfig {
         return config;
     }
 
-    private static boolean isValid(ProjectConfig config) {
+    private static boolean isValid(@NonNull ProjectConfig config) {
         if (TextUtils.isEmpty(config.getName())) {
             return false;
         }
@@ -87,7 +91,8 @@ public class ProjectConfig {
     }
 
 
-    public static ProjectConfig fromAssets(Context context, String path) {
+    @Nullable
+    public static ProjectConfig fromAssets(@NonNull Context context, String path) {
         try {
             return fromJson(PFiles.read(context.getAssets().open(path)));
         } catch (Exception e) {
@@ -95,6 +100,7 @@ public class ProjectConfig {
         }
     }
 
+    @Nullable
     public static ProjectConfig fromFile(String path) {
         try {
             return fromJson(PFiles.read(path));
@@ -103,11 +109,13 @@ public class ProjectConfig {
         }
     }
 
+    @Nullable
     public static ProjectConfig fromProjectDir(String path) {
         return fromFile(configFileOfDir(path));
     }
 
 
+    @NonNull
     public static String configFileOfDir(String projectDir) {
         return PFiles.join(projectDir, CONFIG_FILE_NAME);
     }
@@ -124,6 +132,7 @@ public class ProjectConfig {
         return mName;
     }
 
+    @NonNull
     public ProjectConfig setName(String name) {
         mName = name;
         return this;
@@ -133,6 +142,7 @@ public class ProjectConfig {
         return mVersionName;
     }
 
+    @NonNull
     public ProjectConfig setVersionName(String versionName) {
         mVersionName = versionName;
         return this;
@@ -142,6 +152,7 @@ public class ProjectConfig {
         return mVersionCode;
     }
 
+    @NonNull
     public ProjectConfig setVersionCode(int versionCode) {
         mVersionCode = versionCode;
         return this;
@@ -151,6 +162,7 @@ public class ProjectConfig {
         return mPackageName;
     }
 
+    @NonNull
     public ProjectConfig setPackageName(String packageName) {
         mPackageName = packageName;
         return this;
@@ -160,11 +172,13 @@ public class ProjectConfig {
         return mMainScriptFile;
     }
 
+    @NonNull
     public ProjectConfig setMainScriptFile(String mainScriptFile) {
         mMainScriptFile = mainScriptFile;
         return this;
     }
 
+    @NonNull
     public Map<String, ScriptConfig> getScriptConfigs() {
         return mScriptConfigs;
     }
@@ -176,7 +190,7 @@ public class ProjectConfig {
         return mAssets;
     }
 
-    public boolean addAsset(String assetRelativePath) {
+    public boolean addAsset(@NonNull String assetRelativePath) {
         if (mAssets == null) {
             mAssets = new ArrayList<>();
         }
@@ -216,6 +230,7 @@ public class ProjectConfig {
         mIcon = icon;
     }
 
+    @NonNull
     public String getBuildDir() {
         return "build";
     }
@@ -228,6 +243,7 @@ public class ProjectConfig {
         mFeatures = features;
     }
 
+    @Nullable
     public ScriptConfig getScriptConfig(String path) {
         ScriptConfig config = mScriptConfigs.get(path);
         if (config == null) {

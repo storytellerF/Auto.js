@@ -2,6 +2,8 @@ package org.autojs.autojs.ui.edit.completion;
 
 import android.content.Context;
 import android.os.Looper;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -31,7 +33,7 @@ public class CodeCompletionBar extends RecyclerView {
     private OnHintClickListener mOnHintClickListener;
     private final OnClickListener mOnCodeCompletionItemClickListener = new OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(@NonNull View v) {
             int position = getChildViewHolder(v).getAdapterPosition();
             if (position >= 0 && position < mCodeCompletions.size()) {
                 if (mOnHintClickListener != null) {
@@ -44,7 +46,7 @@ public class CodeCompletionBar extends RecyclerView {
 
     private final OnLongClickListener mOnCodeCompletionItemLongClickListener = new OnLongClickListener() {
         @Override
-        public boolean onLongClick(View v) {
+        public boolean onLongClick(@NonNull View v) {
             int position = getChildViewHolder(v).getAdapterPosition();
             if (position < 0 || position >= mCodeCompletions.size())
                 return false;
@@ -55,17 +57,17 @@ public class CodeCompletionBar extends RecyclerView {
         }
     };
 
-    public CodeCompletionBar(Context context) {
+    public CodeCompletionBar(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public CodeCompletionBar(Context context, @Nullable AttributeSet attrs) {
+    public CodeCompletionBar(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public CodeCompletionBar(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public CodeCompletionBar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -100,13 +102,14 @@ public class CodeCompletionBar extends RecyclerView {
 
     private class CodeCompletionAdapter extends RecyclerView.Adapter<ViewHolder> {
 
+        @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.input_method_enhance_bar_item, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             TextView textView = ((TextView) holder.itemView);
             textView.setText(mCodeCompletions.getHint(position));
             if (mTextColor != 0) {
@@ -122,7 +125,7 @@ public class CodeCompletionBar extends RecyclerView {
 
     private class ViewHolder extends RecyclerView.ViewHolder {
 
-        ViewHolder(View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(mOnCodeCompletionItemClickListener);
             itemView.setOnLongClickListener(mOnCodeCompletionItemLongClickListener);

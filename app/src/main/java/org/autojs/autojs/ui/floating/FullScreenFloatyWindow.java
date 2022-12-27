@@ -4,6 +4,8 @@ import android.graphics.PixelFormat;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.enhancedfloaty.FloatyService;
 import com.stardust.enhancedfloaty.FloatyWindow;
 
@@ -13,6 +15,7 @@ import com.stardust.enhancedfloaty.FloatyWindow;
 
 public abstract class FullScreenFloatyWindow extends FloatyWindow {
 
+    @NonNull
     @Override
     protected WindowManager.LayoutParams onCreateWindowLayoutParams() {
         return new WindowManager.LayoutParams(

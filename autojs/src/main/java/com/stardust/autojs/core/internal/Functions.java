@@ -1,11 +1,14 @@
 package com.stardust.autojs.core.internal;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/7/19.
  */
 
 public class Functions {
 
+    @NonNull
     @SuppressWarnings("unchecked")
     public static Object call(Func func, Object[] args) {
         if (func instanceof Func0) {
@@ -27,22 +30,27 @@ public class Functions {
     }
 
     public interface Func0<R> extends Func {
+        @NonNull
         R call();
     }
 
     public interface Func1<T1, R> extends Func {
+        @NonNull
         R call(T1 t1);
     }
 
     public interface Func2<T1, T2, R> extends Func {
+        @NonNull
         R call(T1 t1, T2 t2);
     }
 
     public interface Func3<T1, T2, T3, R> extends Func {
+        @NonNull
         R call(T1 t1, T2 t2, T3 t3);
     }
 
     public interface Func4<T1, T2, T3, T4, R> extends Func {
+        @NonNull
         R call(T1 t1, T2 t2, T3 t3, T4 t4);
     }
 

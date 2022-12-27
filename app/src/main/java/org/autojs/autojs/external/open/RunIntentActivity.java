@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.widget.Toast;
 
@@ -34,7 +36,7 @@ public class RunIntentActivity extends Activity {
         finish();
     }
 
-    private void handleIntent(Intent intent) throws FileNotFoundException {
+    private void handleIntent(@NonNull Intent intent) throws FileNotFoundException {
         Uri uri = intent.getData();
         if (uri != null && "content".equals(uri.getScheme())) {
             InputStream stream = getContentResolver().openInputStream(uri);

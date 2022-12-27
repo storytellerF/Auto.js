@@ -1,5 +1,7 @@
 package com.stardust.autojs.core.record.inputevent;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/3/7.
  */
@@ -7,6 +9,7 @@ package com.stardust.autojs.core.record.inputevent;
 public class EventFormatException extends RuntimeException {
 
 
+    @NonNull
     public static EventFormatException forEventStr(String eventStr, NumberFormatException e) {
         return new EventFormatException(eventStr, e);
     }

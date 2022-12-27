@@ -4,6 +4,8 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import org.autojs.autojs.ui.explorer.ExplorerView;
  */
 public class ScriptWidgetSettingsActivity extends BaseActivity {
 
+    @Nullable
     private String mSelectedScriptFilePath;
     private Explorer mExplorer;
     private int mAppWidgetId;
@@ -56,7 +59,7 @@ public class ScriptWidgetSettingsActivity extends BaseActivity {
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_refresh) {
             mExplorer.refreshAll();
         } else if (item.getItemId() == R.id.action_clear_file_selection) {

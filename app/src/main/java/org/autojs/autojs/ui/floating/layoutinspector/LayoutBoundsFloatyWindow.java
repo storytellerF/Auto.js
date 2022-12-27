@@ -6,6 +6,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.stardust.app.DialogUtils;
@@ -41,7 +43,7 @@ public class LayoutBoundsFloatyWindow extends FullScreenFloatyWindow {
         mRootNode = rootNode;
     }
 
-    public static void capture(LayoutInspector inspector, Context context) {
+    public static void capture(@NonNull LayoutInspector inspector, @NonNull Context context) {
         LayoutInspector.CaptureAvailableListener listener = new LayoutInspector.CaptureAvailableListener() {
             @Override
             public void onCaptureAvailable(NodeInfo capture) {
@@ -61,7 +63,7 @@ public class LayoutBoundsFloatyWindow extends FullScreenFloatyWindow {
         mContext = new ContextThemeWrapper(floatyService, R.style.AppTheme);
         mLayoutBoundsView = new LayoutBoundsView(mContext) {
             @Override
-            public boolean dispatchKeyEvent(KeyEvent event) {
+            public boolean dispatchKeyEvent(@NonNull KeyEvent event) {
                 if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
                     close();
                     return true;

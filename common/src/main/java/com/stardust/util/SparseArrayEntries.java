@@ -11,6 +11,7 @@ public class SparseArrayEntries<E> {
 
     private final SparseArray<E> mSparseArray = new SparseArray<>();
 
+    @NonNull
     public SparseArrayEntries<E> entry(int key, E value) {
         mSparseArray.put(key, value);
         return this;

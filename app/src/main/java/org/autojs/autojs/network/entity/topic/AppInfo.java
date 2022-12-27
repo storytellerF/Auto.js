@@ -1,6 +1,8 @@
 
 package org.autojs.autojs.network.entity.topic;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
@@ -151,6 +153,7 @@ public class AppInfo {
         mVersionCode = versionCode;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "ScriptApp{" +

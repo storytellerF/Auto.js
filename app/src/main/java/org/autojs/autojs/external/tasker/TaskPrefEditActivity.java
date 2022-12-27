@@ -30,7 +30,9 @@ import org.autojs.autojs.ui.explorer.ExplorerView;
  */
 public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
 
+    @Nullable
     private String mSelectedScriptFilePath;
+    @Nullable
     private String mPreExecuteScript;
     private ActivityTaskerEditBinding inflate;
 
@@ -65,7 +67,7 @@ public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_refresh) {
             Explorers.external().refreshAll();
         } else if (item.getItemId() == R.id.action_clear_file_selection) {
@@ -118,7 +120,7 @@ public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             mPreExecuteScript = data.getStringExtra(EXTRA_CONTENT);

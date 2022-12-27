@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.autojs.autojs.model.indices.Module;
 import org.autojs.autojs.model.indices.Modules;
 import org.autojs.autojs.model.indices.Property;
@@ -36,18 +39,22 @@ public class AutoCompletion {
 
     private static final Pattern STATEMENT = Pattern.compile("([A-Za-z]+\\.)?([a-zA-Z][a-zA-Z0-9_]*)?$");
 
+    @Nullable
     private String mModuleName;
+    @Nullable
     private String mPropertyPrefill;
     private List<Module> mModules;
     private final DictionaryTree<Property> mGlobalPropertyTree = new DictionaryTree<>();
     private AutoCompleteCallback mAutoCompleteCallback;
     private final ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+    @NonNull
     private final AnyWordsCompletion mAnyWordsCompletion;
     private final AtomicInteger mExecuteId = new AtomicInteger();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
+    @NonNull
     private final EditText mEditText;
 
-    public AutoCompletion(Context context, EditText editText) {
+    public AutoCompletion(@NonNull Context context, @NonNull EditText editText) {
         buildDictionaryTree(context);
         mEditText = editText;
         mAnyWordsCompletion = new AnyWordsCompletion(mExecutorService);
@@ -58,7 +65,7 @@ public class AutoCompletion {
         mAutoCompleteCallback = autoCompleteCallback;
     }
 
-    private void buildDictionaryTree(Context context) {
+    private void buildDictionaryTree(@NonNull Context context) {
         Modules.getInstance().getModules(context)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -66,7 +73,7 @@ public class AutoCompletion {
                 .subscribe(modules -> mModules = modules);
     }
 
-    private void buildDictionaryTree(List<Module> modules) {
+    private void buildDictionaryTree(@NonNull List<Module> modules) {
         for (Module module : modules) {
             if (!module.getName().equals("globals"))
                 mGlobalPropertyTree.putWord(module.getName(), module.asGlobalProperty());
@@ -77,7 +84,7 @@ public class AutoCompletion {
         }
     }
 
-    public void onCursorChange(String line, int cursor) {
+    public void onCursorChange(@Nullable String line, int cursor) {
         if (cursor <= 0 || line == null || line.isEmpty()) {
             return;
         }
@@ -105,7 +112,8 @@ public class AutoCompletion {
 
     }
 
-    private Module getModule(String moduleName) {
+    @Nullable
+    private Module getModule(@Nullable String moduleName) {
         if (moduleName == null)
             return null;
         for (Module module : mModules) {
@@ -116,7 +124,7 @@ public class AutoCompletion {
         return null;
     }
 
-    private void findStatementOnCursor(String line, int cursor) {
+    private void findStatementOnCursor(@NonNull String line, int cursor) {
         Matcher matcher = STATEMENT.matcher(line.substring(0, cursor));
         if (!matcher.find()) {
             mModuleName = mPropertyPrefill = null;
@@ -132,13 +140,15 @@ public class AutoCompletion {
         }
     }
 
-    private List<CodeCompletion> findCodeCompletion(Module module, String propertyPrefill) {
+    @NonNull
+    private List<CodeCompletion> findCodeCompletion(@Nullable Module module, String propertyPrefill) {
         if (module == null)
             return findCodeCompletionForGlobal(propertyPrefill);
         return findCodeCompletionForModule(module, propertyPrefill);
     }
 
-    private List<CodeCompletion> findCodeCompletionForModule(Module module, String propertyPrefill) {
+    @NonNull
+    private List<CodeCompletion> findCodeCompletionForModule(@NonNull Module module, @Nullable String propertyPrefill) {
         List<CodeCompletion> completions = new ArrayList<>();
         int len = propertyPrefill == null ? 0 : propertyPrefill.length();
         for (Property property : module.getProperties()) {
@@ -149,7 +159,8 @@ public class AutoCompletion {
         return completions;
     }
 
-    private List<CodeCompletion> findCodeCompletionForGlobal(String propertyPrefill) {
+    @NonNull
+    private List<CodeCompletion> findCodeCompletionForGlobal(@Nullable String propertyPrefill) {
         if (propertyPrefill == null)
             return Collections.emptyList();
         List<CodeCompletion> completions = new ArrayList<>();

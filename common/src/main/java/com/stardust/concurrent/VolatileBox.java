@@ -1,6 +1,8 @@
 package com.stardust.concurrent;
 
 
+import androidx.annotation.NonNull;
+
 import java.lang.reflect.Constructor;
 
 /**
@@ -53,7 +55,7 @@ public class VolatileBox<T> {
         return mValue;
     }
 
-    public T blockedGetOrThrow(Class<? extends RuntimeException> exception) {
+    public T blockedGetOrThrow(@NonNull Class<? extends RuntimeException> exception) {
         synchronized (this) {
             try {
                 this.wait();

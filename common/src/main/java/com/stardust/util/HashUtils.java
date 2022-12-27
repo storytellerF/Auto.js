@@ -2,6 +2,8 @@ package com.stardust.util;
 
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -11,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashUtils {
 
-    public static String md5(String text) {
+    public static String md5(@NonNull String text) {
         MessageDigest md;
         byte[] bytesOfMessage = text.getBytes();
         try {

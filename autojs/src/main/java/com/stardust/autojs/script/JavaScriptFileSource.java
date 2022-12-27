@@ -20,12 +20,12 @@ public class JavaScriptFileSource extends JavaScriptSource {
     private String mScript;
     private boolean mCustomsName = false;
 
-    public JavaScriptFileSource(File file) {
+    public JavaScriptFileSource(@NonNull File file) {
         super(PFiles.getNameWithoutExtension(file.getName()));
         mFile = file;
     }
 
-    public JavaScriptFileSource(String path) {
+    public JavaScriptFileSource(@NonNull String path) {
         this(new File(path));
     }
 
@@ -65,6 +65,7 @@ public class JavaScriptFileSource extends JavaScriptSource {
         return mFile;
     }
 
+    @NonNull
     @Override
     public String toString() {
         if (mCustomsName) {

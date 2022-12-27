@@ -2,6 +2,9 @@ package com.stardust.autojs.core.ui.inflater.inflaters;
 
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -10,11 +13,14 @@ import java.util.Map;
  */
 
 public class MapAttrbuteSet implements AttributeSet {
+    @NonNull
     private final Map<String, String> mMap;
+    @NonNull
     private final ArrayList<String> mKeys;
+    @NonNull
     private final ArrayList<String> mValues;
 
-    public MapAttrbuteSet(Map<String, String> map) {
+    public MapAttrbuteSet(@NonNull Map<String, String> map) {
         mMap = map;
         mKeys = new ArrayList<>(map.size());
         mValues = new ArrayList<>(map.size());
@@ -39,11 +45,13 @@ public class MapAttrbuteSet implements AttributeSet {
         return mValues.get(index);
     }
 
+    @Nullable
     @Override
     public String getAttributeValue(String namespace, String name) {
         return mMap.get(name);
     }
 
+    @Nullable
     @Override
     public String getPositionDescription() {
         return null;
@@ -116,11 +124,13 @@ public class MapAttrbuteSet implements AttributeSet {
         return 0;
     }
 
+    @Nullable
     @Override
     public String getIdAttribute() {
         return null;
     }
 
+    @Nullable
     @Override
     public String getClassAttribute() {
         return null;

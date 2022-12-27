@@ -2,6 +2,8 @@ package com.stardust.autojs.core.ui.inflater.inflaters;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/11/4.
  */
@@ -17,7 +19,7 @@ public class Exceptions {
 
     private static ExceptionHandler sExceptionHandler;
 
-    public static void unsupports(View v, String name, String value) {
+    public static void unsupports(@NonNull View v, String name, String value) {
         UnsupportedOperationException e = new UnsupportedOperationException(String.format("Attr %s:%s=\"%s\" is not supported",
                 v.getClass().getSimpleName(), name, value));
         if (sExceptionHandler == null || !sExceptionHandler.handleUnsupportedException(e, v, name, value)) {

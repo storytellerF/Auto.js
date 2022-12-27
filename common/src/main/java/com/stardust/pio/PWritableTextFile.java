@@ -12,28 +12,35 @@ import java.util.List;
 
 import static com.stardust.pio.PFiles.DEFAULT_BUFFER_SIZE;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/4/1.
  */
 
 public class PWritableTextFile implements Closeable, PFileInterface {
 
+    @NonNull
     public static PWritableTextFile open(String path, String encoding, int bufferSize) {
         return new PWritableTextFile(path, encoding, bufferSize, false);
     }
 
+    @NonNull
     public static PWritableTextFile open(String path, String encoding) {
         return new PWritableTextFile(path, encoding);
     }
 
+    @NonNull
     public static PWritableTextFile open(String path, boolean append) {
         return new PWritableTextFile(path, append);
     }
 
+    @NonNull
     public static PWritableTextFile open(String path) {
         return new PWritableTextFile(path);
     }
 
+    @NonNull
     private final BufferedWriter mBufferedWriter;
     private final String mPath;
 
@@ -95,7 +102,7 @@ public class PWritableTextFile implements Closeable, PFileInterface {
         writelines(Arrays.asList(lines));
     }
 
-    public void writelines(List<String> lines) {
+    public void writelines(@NonNull List<String> lines) {
         for (String line : lines) {
             writeline(line);
         }

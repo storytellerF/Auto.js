@@ -3,6 +3,7 @@ package org.autojs.autojs.ui.update;
 import android.app.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -21,6 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class VersionGuard {
 
     private final Activity mActivity;
+    @Nullable
     private MaterialDialog mDeprecatedDialog;
     private final VersionService mVersionService = VersionService.getInstance();
 
@@ -54,7 +56,7 @@ public class VersionGuard {
                 });
     }
 
-    private void showUpdateInfoIfNeeded(org.autojs.autojs.network.entity.VersionInfo info) {
+    private void showUpdateInfoIfNeeded(@NonNull org.autojs.autojs.network.entity.VersionInfo info) {
         if (BuildConfig.VERSION_CODE < info.versionCode) {
             new UpdateInfoDialogBuilder(mActivity, info)
                     .showDoNotAskAgain()

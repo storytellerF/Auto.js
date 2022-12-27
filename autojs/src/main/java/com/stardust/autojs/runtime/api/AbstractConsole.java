@@ -1,5 +1,6 @@
 package com.stardust.autojs.runtime.api;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
@@ -15,7 +16,8 @@ public abstract class AbstractConsole implements Console {
         println(level, format(data, options));
     }
 
-    public CharSequence format(@Nullable Object data, Object... options) {
+    @NonNull
+    public CharSequence format(@Nullable Object data, @Nullable Object... options) {
         if (data == null)
             return "\n";
         if (options == null || options.length == 0)

@@ -9,13 +9,16 @@ import android.os.Looper;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/8/4.
  */
 
 public class DialogUtils {
 
-    public static <T extends Dialog> T showDialog(final T dialog) {
+    @NonNull
+    public static <T extends Dialog> T showDialog(@NonNull final T dialog) {
         Context context = dialog.getContext();
 
         if (!isActivityContext(context)) {

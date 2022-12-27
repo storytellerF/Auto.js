@@ -2,6 +2,9 @@ package com.stardust.autojs.rhino;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.dx.command.dexer.Main;
 import com.stardust.pio.PFiles;
 import com.stardust.util.MD5;
@@ -33,6 +36,7 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
     private static final String LOG_TAG = "AndroidClassLoader";
     private final ClassLoader parent;
     private final List<DexClassLoader> mDexClassLoaders = new ArrayList<>();
+    @NonNull
     private final File mCacheDir;
 
     /**
@@ -41,7 +45,7 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
      * @param parent the parent
      * @param dir    the cache directory
      */
-    public AndroidClassLoader(ClassLoader parent, File dir) {
+    public AndroidClassLoader(ClassLoader parent, @NonNull File dir) {
         this.parent = parent;
         mCacheDir = dir;
         if (dir.exists()) {
@@ -55,7 +59,7 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
      * {@inheritDoc}
      */
     @Override
-    public Class<?> defineClass(String name, byte[] data) {
+    public Class<?> defineClass(@NonNull String name, @NonNull byte[] data) {
         Log.d(LOG_TAG, "defineClass: name = " + name + " data.length = " + data.length);
         File classFile = null;
         try {
@@ -74,7 +78,8 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
         }
     }
 
-    private File generateTempFile(String name, boolean create) throws IOException {
+    @NonNull
+    private File generateTempFile(@NonNull String name, boolean create) throws IOException {
         File file = new File(mCacheDir, name.hashCode() + System.currentTimeMillis() + ".jar");
         if (create) {
             if (!file.exists()) {
@@ -86,7 +91,7 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
         return file;
     }
 
-    public void loadJar(File jar) throws IOException {
+    public void loadJar(@NonNull File jar) throws IOException {
         Log.d(LOG_TAG, "loadJar: jar = " + jar);
         if (!jar.exists() || !jar.canRead()) {
             throw new FileNotFoundException("File does not exist or readable: " + jar.getPath());
@@ -114,12 +119,14 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
         }
     }
 
-    private String generateDexFileName(File jar) {
+    @NonNull
+    private String generateDexFileName(@NonNull File jar) {
         String message = jar.getPath() + "_" + jar.lastModified();
         return MD5.md5(message);
     }
 
-    public DexClassLoader loadDex(File file) throws FileNotFoundException {
+    @Nullable
+    public DexClassLoader loadDex(@NonNull File file) throws FileNotFoundException {
         Log.d(LOG_TAG, "loadDex: file = " + file);
         if (!file.exists()) {
             throw new FileNotFoundException(file.getPath());
@@ -129,7 +136,8 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
         return loader;
     }
 
-    private DexClassLoader dexJar(File classFile, File dexFile) throws IOException {
+    @Nullable
+    private DexClassLoader dexJar(@NonNull File classFile, @Nullable File dexFile) throws IOException {
         final Main.Arguments arguments = new Main.Arguments();
         arguments.fileNames = new String[]{classFile.getPath()};
         boolean isTmpDex = dexFile == null;

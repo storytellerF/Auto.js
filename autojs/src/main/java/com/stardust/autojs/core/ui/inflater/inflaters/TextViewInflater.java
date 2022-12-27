@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.util.Colors;
 import com.stardust.autojs.core.ui.inflater.util.Dimensions;
@@ -117,15 +120,25 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
 
 
     private boolean mAutoText;
+    @Nullable
     private TextKeyListener.Capitalize mCapitalize;
+    @Nullable
     private Drawable mDrawableBottom;
+    @Nullable
     private Drawable mDrawableRight;
+    @Nullable
     private Drawable mDrawableTop;
+    @Nullable
     private Drawable mDrawableLeft;
+    @Nullable
     private Integer mLineSpacingExtra;
+    @Nullable
     private Integer mLineSpacingMultiplier;
+    @Nullable
     private String mFontFamily;
+    @Nullable
     private Integer mTextStyle;
+    @Nullable
     private String mTypeface;
 
     public TextViewInflater(ResourceParser resourceParser) {
@@ -133,7 +146,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
     }
 
     @Override
-    public boolean setAttr(V view, String attrName, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull V view, @NonNull String attrName, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         if (super.setAttr(view, attrName, value, parent, attrs)) {
             return true;
         }
@@ -361,14 +374,14 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
     }
 
     @Override
-    public void applyPendingAttributes(V view, ViewGroup parent) {
+    public void applyPendingAttributes(@NonNull V view, ViewGroup parent) {
         setTypeface(view);
         setLineSpacing(view);
         setDrawables(view);
         setKeyListener(view);
     }
 
-    private void setKeyListener(V view) {
+    private void setKeyListener(@NonNull V view) {
         if (mCapitalize != null) {
             view.setKeyListener(TextKeyListener.getInstance(mAutoText, mCapitalize));
         }
@@ -376,7 +389,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
         mAutoText = false;
     }
 
-    private void setDrawable(V view, int d) {
+    private void setDrawable(@NonNull V view, int d) {
         Drawable[] drawables = view.getCompoundDrawables();
         view.setCompoundDrawables(
                 mDrawableLeft != null ? mDrawableLeft : drawables[0],
@@ -388,7 +401,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
     }
 
 
-    private void setDrawables(V view) {
+    private void setDrawables(@NonNull V view) {
         Drawable[] drawables = view.getCompoundDrawables();
         view.setCompoundDrawables(
                 mDrawableLeft != null ? mDrawableLeft : drawables[0],
@@ -399,7 +412,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
         mDrawableLeft = mDrawableBottom = mDrawableRight = mDrawableTop = null;
     }
 
-    private void setLineSpacing(V view) {
+    private void setLineSpacing(@NonNull V view) {
         if (mLineSpacingExtra != null) {
             view.setLineSpacing(mLineSpacingExtra, mLineSpacingMultiplier == null ? 1 : mLineSpacingMultiplier);
         } else if (mLineSpacingMultiplier != null) {
@@ -408,7 +421,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
         mLineSpacingMultiplier = mLineSpacingExtra = null;
     }
 
-    private void setTypeface(V view) {
+    private void setTypeface(@NonNull V view) {
         if (mFontFamily != null) {
             //ignore typeface as android does
             mTypeface = mFontFamily;

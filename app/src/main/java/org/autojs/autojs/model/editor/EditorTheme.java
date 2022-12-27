@@ -1,6 +1,8 @@
 
 package org.autojs.autojs.model.editor;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -11,6 +13,7 @@ import java.util.List;
 
 public class EditorTheme {
 
+    @NonNull
     private static final Gson sGson;
 
     static {
@@ -35,7 +38,7 @@ public class EditorTheme {
         return sGson.fromJson(json, EditorTheme.class);
     }
 
-    public static EditorTheme fromJson(Reader json) {
+    public static EditorTheme fromJson(@NonNull Reader json) {
         return sGson.fromJson(json, EditorTheme.class);
     }
 

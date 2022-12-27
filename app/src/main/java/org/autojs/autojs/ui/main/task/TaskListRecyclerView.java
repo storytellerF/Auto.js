@@ -82,17 +82,17 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
         }
     };
 
-    public TaskListRecyclerView(Context context) {
+    public TaskListRecyclerView(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public TaskListRecyclerView(Context context, @Nullable AttributeSet attrs) {
+    public TaskListRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public TaskListRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public TaskListRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -150,7 +150,7 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
         mIntentTaskChangeDisposable.dispose();
     }
 
-    void onTaskChange(ModelChange taskChange) {
+    void onTaskChange(@NonNull ModelChange taskChange) {
         if (taskChange.getAction() == ModelChange.INSERT) {
             mAdapter.notifyChildInserted(1, mPendingTaskGroup.addTask(taskChange.getData()));
         } else if (taskChange.getAction() == ModelChange.DELETE) {
@@ -205,10 +205,12 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
     class TaskViewHolder extends ChildViewHolder<Task> {
 
         private Task mTask;
+        @NonNull
         private final GradientDrawable mFirstCharBackground;
+        @NonNull
         private final TaskListRecyclerViewItemBinding bind;
 
-        TaskViewHolder(View itemView) {
+        TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             bind = TaskListRecyclerViewItemBinding.bind(itemView);
             bind.stop.setTag("stop");
@@ -217,7 +219,7 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
             mFirstCharBackground = (GradientDrawable) bind.firstChar.getBackground();
         }
 
-        public void bind(Task task) {
+        public void bind(@NonNull Task task) {
             mTask = task;
             bind.name.setText(task.getName());
             bind.desc.setText(task.getDesc());

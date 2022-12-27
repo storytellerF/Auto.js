@@ -3,6 +3,8 @@ package com.stardust.autojs.core.ui;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.R;
 import com.stardust.autojs.core.ui.attribute.ViewAttributes;
 import com.stardust.autojs.core.ui.attribute.ViewAttributesFactory;
@@ -19,7 +21,7 @@ public class ViewExtras {
 
     private ViewAttributes mViewAttributes;
 
-    public static ViewExtras get(View view) {
+    public static ViewExtras get(@NonNull View view) {
         ViewExtras extras;
         Object tag = view.getTag(R.id.view_tag_view_extras);
         Log.d(LOG_TAG, "view = " + view + ", tag = " + tag);
@@ -33,7 +35,7 @@ public class ViewExtras {
     }
 
 
-    public static ViewAttributes getViewAttributes(View view, ResourceParser parser) {
+    public static ViewAttributes getViewAttributes(@NonNull View view, @NonNull ResourceParser parser) {
         ViewExtras extras = get(view);
         ViewAttributes attributes = extras.getViewAttributes();
         if (attributes == null) {
@@ -44,7 +46,7 @@ public class ViewExtras {
     }
 
 
-    public static NativeView getNativeView(Scriptable scope, View view, Class<?> staticType, ScriptRuntime runtime) {
+    public static NativeView getNativeView(Scriptable scope, @NonNull View view, Class<?> staticType, @NonNull ScriptRuntime runtime) {
         ViewExtras extras = get(view);
         NativeView nativeView = extras.getNativeView();
         if (nativeView == null) {
@@ -54,7 +56,7 @@ public class ViewExtras {
         return nativeView;
     }
 
-    public static NativeView getNativeView(View view) {
+    public static NativeView getNativeView(@NonNull View view) {
         ViewExtras extras = get(view);
         return extras.getNativeView();
     }

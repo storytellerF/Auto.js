@@ -36,6 +36,7 @@ public class ClassSearchDialogBuilder extends ThemeColorMaterialDialogBuilder {
     private EditText mKeywords;
     private OnItemClickListener mOnItemClickListener;
     private int mSearchId = 0;
+    @NonNull
     private final Handler mHandler;
     private MaterialDialog mDialog;
 
@@ -47,11 +48,13 @@ public class ClassSearchDialogBuilder extends ThemeColorMaterialDialogBuilder {
         AndroidClassIndices.getInstance(getContext());
     }
 
+    @NonNull
     public ClassSearchDialogBuilder setQuery(String text) {
         mKeywords.setText(text);
         return this;
     }
 
+    @NonNull
     public ClassSearchDialogBuilder itemClick(OnItemClickListener listener) {
         mOnItemClickListener = listener;
         return this;
@@ -66,7 +69,7 @@ public class ClassSearchDialogBuilder extends ThemeColorMaterialDialogBuilder {
         initResultList(view, context);
     }
 
-    private void initResultList(View view, Context context) {
+    private void initResultList(@NonNull View view, Context context) {
         RecyclerView resultList = view.findViewById(R.id.result_list);
         resultList.setLayoutManager(new LinearLayoutManager(context));
         mResultListAdapter = new AutoAdapter<>(ClassSearchingItemViewHolder::new,
@@ -80,7 +83,7 @@ public class ClassSearchDialogBuilder extends ThemeColorMaterialDialogBuilder {
         return mDialog;
     }
 
-    private void postSearch(CharSequence s) {
+    private void postSearch(@NonNull CharSequence s) {
         mSearchId++;
         int searchId = mSearchId;
         mHandler.postDelayed(() -> {
@@ -91,7 +94,7 @@ public class ClassSearchDialogBuilder extends ThemeColorMaterialDialogBuilder {
     }
 
     @SuppressLint("CheckResult")
-    private void search(CharSequence s) {
+    private void search(@NonNull CharSequence s) {
         mResultListAdapter.removeAll();
         mProgressBar.setVisibility(View.VISIBLE);
         String keywords = s.toString();
@@ -112,7 +115,7 @@ public class ClassSearchDialogBuilder extends ThemeColorMaterialDialogBuilder {
 
         private final TextView mLabel;
 
-        ClassSearchingItemViewHolder(View itemView) {
+        ClassSearchingItemViewHolder(@NonNull View itemView) {
             super(itemView);
             mLabel = itemView.findViewById(R.id.label);
             itemView.setOnClickListener(v -> {
@@ -124,7 +127,7 @@ public class ClassSearchDialogBuilder extends ThemeColorMaterialDialogBuilder {
         }
 
         @Override
-        public void bind(ClassSearchingItem data, int position) {
+        public void bind(@NonNull ClassSearchingItem data, int position) {
             mLabel.setText(data.getLabel());
         }
     }

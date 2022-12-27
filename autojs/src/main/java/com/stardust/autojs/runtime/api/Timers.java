@@ -6,6 +6,9 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.util.SparseArray;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.looper.Timer;
 import com.stardust.autojs.core.looper.TimerThread;
 import com.stardust.autojs.runtime.ScriptBridges;
@@ -26,16 +29,18 @@ public class Timers {
     private final Timer mUiTimer;
 
 
-    public Timers(ScriptRuntime runtime) {
+    public Timers(@NonNull ScriptRuntime runtime) {
         mMainTimer = new Timer(runtime, mMaxCallbackUptimeMillisForAllThreads);
         mUiTimer = new Timer(runtime, mMaxCallbackUptimeMillisForAllThreads, Looper.getMainLooper());
         mThreads = runtime.threads;
     }
 
+    @NonNull
     public Timer getMainTimer() {
         return mMainTimer;
     }
 
+    @NonNull
     VolatileBox<Long> getMaxCallbackUptimeMillisForAllThreads() {
         return mMaxCallbackUptimeMillisForAllThreads;
     }
@@ -44,7 +49,7 @@ public class Timers {
         return getTimerForThread(Thread.currentThread());
     }
 
-    public Timer getTimerForThread(Thread thread) {
+    public Timer getTimerForThread(@NonNull Thread thread) {
         if (thread == mThreads.getMainThread()) {
             return mMainTimer;
         }

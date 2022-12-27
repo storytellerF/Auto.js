@@ -3,6 +3,8 @@ package com.stardust.autojs.core.record.accessibility;
 import android.accessibilityservice.AccessibilityService;
 import android.view.accessibility.AccessibilityEvent;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.core.record.Recorder;
 import com.stardust.view.accessibility.AccessibilityDelegate;
 
@@ -61,7 +63,7 @@ public class AccessibilityActionRecorder extends Recorder.AbstractRecorder imple
     }
 
     @Override
-    public boolean onAccessibilityEvent(AccessibilityService service, AccessibilityEvent event) {
+    public boolean onAccessibilityEvent(AccessibilityService service, @NonNull AccessibilityEvent event) {
         if (getState() == STATE_RECORDING) {
             mConverter.record(service, event);
             checkTimeOut();

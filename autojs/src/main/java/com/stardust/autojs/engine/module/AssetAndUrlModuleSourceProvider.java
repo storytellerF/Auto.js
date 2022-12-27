@@ -2,6 +2,9 @@ package com.stardust.autojs.engine.module;
 
 import android.content.res.AssetManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.engine.encryption.ScriptEncryption;
 import com.stardust.autojs.script.EncryptedScriptFileHeader;
 
@@ -37,6 +40,7 @@ public class AssetAndUrlModuleSourceProvider extends UrlModuleSourceProvider {
         mAssetManager = mContext.getAssets();
     }
 
+    @Nullable
     @Override
     protected ModuleSource loadFromPrivilegedLocations(String moduleId, Object validator) throws IOException, URISyntaxException {
         String moduleIdWithExtension = moduleId;
@@ -51,8 +55,9 @@ public class AssetAndUrlModuleSourceProvider extends UrlModuleSourceProvider {
         }
     }
 
+    @NonNull
     @Override
-    protected Reader getReader(URLConnection urlConnection) throws IOException {
+    protected Reader getReader(@NonNull URLConnection urlConnection) throws IOException {
         InputStream stream = urlConnection.getInputStream();
         byte[] bytes = new byte[stream.available()];
         stream.read(bytes);

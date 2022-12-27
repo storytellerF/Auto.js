@@ -96,7 +96,7 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
         return generator.generateCode();
     }
 
-    private void setAction(CodeGenerator generator) {
+    private void setAction(@NonNull CodeGenerator generator) {
         OptionGroup action = getOptionGroup(R.string.text_action);
         if (action.getOption(R.string.text_click).checked) {
             generator.setAction(AccessibilityNodeInfoCompat.ACTION_CLICK);
@@ -139,6 +139,7 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
     }
 
 
+    @NonNull
     private OptionGroup getOptionGroup(int title) {
         for (OptionGroup group : mOptionGroups) {
             if (group.titleRes == title) {
@@ -149,7 +150,7 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
     }
 
 
-    private void uncheckOthers(int parentAdapterPosition, Option child) {
+    private void uncheckOthers(int parentAdapterPosition, @NonNull Option child) {
         boolean notify = false;
         for (Option other : child.group.options) {
             if (other != child) {
@@ -177,6 +178,7 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
 
     class OptionViewHolder extends ChildViewHolder<Option> {
 
+        @NonNull
         private final DialogCodeGenerateOptionBinding bind;
 
         OptionViewHolder(@NonNull View itemView) {
@@ -196,6 +198,7 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
 
     private static class OptionGroup implements Parent<Option> {
         int titleRes;
+        @NonNull
         List<Option> options = new ArrayList<>();
         private final boolean mInitialExpanded;
 
@@ -209,6 +212,7 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
             this(titleRes, true);
         }
 
+        @NonNull
         Option getOption(int titleRes) {
             for (Option option : options) {
                 if (option.titleRes == titleRes) {
@@ -218,6 +222,7 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
             throw new IllegalArgumentException();
         }
 
+        @NonNull
         @Override
         public List<Option> getChildList() {
             return options;
@@ -228,10 +233,12 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
             return mInitialExpanded;
         }
 
+        @NonNull
         OptionGroup addOption(int titleRes) {
             return addOption(titleRes, false);
         }
 
+        @NonNull
         OptionGroup addOption(int res, boolean checked) {
             Option option = new Option(res, checked);
             option.group = this;

@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.autojs.runtime.api.AbstractShell;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
@@ -67,6 +70,7 @@ public class Shell extends AbstractShell {
     private volatile RuntimeException mInitException;
     private volatile boolean mInitialized = false;
     private volatile boolean mWaitingExit = false;
+    @Nullable
     private volatile String mCommandOutput = null;
     private final boolean mShouldReadOutput;
     private Callback mCallback;
@@ -111,6 +115,7 @@ public class Shell extends AbstractShell {
         mTermSession.write(command + "\n");
     }
 
+    @Nullable
     public String execAndWaitFor(String command) {
         exec(command);
         synchronized (mCommandOutputLock) {
@@ -220,7 +225,7 @@ public class Shell extends AbstractShell {
             super(settings, initialCommand);
         }
 
-        private void onNewLine(String line) {
+        private void onNewLine(@NonNull String line) {
             logDebug("onNewLine: " + line);
             if (!mInitialized) {
                 if (!isRoot() && line.endsWith(" $ sh")) {
@@ -237,7 +242,7 @@ public class Shell extends AbstractShell {
             }
         }
 
-        private void onCommandOutput(ArrayList<String> output) {
+        private void onCommandOutput(@NonNull ArrayList<String> output) {
             StringBuilder result = new StringBuilder();
             for (int i = 1; i < output.size(); i++) {
                 result.append(output.get(i));
@@ -252,7 +257,7 @@ public class Shell extends AbstractShell {
             }
         }
 
-        private void onOutput(String str) {
+        private void onOutput(@NonNull String str) {
             logDebug("onOutput: " + str);
             if (!mInitialized) {
                 if (isRoot() && str.endsWith(":/ # ")) {

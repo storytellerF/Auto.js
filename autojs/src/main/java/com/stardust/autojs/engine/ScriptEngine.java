@@ -1,6 +1,7 @@
 package com.stardust.autojs.engine;
 
 import androidx.annotation.CallSuper;
+import androidx.annotation.Nullable;
 
 import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.autojs.script.ScriptSource;
@@ -40,8 +41,10 @@ public interface ScriptEngine<S extends ScriptSource> {
 
     void setTag(String key, Object value);
 
+    @Nullable
     Object getTag(String key);
 
+    @Nullable
     String cwd();
 
     void uncaughtException(Throwable throwable);
@@ -76,7 +79,7 @@ public interface ScriptEngine<S extends ScriptSource> {
         private final AtomicInteger mId = new AtomicInteger(ScriptExecution.NO_ID);
 
         @Override
-        public void setTag(String key, Object value) {
+        public void setTag(String key, @Nullable Object value) {
             if (value == null) {
                 mTags.remove(key);
             } else {
@@ -84,6 +87,7 @@ public interface ScriptEngine<S extends ScriptSource> {
             }
         }
 
+        @Nullable
         @Override
         public Object getTag(String key) {
             return mTags.get(key);
@@ -103,6 +107,7 @@ public interface ScriptEngine<S extends ScriptSource> {
             mDestroyed = true;
         }
 
+        @Nullable
         public String cwd() {
             return (String) getTag(TAG_WORKING_DIRECTORY);
         }

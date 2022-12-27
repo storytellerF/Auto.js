@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import org.autojs.autojs.App;
@@ -36,6 +38,7 @@ public class VersionService {
     private boolean mDeprecated = false;
     private VersionInfo mVersionInfo;
     private SharedPreferences mSharedPreferences;
+    @androidx.annotation.NonNull
     private final Retrofit mRetrofit;
 
     public VersionService() {
@@ -48,6 +51,7 @@ public class VersionService {
                 .build();
     }
 
+    @androidx.annotation.NonNull
     public static VersionService getInstance() {
         return sInstance;
     }
@@ -80,6 +84,7 @@ public class VersionService {
         return mDeprecated;
     }
 
+    @Nullable
     public String getCurrentVersionIssues() {
         if (mVersionInfo == null)
             return null;
@@ -89,7 +94,7 @@ public class VersionService {
         return oldVersion.issues;
     }
 
-    public Observable<VersionInfo> checkForUpdatesIfNeededAndUsingWifi(Context context) {
+    public Observable<VersionInfo> checkForUpdatesIfNeededAndUsingWifi(@androidx.annotation.NonNull Context context) {
         if (mVersionInfo == null) {
             return checkUpdateIfUsingWifi(context);
         }
@@ -97,7 +102,7 @@ public class VersionService {
 
     }
 
-    private Observable<VersionInfo> checkUpdateIfUsingWifi(Context context) {
+    private Observable<VersionInfo> checkUpdateIfUsingWifi(@androidx.annotation.NonNull Context context) {
         if (!NetworkUtils.isWifiAvailable(context)) {
             return Observable.empty();
         }
@@ -118,7 +123,7 @@ public class VersionService {
         return observable;
     }
 
-    private void setVersionInfo(VersionInfo result) {
+    private void setVersionInfo(@androidx.annotation.NonNull VersionInfo result) {
         mDeprecated = BuildConfig.VERSION_CODE <= result.deprecated;
         mVersionInfo = result;
         if (mDeprecated) {

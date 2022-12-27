@@ -7,6 +7,9 @@ import android.util.AttributeSet;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -32,8 +35,10 @@ import io.reactivex.disposables.Disposable;
 
 public class CommunityWebView extends EWebView {
 
+    @NonNull
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String mUrl;
+    @Nullable
     private BottomSheetDialog mBottomSheetDialog;
 
     public CommunityWebView(Context context) {
@@ -51,7 +56,7 @@ public class CommunityWebView extends EWebView {
         getWebView().setWebChromeClient(new MyWebChromeClient());
     }
 
-    private void shouldScriptOptionsDialog(String url) {
+    private void shouldScriptOptionsDialog(@NonNull String url) {
         mUrl = url;
         String fileName = DownloadManager.parseFileNameLocally(url);
         mBottomSheetDialog = new BottomSheetDialog(getContext());
@@ -117,7 +122,7 @@ public class CommunityWebView extends EWebView {
         private final Pattern UPLOAD_FILE_PATTERN = Pattern.compile(NodeBB.url("assets/uploads/files/.+(\\.js|\\.auto)"));
 
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        public boolean shouldOverrideUrlLoading(WebView view, @NonNull String url) {
             if (UPLOAD_FILE_PATTERN.matcher(url).matches()) {
                 shouldScriptOptionsDialog(url);
                 return true;
@@ -134,7 +139,7 @@ public class CommunityWebView extends EWebView {
     private class MyWebChromeClient extends EWebView.MyWebChromeClient {
 
         @Override
-        public boolean openFileChooser(ValueCallback<Uri> callback, String[] acceptType) {
+        public boolean openFileChooser(@NonNull ValueCallback<Uri> callback, String[] acceptType) {
             if (super.openFileChooser(callback, acceptType)) {
                 return true;
             }

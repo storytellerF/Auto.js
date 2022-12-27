@@ -3,6 +3,8 @@ package org.autojs.autojs.autojs.key;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.core.inputevent.InputEventObserver;
 import com.stardust.autojs.core.inputevent.ShellKeyObserver;
@@ -73,7 +75,7 @@ public class GlobalKeyObserver implements OnKeyListener, ShellKeyObserver.KeyLis
     }
 
     @Override
-    public void onKeyEvent(int keyCode, KeyEvent event) {
+    public void onKeyEvent(int keyCode, @NonNull KeyEvent event) {
         if (event.getAction() != KeyEvent.ACTION_UP)
             return;
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {

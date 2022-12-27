@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
@@ -47,20 +48,27 @@ import java.io.File;
 public abstract class AutoJs {
 
     private final AccessibilityActionRecorder mAccessibilityActionRecorder = new AccessibilityActionRecorder();
+    @NonNull
     private final AccessibilityNotificationObserver mNotificationObserver;
     private ScriptEngineManager mScriptEngineManager;
+    @NonNull
     private final LayoutInspector mLayoutInspector;
     private final Context mContext;
+    @NonNull
     private final Application mApplication;
+    @NonNull
     private final UiHandler mUiHandler;
+    @NonNull
     private final AppUtils mAppUtils;
+    @NonNull
     private final ActivityInfoProvider mActivityInfoProvider;
     private final ScreenCaptureRequester mScreenCaptureRequester = new ScreenCaptureRequesterImpl();
     private final ScriptEngineService mScriptEngineService;
+    @NonNull
     private final GlobalConsole mGlobalConsole;
 
 
-    protected AutoJs(final Application application) {
+    protected AutoJs(@NonNull final Application application) {
         mContext = application.getApplicationContext();
         mApplication = application;
         mLayoutInspector = new LayoutInspector(mContext);
@@ -74,10 +82,12 @@ public abstract class AutoJs {
         init();
     }
 
+    @NonNull
     protected AppUtils createAppUtils(Context context) {
         return new AppUtils(mContext);
     }
 
+    @NonNull
     protected GlobalConsole createGlobalConsole() {
         return new GlobalConsole(mUiHandler);
     }
@@ -100,6 +110,7 @@ public abstract class AutoJs {
 
     public abstract void ensureAccessibilityServiceEnabled();
 
+    @NonNull
     protected Application getApplication() {
         return mApplication;
     }
@@ -171,22 +182,27 @@ public abstract class AutoJs {
         AccessibilityService.Companion.addDelegate(300, mAccessibilityActionRecorder);
     }
 
+    @NonNull
     public AccessibilityActionRecorder getAccessibilityActionRecorder() {
         return mAccessibilityActionRecorder;
     }
 
+    @NonNull
     public AppUtils getAppUtils() {
         return mAppUtils;
     }
 
+    @NonNull
     public UiHandler getUiHandler() {
         return mUiHandler;
     }
 
+    @NonNull
     public LayoutInspector getLayoutInspector() {
         return mLayoutInspector;
     }
 
+    @NonNull
     public GlobalConsole getGlobalConsole() {
         return mGlobalConsole;
     }
@@ -195,6 +211,7 @@ public abstract class AutoJs {
         return mScriptEngineService;
     }
 
+    @NonNull
     public ActivityInfoProvider getInfoProvider() {
         return mActivityInfoProvider;
     }
@@ -228,11 +245,13 @@ public abstract class AutoJs {
             return AccessibilityService.Companion.getInstance();
         }
 
+        @NonNull
         @Override
         public ActivityInfoProvider getInfoProvider() {
             return mActivityInfoProvider;
         }
 
+        @NonNull
         @Override
         public AccessibilityNotificationObserver getNotificationObserver() {
             return mNotificationObserver;
@@ -243,7 +262,7 @@ public abstract class AutoJs {
     private class ScreenCaptureRequesterImpl extends ScreenCaptureRequester.AbstractScreenCaptureRequester {
 
         @Override
-        public void setOnActivityResultCallback(Callback callback) {
+        public void setOnActivityResultCallback(@NonNull Callback callback) {
             super.setOnActivityResultCallback((result, data) -> {
                 mResult = data;
                 callback.onRequestResult(result, data);

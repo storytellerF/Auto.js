@@ -1,6 +1,8 @@
 package org.autojs.autojs.ui.widget;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ThemeColorRecyclerView;
@@ -40,7 +42,7 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
     private final OnClickListener mOnChildClickListenerWrapper = new OnClickListener() {
 
         @Override
-        public void onClick(View v) {
+        public void onClick(@NonNull View v) {
             if (mOnChildClickListener != null) {
                 mOnChildClickListener.onClick(v, getChildViewHolder(v).getAdapterPosition() - 1);
             }
@@ -49,17 +51,17 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
     private boolean mExpanded;
     private OnChildClickListener mOnChildClickListener;
 
-    public ExpandableRecyclerView(Context context) {
+    public ExpandableRecyclerView(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public ExpandableRecyclerView(Context context, @Nullable AttributeSet attrs) {
+    public ExpandableRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ExpandableRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public ExpandableRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -123,6 +125,7 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
 
         protected abstract int getChildItemViewType(int position);
 
+        @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == VIEW_TYPE_TITLE) {
@@ -136,12 +139,14 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
             }
         }
 
+        @NonNull
         protected abstract ViewHolder onCreateTitleViewHolder(ViewGroup parent);
 
+        @NonNull
         protected abstract ViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType);
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (holder.getItemViewType() == VIEW_TYPE_TITLE) {
                 onBindTitleViewHolder(holder);
             } else {
@@ -172,6 +177,7 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
             mTitle = title;
         }
 
+        @NonNull
         @Override
         protected RecyclerView.ViewHolder onCreateTitleViewHolder(ViewGroup parent) {
             return new TitleViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.expanded_recycler_view_default_title, parent, false));
@@ -189,7 +195,7 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
 
             ImageView mExpandHint;
 
-            TitleViewHolder(View itemView) {
+            TitleViewHolder(@NonNull View itemView) {
                 super(itemView);
                 mExpandHint = itemView.findViewById(R.id.expand_hint);
                 ((TextView) itemView.findViewById(R.id.title)).setText(mTitle);

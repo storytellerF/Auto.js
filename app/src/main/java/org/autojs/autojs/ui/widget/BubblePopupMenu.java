@@ -3,6 +3,8 @@ package org.autojs.autojs.ui.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
@@ -81,12 +83,12 @@ public class BubblePopupMenu extends PopupWindow {
 
         private final TextView mOption;
 
-        public MenuItemViewHolder(View itemView) {
+        public MenuItemViewHolder(@NonNull View itemView) {
             super(itemView);
             mOption = itemView.findViewById(R.id.option);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(@NonNull View v) {
                     if (mOnItemClickListener != null) {
                         int i = mRecyclerView.getChildAdapterPosition(v);
                         mOnItemClickListener.onClick(v, i);

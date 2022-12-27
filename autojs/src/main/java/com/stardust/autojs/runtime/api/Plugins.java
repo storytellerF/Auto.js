@@ -2,6 +2,9 @@ package com.stardust.autojs.runtime.api;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.plugin.Plugin;
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.pio.PFiles;
@@ -12,6 +15,7 @@ public class Plugins {
 
     private final Context mContext;
     private final ScriptRuntime mRuntime;
+    @NonNull
     private final File mPluginCacheDir;
 
     public Plugins(Context context, ScriptRuntime runtime) {
@@ -20,6 +24,7 @@ public class Plugins {
         mPluginCacheDir = new File(mContext.getCacheDir(), "plugin-scripts/");
     }
 
+    @Nullable
     public Plugin load(String packageName) {
         try {
             Context packageContext = mContext.createPackageContext(packageName, Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
@@ -36,6 +41,7 @@ public class Plugins {
         }
     }
 
+    @NonNull
     private File getScriptCacheDir(String packageName) {
         File dir = new File(mPluginCacheDir, packageName + "/");
         dir.mkdirs();

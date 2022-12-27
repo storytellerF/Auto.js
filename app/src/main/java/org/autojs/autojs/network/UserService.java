@@ -1,5 +1,8 @@
 package org.autojs.autojs.network;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import org.autojs.autojs.network.api.UserApi;
 import org.autojs.autojs.network.entity.notification.Notification;
@@ -38,8 +41,11 @@ public class UserService {
     }
 
     private static final UserService sInstance = new UserService();
+    @NonNull
     private final Retrofit mRetrofit;
+    @NonNull
     private final UserApi mUserApi;
+    @Nullable
     private volatile User mUser;
 
     UserService() {
@@ -47,6 +53,7 @@ public class UserService {
         mUserApi = mRetrofit.create(UserApi.class);
     }
 
+    @NonNull
     public static UserService getInstance() {
         return sInstance;
     }
@@ -76,7 +83,7 @@ public class UserService {
         return mUser != null;
     }
 
-    private void setUser(User user) {
+    private void setUser(@Nullable User user) {
         User old = mUser;
         mUser = user;
         if(mUser != null){
@@ -90,6 +97,7 @@ public class UserService {
         }
     }
 
+    @NonNull
     public Observable<Boolean> refreshOnlineStatus() {
         PublishSubject<Boolean> online = PublishSubject.create();
         Disposable subscribe = mRetrofit.create(UserApi.class)
@@ -107,6 +115,7 @@ public class UserService {
         compositeDisposable.add(subscribe);
         return online;
     }
+    @NonNull
     CompositeDisposable compositeDisposable=new CompositeDisposable();
     public Observable<ResponseBody> logout() {
         return NodeBB.getInstance()

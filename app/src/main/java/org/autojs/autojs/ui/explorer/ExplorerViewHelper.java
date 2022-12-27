@@ -17,6 +17,8 @@ import static org.autojs.autojs.model.explorer.ExplorerItem.TYPE_AUTO_FILE;
 import static org.autojs.autojs.model.explorer.ExplorerItem.TYPE_JAVASCRIPT;
 import static org.autojs.autojs.model.explorer.ExplorerItem.TYPE_UNKNOWN;
 
+import androidx.annotation.NonNull;
+
 public class ExplorerViewHelper {
 
     public static String getDisplayName(ExplorerItem item) {
@@ -36,7 +38,7 @@ public class ExplorerViewHelper {
         return item.getName();
     }
 
-    public static String getIconText(ExplorerItem item) {
+    public static String getIconText(@NonNull ExplorerItem item) {
         String type = item.getType();
         if (type.isEmpty()) {
             return TYPE_UNKNOWN;
@@ -48,7 +50,7 @@ public class ExplorerViewHelper {
         return type.substring(0, 1).toUpperCase();
     }
 
-    public static int getIconColor(ExplorerItem item) {
+    public static int getIconColor(@NonNull ExplorerItem item) {
         switch (item.getType()) {
             case TYPE_JAVASCRIPT:
                 return getColor(GlobalAppContext.get(), R.color.color_j);

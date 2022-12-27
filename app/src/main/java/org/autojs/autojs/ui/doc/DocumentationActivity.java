@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.webkit.WebView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.androidannotations.api.builder.ActivityIntentBuilder;
@@ -23,8 +24,10 @@ public class DocumentationActivity extends BaseActivity {
     WebView mWebView;
     private ActivityDocumentationBinding inflate;
 
+    @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context mContext) {
         return new ActivityIntentBuilder<I>(mContext, DocumentationActivity.class) {
+            @Nullable
             @Override
             public PostActivityStarter startForResult(int requestCode) {
                 context.startActivity(intent);

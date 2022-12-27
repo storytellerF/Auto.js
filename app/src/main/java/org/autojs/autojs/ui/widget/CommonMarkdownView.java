@@ -71,7 +71,7 @@ public class CommonMarkdownView extends WebView {
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            public boolean shouldOverrideUrlLoading(WebView view, @NonNull WebResourceRequest request) {
                 getContext().startActivity(new Intent(Intent.ACTION_VIEW).setData(request.getUrl()).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return true;
             }
@@ -126,7 +126,9 @@ public class CommonMarkdownView extends WebView {
 
     public static class DialogBuilder extends ThemeColorMaterialDialogBuilder {
 
+        @NonNull
         private final CommonMarkdownView mMarkdownView;
+        @NonNull
         private final FrameLayout mContainer;
 
         public DialogBuilder(@NonNull Context context) {
@@ -138,11 +140,13 @@ public class CommonMarkdownView extends WebView {
             customView(mContainer, false);
         }
 
+        @NonNull
         public DialogBuilder padding(int l, int t, int r, int b) {
             mContainer.setPadding(l, t, r, b);
             return this;
         }
 
+        @NonNull
         public DialogBuilder markdown(String md) {
             mMarkdownView.loadMarkdown(md);
             return this;

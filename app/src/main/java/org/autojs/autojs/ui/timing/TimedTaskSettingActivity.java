@@ -23,6 +23,7 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -110,8 +111,10 @@ public class TimedTaskSettingActivity extends BaseActivity {
     private IntentTask mIntentTask;
     private ActivityTimedTaskSettingBinding inflate;
 
+    @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context mContext) {
         return new ActivityIntentBuilder<I>(mContext, TimedTaskSettingActivity.class) {
+            @Nullable
             @Override
             public PostActivityStarter startForResult(int requestCode) {
                 context.startActivity(intent);
@@ -163,7 +166,7 @@ public class TimedTaskSettingActivity extends BaseActivity {
         setUpTaskSettings();
     }
 
-    private void findDayOfWeekCheckBoxes(ViewGroup parent) {
+    private void findDayOfWeekCheckBoxes(@NonNull ViewGroup parent) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (child instanceof CheckBox) {
@@ -226,7 +229,7 @@ public class TimedTaskSettingActivity extends BaseActivity {
 
 
 //    @CheckedChange({R.id.daily_task_radio, R.id.weekly_task_radio, R.id.disposable_task_radio, R.id.run_on_broadcast})
-    void onCheckedChanged(CompoundButton button) {
+    void onCheckedChanged(@NonNull CompoundButton button) {
         ExpandableRelativeLayout relativeLayout = findExpandableLayoutOf(button);
         if (button.isChecked()) {
             relativeLayout.post(relativeLayout::expand);
@@ -236,7 +239,8 @@ public class TimedTaskSettingActivity extends BaseActivity {
 
     }
 
-    private ExpandableRelativeLayout findExpandableLayoutOf(CompoundButton button) {
+    @NonNull
+    private ExpandableRelativeLayout findExpandableLayoutOf(@NonNull CompoundButton button) {
         ViewGroup parent = (ViewGroup) button.getParent();
         for (int i = 0; i < parent.getChildCount(); i++) {
             if (parent.getChildAt(i) == button) {
@@ -264,6 +268,7 @@ public class TimedTaskSettingActivity extends BaseActivity {
                 .show();
     }
 
+    @Nullable
     TimedTask createTimedTask() {
         if (inflate.disposableTaskRadio.isChecked()) {
             return createDisposableTask();
@@ -274,6 +279,7 @@ public class TimedTaskSettingActivity extends BaseActivity {
         }
     }
 
+    @Nullable
     private TimedTask createWeeklyTask() {
         long timeFlag = 0;
         for (int i = 0; i < mDayOfWeekCheckBoxes.size(); i++) {
@@ -289,11 +295,13 @@ public class TimedTaskSettingActivity extends BaseActivity {
         return TimedTask.weeklyTask(time, timeFlag, mScriptFile.getPath(), ExecutionConfig.getDefault());
     }
 
+    @NonNull
     private TimedTask createDailyTask() {
         LocalTime time = new LocalTime(inflate.dailyTaskTimePicker.getCurrentHour(), inflate.dailyTaskTimePicker.getCurrentMinute());
         return TimedTask.dailyTask(time, mScriptFile.getPath(), new ExecutionConfig());
     }
 
+    @Nullable
     private TimedTask createDisposableTask() {
         LocalTime time = TIME_FORMATTER.parseLocalTime(inflate.disposableTaskTime.getText().toString());
         LocalDate date = DATE_FORMATTER.parseLocalDate(inflate.disposableTaskDate.getText().toString());
@@ -314,7 +322,7 @@ public class TimedTaskSettingActivity extends BaseActivity {
 
     @SuppressLint("BatteryLife")
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_done) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !((PowerManager) getSystemService(POWER_SERVICE)).isIgnoringBatteryOptimizations(getPackageName())) {
                 try {

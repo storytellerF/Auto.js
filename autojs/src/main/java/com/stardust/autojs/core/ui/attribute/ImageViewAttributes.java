@@ -3,6 +3,7 @@ package com.stardust.autojs.core.ui.attribute;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 
+import androidx.annotation.NonNull;
 import androidx.core.widget.ImageViewCompat;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,7 +27,7 @@ public class ImageViewAttributes extends ViewAttributes {
             .put("matrix", ImageView.ScaleType.MATRIX)
             .build();
 
-    public ImageViewAttributes(ResourceParser resourceParser, View view) {
+    public ImageViewAttributes(@NonNull ResourceParser resourceParser, View view) {
         super(resourceParser, view);
     }
 
@@ -59,20 +60,23 @@ public class ImageViewAttributes extends ViewAttributes {
         );
     }
 
-    private String wrapAsPath(String value) {
+    @NonNull
+    private String wrapAsPath(@NonNull String value) {
         if (!value.startsWith("file://")) {
             return "file://" + value;
         }
         return value;
     }
 
-    private String wrapAsUrl(String value) {
+    @NonNull
+    private String wrapAsUrl(@NonNull String value) {
         if (!value.startsWith("http://") && !value.startsWith("https://")) {
             return "http://" + value;
         }
         return value;
     }
 
+    @NonNull
     @Override
     public ImageView getView() {
         return (ImageView) super.getView();

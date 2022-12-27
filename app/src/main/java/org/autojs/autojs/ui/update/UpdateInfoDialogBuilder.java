@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -41,13 +43,14 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
     private final SharedPreferences mSharedPreferences;
     private VersionInfo mVersionInfo;
 
-    public UpdateInfoDialogBuilder(@NonNull Context context, VersionInfo info) {
+    public UpdateInfoDialogBuilder(@NonNull Context context, @NonNull VersionInfo info) {
         super(context);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         updateInfo(info);
     }
 
-    public UpdateInfoDialogBuilder updateInfo(VersionInfo info) {
+    @NonNull
+    public UpdateInfoDialogBuilder updateInfo(@NonNull VersionInfo info) {
         mVersionInfo = info;
         mView = View.inflate(context, R.layout.dialog_update_info, null);
         setReleaseNotes(mView, info);
@@ -58,6 +61,7 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
         return this;
     }
 
+    @NonNull
     public UpdateInfoDialogBuilder showDoNotAskAgain() {
         mView.findViewById(R.id.do_not_ask_again_container).setVisibility(View.VISIBLE);
         CheckBox checkBox = mView.findViewById(R.id.do_not_ask_again);
@@ -70,6 +74,7 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
         return this;
     }
 
+    @Nullable
     @Override
     public MaterialDialog show() {
         if (mSharedPreferences.getBoolean(KEY_DO_NOT_ASK_AGAIN_FOR_VERSION + mVersionInfo.versionCode, false)) {
@@ -78,7 +83,7 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
         return super.show();
     }
 
-    private void setCurrentVersionIssues(View view, VersionInfo info) {
+    private void setCurrentVersionIssues(@NonNull View view, @NonNull VersionInfo info) {
         TextView issues = view.findViewById(R.id.issues);
         VersionInfo.OldVersion currentVersion = info.getOldVersion(BuildConfig.VERSION_CODE);
         if (currentVersion == null) {
@@ -88,7 +93,7 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
         }
     }
 
-    private void setUpdateDownloadButtons(View view, VersionInfo info) {
+    private void setUpdateDownloadButtons(@NonNull View view, @NonNull VersionInfo info) {
         LinearLayout downloads = view.findViewById(R.id.downloads);
         setDirectlyDownloadButton(downloads, info);
         for (final VersionInfo.Download download : info.downloads) {
@@ -97,14 +102,14 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
             downloads.addView(button);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(@NonNull View v) {
                     IntentTool.browse(v.getContext(), download.url);
                 }
             });
         }
     }
 
-    private void setDirectlyDownloadButton(LinearLayout container, final VersionInfo info) {
+    private void setDirectlyDownloadButton(@NonNull LinearLayout container, @NonNull final VersionInfo info) {
         if (TextUtils.isEmpty(info.downloadUrl)) {
             return;
         }
@@ -128,7 +133,7 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
     }
 
 
-    private void setReleaseNotes(View view, VersionInfo info) {
+    private void setReleaseNotes(@NonNull View view, @NonNull VersionInfo info) {
         CommonMarkdownView markdownView = view.findViewById(R.id.release_notes);
         markdownView.loadMarkdown(info.releaseNotes);
     }

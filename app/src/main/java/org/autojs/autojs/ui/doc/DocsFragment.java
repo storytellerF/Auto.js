@@ -32,6 +32,7 @@ public class DocsFragment extends ViewPagerFragment implements BackPressedHandle
     WebView mWebView;
 
     private String mIndexUrl;
+    @Nullable
     private String mPreviousQuery;
     private FragmentOnlineDocsBinding inflate;
 
@@ -106,7 +107,7 @@ public class DocsFragment extends ViewPagerFragment implements BackPressedHandle
     }
 
     @Subscribe
-    public void onQuerySummit(QueryEvent event) {
+    public void onQuerySummit(@NonNull QueryEvent event) {
         if (!isShown()) {
             return;
         }

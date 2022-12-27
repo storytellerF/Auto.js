@@ -92,6 +92,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
     private ExpandableRelativeLayout layoutLogin;
     private FloatingActionButton buttonSend;
 
+    @Nullable
     private String token;
 
     @Override
@@ -128,7 +129,8 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
         }
     }
 
-    private String getFirstLine(String str) {
+    @NonNull
+    private String getFirstLine(@NonNull String str) {
         int i = str.indexOf('\n');
         if (i < 0)
             return str;
@@ -305,7 +307,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
         return hasErrors;
     }
 
-    private void setError(EditText editText, @StringRes int errorRes) {
+    private void setError(@NonNull EditText editText, @StringRes int errorRes) {
         try {
             View layout = (View) editText.getParent();
             while (!layout.getClass().getSimpleName().equals(TextInputLayout.class.getSimpleName()))
@@ -317,7 +319,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
         }
     }
 
-    private void setError(EditText editText, String error) {
+    private void setError(@NonNull EditText editText, String error) {
         try {
             View layout = (View) editText.getParent();
             while (!layout.getClass().getSimpleName().equals(TextInputLayout.class.getSimpleName()))
@@ -329,7 +331,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
         }
     }
 
-    private void removeError(EditText editText) {
+    private void removeError(@NonNull EditText editText) {
         try {
             View layout = (View) editText.getParent();
             while (!layout.getClass().getSimpleName().equals(TextInputLayout.class.getSimpleName()))
@@ -376,8 +378,10 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
     protected void onSaveExtraInfo(ExtraInfo extraInfo) {
     }
 
+    @NonNull
     protected abstract GithubTarget getTarget();
 
+    @Nullable
     @Deprecated
     protected String getGuestToken() {
         return null;
@@ -431,6 +435,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
                     .show();
         }
 
+        @NonNull
         @Override
         @Result
         protected String doInBackground(Void... params) {
@@ -464,7 +469,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(@Result String result) {
+        protected void onPostExecute(@NonNull @Result String result) {
             super.onPostExecute(result);
 
             Context context = getContext();
@@ -517,7 +522,9 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
     }
 
     private static abstract class DialogAsyncTask<Pa, Pr, Re> extends AsyncTask<Pa, Pr, Re> {
+        @NonNull
         private final WeakReference<Context> contextWeakReference;
+        @Nullable
         private WeakReference<Dialog> dialogWeakReference;
 
         private boolean supposedToBeDismissed;

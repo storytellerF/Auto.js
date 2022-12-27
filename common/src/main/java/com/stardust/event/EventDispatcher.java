@@ -1,5 +1,7 @@
 package com.stardust.event;
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -23,7 +25,7 @@ public class EventDispatcher<Listener> {
         return mListeners.remove(l);
     }
 
-    public void dispatchEvent(Event<Listener> event) {
+    public void dispatchEvent(@NonNull Event<Listener> event) {
         for (Listener listener : mListeners) {
             event.notify(listener);
         }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.execution.ExecutionConfig;
 import com.stardust.autojs.script.JavaScriptFileSource;
 import com.stardust.autojs.script.ScriptSource;
@@ -28,11 +30,11 @@ public class ScriptIntents {
     public static final String EXTRA_KEY_LOOP_INTERVAL = "interval";
     public static final String EXTRA_KEY_DELAY = "delay";
 
-    public static boolean isTaskerBundleValid(Bundle bundle) {
+    public static boolean isTaskerBundleValid(@NonNull Bundle bundle) {
         return bundle.containsKey(ScriptIntents.EXTRA_KEY_PATH) || bundle.containsKey(EXTRA_KEY_PRE_EXECUTE_SCRIPT);
     }
 
-    public static boolean handleIntent(Context context, Intent intent) {
+    public static boolean handleIntent(Context context, @NonNull Intent intent) {
         String path = getPath(intent);
         String script = intent.getStringExtra(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT);
         int loopTimes = intent.getIntExtra(EXTRA_KEY_LOOP_TIMES, 1);
@@ -64,7 +66,7 @@ public class ScriptIntents {
         return true;
     }
 
-    private static String getPath(Intent intent) {
+    private static String getPath(@NonNull Intent intent) {
         if (intent.getData() != null && intent.getData().getPath() != null)
             return intent.getData().getPath();
         return intent.getStringExtra(ScriptIntents.EXTRA_KEY_PATH);

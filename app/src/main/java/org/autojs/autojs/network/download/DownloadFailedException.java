@@ -1,5 +1,7 @@
 package org.autojs.autojs.network.download;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/10/20.
  */
@@ -13,6 +15,7 @@ public class DownloadFailedException extends Throwable {
         mPath = path;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "DownloadFailedException{" +

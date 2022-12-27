@@ -3,6 +3,8 @@ package com.stardust.autojs.core.ui.inflater.inflaters;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -114,7 +116,7 @@ public class BaseViewInflater<V extends View> implements ViewInflater<V> {
     }
 
     @Override
-    public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull V view, @NonNull String attr, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         ViewAttributes viewAttributes = ViewExtras.getViewAttributes(view, getResourceParser());
         ViewAttributes.Attribute attribute = viewAttributes.get(attr);
         if (attribute != null) {
@@ -604,7 +606,7 @@ public class BaseViewInflater<V extends View> implements ViewInflater<V> {
         return true;
     }
 
-    public boolean setLayoutGravity(ViewGroup parent, V view, int gravity) {
+    public boolean setLayoutGravity(ViewGroup parent, @NonNull V view, int gravity) {
         try {
             ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
             Field field = layoutParams.getClass().getField("gravity");
@@ -617,14 +619,14 @@ public class BaseViewInflater<V extends View> implements ViewInflater<V> {
     }
 
     @Override
-    public boolean setAttr(V view, String ns, String attrName, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull V view, @Nullable String ns, @NonNull String attrName, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         if (ns == null || ns.equals("android")) {
             return setAttr(view, attrName, value, parent, attrs);
         }
         return false;
     }
 
-    private boolean setGravity(V view, String g) {
+    private boolean setGravity(@NonNull V view, @NonNull String g) {
         try {
             Method setGravity = view.getClass().getMethod("setGravity", int.class);
             setGravity.invoke(view, Gravities.parse(g));

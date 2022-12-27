@@ -59,6 +59,7 @@ public class NoOpConsole implements Console {
 
     }
 
+    @Nullable
     @Override
     public String println(int level, CharSequence charSequence) {
 

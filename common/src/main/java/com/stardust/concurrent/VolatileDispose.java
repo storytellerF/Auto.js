@@ -1,5 +1,7 @@
 package com.stardust.concurrent;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/10/28.
  */
@@ -22,7 +24,7 @@ public class VolatileDispose<T> {
         return mValue;
     }
 
-    public T blockedGetOrThrow(Class<? extends RuntimeException> exception) {
+    public T blockedGetOrThrow(@NonNull Class<? extends RuntimeException> exception) {
         synchronized (this) {
             if (mValue != null) {
                 return mValue;
@@ -42,7 +44,7 @@ public class VolatileDispose<T> {
         return mValue;
     }
 
-    public T blockedGetOrThrow(Class<? extends RuntimeException> exception, long timeout, T defaultValue) {
+    public T blockedGetOrThrow(@NonNull Class<? extends RuntimeException> exception, long timeout, T defaultValue) {
         synchronized (this) {
             if (mValue != null) {
                 return mValue;

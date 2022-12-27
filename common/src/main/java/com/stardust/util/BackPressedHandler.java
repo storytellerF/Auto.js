@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -16,6 +18,7 @@ public interface BackPressedHandler {
 
     interface HostActivity {
 
+        @NonNull
         Observer getBackPressedObserver();
 
     }
@@ -55,7 +58,7 @@ public interface BackPressedHandler {
         private long mDoublePressInterval = 1000;
         private final String mToast;
 
-        public DoublePressExit(Activity activity, int noticeResId) {
+        public DoublePressExit(@NonNull Activity activity, int noticeResId) {
             this(activity, activity.getString(noticeResId));
         }
 
@@ -64,6 +67,7 @@ public interface BackPressedHandler {
             mToast = toast;
         }
 
+        @NonNull
         public DoublePressExit doublePressInterval(long doublePressInterval) {
             mDoublePressInterval = doublePressInterval;
             return this;

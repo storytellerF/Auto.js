@@ -3,6 +3,8 @@ package org.autojs.autojs.ui.common;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -17,7 +19,7 @@ import com.stardust.util.HashUtils;
 
 public class NotAskAgainDialog extends MaterialDialog {
 
-    protected NotAskAgainDialog(Builder builder) {
+    protected NotAskAgainDialog(@NonNull Builder builder) {
         super(builder);
     }
 
@@ -31,13 +33,14 @@ public class NotAskAgainDialog extends MaterialDialog {
             this(context, null);
         }
 
-        public Builder(Context context, String key) {
+        public Builder(@NonNull Context context, String key) {
             super(context);
             mKeyRemind = key;
             readRemindStatus();
             checkBoxPrompt(context.getString(R.string.text_do_not_remind_again), false, (buttonView, isChecked) -> setRemindState(!isChecked));
         }
 
+        @Nullable
         public MaterialDialog show() {
             if (mRemind) {
                 return super.show();

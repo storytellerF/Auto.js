@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.runtime.accessibility.AccessibilityConfig;
 import com.stardust.theme.ThemeColorManager;
@@ -29,7 +31,7 @@ public class Pref {
 
     private static final SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
-        public void onSharedPreferenceChanged(SharedPreferences p, String key) {
+        public void onSharedPreferenceChanged(@NonNull SharedPreferences p, @NonNull String key) {
             if (key.equals(getString(R.string.key_guard_mode))) {
                 AccessibilityConfig.setIsUnintendedGuardEnabled(p.getBoolean(getString(R.string.key_guard_mode), false));
             } else if ((key.equals(getString(R.string.key_use_volume_control_record)) || key.equals(getString(R.string.key_use_volume_control_running)))
@@ -129,6 +131,7 @@ public class Pref {
         return def().getBoolean(getString(R.string.key_stable_mode), false);
     }
 
+    @NonNull
     public static String getDocumentationUrl() {
         String docSource = def().getString(getString(R.string.key_documentation_source), null);
         if (docSource == null || docSource.equals("Local")) {
@@ -162,6 +165,7 @@ public class Pref {
         return def().getInt(KEY_EDITOR_TEXT_SIZE, defValue);
     }
 
+    @NonNull
     public static String getScriptDirPath() {
         String dir = def().getString(getString(R.string.key_script_dir_path),
                 getString(R.string.default_value_script_dir_path));

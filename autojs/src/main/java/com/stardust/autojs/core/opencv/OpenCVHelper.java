@@ -2,6 +2,7 @@ package com.stardust.autojs.core.opencv;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.os.Looper;
@@ -28,7 +29,8 @@ public class OpenCVHelper {
     private static final String LOG_TAG = "OpenCVHelper";
     private static boolean sInitialized = false;
 
-    public static MatOfPoint newMatOfPoint(Mat mat) {
+    @NonNull
+    public static MatOfPoint newMatOfPoint(@NonNull Mat mat) {
         return new MatOfPoint(mat);
     }
 
@@ -48,7 +50,7 @@ public class OpenCVHelper {
         return sInitialized;
     }
 
-    public synchronized static void initIfNeeded(Context context, InitializeCallback callback) {
+    public synchronized static void initIfNeeded(Context context, @NonNull InitializeCallback callback) {
         if (sInitialized) {
             callback.onInitFinish();
             return;

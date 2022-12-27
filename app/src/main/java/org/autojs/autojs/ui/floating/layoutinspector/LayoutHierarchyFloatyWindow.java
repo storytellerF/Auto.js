@@ -6,6 +6,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.stardust.app.DialogUtils;
@@ -46,7 +48,7 @@ public class LayoutHierarchyFloatyWindow extends FullScreenFloatyWindow {
         mContext = new ContextThemeWrapper(floatyService, R.style.AppTheme);
         mLayoutHierarchyView = new LayoutHierarchyView(mContext) {
             @Override
-            public boolean dispatchKeyEvent(KeyEvent event) {
+            public boolean dispatchKeyEvent(@NonNull KeyEvent event) {
                 if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
                     close();
                     return true;

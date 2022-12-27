@@ -2,6 +2,8 @@ package org.autojs.autojs.ui.main.drawer;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.R;
 import org.autojs.autojs.network.UserService;
 import org.autojs.autojs.network.entity.notification.Notification;
@@ -44,7 +46,7 @@ public class CommunityDrawerMenu {
     private DrawerMenuAdapter mMenuAdapter;
 
 
-    public void showCommunityMenu(DrawerMenuAdapter adapter) {
+    public void showCommunityMenu(@NonNull DrawerMenuAdapter adapter) {
         mMenuAdapter = adapter;
         mShown = true;
         List<DrawerMenuItem> items = adapter.getDrawerMenuItems();
@@ -59,7 +61,7 @@ public class CommunityDrawerMenu {
     }
 
 
-    private void refreshUserStatus(DrawerMenuAdapter adapter) {
+    private void refreshUserStatus(@NonNull DrawerMenuAdapter adapter) {
         UserService.getInstance().refreshOnlineStatus()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -72,7 +74,7 @@ public class CommunityDrawerMenu {
 
     }
 
-    public void refreshNotificationCount(DrawerMenuAdapter adapter) {
+    public void refreshNotificationCount(@NonNull DrawerMenuAdapter adapter) {
         UserService.getInstance().getNotifications()
                 .flatMap(Observable::fromIterable)
                 .filter(n -> !n.isRead())
@@ -83,12 +85,12 @@ public class CommunityDrawerMenu {
                         Throwable::printStackTrace);
     }
 
-    private void setNotificationCount(DrawerMenuAdapter adapter, long count) {
+    private void setNotificationCount(@NonNull DrawerMenuAdapter adapter, long count) {
         mNotificationItem.setNotificationCount((int) count);
         adapter.notifyItemChanged(mNotificationItem);
     }
 
-    public void setUserOnlineStatus(DrawerMenuAdapter adapter, boolean online) {
+    public void setUserOnlineStatus(@NonNull DrawerMenuAdapter adapter, boolean online) {
         if (online) {
             addItem(adapter, R.string.text_community, mNotificationItem);
             addItem(adapter, R.string.text_community_category, mUnreadItem);
@@ -101,7 +103,7 @@ public class CommunityDrawerMenu {
 
     }
 
-    private void addItem(DrawerMenuAdapter adapter, int title, DrawerMenuItem itemToAdd) {
+    private void addItem(@NonNull DrawerMenuAdapter adapter, int title, DrawerMenuItem itemToAdd) {
         List<DrawerMenuItem> items = adapter.getDrawerMenuItems();
         for (int i = 0; i < items.size(); i++) {
             DrawerMenuItem item = items.get(i);
@@ -116,7 +118,7 @@ public class CommunityDrawerMenu {
 
     }
 
-    private void removeItem(DrawerMenuAdapter adapter, int title) {
+    private void removeItem(@NonNull DrawerMenuAdapter adapter, int title) {
         List<DrawerMenuItem> items = adapter.getDrawerMenuItems();
         for (int i = 0; i < items.size(); i++) {
             DrawerMenuItem item = items.get(i);
@@ -129,7 +131,7 @@ public class CommunityDrawerMenu {
     }
 
 
-    public void hideCommunityMenu(DrawerMenuAdapter adapter) {
+    public void hideCommunityMenu(@NonNull DrawerMenuAdapter adapter) {
         List<DrawerMenuItem> items = adapter.getDrawerMenuItems();
         mShown = false;
         if (items.isEmpty() || items.get(0) != mDrawerMenuItems.get(0)) {

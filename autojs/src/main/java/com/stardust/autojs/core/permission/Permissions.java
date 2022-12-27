@@ -3,6 +3,9 @@ package com.stardust.autojs.core.permission;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
@@ -15,7 +18,8 @@ public class Permissions {
 
      static final int REQUEST_CODE = 18777;
 
-    public static String[] getPermissionsNeedToRequest(Context context, String[] permissions) {
+    @NonNull
+    public static String[] getPermissionsNeedToRequest(@NonNull Context context, @NonNull String[] permissions) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return EMPTY_STRING_ARRAY;
         }
@@ -32,7 +36,7 @@ public class Permissions {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void requestPermissions(PermissionRequestProxyActivity activity, String[] permissions, OnRequestPermissionsResultCallback callback) {
+    public static void requestPermissions(@NonNull PermissionRequestProxyActivity activity, @NonNull String[] permissions, @Nullable OnRequestPermissionsResultCallback callback) {
         if (callback != null) {
             activity.addRequestPermissionsCallback((code, p, grantResults) -> {
                 activity.removeRequestPermissionsCallback(callback);
@@ -43,7 +47,7 @@ public class Permissions {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void requestPermissions(Context context, String[] permissions) {
+    public static void requestPermissions(@NonNull Context context, String[] permissions) {
         context.startActivity(new Intent(context, PermissionRequestActivity.class)
                 .putExtra(PermissionRequestActivity.EXTRA_PERMISSIONS, permissions)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

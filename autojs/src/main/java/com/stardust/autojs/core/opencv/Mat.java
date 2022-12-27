@@ -1,5 +1,7 @@
 package com.stardust.autojs.core.opencv;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.util.ResourceMonitor;
 
 import org.mozilla.javascript.ScriptRuntime;
@@ -43,36 +45,37 @@ public class Mat extends org.opencv.core.Mat implements ResourceMonitor.Resource
         ResourceMonitor.onOpen(this);
     }
 
-    public Mat(Size size, int type) {
+    public Mat(@NonNull Size size, int type) {
         super(size, type);
         ResourceMonitor.onOpen(this);
     }
 
-    public Mat(int rows, int cols, int type, Scalar s) {
+    public Mat(int rows, int cols, int type, @NonNull Scalar s) {
         super(rows, cols, type, s);
         ResourceMonitor.onOpen(this);
     }
 
-    public Mat(Size size, int type, Scalar s) {
+    public Mat(@NonNull Size size, int type, @NonNull Scalar s) {
         super(size, type, s);
         ResourceMonitor.onOpen(this);
     }
 
-    public Mat(Mat m, Range rowRange, Range colRange) {
+    public Mat(@NonNull Mat m, @NonNull Range rowRange, @NonNull Range colRange) {
         super(m, rowRange, colRange);
         ResourceMonitor.onOpen(this);
     }
 
-    public Mat(Mat m, Range rowRange) {
+    public Mat(@NonNull Mat m, @NonNull Range rowRange) {
         super(m, rowRange);
         ResourceMonitor.onOpen(this);
     }
 
-    public Mat(Mat m, Rect roi) {
+    public Mat(@NonNull Mat m, @NonNull Rect roi) {
         super(m, roi);
         ResourceMonitor.onOpen(this);
     }
 
+    @NonNull
     @Override
     public Mat clone() {
         return new Mat(n_clone(this.nativeObj));

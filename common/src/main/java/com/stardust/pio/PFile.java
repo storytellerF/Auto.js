@@ -51,7 +51,7 @@ public class PFile extends File {
 
 
     @NonNull
-    public PFile renameTo(String newName) {
+    public PFile renameTo(@NonNull String newName) {
         PFile newFile = new PFile(getParent(), newName);
         if (renameTo(newFile)) {
             return newFile;
@@ -61,7 +61,7 @@ public class PFile extends File {
     }
 
     @NonNull
-    public PFile renameWithoutExt(String newName) {
+    public PFile renameWithoutExt(@NonNull String newName) {
         PFile newFile = isDirectory() ? new PFile(getParent(), newName) :
                 new PFile(getParent(), newName + "." + getExtension());
         if (renameTo(newFile)) {
@@ -82,6 +82,7 @@ public class PFile extends File {
         return mSimplifyPath;
     }
 
+    @Nullable
     @Override
     public PFile getParentFile() {
         String p = this.getParent();
@@ -104,7 +105,7 @@ public class PFile extends File {
     }
 
     @Override
-    public PFile[] listFiles(FilenameFilter filter) {
+    public PFile[] listFiles(@Nullable FilenameFilter filter) {
         String[] ss = list();
         if (ss == null) return null;
         ArrayList<PFile> files = new ArrayList<>();
@@ -115,7 +116,7 @@ public class PFile extends File {
     }
 
     @Override
-    public PFile[] listFiles(FileFilter filter) {
+    public PFile[] listFiles(@Nullable FileFilter filter) {
         String[] ss = list();
         if (ss == null) return null;
         ArrayList<PFile> files = new ArrayList<>();

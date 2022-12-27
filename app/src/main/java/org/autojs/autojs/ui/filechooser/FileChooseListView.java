@@ -2,6 +2,8 @@ package org.autojs.autojs.ui.filechooser;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -62,6 +64,7 @@ public class FileChooseListView extends ExplorerView {
         mCanChooseDir = canChooseDir;
     }
 
+    @NonNull
     public List<PFile> getSelectedFiles() {
         ArrayList<PFile> list = new ArrayList<>(mSelectedFiles.size());
         for (Map.Entry<PFile, Integer> entry : mSelectedFiles.entrySet()) {
@@ -76,7 +79,7 @@ public class FileChooseListView extends ExplorerView {
     }
 
     @Override
-    protected BindableViewHolder<?> onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+    protected BindableViewHolder<?> onCreateViewHolder(@NonNull LayoutInflater inflater, ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_ITEM) {
             return new ExplorerItemViewHolder(inflater.inflate(R.layout.file_choose_list_file, parent, false));
         } else if (viewType == VIEW_TYPE_PAGE) {
@@ -101,9 +104,10 @@ public class FileChooseListView extends ExplorerView {
         GradientDrawable mFirstCharBackground;
 
         private ExplorerItem mExplorerItem;
+        @NonNull
         private final FileChooseListFileBinding bind;
 
-        ExplorerItemViewHolder(View itemView) {
+        ExplorerItemViewHolder(@NonNull View itemView) {
             super(itemView);
             bind = FileChooseListFileBinding.bind(itemView);
             bind.item.setTag("item");
@@ -113,7 +117,7 @@ public class FileChooseListView extends ExplorerView {
         }
 
         @Override
-        public void bind(ExplorerItem item, int position) {
+        public void bind(@NonNull ExplorerItem item, int position) {
             mExplorerItem = item;
             bind.name.setText(ExplorerViewHelper.getDisplayName(item));
             bind.desc.setText(PFiles.getHumanReadableSize(item.getSize()));
@@ -142,9 +146,10 @@ public class FileChooseListView extends ExplorerView {
     class ExplorerPageViewHolder extends BindableViewHolder<ExplorerPage> {
 
         private ExplorerPage mExplorerPage;
+        @NonNull
         private final FileChooseListDirectoryBinding bind;
 
-        ExplorerPageViewHolder(View itemView) {
+        ExplorerPageViewHolder(@NonNull View itemView) {
             super(itemView);
             bind = FileChooseListDirectoryBinding.bind(itemView);
             bind.item.setTag("item");
@@ -154,7 +159,7 @@ public class FileChooseListView extends ExplorerView {
         }
 
         @Override
-        public void bind(ExplorerPage data, int position) {
+        public void bind(@NonNull ExplorerPage data, int position) {
             mExplorerPage = data;
             bind.name.setText(ExplorerViewHelper.getDisplayName(data));
             bind.icon.setImageResource(ExplorerViewHelper.getIcon(data));

@@ -6,6 +6,9 @@ import android.os.Looper;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.R;
 import com.stardust.autojs.core.floaty.BaseResizableFloatyWindow;
 import com.stardust.autojs.core.floaty.RawWindow;
@@ -27,20 +30,23 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 public class Floaty {
 
+    @NonNull
     private final DynamicLayoutInflater mLayoutInflater;
+    @NonNull
     private final Context mContext;
     private final UiHandler mUiHandler;
     private final CopyOnWriteArraySet<JsWindow> mWindows = new CopyOnWriteArraySet<>();
     private final ScriptRuntime mRuntime;
 
-    public Floaty(UiHandler uiHandler, UI ui, ScriptRuntime runtime) {
+    public Floaty(UiHandler uiHandler, @NonNull UI ui, ScriptRuntime runtime) {
         mUiHandler = uiHandler;
         mRuntime = runtime;
         mContext = new ContextThemeWrapper(mUiHandler.getContext(), R.style.ScriptTheme);
         mLayoutInflater = ui.getLayoutInflater();
     }
 
-    public JsResizableWindow window(BaseResizableFloatyWindow.ViewSupplier supplier) {
+    @NonNull
+    public JsResizableWindow window(@NonNull BaseResizableFloatyWindow.ViewSupplier supplier) {
         try {
             FloatingPermission.waitForPermissionGranted(mContext);
         } catch (InterruptedException e) {
@@ -51,7 +57,8 @@ public class Floaty {
         return window;
     }
 
-    public JsResizableWindow window(View view) {
+    @NonNull
+    public JsResizableWindow window(@NonNull View view) {
         try {
             FloatingPermission.waitForPermissionGranted(view.getContext());
         } catch (InterruptedException e) {
@@ -63,6 +70,7 @@ public class Floaty {
         return window;
     }
 
+    @NonNull
     public JsRawWindow rawWindow(RawWindow.RawFloaty floaty) {
         try {
             FloatingPermission.waitForPermissionGranted(mContext);
@@ -74,6 +82,7 @@ public class Floaty {
         return window;
     }
 
+    @NonNull
     public JsRawWindow rawWindow(View view) {
         try {
             FloatingPermission.waitForPermissionGranted(mContext);
@@ -106,6 +115,7 @@ public class Floaty {
 
     public class JsRawWindow implements JsWindow {
 
+        @Nullable
         private RawWindow mWindow;
         private boolean mExitOnClose;
 
@@ -121,6 +131,7 @@ public class Floaty {
             }
         }
 
+        @Nullable
         public View findView(String id) {
             return JsViewHelper.findViewByStringId(mWindow.getContentView(), id);
         }
@@ -153,7 +164,7 @@ public class Floaty {
             runWithWindow(() -> mWindow.setTouchable(touchable));
         }
 
-        private void runWithWindow(Runnable r) {
+        private void runWithWindow(@NonNull Runnable r) {
             if (mWindow == null)
                 return;
             if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -205,10 +216,11 @@ public class Floaty {
     public class JsResizableWindow implements JsWindow {
 
         private View mView;
+        @Nullable
         private volatile BaseResizableFloatyWindow mWindow;
         private boolean mExitOnClose = false;
 
-        public JsResizableWindow(BaseResizableFloatyWindow.ViewSupplier supplier) {
+        public JsResizableWindow(@NonNull BaseResizableFloatyWindow.ViewSupplier supplier) {
             mWindow = new BaseResizableFloatyWindow(mContext, (context, parent) -> {
                 mView = supplier.inflate(context, parent);
                 return mView;
@@ -225,6 +237,7 @@ public class Floaty {
             //setSize(mWindow.getWindowBridge().getScreenWidth() / 2, mWindow.getWindowBridge().getScreenHeight() / 2);
         }
 
+        @Nullable
         public View findView(String id) {
             return JsViewHelper.findViewByStringId(mView, id);
         }
@@ -254,7 +267,7 @@ public class Floaty {
         }
 
 
-        private void runWithWindow(Runnable r) {
+        private void runWithWindow(@NonNull Runnable r) {
             if (mWindow == null)
                 return;
             if (Looper.myLooper() == Looper.getMainLooper()) {

@@ -2,6 +2,8 @@ package com.stardust.autojs.rhino.debug;
 
 import android.os.Handler;
 import android.os.Looper;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
@@ -41,7 +43,7 @@ public class Debugger implements DebugCallbackInternal {
         mContextFactory = contextFactory;
     }
 
-    public void attach(ScriptExecution execution) {
+    public void attach(@NonNull ScriptExecution execution) {
         if(isAttached()){
             detach();
         }
@@ -52,7 +54,7 @@ public class Debugger implements DebugCallbackInternal {
     }
 
     @Override
-    public void updateSourceText(Dim.SourceInfo sourceInfo) {
+    public void updateSourceText(@NonNull Dim.SourceInfo sourceInfo) {
         if (!sourceInfo.url().equals(mSourceUrl)) {
             return;
         }
@@ -67,7 +69,7 @@ public class Debugger implements DebugCallbackInternal {
     }
 
     @Override
-    public void enterInterrupt(Dim.StackFrame lastFrame, String threadTitle, String alertMessage) {
+    public void enterInterrupt(@NonNull Dim.StackFrame lastFrame, String threadTitle, @Nullable String alertMessage) {
         Log.d(LOG_TAG, "enterInterrupt: threadName = " + threadTitle + ", url = " + lastFrame.getUrl() + ", line = " + lastFrame.getLineNumber());
         //刚启动调试时会在init脚本的第一行自动停下，此时应该让脚本继续运行
         if (mSkipOtherFileBreakpoint && !lastFrame.getUrl().equals(mSourceUrl) && alertMessage == null) {
@@ -96,7 +98,7 @@ public class Debugger implements DebugCallbackInternal {
     }
 
     @Override
-    public boolean shouldAttachDebugger(RhinoJavaScriptEngine engine) {
+    public boolean shouldAttachDebugger(@NonNull RhinoJavaScriptEngine engine) {
         return mScriptExecution != null && mScriptExecution.getId() == engine.getId();
 
     }
@@ -108,6 +110,7 @@ public class Debugger implements DebugCallbackInternal {
         }
     }
 
+    @NonNull
     private Dim createDim() {
         Dim dim = new Dim();
         dim.setBreak();
@@ -136,7 +139,8 @@ public class Debugger implements DebugCallbackInternal {
         return mDim.isAttached();
     }
 
-    public String eval(String expr) {
+    @Nullable
+    public String eval(@Nullable String expr) {
         if (expr == null || !mDim.isAttached() || !mDim.stringIsCompilableUnit(expr)) {
             return null;
         }

@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.explorer;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.util.ObjectHelper;
 
 public class ExplorerChangeEvent {
@@ -49,6 +51,7 @@ public class ExplorerChangeEvent {
         return mPage;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "ExplorerChangeEvent{" +
@@ -59,6 +62,7 @@ public class ExplorerChangeEvent {
                 '}';
     }
 
+    @NonNull
     private static String nameOfAction(int action) {
         switch (action) {
             case ALL:

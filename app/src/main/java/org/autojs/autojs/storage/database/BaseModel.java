@@ -1,6 +1,8 @@
 package org.autojs.autojs.storage.database;
 
 
+import androidx.annotation.Nullable;
+
 public abstract class BaseModel {
     private long mId;
 
@@ -13,7 +15,7 @@ public abstract class BaseModel {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BaseModel baseModel = (BaseModel) o;

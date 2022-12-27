@@ -1,5 +1,8 @@
 package org.autojs.autojs.tool;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -17,6 +20,7 @@ public class SafeJsonElement extends JsonElement {
     }
 
 
+    @Nullable
     @Override
     public JsonElement deepCopy() {
         return null;
@@ -46,6 +50,7 @@ public class SafeJsonElement extends JsonElement {
         return mJsonElement.getAsJsonObject();
     }
 
+    @Nullable
     public SafeJsonObject getAsSafeJsonObject() {
         try {
             return new SafeJsonObject(mJsonElement.getAsJsonObject());
@@ -129,6 +134,7 @@ public class SafeJsonElement extends JsonElement {
         return mJsonElement.getAsShort();
     }
 
+    @NonNull
     @Override
     public String toString() {
         return mJsonElement.toString();

@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.editor;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -19,8 +21,9 @@ import java.util.List;
 
 public class TokenColorDeserializer implements JsonDeserializer<TokenColor> {
 
+    @NonNull
     @Override
-    public TokenColor deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public TokenColor deserialize(@NonNull JsonElement json, Type typeOfT, @NonNull JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = json.getAsJsonObject();
         TokenColor tokenColor = new TokenColor();
         if (object.has("name")) {
@@ -35,7 +38,8 @@ public class TokenColorDeserializer implements JsonDeserializer<TokenColor> {
         return tokenColor;
     }
 
-    private List<String> deserializeAsList(JsonObject object, String key) {
+    @NonNull
+    private List<String> deserializeAsList(@NonNull JsonObject object, String key) {
         JsonElement scope = object.get(key);
         if (scope.isJsonArray()) {
             ArrayList<String> list = new ArrayList<>();

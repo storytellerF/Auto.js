@@ -18,6 +18,9 @@ package com.stardust.io;
  * See COPYING.TXT for details.
  */
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +56,7 @@ public class ConcatReader extends Reader {
      *
      * @since ostermillerutils 1.04.01
      */
+    @Nullable
     private Reader currentReader = null;
 
     /**
@@ -85,7 +89,7 @@ public class ConcatReader extends Reader {
      * @throws IllegalStateException if more readers can't be added because lastReaderAdded() has been called, close() has been called, or a constructor with reader parameters was used.
      * @since ostermillerutils 1.04.01
      */
-    public void addReader(Reader in) {
+    public void addReader(@Nullable Reader in) {
         synchronized (readerQueue) {
             if (in == null) throw new NullPointerException();
             if (closed) throw new IllegalStateException("ConcatReader has been closed");
@@ -104,7 +108,7 @@ public class ConcatReader extends Reader {
      * @throws NullPointerException  the array of readers, or any of the contents is null.
      * @since ostermillerutils 1.04.01
      */
-    public void addReaders(Reader[] in) {
+    public void addReaders(@NonNull Reader[] in) {
         for (Reader element : in) {
             addReader(element);
         }
@@ -116,6 +120,7 @@ public class ConcatReader extends Reader {
      *
      * @since ostermillerutils 1.04.01
      */
+    @Nullable
     private Reader getCurrentReader() {
         if (currentReader == null && readerQueueIndex < readerQueue.size()) {
             synchronized (readerQueue) {
@@ -205,7 +210,7 @@ public class ConcatReader extends Reader {
      * @throws NullPointerException if the input array on any element is null.
      * @since ostermillerutils 1.04.00
      */
-    public ConcatReader(Reader[] in) {
+    public ConcatReader(@NonNull Reader[] in) {
         addReaders(in);
         lastReaderAdded();
     }
@@ -261,7 +266,7 @@ public class ConcatReader extends Reader {
      * @since ostermillerutils 1.04.00
      */
     @Override
-    public int read(char[] cbuf) throws IOException {
+    public int read(@NonNull char[] cbuf) throws IOException {
         return read(cbuf, 0, cbuf.length);
     }
 
@@ -284,7 +289,7 @@ public class ConcatReader extends Reader {
      * @since ostermillerutils 1.04.00
      */
     @Override
-    public int read(char[] cbuf, int off, int len) throws IOException {
+    public int read(@NonNull char[] cbuf, int off, int len) throws IOException {
         if (off < 0 || len < 0 || off + len > cbuf.length) throw new IndexOutOfBoundsException();
         if (closed) throw new IOException("Reader closed");
         int r = -1;

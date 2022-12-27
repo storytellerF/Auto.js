@@ -11,6 +11,8 @@ import org.autojs.autojs.ui.widget.SwitchCompat;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/12/10.
  */
@@ -22,9 +24,10 @@ public class DrawerMenuItemViewHolder extends BindableViewHolder<DrawerMenuItem>
     private boolean mAntiShake;
     private long mLastClickMillis;
     private DrawerMenuItem mDrawerMenuItem;
+    @NonNull
     private final DrawerMenuItemBinding bind;
 
-    public DrawerMenuItemViewHolder(View itemView) {
+    public DrawerMenuItemViewHolder(@NonNull View itemView) {
         super(itemView);
         bind = DrawerMenuItemBinding.bind(itemView);
         bind.sw.setOnCheckedChangeListener((buttonView, isChecked) -> onClick());
@@ -38,7 +41,7 @@ public class DrawerMenuItemViewHolder extends BindableViewHolder<DrawerMenuItem>
     }
 
     @Override
-    public void bind(DrawerMenuItem item, int position) {
+    public void bind(@NonNull DrawerMenuItem item, int position) {
         mDrawerMenuItem = item;
         bind.icon.setImageResource(item.getIcon());
         bind.title.setText(item.getTitle());
@@ -57,7 +60,7 @@ public class DrawerMenuItemViewHolder extends BindableViewHolder<DrawerMenuItem>
         }
     }
 
-    private void setSwitch(DrawerMenuItem item) {
+    private void setSwitch(@NonNull DrawerMenuItem item) {
         if (!item.isSwitchEnabled()) {
             bind.sw.setVisibility(GONE);
             return;
@@ -92,6 +95,7 @@ public class DrawerMenuItemViewHolder extends BindableViewHolder<DrawerMenuItem>
         itemView.setEnabled(!onProgress);
     }
 
+    @NonNull
     public SwitchCompat getSwitchCompat() {
         return bind.sw;
     }

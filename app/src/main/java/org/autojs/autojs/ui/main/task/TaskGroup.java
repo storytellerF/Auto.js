@@ -2,6 +2,8 @@ package org.autojs.autojs.ui.main.task;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.bignerdranch.expandablerecyclerview.model.Parent;
 import com.stardust.autojs.engine.ScriptEngine;
 import com.stardust.autojs.execution.ScriptExecution;
@@ -23,6 +25,7 @@ import java.util.Set;
 
 public abstract class TaskGroup implements Parent<Task> {
 
+    @NonNull
     protected List<Task> mTasks = new ArrayList<>();
     private final String mTitle;
 
@@ -31,6 +34,7 @@ public abstract class TaskGroup implements Parent<Task> {
     }
 
 
+    @NonNull
     @Override
     public List<Task> getChildList() {
         return mTasks;
@@ -49,7 +53,7 @@ public abstract class TaskGroup implements Parent<Task> {
 
     public static class PendingTaskGroup extends TaskGroup {
 
-        public PendingTaskGroup(Context context) {
+        public PendingTaskGroup(@NonNull Context context) {
             super(context.getString(R.string.text_timed_task));
             refresh();
         }
@@ -112,7 +116,7 @@ public abstract class TaskGroup implements Parent<Task> {
 
     public static class RunningTaskGroup extends TaskGroup {
 
-        public RunningTaskGroup(Context context) {
+        public RunningTaskGroup(@NonNull Context context) {
             super(context.getString(R.string.text_running_task));
             refresh();
         }

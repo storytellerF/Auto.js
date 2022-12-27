@@ -6,6 +6,8 @@ import android.util.SparseArray;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.automator.UiObject;
 import com.stardust.automator.simple_action.FilterAction;
 import com.stardust.util.SparseArrayEntries;
@@ -45,7 +47,7 @@ public class AccessibilityActionConverter {
 
     private boolean mShouldIgnoreFirstAction = false;
 
-    public void record(AccessibilityService service, AccessibilityEvent event) {
+    public void record(AccessibilityService service, @NonNull AccessibilityEvent event) {
         EventToScriptConverter converter = CONVERTER_MAP.get(event.getEventType());
         if (converter != null) {
             if (mFirstAction && mShouldIgnoreFirstAction) {
@@ -58,6 +60,7 @@ public class AccessibilityActionConverter {
         }
     }
 
+    @NonNull
     public String getScript() {
         return mScript.toString();
     }
@@ -74,7 +77,7 @@ public class AccessibilityActionConverter {
     private static abstract class BoundsEventConverter implements EventToScriptConverter {
 
         @Override
-        public void onAccessibilityEvent(AccessibilityService service, AccessibilityEvent event, StringBuilder sb) {
+        public void onAccessibilityEvent(AccessibilityService service, @NonNull AccessibilityEvent event, StringBuilder sb) {
             AccessibilityNodeInfo source = event.getSource();
             if (source == null)
                 return;
@@ -96,7 +99,7 @@ public class AccessibilityActionConverter {
         }
 
         @Override
-        protected void onAccessibilityEvent(AccessibilityEvent event, String bounds, StringBuilder sb) {
+        protected void onAccessibilityEvent(AccessibilityEvent event, String bounds, @NonNull StringBuilder sb) {
             sb.append(mActionFunction).append(bounds).append(";");
         }
     }
@@ -110,7 +113,7 @@ public class AccessibilityActionConverter {
         }
 
         @Override
-        protected void onAccessibilityEvent(AccessibilityEvent event, String bounds, StringBuilder sb) {
+        protected void onAccessibilityEvent(AccessibilityEvent event, String bounds, @NonNull StringBuilder sb) {
             sb.append("while(!").append(mActionFunction).append(bounds).append(");");
         }
     }
@@ -118,7 +121,7 @@ public class AccessibilityActionConverter {
     private static class SetTextEventConverter implements EventToScriptConverter {
 
         @Override
-        public void onAccessibilityEvent(AccessibilityService service, AccessibilityEvent event, StringBuilder sb) {
+        public void onAccessibilityEvent(@NonNull AccessibilityService service, @NonNull AccessibilityEvent event, @NonNull StringBuilder sb) {
             AccessibilityNodeInfo source = event.getSource();
             if (source == null)
                 return;
@@ -129,7 +132,7 @@ public class AccessibilityActionConverter {
             source.recycle();
         }
 
-        private static int findInEditableList(List<UiObject> editableList, AccessibilityNodeInfo editable) {
+        private static int findInEditableList(@NonNull List<UiObject> editableList, @NonNull AccessibilityNodeInfo editable) {
             int i = 0;
             for (UiObject nodeInfo : editableList) {
                 if (AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(nodeInfo).equals(AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(editable))) {

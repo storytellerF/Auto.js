@@ -81,6 +81,7 @@ public class SampleFile extends ScriptFile {
         }
     }
 
+    @NonNull
     @Override
     public ScriptSource toSource() {
         return new JavaScriptSource(getSimplifiedName()) {

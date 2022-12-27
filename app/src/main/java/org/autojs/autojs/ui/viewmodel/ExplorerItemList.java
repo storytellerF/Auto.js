@@ -2,6 +2,8 @@ package org.autojs.autojs.ui.viewmodel;
 
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.model.explorer.ExplorerDirPage;
 import org.autojs.autojs.model.explorer.ExplorerItem;
 import org.autojs.autojs.model.explorer.ExplorerPage;
@@ -57,7 +59,7 @@ public class ExplorerItemList {
             mFileSortType = fileSortType;
         }
 
-        public void saveInto(SharedPreferences preferences) {
+        public void saveInto(@NonNull SharedPreferences preferences) {
             preferences.edit()
                     .putInt(CLASS_NAME + "." + "file_sort_type", mFileSortType)
                     .putInt(CLASS_NAME + "." + "dir_sort_type", mDirSortType)
@@ -67,7 +69,8 @@ public class ExplorerItemList {
 
         }
 
-        public static SortConfig from(SharedPreferences preferences) {
+        @NonNull
+        public static SortConfig from(@NonNull SharedPreferences preferences) {
             SortConfig config = new SortConfig();
             config.setDirSortedAscending(preferences.getBoolean(CLASS_NAME + "." + "dir_ascending", false));
             config.setFileSortedAscending(preferences.getBoolean(CLASS_NAME + "." + "file_ascending", false));
@@ -171,7 +174,7 @@ public class ExplorerItemList {
         }
     }
 
-    private <T> int update(ArrayList<T> list, T oldItem, T newItem) {
+    private <T> int update(@NonNull ArrayList<T> list, T oldItem, T newItem) {
         int i = list.indexOf(oldItem);
         if (i >= 0) {
             list.set(i, newItem);
@@ -179,7 +182,7 @@ public class ExplorerItemList {
         return i;
     }
 
-    private <T> int remove(ArrayList<?> list, T o) {
+    private <T> int remove(@NonNull ArrayList<?> list, T o) {
         int i = list.indexOf(o);
         if (i >= 0) {
             list.remove(i);
@@ -222,6 +225,7 @@ public class ExplorerItemList {
         mSortConfig = sortConfig;
     }
 
+    @NonNull
     public ExplorerItemList cloneConfig() {
         ExplorerItemList list = new ExplorerItemList();
         list.mSortConfig = mSortConfig;

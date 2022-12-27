@@ -3,6 +3,9 @@ package com.stardust.util;
 import android.content.Intent;
 import android.util.SparseArray;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,11 +38,13 @@ public class IntentExtras implements Serializable {
     }
 
 
+    @NonNull
     public static IntentExtras newExtras() {
         return new IntentExtras();
     }
 
-    public static IntentExtras fromIntentAndRelease(Intent intent) {
+    @Nullable
+    public static IntentExtras fromIntentAndRelease(@NonNull Intent intent) {
         int id = intent.getIntExtra(EXTRA_ID, -1);
         if (id < 0) {
             return null;
@@ -47,6 +52,7 @@ public class IntentExtras implements Serializable {
         return fromIdAndRelease(id);
     }
 
+    @Nullable
     public static IntentExtras fromIdAndRelease(int id) {
         Map<String, Object> map = extraStore.get(id);
         if (map == null) {
@@ -56,6 +62,7 @@ public class IntentExtras implements Serializable {
         return new IntentExtras(id, map);
     }
 
+    @Nullable
     public static IntentExtras fromId(int id) {
         Map<String, Object> map = extraStore.get(id);
         if (map == null) {
@@ -65,7 +72,8 @@ public class IntentExtras implements Serializable {
     }
 
 
-    public static IntentExtras fromIntent(Intent intent) {
+    @Nullable
+    public static IntentExtras fromIntent(@NonNull Intent intent) {
         int id = intent.getIntExtra(EXTRA_ID, -1);
         if (id < 0) {
             return null;
@@ -78,22 +86,26 @@ public class IntentExtras implements Serializable {
         return mId;
     }
 
+    @Nullable
     @SuppressWarnings("unchecked")
     public <T> T get(String key) {
         return (T) mMap.get(key);
     }
 
+    @NonNull
     public IntentExtras put(String key, Object value) {
         mMap.put(key, value);
         return this;
     }
 
-    public IntentExtras putAll(IntentExtras extras) {
+    @NonNull
+    public IntentExtras putAll(@NonNull IntentExtras extras) {
         mMap.putAll(extras.mMap);
         return this;
     }
 
-    public Intent putInIntent(Intent intent) {
+    @NonNull
+    public Intent putInIntent(@NonNull Intent intent) {
         intent.putExtra(EXTRA_ID, mId);
         return intent;
     }

@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.timing.TimedTask;
 
 public class TimedTaskDatabase extends Database<TimedTask> {
@@ -18,8 +20,9 @@ public class TimedTaskDatabase extends Database<TimedTask> {
         super(new SQLHelper(context), TimedTask.TABLE);
     }
 
+    @NonNull
     @Override
-    protected ContentValues asContentValues(TimedTask model) {
+    protected ContentValues asContentValues(@NonNull TimedTask model) {
         ContentValues values = new ContentValues();
         values.put("time", model.getTimeFlag());
         values.put("scheduled", model.isScheduled());
@@ -31,8 +34,9 @@ public class TimedTaskDatabase extends Database<TimedTask> {
         return values;
     }
 
+    @NonNull
     @Override
-    protected TimedTask createModelFromCursor(Cursor cursor) {
+    protected TimedTask createModelFromCursor(@NonNull Cursor cursor) {
         TimedTask task = new TimedTask();
         task.setId(cursor.getLong(0));
         task.setTimeFlag(cursor.getLong(1));
@@ -53,7 +57,7 @@ public class TimedTaskDatabase extends Database<TimedTask> {
         }
 
         @Override
-        public void onCreate(SQLiteDatabase db) {
+        public void onCreate(@NonNull SQLiteDatabase db) {
             db.execSQL("CREATE TABLE `" + TimedTask.TABLE + "`(" +
                     "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "`time` INTEGER, " +

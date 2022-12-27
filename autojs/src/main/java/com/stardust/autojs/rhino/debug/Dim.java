@@ -6,6 +6,9 @@ package com.stardust.autojs.rhino.debug;
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.ScriptEngineService;
 import com.stardust.autojs.engine.RhinoJavaScriptEngine;
 import com.stardust.autojs.engine.ScriptEngine;
@@ -74,13 +77,16 @@ public class Dim {
     /**
      * Information about the current stack at the point of interruption.
      */
+    @Nullable
     private volatile ContextData interruptedContextData;
 
     /**
      * The ContextFactory to listen to for debugging information.
      */
+    @Nullable
     private volatile ContextFactory contextFactory;
 
+    @Nullable
     private ScriptEngineService scriptEngineService;
 
     /**
@@ -109,16 +115,19 @@ public class Dim {
      * The requested script string to be evaluated when the thread
      * has been resumed.
      */
+    @Nullable
     private String evalRequest;
 
     /**
      * The stack frame in which to evaluate {@link #evalRequest}.
      */
+    @Nullable
     private StackFrame evalFrame;
 
     /**
      * The result of evaluating {@link #evalRequest}.
      */
+    @Nullable
     private String evalResult;
 
     /**
@@ -158,6 +167,7 @@ public class Dim {
     /**
      * ContextFactory.Listener instance attached to {@link #contextFactory}.
      */
+    @Nullable
     private DimIProxy listener;
 
     /**
@@ -219,7 +229,7 @@ public class Dim {
     /**
      * Attaches the debugger to the given ContextFactory.
      */
-    public void attachTo(ScriptEngineService scriptEngineService, ContextFactory factory) {
+    public void attachTo(@NonNull ScriptEngineService scriptEngineService, ContextFactory factory) {
         detach();
         this.contextFactory = factory;
         this.scriptEngineService = scriptEngineService;
@@ -249,7 +259,8 @@ public class Dim {
     /**
      * Returns the FunctionSource object for the given script or function.
      */
-    private FunctionSource getFunctionSource(DebuggableScript fnOrScript) {
+    @Nullable
+    private FunctionSource getFunctionSource(@NonNull DebuggableScript fnOrScript) {
         FunctionSource fsource = functionSource(fnOrScript);
         if (fsource == null) {
             String url = getNormalizedUrl(fnOrScript);
@@ -279,7 +290,8 @@ public class Dim {
     /**
      * Loads the script at the given URL.
      */
-    private String loadSource(String sourceUrl) {
+    @Nullable
+    private String loadSource(@NonNull String sourceUrl) {
         String source = null;
         int hash = sourceUrl.indexOf('#');
         if (hash >= 0) {
@@ -338,7 +350,7 @@ public class Dim {
     /**
      * Registers the given script as a top-level script in the debugger.
      */
-    private void registerTopScript(DebuggableScript topScript, String source) {
+    private void registerTopScript(@NonNull DebuggableScript topScript, String source) {
         if (!topScript.isTopLevel()) {
             throw new IllegalArgumentException();
         }
@@ -381,6 +393,7 @@ public class Dim {
     /**
      * Returns the FunctionSource object for the given function or script.
      */
+    @Nullable
     private FunctionSource functionSource(DebuggableScript fnOrScript) {
         return functionToSource.get(fnOrScript);
     }
@@ -388,6 +401,7 @@ public class Dim {
     /**
      * Returns an array of all function names.
      */
+    @NonNull
     public String[] functionNames() {
         synchronized (urlToSourceInfo) {
             return functionNames.keySet().toArray(new String[functionNames.size()]);
@@ -397,6 +411,7 @@ public class Dim {
     /**
      * Returns the FunctionSource object for the function with the given name.
      */
+    @Nullable
     public FunctionSource functionSourceByName(String functionName) {
         return functionNames.get(functionName);
     }
@@ -404,6 +419,7 @@ public class Dim {
     /**
      * Returns the SourceInfo object for the given URL.
      */
+    @Nullable
     public SourceInfo sourceInfo(String url) {
         return urlToSourceInfo.get(url);
     }
@@ -411,7 +427,7 @@ public class Dim {
     /**
      * Returns the source URL for the given script or function.
      */
-    private String getNormalizedUrl(DebuggableScript fnOrScript) {
+    private String getNormalizedUrl(@NonNull DebuggableScript fnOrScript) {
         String url = fnOrScript.getSourceName();
         if (url == null) {
             url = "<stdin>";
@@ -467,8 +483,9 @@ public class Dim {
     /**
      * Returns an array of all functions in the given script.
      */
+    @NonNull
     private static DebuggableScript[] getAllFunctions
-    (DebuggableScript function) {
+    (@NonNull DebuggableScript function) {
         ObjArray functions = new ObjArray();
         collectFunctions_r(function, functions);
         DebuggableScript[] result = new DebuggableScript[functions.size()];
@@ -479,8 +496,8 @@ public class Dim {
     /**
      * Helper function for {@link #getAllFunctions(DebuggableScript)}.
      */
-    private static void collectFunctions_r(DebuggableScript function,
-                                           ObjArray array) {
+    private static void collectFunctions_r(@NonNull DebuggableScript function,
+                                           @NonNull ObjArray array) {
         array.add(function);
         for (int i = 0; i != function.getFunctionCount(); ++i) {
             collectFunctions_r(function.getFunction(i), array);
@@ -499,7 +516,7 @@ public class Dim {
     /**
      * Called when a breakpoint has been hit.
      */
-    private void handleBreakpointHit(StackFrame frame, Context cx) {
+    private void handleBreakpointHit(@NonNull StackFrame frame, @NonNull Context cx) {
         breakFlag = false;
         interrupted(cx, frame, null);
     }
@@ -507,8 +524,8 @@ public class Dim {
     /**
      * Called when a script exception has been thrown.
      */
-    private void handleExceptionThrown(Context cx, Throwable ex,
-                                       StackFrame frame) {
+    private void handleExceptionThrown(@NonNull Context cx, Throwable ex,
+                                       @NonNull StackFrame frame) {
         if (breakOnExceptions) {
             ContextData cd = frame.contextData();
             if (cd.lastProcessedException != ex) {
@@ -525,6 +542,7 @@ public class Dim {
     /**
      * Returns the current ContextData object.
      */
+    @Nullable
     public ContextData currentContextData() {
         return interruptedContextData;
     }
@@ -552,7 +570,8 @@ public class Dim {
     /**
      * Evaluates the given script.
      */
-    public String eval(String expr) {
+    @Nullable
+    public String eval(@Nullable String expr) {
         String result = "undefined";
         if (expr == null) {
             return result;
@@ -722,8 +741,8 @@ public class Dim {
     /**
      * Interrupts script execution.
      */
-    private void interrupted(Context cx, final StackFrame frame,
-                             Throwable scriptException) {
+    private void interrupted(@NonNull Context cx, @NonNull final StackFrame frame,
+                             @Nullable Throwable scriptException) {
         ContextData contextData = frame.contextData();
         boolean eventThreadFlag = callback.isGuiEventThread();
         contextData.eventThreadFlag = eventThreadFlag;
@@ -861,7 +880,8 @@ public class Dim {
     /**
      * Evaluates script in the given stack frame.
      */
-    private static String do_eval(Context cx, StackFrame frame, String expr) {
+    @Nullable
+    private static String do_eval(@NonNull Context cx, @NonNull StackFrame frame, String expr) {
         String resultString;
         Debugger saved_debugger = cx.getDebugger();
         Object saved_data = cx.getDebuggerContextData();
@@ -957,7 +977,8 @@ public class Dim {
         /**
          * Performs the action given by {@link #type}.
          */
-        public Object run(Context cx) {
+        @Nullable
+        public Object run(@NonNull Context cx) {
             switch (type) {
                 case IPROXY_COMPILE_SCRIPT:
                     cx.compileString(text, url, 1, null);
@@ -1040,7 +1061,8 @@ public class Dim {
         /**
          * Returns a StackFrame for the given function or script.
          */
-        public DebugFrame getFrame(Context cx, DebuggableScript fnOrScript) {
+        @Nullable
+        public DebugFrame getFrame(@NonNull Context cx, @NonNull DebuggableScript fnOrScript) {
             if (type != IPROXY_DEBUG) Kit.codeBug();
 
             FunctionSource item = getFunctionSource(fnOrScript);
@@ -1055,7 +1077,7 @@ public class Dim {
          * Called when compilation is finished.
          */
         public void handleCompilationDone(Context cx,
-                                          DebuggableScript fnOrScript,
+                                          @NonNull DebuggableScript fnOrScript,
                                           String source) {
             if (type != IPROXY_DEBUG) Kit.codeBug();
 
@@ -1100,7 +1122,8 @@ public class Dim {
         /**
          * Returns the ContextData for the given Context.
          */
-        public static ContextData get(Context cx) {
+        @NonNull
+        public static ContextData get(@NonNull Context cx) {
             return (ContextData) cx.getDebuggerContextData();
         }
 
@@ -1114,6 +1137,7 @@ public class Dim {
         /**
          * Returns the stack frame with the given index.
          */
+        @NonNull
         public StackFrame getFrame(int frameNumber) {
             int num = frameStack.size() - frameNumber - 1;
             return (StackFrame) frameStack.get(num);
@@ -1147,6 +1171,7 @@ public class Dim {
         /**
          * The ContextData for the Context being debugged.
          */
+        @NonNull
         private final ContextData contextData;
 
         /**
@@ -1162,11 +1187,13 @@ public class Dim {
         /**
          * Information about the function.
          */
+        @NonNull
         private final FunctionSource fsource;
 
         /**
          * Array of breakpoint state for each source line.
          */
+        @NonNull
         private final boolean[] breakpoints;
 
         /**
@@ -1177,7 +1204,7 @@ public class Dim {
         /**
          * Creates a new StackFrame.
          */
-        private StackFrame(Context cx, Dim dim, FunctionSource fsource) {
+        private StackFrame(@NonNull Context cx, Dim dim, @NonNull FunctionSource fsource) {
             this.dim = dim;
             this.contextData = ContextData.get(cx);
             this.fsource = fsource;
@@ -1188,7 +1215,7 @@ public class Dim {
         /**
          * Called when the stack frame is entered.
          */
-        public void onEnter(Context cx, Scriptable scope,
+        public void onEnter(@NonNull Context cx, Scriptable scope,
                             Scriptable thisObj, Object[] args) {
             contextData.pushFrame(this);
             this.scope = scope;
@@ -1201,7 +1228,7 @@ public class Dim {
         /**
          * Called when the current position has changed.
          */
-        public void onLineChange(Context cx, int lineno) {
+        public void onLineChange(@NonNull Context cx, int lineno) {
             this.lineNumber = lineno;
 
             if (!breakpoints[lineno] && !dim.breakFlag) {
@@ -1223,14 +1250,14 @@ public class Dim {
         /**
          * Called when an exception has been thrown.
          */
-        public void onExceptionThrown(Context cx, Throwable exception) {
+        public void onExceptionThrown(@NonNull Context cx, Throwable exception) {
             dim.handleExceptionThrown(cx, exception, this);
         }
 
         /**
          * Called when the stack frame has been left.
          */
-        public void onExit(Context cx, boolean byThrow,
+        public void onExit(@NonNull Context cx, boolean byThrow,
                            Object resultOrException) {
             if (dim.breakOnReturn && !byThrow) {
                 dim.handleBreakpointHit(this, cx);
@@ -1241,7 +1268,7 @@ public class Dim {
         /**
          * Called when a 'debugger' statement is executed.
          */
-        public void onDebuggerStatement(Context cx) {
+        public void onDebuggerStatement(@NonNull Context cx) {
             dim.handleBreakpointHit(this, cx);
         }
 
@@ -1255,6 +1282,7 @@ public class Dim {
         /**
          * Returns the ContextData object for the Context.
          */
+        @NonNull
         public ContextData contextData() {
             return contextData;
         }
@@ -1290,6 +1318,7 @@ public class Dim {
         /**
          * Returns the current function name.
          */
+        @Nullable
         public String getFunctionName() {
             return fsource.name();
         }
@@ -1313,13 +1342,14 @@ public class Dim {
         /**
          * The function name.
          */
+        @Nullable
         private final String name;
 
         /**
          * Creates a new FunctionSource.
          */
         private FunctionSource(SourceInfo sourceInfo, int firstLine,
-                               String name) {
+                               @Nullable String name) {
             if (name == null) throw new IllegalArgumentException();
             this.sourceInfo = sourceInfo;
             this.firstLine = firstLine;
@@ -1344,6 +1374,7 @@ public class Dim {
         /**
          * Returns the name of the function.
          */
+        @Nullable
         public String name() {
             return name;
         }
@@ -1372,22 +1403,25 @@ public class Dim {
         /**
          * Array indicating which lines can have breakpoints set.
          */
+        @NonNull
         private final boolean[] breakableLines;
 
         /**
          * Array indicating whether a breakpoint is set on the line.
          */
+        @NonNull
         private final boolean[] breakpoints;
 
         /**
          * Array of FunctionSource objects for the functions in the script.
          */
+        @NonNull
         private final FunctionSource[] functionSources;
 
         /**
          * Creates a new SourceInfo object.
          */
-        private SourceInfo(String source, DebuggableScript[] functions,
+        private SourceInfo(String source, @NonNull DebuggableScript[] functions,
                            String normilizedUrl) {
             this.source = source;
             this.url = normilizedUrl;
@@ -1495,7 +1529,7 @@ public class Dim {
          * Copies the breakpoints from the given SourceInfo object into this
          * one.
          */
-        private void copyBreakpointsFrom(SourceInfo old) {
+        private void copyBreakpointsFrom(@NonNull SourceInfo old) {
             int end = old.breakpoints.length;
             if (end > this.breakpoints.length) {
                 end = this.breakpoints.length;

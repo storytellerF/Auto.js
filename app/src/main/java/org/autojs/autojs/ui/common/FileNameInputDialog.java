@@ -2,6 +2,8 @@ package org.autojs.autojs.ui.common;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.text.Editable;
 import android.widget.EditText;
 
@@ -20,7 +22,7 @@ public class FileNameInputDialog implements MaterialDialog.InputCallback {
     private Context mContext;
     private File mDir;
 
-    private void validateInput(MaterialDialog dialog, String extension) {
+    private void validateInput(@NonNull MaterialDialog dialog, @Nullable String extension) {
         EditText editText = dialog.getInputEditText();
         if (editText == null)
             return;
@@ -43,7 +45,7 @@ public class FileNameInputDialog implements MaterialDialog.InputCallback {
     }
 
     @Override
-    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+    public void onInput(@NonNull MaterialDialog dialog, @NonNull CharSequence input) {
         if (mIsFirstTextChanged) {
             mIsFirstTextChanged = false;
             return;

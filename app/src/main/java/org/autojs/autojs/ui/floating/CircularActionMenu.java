@@ -95,7 +95,7 @@ public class CircularActionMenu extends FrameLayout {
         init(attrs);
     }
 
-    private void init(AttributeSet attrs) {
+    private void init(@Nullable AttributeSet attrs) {
         if (attrs == null)
             return;
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CircularActionMenu);
@@ -160,6 +160,7 @@ public class CircularActionMenu extends FrameLayout {
         }
     }
 
+    @NonNull
     private ScaleAnimation createScaleAnimation(float fromScale, float toScale) {
         ScaleAnimation scaleAnimation = new ScaleAnimation(fromScale, toScale, fromScale, toScale, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0.5f);
         scaleAnimation.setDuration(mDuration);

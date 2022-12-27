@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.app.GlobalAppContext;
 import org.autojs.autojs.App;
 
@@ -46,7 +48,7 @@ public class ScriptWidgets {
         return requestCode;
     }
 
-    static void removeAllNotIn(Set<Integer> appWidgetIdSet) {
+    static void removeAllNotIn(@NonNull Set<Integer> appWidgetIdSet) {
         List<String> keysToRemove = new LinkedList<>();
         for (Map.Entry<String, ?> entry : widgets.getAll().entrySet()) {
             if (entry.getKey().equals("max_rc")) {

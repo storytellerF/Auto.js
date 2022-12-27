@@ -2,6 +2,8 @@ package org.autojs.autojs.model.indices;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -35,7 +37,7 @@ public class Modules {
         return gson.fromJson(new InputStreamReader(inputStream), MODULE_LIST_TYPE);
     }
 
-    public Observable<List<Module>> getModules(Context context) {
+    public Observable<List<Module>> getModules(@NonNull Context context) {
         if (mModules != null)
             return Observable.just(mModules);
         return Observable.fromCallable(() -> loadModulesFrom(context.getAssets().open(MODULES_JSON_PATH)))
@@ -44,6 +46,7 @@ public class Modules {
                 .doOnNext(modules -> mModules = modules);
     }
 
+    @NonNull
     public static Modules getInstance() {
         return sInstance;
     }

@@ -1,5 +1,6 @@
 package com.stardust.autojs.core.inputevent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.InputDevice;
@@ -31,7 +32,7 @@ public class InputDevices {
         return null;
     }
 
-    private static boolean supportSource(InputDevice device, int source) {
+    private static boolean supportSource(@NonNull InputDevice device, int source) {
         return (device.getSources() & source) == source;
     }
 

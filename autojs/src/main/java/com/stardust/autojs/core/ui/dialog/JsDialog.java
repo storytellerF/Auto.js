@@ -56,15 +56,17 @@ public class JsDialog {
     private final EventEmitter mEmitter;
     private final UiHandler mUiHandler;
     private final MaterialDialog mDialog;
+    @NonNull
     private final JsDialogBuilder mBuilder;
 
-    public JsDialog(JsDialogBuilder builder, EventEmitter emitter, UiHandler uiHandler) {
+    public JsDialog(@NonNull JsDialogBuilder builder, EventEmitter emitter, UiHandler uiHandler) {
         mBuilder = builder;
         mDialog = builder.build();
         mEmitter = emitter;
         mUiHandler = uiHandler;
     }
 
+    @NonNull
     public JsDialog show() {
         checkWindowType();
         if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -92,7 +94,8 @@ public class JsDialog {
         }
     }
 
-    private DialogAction getDialogAction(String action) {
+    @NonNull
+    private DialogAction getDialogAction(@NonNull String action) {
         switch (action) {
             case "positive":
                 return DialogAction.POSITIVE;
@@ -109,11 +112,12 @@ public class JsDialog {
         return getCurrentProgress();
     }
 
-    public String getActionButton(String action) {
+    @NonNull
+    public String getActionButton(@NonNull String action) {
         return getActionButton(getDialogAction(action)).getText().toString();
     }
 
-    public void setActionButton(String action, String text) {
+    public void setActionButton(@NonNull String action, String text) {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             setActionButton(getDialogAction(action), text);
         } else {
@@ -151,7 +155,7 @@ public class JsDialog {
         mDialog.setPromptCheckBoxChecked(checked);
     }
 
-    public void onClick(View v) {
+    public void onClick(@NonNull View v) {
         mDialog.onClick(v);
     }
 
@@ -191,7 +195,7 @@ public class JsDialog {
         mDialog.setActionButton(which, title);
     }
 
-    public void setActionButton(DialogAction which, int titleRes) {
+    public void setActionButton(@NonNull DialogAction which, int titleRes) {
         mDialog.setActionButton(which, titleRes);
     }
 
@@ -737,16 +741,19 @@ public class JsDialog {
         mDialog.onProvideKeyboardShortcuts(data, menu, deviceId);
     }
 
+    @NonNull
     public JsDialog once(String eventName, Object listener) {
         mEmitter.once(eventName, listener);
         return this;
     }
 
+    @NonNull
     public JsDialog on(String eventName, Object listener) {
         mEmitter.on(eventName, listener);
         return this;
     }
 
+    @NonNull
     public JsDialog addListener(String eventName, Object listener) {
         mEmitter.addListener(eventName, listener);
         return this;
@@ -768,31 +775,37 @@ public class JsDialog {
         return mEmitter.listeners(eventName);
     }
 
+    @NonNull
     public JsDialog prependListener(String eventName, Object listener) {
         mEmitter.prependListener(eventName, listener);
         return this;
     }
 
+    @NonNull
     public JsDialog prependOnceListener(String eventName, Object listener) {
         mEmitter.prependOnceListener(eventName, listener);
         return this;
     }
 
+    @NonNull
     public JsDialog removeAllListeners() {
         mEmitter.removeAllListeners();
         return this;
     }
 
+    @NonNull
     public JsDialog removeAllListeners(String eventName) {
         mEmitter.removeAllListeners(eventName);
         return this;
     }
 
+    @NonNull
     public JsDialog removeListener(String eventName, Object listener) {
         mEmitter.removeListener(eventName, listener);
         return this;
     }
 
+    @NonNull
     public JsDialog setMaxListeners(int n) {
         mEmitter.setMaxListeners(n);
         return this;

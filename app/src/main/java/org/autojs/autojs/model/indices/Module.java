@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.indices;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class Module {
         mSummary = summary;
     }
 
+    @NonNull
     public Property asGlobalProperty() {
         return new Property(mName, mUrl, mSummary, true);
     }

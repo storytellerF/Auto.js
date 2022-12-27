@@ -2,6 +2,8 @@ package org.autojs.autojs.theme.widget;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
@@ -16,17 +18,17 @@ import com.stardust.theme.ThemeColorMutable;
 public class ThemeColorImageViewCompat extends AppCompatImageView implements ThemeColorMutable {
     private int mColor;
 
-    public ThemeColorImageViewCompat(Context context) {
+    public ThemeColorImageViewCompat(@NonNull Context context) {
         super(context);
         this.init();
     }
 
-    public ThemeColorImageViewCompat(Context context, AttributeSet attrs) {
+    public ThemeColorImageViewCompat(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         this.init();
     }
 
-    public ThemeColorImageViewCompat(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ThemeColorImageViewCompat(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.init();
     }
@@ -35,7 +37,7 @@ public class ThemeColorImageViewCompat extends AppCompatImageView implements The
         ThemeColorManager.add(this);
     }
 
-    public void setThemeColor(ThemeColor color) {
+    public void setThemeColor(@NonNull ThemeColor color) {
         if (this.mColor != color.colorPrimary) {
             this.mColor = color.colorPrimary;
             this.setColor(color.colorPrimary);

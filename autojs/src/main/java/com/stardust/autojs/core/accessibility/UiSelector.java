@@ -4,6 +4,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import android.util.Log;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -66,6 +67,7 @@ public class UiSelector extends UiGlobalSelector {
     private static final String TAG = "UiSelector";
 
     private final AccessibilityBridge mAccessibilityBridge;
+    @Nullable
     private AccessibilityNodeInfoAllocator mAllocator = null;
 
     public UiSelector(AccessibilityBridge accessibilityBridge) {
@@ -120,13 +122,15 @@ public class UiSelector extends UiGlobalSelector {
         return UiObjectCollection.Companion.of(result);
     }
 
+    @NonNull
     @Override
     public UiGlobalSelector textMatches(@NotNull String regex) {
         return super.textMatches(convertRegex(regex));
     }
 
     // TODO: 2018/1/30 更好的实现方式。
-    private String convertRegex(String regex) {
+    @NonNull
+    private String convertRegex(@NonNull String regex) {
         if (regex.startsWith("/") && regex.endsWith("/") && regex.length() > 2) {
             return regex.substring(1, regex.length() - 1);
         }
@@ -134,21 +138,25 @@ public class UiSelector extends UiGlobalSelector {
     }
 
 
+    @NonNull
     @Override
     public UiGlobalSelector classNameMatches(@NotNull String regex) {
         return super.classNameMatches(convertRegex(regex));
     }
 
+    @NonNull
     @Override
     public UiGlobalSelector idMatches(@NotNull String regex) {
         return super.idMatches(convertRegex(regex));
     }
 
+    @NonNull
     @Override
     public UiGlobalSelector packageNameMatches(@NotNull String regex) {
         return super.packageNameMatches(convertRegex(regex));
     }
 
+    @NonNull
     @Override
     public UiGlobalSelector descMatches(@NotNull String regex) {
         return super.descMatches(convertRegex(regex));
@@ -184,6 +192,7 @@ public class UiSelector extends UiGlobalSelector {
         }
     }
 
+    @Nullable
     @ScriptInterface
     public UiObject findOne(long timeout) {
         UiObjectCollection uiObjectCollection = find(1);
@@ -205,10 +214,12 @@ public class UiSelector extends UiGlobalSelector {
         return uiObjectCollection.get(0);
     }
 
+    @Nullable
     public UiObject findOnce() {
         return findOnce(0);
     }
 
+    @Nullable
     public UiObject findOnce(int index) {
         UiObjectCollection uiObjectCollection = find(index + 1);
         if (index >= uiObjectCollection.size()) {
@@ -217,6 +228,7 @@ public class UiSelector extends UiGlobalSelector {
         return uiObjectCollection.get(index);
     }
 
+    @NonNull
     @ScriptInterface
     public UiObject findOne() {
         return untilFindOne();
@@ -238,6 +250,7 @@ public class UiSelector extends UiGlobalSelector {
         untilFind();
     }
 
+    @NonNull
     @ScriptInterface
     public UiSelector id(@NotNull final String id) {
         if (!id.contains(":")) {
@@ -248,6 +261,7 @@ public class UiSelector extends UiGlobalSelector {
                     return fullId.equals(node.getViewIdResourceName());
                 }
 
+                @NonNull
                 @Override
                 public String toString() {
                     return "id(\"" + id + "\")";
@@ -259,6 +273,7 @@ public class UiSelector extends UiGlobalSelector {
         return this;
     }
 
+    @NonNull
     @Override
     public UiGlobalSelector idStartsWith(@NotNull String prefix) {
         if (!prefix.contains(":")) {
@@ -270,6 +285,7 @@ public class UiSelector extends UiGlobalSelector {
                     return id != null && id.startsWith(fullIdPrefix);
                 }
 
+                @NonNull
                 @Override
                 public String toString() {
                     return "idStartsWith(\"" + prefix + "\")";
@@ -399,7 +415,7 @@ public class UiSelector extends UiGlobalSelector {
     }
 
     @ScriptInterface
-    public boolean setText(String text) {
+    public boolean setText(@NonNull String text) {
         return performAction(ACTION_SET_TEXT,
                 new ActionArgument.CharSequenceActionArgument(ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, text));
     }

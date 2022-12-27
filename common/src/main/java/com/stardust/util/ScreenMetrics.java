@@ -9,6 +9,8 @@ import android.view.Surface;
 
 import static java.lang.System.out;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/4/26.
  */
@@ -21,7 +23,7 @@ public class ScreenMetrics {
     private static int deviceScreenDensity;
     private static Display display;
 
-    public static void initIfNeeded(Activity activity) {
+    public static void initIfNeeded(@NonNull Activity activity) {
         if (initialized)
             return;
         DisplayMetrics metrics = new DisplayMetrics();

@@ -3,6 +3,8 @@ package org.autojs.autojs.external.open;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -28,7 +30,7 @@ public class ImportIntentActivity extends BaseActivity {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(@NonNull Intent intent) {
         try {
             handleIntent(intent);
         } catch (Exception e) {
@@ -38,7 +40,7 @@ public class ImportIntentActivity extends BaseActivity {
         }
     }
 
-    private void handleIntent(Intent intent) throws FileNotFoundException {
+    private void handleIntent(@NonNull Intent intent) throws FileNotFoundException {
         Uri uri = intent.getData();
         if (uri != null && "content".equals(uri.getScheme())) {
             String ext = PFiles.getExtension(uri.getScheme());

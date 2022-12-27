@@ -89,6 +89,7 @@ public class ErrorReportActivity extends BaseActivity {
                 .show();
     }
 
+    @NonNull
     private String getDeviceMessage() {
         return String.format(Locale.getDefault(), "Version: %s\nAndroid: %d\n", BuildConfig.VERSION_CODE, Build.VERSION.SDK_INT);
     }

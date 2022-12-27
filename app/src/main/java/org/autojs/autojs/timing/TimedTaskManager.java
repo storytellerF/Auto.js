@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.app.GlobalAppContext;
 
 import org.autojs.autojs.App;
@@ -26,7 +28,9 @@ public class TimedTaskManager {
 
     private static TimedTaskManager sInstance;
     private final Context mContext;
+    @NonNull
     private final TimedTaskDatabase mTimedTaskDatabase;
+    @NonNull
     private final IntentTaskDatabase mIntentTaskDatabase;
 
     public static TimedTaskManager getInstance() {
@@ -59,14 +63,14 @@ public class TimedTaskManager {
     }
 
     @SuppressLint("CheckResult")
-    public void removeTask(TimedTask timedTask) {
+    public void removeTask(@NonNull TimedTask timedTask) {
         TimedTaskScheduler.cancel(timedTask);
         mTimedTaskDatabase.delete(timedTask)
                 .subscribe(Observers.emptyConsumer(), Throwable::printStackTrace);
     }
 
     @SuppressLint("CheckResult")
-    public void addTask(TimedTask timedTask) {
+    public void addTask(@NonNull TimedTask timedTask) {
         mTimedTaskDatabase.insert(timedTask)
                 .subscribe(id -> {
                     timedTask.setId(id);
@@ -75,7 +79,7 @@ public class TimedTaskManager {
     }
 
     @SuppressLint("CheckResult")
-    public void addTask(IntentTask intentTask) {
+    public void addTask(@NonNull IntentTask intentTask) {
         mIntentTaskDatabase.insert(intentTask)
                 .subscribe(i -> {
                     if (!TextUtils.isEmpty(intentTask.getAction())) {
@@ -86,7 +90,7 @@ public class TimedTaskManager {
     }
 
     @SuppressLint("CheckResult")
-    public void removeTask(IntentTask intentTask) {
+    public void removeTask(@NonNull IntentTask intentTask) {
         mIntentTaskDatabase.delete(intentTask)
                 .subscribe(i -> {
                     if (!TextUtils.isEmpty(intentTask.getAction())) {
@@ -110,7 +114,7 @@ public class TimedTaskManager {
     }
 
     @SuppressLint("CheckResult")
-    public void notifyTaskScheduled(TimedTask timedTask) {
+    public void notifyTaskScheduled(@NonNull TimedTask timedTask) {
         timedTask.setScheduled(true);
         mTimedTaskDatabase.update(timedTask)
                 .subscribe(Observers.emptyConsumer(), Throwable::printStackTrace);
@@ -126,7 +130,7 @@ public class TimedTaskManager {
     }
 
     @SuppressLint("CheckResult")
-    public void updateTask(TimedTask task) {
+    public void updateTask(@NonNull TimedTask task) {
         mTimedTaskDatabase.update(task)
                 .subscribe(Observers.emptyConsumer(), Throwable::printStackTrace);
         TimedTaskScheduler.cancel(task);
@@ -140,7 +144,7 @@ public class TimedTaskManager {
     }
 
     @SuppressLint("CheckResult")
-    public void updateTask(IntentTask task) {
+    public void updateTask(@NonNull IntentTask task) {
         mIntentTaskDatabase.update(task)
                 .subscribe(i -> {
                     if (i > 0 && !TextUtils.isEmpty(task.getAction())) {

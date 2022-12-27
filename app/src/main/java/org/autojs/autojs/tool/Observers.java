@@ -1,5 +1,7 @@
 package org.autojs.autojs.tool;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.app.GlobalAppContext;
 
 import org.autojs.autojs.model.explorer.ExplorerFileItem;
@@ -20,15 +22,18 @@ public class Observers {
     };
 
 
+    @NonNull
     @SuppressWarnings("unchecked")
     public static <T> Consumer<T> emptyConsumer() {
         return CONSUMER;
     }
 
+    @NonNull
     public static Consumer<Throwable> toastMessage() {
         return TOAST_MESSAGE;
     }
 
+    @NonNull
     public  static <T> Observer<T> emptyObserver() {
         return new Observer<T>() {
             @Override

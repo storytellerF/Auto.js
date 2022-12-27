@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import org.autojs.autojs.R;
 import org.autojs.autojs.databinding.FloatingManualDialogBinding;
@@ -19,10 +21,12 @@ import org.autojs.autojs.ui.widget.EWebView;
 public class ManualDialog {
 
     Dialog mDialog;
+    @NonNull
     private final Context mContext;
+    @NonNull
     private final FloatingManualDialogBinding bind;
 
-    public ManualDialog(Context context) {
+    public ManualDialog(@NonNull Context context) {
         mContext = context;
         View view = View.inflate(context, R.layout.floating_manual_dialog, null);
         bind = FloatingManualDialogBinding.bind(view);
@@ -35,17 +39,20 @@ public class ManualDialog {
     }
 
 
+    @NonNull
     public ManualDialog title(String title) {
         bind.title.setText(title);
         return this;
     }
 
+    @NonNull
     public ManualDialog url(String url) {
         bind.ewebView.getWebView().loadUrl(url);
         return this;
     }
 
-    public ManualDialog pinToLeft(View.OnClickListener listener) {
+    @NonNull
+    public ManualDialog pinToLeft(@NonNull View.OnClickListener listener) {
         bind.pinToLeft.setOnClickListener(v -> {
             mDialog.dismiss();
             listener.onClick(v);
@@ -53,6 +60,7 @@ public class ManualDialog {
         return this;
     }
 
+    @NonNull
     public ManualDialog show() {
         mDialog.show();
         return this;

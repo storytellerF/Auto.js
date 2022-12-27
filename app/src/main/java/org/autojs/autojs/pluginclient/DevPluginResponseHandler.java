@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
@@ -82,9 +85,10 @@ public class DevPluginResponseHandler implements Handler {
 
 
     private final HashMap<String, ScriptExecution> mScriptExecutions = new HashMap<>();
+    @NonNull
     private final File mCacheDir;
 
-    public DevPluginResponseHandler(File cacheDir) {
+    public DevPluginResponseHandler(@NonNull File cacheDir) {
         mCacheDir = cacheDir;
         if (cacheDir.exists()) {
             if (cacheDir.isDirectory()) {
@@ -97,11 +101,11 @@ public class DevPluginResponseHandler implements Handler {
     }
 
     @Override
-    public boolean handle(JsonObject data) {
+    public boolean handle(@NonNull JsonObject data) {
         return mRouter.handle(data);
     }
 
-    public Observable<File> handleBytes(JsonObject data, JsonWebSocket.Bytes bytes) {
+    public Observable<File> handleBytes(@NonNull JsonObject data, @NonNull JsonWebSocket.Bytes bytes) {
         String id = data.get("data").getAsJsonObject().get("id").getAsString();
         String idMd5 = MD5.md5(id);
         return Observable.fromCallable(() -> {
@@ -141,7 +145,8 @@ public class DevPluginResponseHandler implements Handler {
         }
     }
 
-    private String getName(JsonObject data) {
+    @Nullable
+    private String getName(@NonNull JsonObject data) {
         JsonElement element = data.get("name");
         if (element instanceof JsonNull) {
             return null;
@@ -165,7 +170,7 @@ public class DevPluginResponseHandler implements Handler {
 
 
     @SuppressLint("CheckResult")
-    private void saveProject(String name, String dir) {
+    private void saveProject(String name, @NonNull String dir) {
         if (TextUtils.isEmpty(name)) {
             name = "untitled";
         }
@@ -184,7 +189,7 @@ public class DevPluginResponseHandler implements Handler {
 
     }
 
-    private void copyDir(File fromDir, File toDir) throws FileNotFoundException {
+    private void copyDir(@NonNull File fromDir, @NonNull File toDir) throws FileNotFoundException {
         toDir.mkdirs();
         File[] files = fromDir.listFiles();
         if (files == null || files.length == 0) {

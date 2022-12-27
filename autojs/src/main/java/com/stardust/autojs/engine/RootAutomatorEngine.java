@@ -4,6 +4,9 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.autojs.core.inputevent.InputDevices;
 import com.stardust.autojs.runtime.exception.ScriptException;
@@ -38,7 +41,9 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
     private final String mDeviceNameOrPath;
     private Thread mThread;
     private String mExecutablePath;
+    @Nullable
     private String mPid;
+    @Nullable
     private Process mProcess;
 
     public RootAutomatorEngine(Context context, String deviceNameOrPath) {
@@ -76,7 +81,8 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
         }
     }
 
-    private String readPid(Process process) throws IOException {
+    @Nullable
+    private String readPid(@NonNull Process process) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
         while ((line = reader.readLine()) != null) {
@@ -88,7 +94,7 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
         return null;
     }
 
-    private void executeCommands(Process process, String[] commands) throws IOException {
+    private void executeCommands(@NonNull Process process, @NonNull String[] commands) throws IOException {
         DataOutputStream os = new DataOutputStream(process.getOutputStream());
         for (String command : commands) {
             if (command != null) {
@@ -114,7 +120,8 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
         return deviceNameOrPath;
     }
 
-    public static String getExecutablePath(Context context) {
+    @NonNull
+    public static String getExecutablePath(@NonNull Context context) {
         File tmp = new File(context.getCacheDir(), "root_automator");
         PFiles.copyAsset(context, ROOT_AUTOMATOR_EXECUTABLE_ASSET, tmp.getAbsolutePath());
         return tmp.getAbsolutePath();
@@ -135,8 +142,9 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
 
     }
 
+    @Nullable
     @Override
-    public Object execute(AutoFileSource source) {
+    public Object execute(@NonNull AutoFileSource source) {
         execute(source.getFile().getAbsolutePath());
         return null;
     }

@@ -1,11 +1,14 @@
 package com.stardust.util;
 
+import androidx.annotation.NonNull;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5 {
 
-    public static byte[] md5Bytes(String message) {
+    @NonNull
+    public static byte[] md5Bytes(@NonNull String message) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             md5.update(message.getBytes());
@@ -15,7 +18,8 @@ public class MD5 {
         }
     }
 
-    public static String md5(String message) {
+    @NonNull
+    public static String md5(@NonNull String message) {
         byte[] bytes = md5Bytes(message);
         StringBuilder hexString = new StringBuilder(32);
         for (byte b : bytes) {

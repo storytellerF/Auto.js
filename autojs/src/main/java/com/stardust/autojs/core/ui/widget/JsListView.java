@@ -15,6 +15,8 @@ import org.w3c.dom.NodeList;
 
 import com.stardust.autojs.workground.WrapContentLinearLayoutManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -27,6 +29,7 @@ public class JsListView extends RecyclerView {
 
         int getItemCount(Object dataSource);
 
+        @NonNull
         Object getItem(Object dataSource, int i);
 
         void setDataSource(Object dataSource);
@@ -45,7 +48,7 @@ public class JsListView extends RecyclerView {
     private DataSourceAdapter mDataSourceAdapter;
     private OnItemTouchListener mOnItemTouchListener;
 
-    public JsListView(Context context, ScriptRuntime scriptRuntime) {
+    public JsListView(@NonNull Context context, ScriptRuntime scriptRuntime) {
         super(context);
         mScriptRuntime = scriptRuntime;
         init();
@@ -97,6 +100,7 @@ public class JsListView extends RecyclerView {
             return mViewHolder.getAdapterPosition();
         }
 
+        @Nullable
         public Object getItem() {
             return mViewHolder.item;
         }
@@ -104,9 +108,10 @@ public class JsListView extends RecyclerView {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        @Nullable
         Object item = null;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(v -> {
                 if (mOnItemTouchListener != null) {
@@ -132,8 +137,9 @@ public class JsListView extends RecyclerView {
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             try {
                 mDynamicLayoutInflater.setInflateFlags(DynamicLayoutInflater.FLAG_IGNORES_DYNAMIC_ATTRS);
                 return new ViewHolder(mDynamicLayoutInflater.inflate(mDynamicLayoutInflater.newInflateContext(), mItemTemplate, parent, false));
@@ -146,7 +152,7 @@ public class JsListView extends RecyclerView {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             try {
                 Object oldCtx = mScriptRuntime.ui.getBindingContext();
                 Object item = mDataSourceAdapter.getItem(mDataSource, position);
@@ -162,7 +168,7 @@ public class JsListView extends RecyclerView {
             }
         }
 
-        private void applyDynamicAttrs(Node node, View itemView, ViewGroup parent) {
+        private void applyDynamicAttrs(@NonNull Node node, View itemView, ViewGroup parent) {
             mDynamicLayoutInflater.applyAttributes(mDynamicLayoutInflater.newInflateContext(), itemView, mDynamicLayoutInflater.getAttributesMap(node), parent);
             if (!(itemView instanceof ViewGroup))
                 return;

@@ -3,6 +3,9 @@ package org.mozilla.javascript;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.engine.RhinoJavaScriptEngine;
 
 import org.mozilla.javascript.jdk15.VMBridge_jdk15;
@@ -19,8 +22,9 @@ public class VMBridge_custom extends VMBridge_jdk15 {
     public VMBridge_custom() throws SecurityException, InstantiationException {
     }
 
+    @NonNull
     @Override
-    protected Object newInterfaceProxy(Object proxyHelper, ContextFactory cf, InterfaceAdapter adapter, Object target, Scriptable topScope) {
+    protected Object newInterfaceProxy(Object proxyHelper, ContextFactory cf, InterfaceAdapter adapter, @NonNull Object target, Scriptable topScope) {
         Context context = Context.getCurrentContext();
         InterfaceAdapterWrapper adapterWrapper = new InterfaceAdapterWrapper(adapter, context);
         RhinoJavaScriptEngine engine = RhinoJavaScriptEngine.Companion.getEngineOfContext(context);
@@ -82,14 +86,15 @@ public class VMBridge_custom extends VMBridge_jdk15 {
     // cast the return value to boolean if needed.
     // if a javascript function that implements a java interface returns nothing,
     // it will be regarded as "false", like javascript behavior, instead of reporting error "undefined cannot be cast to boolean"
-    protected Object castReturnValue(Method method, Object returnValue) {
+    protected Object castReturnValue(@NonNull Method method, Object returnValue) {
         if (method.getReturnType().equals(Boolean.TYPE) || method.getReturnType().equals(Boolean.class)) {
             return ScriptRuntime.toBoolean(returnValue);
         }
         return returnValue;
     }
 
-    protected Object defaultValue(Class<?> type) {
+    @Nullable
+    protected Object defaultValue(@NonNull Class<?> type) {
         if (type.equals(Boolean.TYPE) || type.equals(Boolean.class)) {
             return false;
         }
@@ -132,7 +137,7 @@ public class VMBridge_custom extends VMBridge_jdk15 {
             return call(cf, action);
         }
 
-        private Object call(ContextFactory cf, ContextAction action) {
+        private Object call(ContextFactory cf, @NonNull ContextAction action) {
             Context cx = Context.enter(null, cf);
             //TODO null check
             cx.setWrapFactory(mCallerContext.getWrapFactory());
@@ -144,7 +149,7 @@ public class VMBridge_custom extends VMBridge_jdk15 {
         }
 
 
-        public Object invokeImpl(Context cx, Object target, Scriptable topScope, Object thisObject, Method method, Object[] args) {
+        public Object invokeImpl(@NonNull Context cx, Object target, Scriptable topScope, Object thisObject, Method method, Object[] args) {
             cx.isContinuationsTopCall = true;
             return mInterfaceAdapter.invokeImpl(cx, target, topScope, thisObject, method, args);
         }

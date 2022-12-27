@@ -2,6 +2,8 @@ package com.stardust.autojs.core.console;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,7 +82,7 @@ public class ConsoleView extends FrameLayout implements ConsoleImpl.LogListener 
         mColors = colors;
     }
 
-    private void init(AttributeSet attrs) {
+    private void init(@Nullable AttributeSet attrs) {
         inflate(getContext(), R.layout.console_view, this);
         if (attrs != null) {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.ConsoleView);
@@ -106,7 +108,7 @@ public class ConsoleView extends FrameLayout implements ConsoleImpl.LogListener 
         });
     }
 
-    private void submitInput(CharSequence input) {
+    private void submitInput(@NonNull CharSequence input) {
         if (android.text.TextUtils.isEmpty(input)) {
             return;
         }
@@ -210,7 +212,7 @@ public class ConsoleView extends FrameLayout implements ConsoleImpl.LogListener 
 
         TextView textView;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = (TextView) itemView;
         }
@@ -218,13 +220,14 @@ public class ConsoleView extends FrameLayout implements ConsoleImpl.LogListener 
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
+        @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.console_view_item, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ConsoleImpl.LogEntry logEntry = mLogEntries.get(position);
             holder.textView.setText(logEntry.content);
             holder.textView.setTextColor(mColors.get(logEntry.level));

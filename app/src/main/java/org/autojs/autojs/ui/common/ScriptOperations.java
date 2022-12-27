@@ -60,6 +60,7 @@ import io.reactivex.subjects.PublishSubject;
 public class ScriptOperations {
 
     private static final String LOG_TAG = "ScriptOperations";
+    @NonNull
     private final ExplorerPage mExplorerPage;
     private final Context mContext;
     private final View mView;
@@ -74,7 +75,7 @@ public class ScriptOperations {
         mExplorerPage = new ExplorerDirPage(currentDirectory, null);
     }
 
-    public ScriptOperations(Context context, View view, ExplorerPage page) {
+    public ScriptOperations(Context context, View view, @NonNull ExplorerPage page) {
         mContext = context;
         mView = view;
         mCurrentDirectory = page.toScriptFile();
@@ -93,6 +94,7 @@ public class ScriptOperations {
                 );
     }
 
+    @NonNull
     private String getCurrentDirectoryPath() {
         return getCurrentDirectory().getPath() + "/";
     }
@@ -101,7 +103,7 @@ public class ScriptOperations {
         return mCurrentDirectory;
     }
 
-    public void createScriptFile(String path, String script, boolean edit) {
+    public void createScriptFile(@NonNull String path, @Nullable String script, boolean edit) {
         if (PFiles.createIfNotExists(path)) {
             if (script != null) {
                 try {
@@ -119,7 +121,7 @@ public class ScriptOperations {
         }
     }
 
-    private void notifyFileCreated(ScriptFile directory, ScriptFile scriptFile) {
+    private void notifyFileCreated(ScriptFile directory, @NonNull ScriptFile scriptFile) {
         if (scriptFile.isDirectory()) {
             mExplorer.notifyItemCreated(new ExplorerDirPage(scriptFile, mExplorerPage));
         } else {
@@ -147,7 +149,7 @@ public class ScriptOperations {
                 .build());
     }
 
-    private void validateInput(MaterialDialog dialog, String extension) {
+    private void validateInput(@NonNull MaterialDialog dialog, @Nullable String extension) {
         EditText editText = dialog.getInputEditText();
         if (editText == null)
             return;
@@ -169,7 +171,7 @@ public class ScriptOperations {
         }
     }
 
-    public Observable<String> importFile(final String pathFrom) {
+    public Observable<String> importFile(@NonNull final String pathFrom) {
         return showFileNameInputDialog(PFiles.getNameWithoutExtension(pathFrom), PFiles.getExtension(pathFrom))
                 .observeOn(Schedulers.io())
                 .map(input -> {
@@ -231,11 +233,13 @@ public class ScriptOperations {
     }
 
 
+    @NonNull
     private Observable<String> showFileNameInputDialog(String prefix, String ext) {
         return showNameInputDialog(prefix, new InputCallback(ext));
     }
 
-    private Observable<String> showNameInputDialog(String prefix, MaterialDialog.InputCallback textWatcher) {
+    @NonNull
+    private Observable<String> showNameInputDialog(String prefix, @NonNull MaterialDialog.InputCallback textWatcher) {
         final PublishSubject<String> input = PublishSubject.create();
         DialogUtils.showDialog(new ThemeColorMaterialDialogBuilder(mContext).title(R.string.text_name)
                 .inputType(InputType.TYPE_CLASS_TEXT)
@@ -254,7 +258,7 @@ public class ScriptOperations {
         return mContext.getString(resId);
     }
 
-    public Observable<String> importSample(SampleFile sample) {
+    public Observable<String> importSample(@NonNull SampleFile sample) {
         try {
             return importFile(sample.getSimplifiedName(), sample.openInputStream(), sample.getExtension());
         } catch (IOException e) {
@@ -264,7 +268,7 @@ public class ScriptOperations {
         }
     }
 
-    public Observable<ExplorerFileItem> rename(final ExplorerFileItem item) {
+    public Observable<ExplorerFileItem> rename(@NonNull final ExplorerFileItem item) {
         String originalName = item.getName();
         return showNameInputDialog(originalName, new InputCallback(null, originalName))
                 .map(newName -> {
@@ -287,7 +291,7 @@ public class ScriptOperations {
                 .putExtra(ShortcutCreateActivity.EXTRA_FILE, file));
     }
 
-    public void delete(final ScriptFile scriptFile) {
+    public void delete(@NonNull final ScriptFile scriptFile) {
         DialogUtils.showDialog(new ThemeColorMaterialDialogBuilder(mContext)
                 .title(mContext.getString(R.string.text_are_you_sure_to_delete, scriptFile.getName()))
                 .positiveText(R.string.cancel)
@@ -300,7 +304,7 @@ public class ScriptOperations {
     }
 
     @SuppressLint("CheckResult")
-    public void deleteWithoutConfirm(final ScriptFile scriptFile) {
+    public void deleteWithoutConfirm(@NonNull final ScriptFile scriptFile) {
         boolean isDir = scriptFile.isDirectory();
         Observable.fromPublisher((Publisher<Boolean>) s -> s.onNext(PFiles.deleteRecursively(scriptFile)))
                 .subscribeOn(Schedulers.io())
@@ -321,7 +325,7 @@ public class ScriptOperations {
     }
 
 
-    public Observable<ScriptFile> download(String url) {
+    public Observable<ScriptFile> download(@NonNull String url) {
 //        BuglyLog.i(LOG_TAG, "dir = " + Pref.getScriptDirPath() + ", sdcard = " + Environment.getExternalStorageDirectory() + ", url = " + url);
         String fileName = DownloadManager.parseFileNameLocally(url);
         return new FileChooserDialogBuilder(mContext)
@@ -365,7 +369,7 @@ public class ScriptOperations {
                 .show();
     }
 
-    public void timedTask(ScriptFile scriptFile) {
+    public void timedTask(@NonNull ScriptFile scriptFile) {
         TimedTaskSettingActivity.intent(mContext)
                 .extra(ScriptIntents.EXTRA_KEY_PATH, scriptFile.getPath())
                 .start();
@@ -376,6 +380,7 @@ public class ScriptOperations {
 
         private final String mExcluded;
         private boolean mIsFirstTextChanged = true;
+        @Nullable
         private final String mExtension;
 
         InputCallback(@Nullable String ext, String excluded) {
@@ -392,7 +397,7 @@ public class ScriptOperations {
         }
 
         @Override
-        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+        public void onInput(@NonNull MaterialDialog dialog, @NonNull CharSequence input) {
             if (mIsFirstTextChanged) {
                 mIsFirstTextChanged = false;
                 return;

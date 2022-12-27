@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -38,13 +40,15 @@ public class ScriptExecuteActivity extends AppCompatActivity {
     private ScriptEngine mScriptEngine;
     private ScriptExecutionListener mExecutionListener;
     private ScriptSource mScriptSource;
+    @Nullable
     private ActivityScriptExecution mScriptExecution;
     private ScriptRuntime mRuntime;
 
 
     private EventEmitter mEventEmitter;
 
-    public static ActivityScriptExecution execute(Context context, ScriptEngineManager manager, ScriptExecutionTask task) {
+    @NonNull
+    public static ActivityScriptExecution execute(@NonNull Context context, ScriptEngineManager manager, @NonNull ScriptExecutionTask task) {
         ActivityScriptExecution execution = new ActivityScriptExecution(manager, task);
         Intent i = new Intent(context, ScriptExecuteActivity.class)
                 .putExtra(EXTRA_EXECUTION_ID, execution.getId())
@@ -151,7 +155,7 @@ public class ScriptExecuteActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mScriptExecution != null)
             outState.putInt(EXTRA_EXECUTION_ID, mScriptExecution.getId());
@@ -212,7 +216,7 @@ public class ScriptExecuteActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         emit("create_options_menu", menu);
         return menu.size() > 0;
     }

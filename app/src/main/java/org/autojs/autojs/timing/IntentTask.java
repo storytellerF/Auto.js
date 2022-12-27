@@ -2,6 +2,8 @@ package org.autojs.autojs.timing;
 
 import android.content.IntentFilter;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.storage.database.BaseModel;
 
 public class IntentTask extends BaseModel {
@@ -18,6 +20,7 @@ public class IntentTask extends BaseModel {
 
     private boolean mLocal;
 
+    @NonNull
     public IntentFilter getIntentFilter() {
         IntentFilter filter = new IntentFilter();
         if (mAction != null) {

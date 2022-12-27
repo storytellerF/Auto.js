@@ -1,5 +1,6 @@
 package org.autojs.autojs.ui.widget;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +14,16 @@ import java.lang.reflect.Constructor;
 
 public interface ViewHolderSupplier<VH extends RecyclerView.ViewHolder> {
 
+    @NonNull
     VH createViewHolder(ViewGroup parent, int viewType);
 
     interface ViewHolderCreator<VH extends RecyclerView.ViewHolder> {
+        @NonNull
         VH createViewHolder(View itemView);
     }
 
-    static <VH extends RecyclerView.ViewHolder> ViewHolderSupplier<VH> of(final Class<VH> c, final int layoutRes) {
+    @NonNull
+    static <VH extends RecyclerView.ViewHolder> ViewHolderSupplier<VH> of(@NonNull final Class<VH> c, final int layoutRes) {
         return (parent, viewType) -> {
             try {
                 Constructor<VH> constructor = c.getConstructor(View.class);
@@ -30,7 +34,8 @@ public interface ViewHolderSupplier<VH extends RecyclerView.ViewHolder> {
         };
     }
 
-    static <VH extends RecyclerView.ViewHolder> ViewHolderSupplier<VH> of(ViewHolderCreator<VH> creator, final int layoutRes) {
+    @NonNull
+    static <VH extends RecyclerView.ViewHolder> ViewHolderSupplier<VH> of(@NonNull ViewHolderCreator<VH> creator, final int layoutRes) {
         return (parent, viewType) ->
                 creator.createViewHolder(LayoutInflater.from(parent.getContext()).inflate(layoutRes, parent, false)
                 );

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.stardust.app.GlobalAppContext;
@@ -43,7 +44,7 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
     private static AutoJs instance;
     private final BroadcastReceiver mLayoutInspectBroadcastReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @NonNull Intent intent) {
             try {
                 ensureAccessibilityServiceEnabled();
                 String action = intent.getAction();
@@ -61,7 +62,7 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
     };
 
 
-    private AutoJs(final Application application) {
+    private AutoJs(@NonNull final Application application) {
         super(application);
         getScriptEngineService().registerGlobalScriptExecutionListener(new ScriptExecutionGlobalListener());
         IntentFilter intentFilter = new IntentFilter();
@@ -74,14 +75,14 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
         return instance;
     }
 
-    public synchronized static void initInstance(Application application) {
+    public synchronized static void initInstance(@NonNull Application application) {
         if (instance != null) {
             return;
         }
         instance = new AutoJs(application);
     }
 
-    private void capture(LayoutInspectFloatyWindow window) {
+    private void capture(@NonNull LayoutInspectFloatyWindow window) {
         LayoutInspector inspector = getLayoutInspector();
         LayoutInspector.CaptureAvailableListener listener = new LayoutInspector.CaptureAvailableListener() {
             @Override
@@ -98,16 +99,18 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
         }
     }
 
+    @NonNull
     @Override
     protected AppUtils createAppUtils(Context context) {
         return new AppUtils(context, AppFileProvider.AUTHORITY);
     }
 
+    @NonNull
     @Override
     protected GlobalConsole createGlobalConsole() {
         return new GlobalConsole(getUiHandler()) {
             @Override
-            public String println(int level, CharSequence charSequence) {
+            public String println(int level, @NonNull CharSequence charSequence) {
                 String log = super.println(level, charSequence);
                 DevPluginService.getInstance().log(log);
                 return log;
@@ -182,6 +185,7 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
     }
 
     private interface LayoutInspectFloatyWindow {
+        @NonNull
         FullScreenFloatyWindow create(NodeInfo nodeInfo);
     }
 

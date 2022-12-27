@@ -6,13 +6,16 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.Nullable;
+
 /**
  * Created by Stardust on 2017/4/22.
  */
 
 public class BitmapTool {
 
-    public static Bitmap scaleBitmap(Bitmap origin, int newWidth, int newHeight) {
+    @Nullable
+    public static Bitmap scaleBitmap(@Nullable Bitmap origin, int newWidth, int newHeight) {
         if (origin == null) {
             return null;
         }

@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.explorer;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.pio.PFile;
 
 import java.io.File;
@@ -9,11 +11,11 @@ public class ExplorerSampleItem extends ExplorerFileItem {
         super(file, parent);
     }
 
-    public ExplorerSampleItem(String path, ExplorerPage parent) {
+    public ExplorerSampleItem(@NonNull String path, ExplorerPage parent) {
         super(path, parent);
     }
 
-    public ExplorerSampleItem(File file, ExplorerPage parent) {
+    public ExplorerSampleItem(@NonNull File file, ExplorerPage parent) {
         super(file, parent);
     }
 

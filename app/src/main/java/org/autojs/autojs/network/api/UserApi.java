@@ -1,5 +1,7 @@
 package org.autojs.autojs.network.api;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.network.entity.notification.NotificationResponse;
 import org.autojs.autojs.network.entity.user.User;
 
@@ -19,22 +21,27 @@ import retrofit2.http.POST;
 
 public interface UserApi {
 
+    @NonNull
     @GET("/api/me")
     Observable<User> me();
 
+    @NonNull
     @FormUrlEncoded
     @POST("/login")
     Observable<ResponseBody> login(@HeaderMap Map<String, String> csrfToken, @Field("username") String userName, @Field("password") String password);
 
+    @NonNull
     @FormUrlEncoded
     @POST("/register")
     Observable<ResponseBody> register(@HeaderMap Map<String, String> csrfToken, @Field("email") String email,
                                       @Field("username") String userName, @Field("password") String password, @Field("password-confirm") String repeatPassword);
 
 
+    @NonNull
     @POST("/logout")
     Observable<ResponseBody> logout(@HeaderMap Map<String, String> csrfToken);
 
+    @NonNull
     @GET("/api/notifications")
     Observable<NotificationResponse> getNotifitions();
 }

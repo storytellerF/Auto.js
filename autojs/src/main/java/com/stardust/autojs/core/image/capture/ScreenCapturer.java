@@ -14,6 +14,8 @@ import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import android.util.Log;
@@ -38,23 +40,27 @@ public class ScreenCapturer {
 
 
     private static final String LOG_TAG = "ScreenCapturer";
+    @NonNull
     private final MediaProjectionManager mProjectionManager;
     private ImageReader mImageReader;
+    @Nullable
     private MediaProjection mMediaProjection;
     private VirtualDisplay mVirtualDisplay;
     private volatile Looper mImageAcquireLooper;
     private volatile Image mUnderUsingImage;
     private final AtomicReference<Image> mCachedImage = new AtomicReference<>();
+    @Nullable
     private volatile Exception mException;
     private final int mScreenDensity;
     private Handler mHandler;
     private final Intent mData;
+    @NonNull
     private final Context mContext;
     private int mOrientation = -1;
     private int mDetectedOrientation;
     private OrientationEventListener mOrientationEventListener;
 
-    public ScreenCapturer(Context context, Intent data, int orientation, int screenDensity, Handler handler) {
+    public ScreenCapturer(@NonNull Context context, Intent data, int orientation, int screenDensity, Handler handler) {
         mContext = context;
         mData = data;
         mScreenDensity = screenDensity;

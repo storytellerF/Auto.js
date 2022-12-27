@@ -69,9 +69,11 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
     };
     private FragmentDebugToolbarBinding inflate;
 
+    @NonNull
     public static <I extends FragmentBuilder<I, DebugToolbarFragment>> FragmentBuilder<I, DebugToolbarFragment> builder() {
         return new FragmentBuilder<I, DebugToolbarFragment>() {
 
+            @NonNull
             @Override
             public DebugToolbarFragment build() {
                 DebugToolbarFragment searchToolbarFragment=new DebugToolbarFragment();
@@ -96,7 +98,7 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mEditorView = findEditorView(view);
         mDebugger = DebuggerSingleton.get();
@@ -185,7 +187,7 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
     }
 
     @Override
-    public void updateSourceText(Dim.SourceInfo sourceInfo) {
+    public void updateSourceText(@NonNull Dim.SourceInfo sourceInfo) {
         Log.d(LOG_TAG, "updateSourceText: url = " + sourceInfo.url());
         sourceInfo.removeAllBreakpoints();
         for (CodeEditor.Breakpoint breakpoint : mEditorView.getEditor().getBreakpoints().values()) {
@@ -198,7 +200,7 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
     }
 
     @Override
-    public void enterInterrupt(Dim.StackFrame stackFrame, String threadName, String message) {
+    public void enterInterrupt(@NonNull Dim.StackFrame stackFrame, String threadName, String message) {
         showDebuggingLineOnEditor(stackFrame, message);
         mHandler.post(this::updateWatchingVariables);
     }
@@ -225,7 +227,7 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
         return mDebugger.eval(expr);
     }
 
-    private void showDebuggingLineOnEditor(Dim.StackFrame stackFrame, String message) {
+    private void showDebuggingLineOnEditor(@NonNull Dim.StackFrame stackFrame, @Nullable String message) {
         //如果调试进入到其他脚本（例如模块脚本），则改变当前编辑器的文本为自动调试的脚本的代码
         String source;
         //标记是否需要更改编辑器文本
@@ -257,7 +259,7 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
 
 
     @Override
-    public void onCursorChange(String line, int ch) {
+    public void onCursorChange(@NonNull String line, int ch) {
         if (ch == 0 && !mCursorChangeFromUser) {
             mCursorChangeFromUser = true;
             return;
@@ -272,7 +274,8 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
         mEditorView.getDebugBar().updateCurrentVariable(variable, value);
     }
 
-    private String findVariableOnCursor(String line, int ch) {
+    @Nullable
+    private String findVariableOnCursor(@NonNull String line, int ch) {
         int end;
         for (end = ch; end < line.length(); end++) {
             if (!isIdentifierChar(line.charAt(end))) {
@@ -296,6 +299,7 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
         return Character.isDigit(c) || Character.isLetter(c) || c == '.' || c == '_';
     }
 
+    @NonNull
     @Override
     public List<Integer> getMenuItemIds() {
         return Arrays.asList(R.id.step_over, R.id.step_into, R.id.step_out, R.id.resume_script, R.id.stop_script);

@@ -2,6 +2,8 @@ package com.stardust.autojs.core.console;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -59,7 +61,7 @@ public class ConsoleFloaty extends ResizableExpandableFloaty.AbstractResizableEx
     }
 
     @Override
-    public View inflateExpandedView(FloatyService service, ResizableExpandableFloatyWindow window) {
+    public View inflateExpandedView(FloatyService service, @NonNull ResizableExpandableFloatyWindow window) {
         ensureContextWrapper(service);
         View view = View.inflate(mContextWrapper, R.layout.floating_console_expand, null);
         setListeners(view, window);
@@ -73,30 +75,30 @@ public class ConsoleFloaty extends ResizableExpandableFloaty.AbstractResizableEx
         return mExpandedView;
     }
 
-    private void setInitialMeasure(final View view) {
+    private void setInitialMeasure(@NonNull final View view) {
         view.post(() -> ViewUtil.setViewMeasure(view, ScreenMetrics.getDeviceScreenWidth() * 2 / 3,
                 ScreenMetrics.getDeviceScreenHeight() / 3));
     }
 
-    private void initConsoleTitle(View view) {
+    private void initConsoleTitle(@NonNull View view) {
         mTitleView = view.findViewById(R.id.title);
         if (mTitle != null) {
             mTitleView.setText(mTitle);
         }
     }
 
-    private void setListeners(final View view, final ResizableExpandableFloatyWindow window) {
+    private void setListeners(@NonNull final View view, @NonNull final ResizableExpandableFloatyWindow window) {
         setWindowOperationIconListeners(view, window);
     }
 
-    private void setUpConsole(View view, ResizableExpandableFloatyWindow window) {
+    private void setUpConsole(@NonNull View view, ResizableExpandableFloatyWindow window) {
         ConsoleView consoleView = view.findViewById(R.id.console);
         consoleView.setConsole(mConsole);
         consoleView.setWindow(window);
         initConsoleTitle(view);
     }
 
-    private void setWindowOperationIconListeners(View view, final ResizableExpandableFloatyWindow window) {
+    private void setWindowOperationIconListeners(@NonNull View view, @NonNull final ResizableExpandableFloatyWindow window) {
         view.findViewById(R.id.close).setOnClickListener(v -> window.close());
         view.findViewById(R.id.move_or_resize).setOnClickListener(v -> {
             if (mMoveCursor.getVisibility() == View.VISIBLE) {
@@ -112,14 +114,14 @@ public class ConsoleFloaty extends ResizableExpandableFloaty.AbstractResizableEx
 
     @Nullable
     @Override
-    public View getResizerView(View expandedView) {
+    public View getResizerView(@NonNull View expandedView) {
         mResizer = expandedView.findViewById(R.id.resizer);
         return mResizer;
     }
 
     @Nullable
     @Override
-    public View getMoveCursorView(View expandedView) {
+    public View getMoveCursorView(@NonNull View expandedView) {
         mMoveCursor = expandedView.findViewById(R.id.move_cursor);
         return mMoveCursor;
     }

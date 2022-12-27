@@ -1,9 +1,12 @@
 package android.widget;
 
+import androidx.annotation.Nullable;
+
 import java.lang.reflect.Field;
 
 public class TextViewHelper {
 
+    @Nullable
     private static final Field sSavedStateText;
 
     static {

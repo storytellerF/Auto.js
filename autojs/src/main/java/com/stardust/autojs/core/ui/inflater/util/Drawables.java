@@ -14,6 +14,9 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.ui.inflater.ImageLoader;
 
 import java.net.URL;
@@ -27,20 +30,23 @@ import java.util.regex.Pattern;
 public class Drawables {
 
     private static final Pattern DATA_PATTERN = Pattern.compile("data:(\\w+/\\w+);base64,(.+)");
+    @Nullable
     private static ImageLoader sDefaultImageLoader = new DefaultImageLoader();
+    @Nullable
     private ImageLoader mImageLoader = sDefaultImageLoader;
 
-    public static void setDefaultImageLoader(ImageLoader defaultImageLoader) {
+    public static void setDefaultImageLoader(@Nullable ImageLoader defaultImageLoader) {
         if (defaultImageLoader == null)
             throw new NullPointerException();
         sDefaultImageLoader = defaultImageLoader;
     }
 
+    @Nullable
     public static ImageLoader getDefaultImageLoader() {
         return sDefaultImageLoader;
     }
 
-    public Drawable parse(Context context, String value) {
+    public Drawable parse(@NonNull Context context, @NonNull String value) {
         Resources resources = context.getResources();
         if (value.startsWith("@color/") || value.startsWith("@android:color/") || value.startsWith("#")) {
             return new ColorDrawable(Colors.parse(context, value));
@@ -54,7 +60,7 @@ public class Drawables {
         return loadDrawableResources(context, value);
     }
 
-    public Drawable loadDrawableResources(Context context, String value) {
+    public Drawable loadDrawableResources(@NonNull Context context, String value) {
         int resId = context.getResources().getIdentifier(value, "drawable",
                 context.getPackageName());
         if (resId == 0)
@@ -62,7 +68,7 @@ public class Drawables {
         return context.getResources().getDrawable(resId);
     }
 
-    public Drawable loadAttrResources(Context context, String value) {
+    public Drawable loadAttrResources(@NonNull Context context, @NonNull String value) {
         int[] attr = {context.getResources().getIdentifier(value.substring(1), "attr",
                 context.getPackageName())};
         TypedArray ta = context.obtainStyledAttributes(attr);
@@ -75,7 +81,7 @@ public class Drawables {
         return new BitmapDrawable(BitmapFactory.decodeFile(path));
     }
 
-    public Drawable parse(View view, String name) {
+    public Drawable parse(@NonNull View view, @NonNull String name) {
         return parse(view.getContext(), name);
     }
 
@@ -87,7 +93,7 @@ public class Drawables {
         mImageLoader.loadIntoBackground(view, uri);
     }
 
-    public <V extends ImageView> void setupWithImage(V view, String value) {
+    public <V extends ImageView> void setupWithImage(@NonNull V view, @NonNull String value) {
         if (value.startsWith("http://") || value.startsWith("https://")) {
             loadInto(view, Uri.parse(value));
         } else if (value.startsWith("data:")) {
@@ -97,12 +103,12 @@ public class Drawables {
         }
     }
 
-    private void loadDataInto(ImageView view, String data) {
+    private void loadDataInto(@NonNull ImageView view, @NonNull String data) {
         Bitmap bitmap = loadBase64Data(data);
         view.setImageBitmap(bitmap);
     }
 
-    public static Bitmap loadBase64Data(String data) {
+    public static Bitmap loadBase64Data(@NonNull String data) {
         Matcher matcher = DATA_PATTERN.matcher(data);
         String base64;
         if (!matcher.matches() || matcher.groupCount() != 2) {
@@ -115,7 +121,7 @@ public class Drawables {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
-    public void setupWithViewBackground(View view, String value) {
+    public void setupWithViewBackground(@NonNull View view, @NonNull String value) {
         if (value.startsWith("http://") || value.startsWith("https://")) {
             loadIntoBackground(view, Uri.parse(value));
         } else {
@@ -131,6 +137,7 @@ public class Drawables {
         mImageLoader = imageLoader;
     }
 
+    @Nullable
     public ImageLoader getImageLoader() {
         return mImageLoader;
     }
@@ -138,17 +145,18 @@ public class Drawables {
     private static class DefaultImageLoader implements ImageLoader {
 
         @Override
-        public void loadInto(final ImageView view, Uri uri) {
+        public void loadInto(@NonNull final ImageView view, @NonNull Uri uri) {
             load(view, uri, view::setImageDrawable);
         }
 
         @Override
-        public void loadIntoBackground(final View view, Uri uri) {
+        public void loadIntoBackground(@NonNull final View view, @NonNull Uri uri) {
             load(view, uri, view::setBackground);
         }
 
+        @Nullable
         @Override
-        public Drawable load(View view, Uri uri) {
+        public Drawable load(@NonNull View view, @NonNull Uri uri) {
             try {
                 URL url = new URL(uri.toString());
                 Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
@@ -159,12 +167,12 @@ public class Drawables {
         }
 
         @Override
-        public void load(View view, Uri uri, final DrawableCallback callback) {
+        public void load(@NonNull View view, @NonNull Uri uri, @NonNull final DrawableCallback callback) {
             load(view, uri, (BitmapCallback) bitmap -> callback.onLoaded(new BitmapDrawable(view.getResources(), bitmap)));
         }
 
         @Override
-        public void load(final View view, final Uri uri, final BitmapCallback callback) {
+        public void load(@NonNull final View view, @NonNull final Uri uri, @NonNull final BitmapCallback callback) {
             new Thread(() -> {
                 try {
                     URL url = new URL(uri.toString());

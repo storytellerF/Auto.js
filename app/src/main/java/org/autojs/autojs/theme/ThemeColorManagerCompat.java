@@ -3,6 +3,8 @@ package org.autojs.autojs.theme;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -53,7 +55,7 @@ public class ThemeColorManagerCompat {
         }
     }
 
-    public static void init(Context context, ThemeColor defaultThemeColor) {
+    public static void init(@NonNull Context context, ThemeColor defaultThemeColor) {
         sContext = context;
         sSharedPreferences = context.getSharedPreferences("theme_color", Context.MODE_PRIVATE);
         ThemeColorManager.setDefaultThemeColor(defaultThemeColor);

@@ -1,5 +1,7 @@
 package com.stardust.lang;
 
+import androidx.annotation.NonNull;
+
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -26,23 +28,23 @@ public class ThreadCompat extends Thread {
         super(group, target);
     }
 
-    public ThreadCompat(String name) {
+    public ThreadCompat(@NonNull String name) {
         super(name);
     }
 
-    public ThreadCompat(ThreadGroup group, String name) {
+    public ThreadCompat(ThreadGroup group, @NonNull String name) {
         super(group, name);
     }
 
-    public ThreadCompat(Runnable target, String name) {
+    public ThreadCompat(Runnable target, @NonNull String name) {
         super(target, name);
     }
 
-    public ThreadCompat(ThreadGroup group, Runnable target, String name) {
+    public ThreadCompat(ThreadGroup group, Runnable target, @NonNull String name) {
         super(group, target, name);
     }
 
-    public ThreadCompat(ThreadGroup group, Runnable target, String name, long stackSize) {
+    public ThreadCompat(ThreadGroup group, Runnable target, @NonNull String name, long stackSize) {
         super(group, target, name, stackSize);
     }
 

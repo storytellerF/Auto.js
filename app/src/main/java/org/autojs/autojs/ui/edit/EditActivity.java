@@ -51,33 +51,35 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     private static final String LOG_TAG = "EditActivity";
     private final OnActivityResultDelegate.Mediator mMediator = new OnActivityResultDelegate.Mediator();
     private final RequestPermissionCallbacks mRequestPermissionCallbacks = new RequestPermissionCallbacks();
+    @NonNull
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     private EditorMenu mEditorMenu;
     private boolean mNewTask;
     private ActivityEditBinding inflate;
 
-    public static void editFile(Context context, String path, boolean newTask) {
+    public static void editFile(@NonNull Context context, String path, boolean newTask) {
         editFile(context, null, path, newTask);
     }
 
-    public static void editFile(Context context, Uri uri, boolean newTask) {
+    public static void editFile(@NonNull Context context, Uri uri, boolean newTask) {
         context.startActivity(newIntent(context, newTask)
                 .setData(uri));
     }
 
-    public static void editFile(Context context, String name, String path, boolean newTask) {
+    public static void editFile(@NonNull Context context, String name, String path, boolean newTask) {
         context.startActivity(newIntent(context, newTask)
                 .putExtra(EXTRA_PATH, path)
                 .putExtra(EXTRA_NAME, name));
     }
 
-    public static void viewContent(Context context, String name, String content, boolean newTask) {
+    public static void viewContent(@NonNull Context context, String name, String content, boolean newTask) {
         context.startActivity(newIntent(context, newTask)
                 .putExtra(EXTRA_CONTENT, content)
                 .putExtra(EXTRA_NAME, name)
                 .putExtra(EXTRA_READ_ONLY, true));
     }
 
+    @NonNull
     private static Intent newIntent(Context context, boolean newTask) {
         Intent intent = new Intent(context, EditActivity.class);
         if (newTask || !(context instanceof Activity)) {
@@ -118,7 +120,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
         return super.onWindowStartingActionMode(callback, type);
     }
 
-    private void onLoadFileError(String message) {
+    private void onLoadFileError(@NonNull String message) {
         new ThemeColorMaterialDialogBuilder(this)
                 .title(getString(R.string.text_cannot_read_file))
                 .content(message)
@@ -139,12 +141,12 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return mEditorMenu.onOptionsItemSelected(item);
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
         Log.d(LOG_TAG, "onPrepareOptionsMenu: " + menu);
         boolean isScriptRunning = inflate.editorView.getScriptExecutionId() != ScriptExecution.NO_ID;
         MenuItem forceStopItem = menu.findItem(R.id.action_force_stop);
@@ -153,7 +155,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     }
 
     @Override
-    public void onActionModeStarted(ActionMode mode) {
+    public void onActionModeStarted(@NonNull ActionMode mode) {
         Log.d(LOG_TAG, "onActionModeStarted: " + mode);
         Menu menu = mode.getMenu();
         MenuItem item = menu.getItem(menu.size() - 1);
@@ -265,7 +267,8 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
         }
     }
 
-    private File saveToTmpFile(String text) {
+    @Nullable
+    private File saveToTmpFile(@NonNull String text) {
         try {
             File tmp = TmpScriptFiles.create(this);
             Disposable subscribe = Observable.just(text)
@@ -280,7 +283,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         String text = savedInstanceState.getString("text");
         if (text != null) {

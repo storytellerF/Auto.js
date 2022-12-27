@@ -3,6 +3,9 @@ package org.autojs.autojs.network;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
@@ -30,8 +33,10 @@ public class NodeBB {
     public static final String BASE_URL = "https://www.autojs.org/";
     private static final NodeBB sInstance = new NodeBB();
     private static final String LOG_TAG = "NodeBB";
+    @Nullable
     private Map<String, String> mXCsrfToken;
 
+    @NonNull
     private final Retrofit mRetrofit;
 
     NodeBB() {
@@ -48,10 +53,12 @@ public class NodeBB {
                 .build();
     }
 
+    @NonNull
     public static NodeBB getInstance() {
         return sInstance;
     }
 
+    @NonNull
     public Retrofit getRetrofit() {
         return mRetrofit;
     }
@@ -69,7 +76,7 @@ public class NodeBB {
         mXCsrfToken = null;
     }
 
-    public static String getErrorMessage(Throwable e, Context context, String defaultMsg) {
+    public static String getErrorMessage(Throwable e, @NonNull Context context, String defaultMsg) {
         if (!(e instanceof HttpException)) {
             return defaultMsg;
         }
@@ -86,7 +93,8 @@ public class NodeBB {
         }
     }
 
-    private static String getErrorMessage(Context context, HttpException error, String errorBody) {
+    @Nullable
+    private static String getErrorMessage(@NonNull Context context, @NonNull HttpException error, @Nullable String errorBody) {
         if (errorBody == null)
             return null;
         if (errorBody.contains("invalid-login-credentials")) {
@@ -109,11 +117,12 @@ public class NodeBB {
         return null;
     }
 
+    @NonNull
     public static String url(String relativePath) {
         return BASE_URL + relativePath;
     }
 
-    public static CharSequence getErrorMessage(Throwable error, Context context, int defaultMsg) {
+    public static CharSequence getErrorMessage(Throwable error, @NonNull Context context, int defaultMsg) {
         return getErrorMessage(error, context, context.getString(defaultMsg));
     }
 }

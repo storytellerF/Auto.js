@@ -57,6 +57,7 @@ public abstract class JavaScriptSource extends ScriptSource {
         return reader;
     }
 
+    @NonNull
     public String toString() {
         return getName() + ".js";
     }
@@ -98,7 +99,7 @@ public abstract class JavaScriptSource extends ScriptSource {
 
     }
 
-    private int parseExecutionMode(String[] modeStrings) {
+    private int parseExecutionMode(@NonNull String[] modeStrings) {
         int mode = 0;
         for (String modeString : modeStrings) {
             Integer i = EXECUTION_MODES.get(modeString);
@@ -109,6 +110,7 @@ public abstract class JavaScriptSource extends ScriptSource {
         return mode;
     }
 
+    @NonNull
     @Override
     public String getEngineName() {
         return ENGINE;

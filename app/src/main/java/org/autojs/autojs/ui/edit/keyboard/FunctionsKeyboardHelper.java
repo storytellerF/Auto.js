@@ -18,6 +18,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.util.BackPressedHandler;
 
 /**
@@ -27,23 +29,27 @@ public class FunctionsKeyboardHelper implements BackPressedHandler {
 
     private static final String SHARE_PREFERENCE_NAME = "FunctionsKeyboardHelper";
     private static final String SHARE_PREFERENCE_SOFT_INPUT_HEIGHT = "soft_input_height";
+    @NonNull
     private final Activity mActivity;
+    @NonNull
     private final InputMethodManager mInputManager;
     private final SharedPreferences mPreferences;
     private View mFunctionsLayout;
     private View mEditView;
     private View mContentView;
 
-    private FunctionsKeyboardHelper(Activity activity) {
+    private FunctionsKeyboardHelper(@NonNull Activity activity) {
         mActivity = activity;
         mInputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         mPreferences = activity.getSharedPreferences(SHARE_PREFERENCE_NAME, Context.MODE_PRIVATE);
     }
 
-    public static FunctionsKeyboardHelper with(Activity activity) {
+    @NonNull
+    public static FunctionsKeyboardHelper with(@NonNull Activity activity) {
         return new FunctionsKeyboardHelper(activity);
     }
 
+    @NonNull
     public FunctionsKeyboardHelper setContent(View contentView) {
         mContentView = contentView;
         return this;
@@ -57,8 +63,9 @@ public class FunctionsKeyboardHelper implements BackPressedHandler {
         }
     }
 
+    @NonNull
     @SuppressLint("ClickableViewAccessibility")
-    public FunctionsKeyboardHelper setEditView(View editView) {
+    public FunctionsKeyboardHelper setEditView(@NonNull View editView) {
         mEditView = editView;
         mEditView.requestFocus();
         editView.setOnTouchListener((v, event) -> {
@@ -70,7 +77,8 @@ public class FunctionsKeyboardHelper implements BackPressedHandler {
     }
 
 
-    public FunctionsKeyboardHelper setFunctionsTrigger(View triggerButton) {
+    @NonNull
+    public FunctionsKeyboardHelper setFunctionsTrigger(@NonNull View triggerButton) {
         triggerButton.setOnClickListener(v -> {
             if (mFunctionsLayout.isShown()) {
                 lockContentHeight();
@@ -89,11 +97,13 @@ public class FunctionsKeyboardHelper implements BackPressedHandler {
         return this;
     }
 
+    @NonNull
     public FunctionsKeyboardHelper setFunctionsView(View FunctionsView) {
         mFunctionsLayout = FunctionsView;
         return this;
     }
 
+    @NonNull
     public FunctionsKeyboardHelper build() {
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN |
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);

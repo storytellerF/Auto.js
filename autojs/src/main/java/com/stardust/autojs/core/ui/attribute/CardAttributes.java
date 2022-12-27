@@ -6,11 +6,12 @@ import android.view.View;
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.util.Dimensions;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 public class CardAttributes extends ViewAttributes {
 
-    public CardAttributes(ResourceParser resourceParser, View view) {
+    public CardAttributes(@NonNull ResourceParser resourceParser, View view) {
         super(resourceParser, view);
     }
 
@@ -30,7 +31,7 @@ public class CardAttributes extends ViewAttributes {
         registerIntPixelAttr("contentPaddingRight", this::setContentPaddingRight);
     }
 
-    private void setContentPadding(String value) {
+    private void setContentPadding(@NonNull String value) {
         int[] pixels = Dimensions.parseToIntPixelArray(getView(), value);
         getView().setContentPadding(pixels[0], pixels[1], pixels[2], pixels[3]);
     }
@@ -64,6 +65,7 @@ public class CardAttributes extends ViewAttributes {
     }
 
 
+    @NonNull
     @Override
     public CardView getView() {
         return (CardView) super.getView();

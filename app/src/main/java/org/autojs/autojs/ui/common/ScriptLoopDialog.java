@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.Window;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.stardust.app.DialogUtils;
 import com.stardust.app.GlobalAppContext;
@@ -24,10 +26,11 @@ public class ScriptLoopDialog {
 
     private final ScriptFile mScriptFile;
     private final MaterialDialog mDialog;
+    @NonNull
     private final DialogScriptLoopBinding bind;
 
 
-    public ScriptLoopDialog(Context context, ScriptFile file) {
+    public ScriptLoopDialog(@NonNull Context context, ScriptFile file) {
         mScriptFile = file;
         View view = View.inflate(context, R.layout.dialog_script_loop, null);
         mDialog = new MaterialDialog.Builder(context)
@@ -50,6 +53,7 @@ public class ScriptLoopDialog {
         }
     }
 
+    @NonNull
     public ScriptLoopDialog windowType(int windowType) {
         Window window = mDialog.getWindow();
         if (window != null) {

@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -51,18 +53,19 @@ public class AndroidClassIndices {
     private Throwable mLoadThrowable;
 
 
-    protected AndroidClassIndices(Context context) {
+    protected AndroidClassIndices(@NonNull Context context) {
         mContext = context.getApplicationContext();
         load("indices/all_android_classes.json");
     }
 
-    public static AndroidClassIndices getInstance(Context context) {
+    public static AndroidClassIndices getInstance(@NonNull Context context) {
         if (sInstance == null) {
             sInstance = new AndroidClassIndices(context);
         }
         return sInstance;
     }
 
+    @NonNull
     public Single<List<ClassSearchingItem>> search(String keywords) {
         return Single.fromCallable(() -> {
             if (mPackages.isEmpty() && mLoadThrowable != null) {
@@ -74,7 +77,8 @@ public class AndroidClassIndices {
                 .subscribeOn(Schedulers.from(mSingleThreadExecutor));
     }
 
-    private List<ClassSearchingItem> search(Collection<ArrayList<ClassSearchingItem>> packages, String keywords) {
+    @NonNull
+    private List<ClassSearchingItem> search(@NonNull Collection<ArrayList<ClassSearchingItem>> packages, String keywords) {
         List<ClassSearchingItem> result = new ArrayList<>();
         if (TextUtils.isEmpty(keywords)) {
             for (ArrayList<ClassSearchingItem> packageClasses : packages) {
@@ -94,7 +98,7 @@ public class AndroidClassIndices {
     }
 
     @SuppressLint("CheckResult")
-    private void load(String assetsPath) {
+    private void load(@NonNull String assetsPath) {
         Observable.just(assetsPath)
                 .map(path -> mContext.getAssets().open(path))
                 .map(InputStreamReader::new)
@@ -108,7 +112,7 @@ public class AndroidClassIndices {
     }
 
 
-    private void load(Reader reader) throws IOException {
+    private void load(@NonNull Reader reader) throws IOException {
         try {
             Gson gson = new Gson();
             ArrayList<AndroidClass> classes = gson.fromJson(reader, ANDROID_CLASS_LIST_TYPE);
@@ -120,7 +124,7 @@ public class AndroidClassIndices {
         }
     }
 
-    private void load(ArrayList<AndroidClass> classes) {
+    private void load(@NonNull ArrayList<AndroidClass> classes) {
         mPackages.clear();
         for (AndroidClass clazz : classes) {
             String packageName = clazz.getPackageName();

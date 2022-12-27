@@ -1,5 +1,6 @@
 package org.autojs.autojs.ui.widget;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import java.util.List;
 public class SimpleRecyclerViewAdapter<M, VH extends BindableViewHolder<M>> extends RecyclerView.Adapter<VH> {
 
     public interface ViewHolderFactory<VH> {
+        @NonNull
         VH create(View itemView);
     }
 
@@ -23,7 +25,7 @@ public class SimpleRecyclerViewAdapter<M, VH extends BindableViewHolder<M>> exte
     private final int mLayoutResource;
     private final ViewHolderFactory<VH> mVHViewHolderFactory;
 
-    public SimpleRecyclerViewAdapter(int layoutResource, List<M> dataList, ViewHolderFactory<VH> VHViewHolderFactory) {
+    public SimpleRecyclerViewAdapter(int layoutResource, @NonNull List<M> dataList, ViewHolderFactory<VH> VHViewHolderFactory) {
         mLayoutResource = layoutResource;
         mVHViewHolderFactory = VHViewHolderFactory;
         mDataList.addAll(dataList);
@@ -33,13 +35,14 @@ public class SimpleRecyclerViewAdapter<M, VH extends BindableViewHolder<M>> exte
         this(layoutResource, Collections.emptyList(), VHViewHolderFactory);
     }
 
+    @NonNull
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return mVHViewHolderFactory.create(LayoutInflater.from(parent.getContext()).inflate(mLayoutResource, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
+    public void onBindViewHolder(@NonNull VH holder, int position) {
         M m = mDataList.get(position);
         holder.bind(m, position);
     }

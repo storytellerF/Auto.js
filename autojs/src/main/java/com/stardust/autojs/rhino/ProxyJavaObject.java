@@ -1,5 +1,7 @@
 package com.stardust.autojs.rhino;
 
+import androidx.annotation.NonNull;
+
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeFunction;
 import org.mozilla.javascript.NativeJavaObject;
@@ -28,7 +30,7 @@ public class ProxyJavaObject extends NativeJavaObject {
     }
 
     @Override
-    public void put(String name, Scriptable start, Object value) {
+    public void put(@NonNull String name, Scriptable start, Object value) {
         if (name.equals("__proxy__")) {
             NativeObject proxy = (NativeObject) value;
             Object getter = proxy.get("get", start);
@@ -62,6 +64,7 @@ public class ProxyJavaObject extends NativeJavaObject {
         return value;
     }
 
+    @NonNull
     @Override
     public Object getDefaultValue(Class<?> typeHint) {
         return toString();

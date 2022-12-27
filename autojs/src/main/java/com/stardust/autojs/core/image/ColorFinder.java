@@ -2,6 +2,9 @@ package com.stardust.autojs.core.image;
 
 import android.graphics.Color;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.stardust.autojs.core.opencv.MatOfPoint;
@@ -29,19 +32,23 @@ public class ColorFinder {
         mScreenMetrics = screenMetrics;
     }
 
-    public Point findColorEquals(ImageWrapper imageWrapper, int color) {
+    @Nullable
+    public Point findColorEquals(@NonNull ImageWrapper imageWrapper, int color) {
         return findColorEquals(imageWrapper, color, null);
     }
 
-    public Point findColorEquals(ImageWrapper imageWrapper, int color, Rect region) {
+    @Nullable
+    public Point findColorEquals(@NonNull ImageWrapper imageWrapper, int color, Rect region) {
         return findColor(imageWrapper, color, 0, region);
     }
 
-    public Point findColor(ImageWrapper imageWrapper, int color, int threshold) {
+    @Nullable
+    public Point findColor(@NonNull ImageWrapper imageWrapper, int color, int threshold) {
         return findColor(imageWrapper, color, threshold, null);
     }
 
-    public Point findColor(ImageWrapper image, int color, int threshold, Rect rect) {
+    @Nullable
+    public Point findColor(@NonNull ImageWrapper image, int color, int threshold, @Nullable Rect rect) {
         MatOfPoint matOfPoint = findColorInner(image, color, threshold, rect);
         if (matOfPoint == null) {
             return null;
@@ -55,7 +62,7 @@ public class ColorFinder {
         return point;
     }
 
-    public Point[] findAllPointsForColor(ImageWrapper image, int color, int threshold, Rect rect) {
+    public Point[] findAllPointsForColor(@NonNull ImageWrapper image, int color, int threshold, @Nullable Rect rect) {
 
         MatOfPoint matOfPoint = findColorInner(image, color, threshold, rect);
         if (matOfPoint == null) {
@@ -72,7 +79,8 @@ public class ColorFinder {
         return points;
     }
 
-    private MatOfPoint findColorInner(ImageWrapper image, int color, int threshold, Rect rect) {
+    @Nullable
+    private MatOfPoint findColorInner(@NonNull ImageWrapper image, int color, int threshold, @Nullable Rect rect) {
         Mat bi = new Mat();
         Scalar lowerBound = new Scalar(Color.red(color) - threshold, Color.green(color) - threshold,
                 Color.blue(color) - threshold, 255);
@@ -98,7 +106,8 @@ public class ColorFinder {
         return result;
     }
 
-    public Point findMultiColors(ImageWrapper image, int firstColor, int threshold, Rect rect, int[] points) {
+    @Nullable
+    public Point findMultiColors(@NonNull ImageWrapper image, int firstColor, int threshold, Rect rect, @NonNull int[] points) {
         Point[] firstPoints = findAllPointsForColor(image, firstColor, threshold, rect);
         for (Point firstPoint : firstPoints) {
             if (firstPoint == null)
@@ -110,7 +119,7 @@ public class ColorFinder {
         return null;
     }
 
-    private boolean checksPath(ImageWrapper image, Point startingPoint, int threshold, Rect rect, int[] points) {
+    private boolean checksPath(@NonNull ImageWrapper image, @NonNull Point startingPoint, int threshold, Rect rect, @NonNull int[] points) {
         for (int i = 0; i < points.length; i += 3) {
             int x = points[i];
             int y = points[i + 1];

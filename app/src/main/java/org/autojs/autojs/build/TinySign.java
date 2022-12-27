@@ -2,6 +2,8 @@ package org.autojs.autojs.build;
 
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilterOutputStream;
@@ -32,11 +34,11 @@ public class TinySign {
     public TinySign() {
     }
 
-    private static byte[] dBase64(String data) throws UnsupportedEncodingException {
+    private static byte[] dBase64(@NonNull String data) throws UnsupportedEncodingException {
         return Base64.decode(data.getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP);
     }
 
-    private static void doDir(String prefix, File dir, ZipOutputStream zos, DigestOutputStream dos, Manifest m) throws IOException {
+    private static void doDir(String prefix, @NonNull File dir, @NonNull ZipOutputStream zos, @NonNull DigestOutputStream dos, @NonNull Manifest m) throws IOException {
         zos.putNextEntry(new ZipEntry(prefix));
         zos.closeEntry();
         File[] arr$ = dir.listFiles();
@@ -53,7 +55,7 @@ public class TinySign {
 
     }
 
-    private static void doFile(String name, File f, ZipOutputStream zos, DigestOutputStream dos, Manifest m) throws IOException {
+    private static void doFile(String name, @NonNull File f, @NonNull ZipOutputStream zos, @NonNull DigestOutputStream dos, @NonNull Manifest m) throws IOException {
         zos.putNextEntry(new ZipEntry(name));
         FileInputStream fis = FileUtils.openInputStream(f);
         IOUtils.copy(fis, dos);
@@ -69,7 +71,8 @@ public class TinySign {
         return Base64.encodeToString(data, Base64.NO_WRAP);
     }
 
-    private static Manifest generateSF(Manifest manifest) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    @NonNull
+    private static Manifest generateSF(@NonNull Manifest manifest) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA1");
         PrintStream print = new PrintStream(new DigestOutputStream(new OutputStream() {
             public void write(byte[] arg0) {
@@ -114,7 +117,7 @@ public class TinySign {
         return signature;
     }
 
-    public static void sign(File dir, OutputStream out) throws Exception {
+    public static void sign(@NonNull File dir, OutputStream out) throws Exception {
         ZipOutputStream zos = new ZipOutputStream(out);
         zos.putNextEntry(new ZipEntry("META-INF/"));
         zos.closeEntry();
@@ -126,7 +129,7 @@ public class TinySign {
         IOUtils.closeQuietly(zos);
     }
 
-    private static String writeMF(File dir, Manifest manifest, ZipOutputStream zos) throws NoSuchAlgorithmException, IOException {
+    private static String writeMF(@NonNull File dir, @NonNull Manifest manifest, @NonNull ZipOutputStream zos) throws NoSuchAlgorithmException, IOException {
         MessageDigest md = MessageDigest.getInstance("SHA1");
         DigestOutputStream dos = new DigestOutputStream(zos, md);
         zipAndSha1(dir, zos, dos, manifest);
@@ -139,14 +142,14 @@ public class TinySign {
         return eBase64(md.digest());
     }
 
-    private static void writeRSA(ZipOutputStream zos, byte[] sign) throws IOException {
+    private static void writeRSA(@NonNull ZipOutputStream zos, byte[] sign) throws IOException {
         zos.putNextEntry(new ZipEntry("META-INF/CERT.RSA"));
         zos.write(dBase64("MIIB5gYJKoZIhvcNAQcCoIIB1zCCAdMCAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHAaCCATYwggEyMIHdoAMCAQICBCunMokwDQYJKoZIhvcNAQELBQAwDzENMAsGA1UEAxMEVGVzdDAeFw0xMjA0MjIwODQ1NDdaFw0xMzA0MjIwODQ1NDdaMA8xDTALBgNVBAMTBFRlc3QwXDANBgkqhkiG9w0BAQEFAANLADBIAkEAoiZSqWnFDHA5sXKoDiUUO9JuL7cm/2dCck5MKumVvv+WfSg0jsovnywsFN0pifmdRSLmOdUkh0d0J+tOnSgtsQIDAQABoyEwHzAdBgNVHQ4EFgQUVL2yOinUwpARE1tOPxc1bf4WrTgwDQYJKoZIhvcNAQELBQADQQAnj/eZwhqwb2tgSYNvgRo5bBNNCpJbQ4alEeP/MLSIWf2nZpAix8T3oS9X2affQtAgctPATcKQaiH2B4L7FKlVMXoweAIBATAXMA8xDTALBgNVBAMTBFRlc3QCBCunMokwCQYFKw4DAhoFADANBgkqhkiG9w0BAQEFAARA"));
         zos.write(sign);
         zos.closeEntry();
     }
 
-    private static byte[] writeSF(ZipOutputStream zos, Manifest sf, String sha1Manifest) throws Exception {
+    private static byte[] writeSF(@NonNull ZipOutputStream zos, @NonNull Manifest sf, @NonNull String sha1Manifest) throws Exception {
         Signature signature = instanceSignature();
         zos.putNextEntry(new ZipEntry("META-INF/CERT.SF"));
         TinySign.SignatureOutputStream out = new TinySign.SignatureOutputStream(zos, signature);
@@ -161,7 +164,7 @@ public class TinySign {
         return signature.sign();
     }
 
-    private static void zipAndSha1(File dir, ZipOutputStream zos, DigestOutputStream dos, Manifest m) throws NoSuchAlgorithmException, IOException {
+    private static void zipAndSha1(@NonNull File dir, @NonNull ZipOutputStream zos, @NonNull DigestOutputStream dos, @NonNull Manifest m) throws NoSuchAlgorithmException, IOException {
         File[] arr$ = dir.listFiles();
         int len$ = arr$.length;
 

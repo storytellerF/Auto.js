@@ -1,5 +1,7 @@
 package com.stardust.autojs.engine.preprocess;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import java.io.Reader;
@@ -17,6 +19,7 @@ public class MultiLinePreprocessor extends AbstractProcessor {
 
     private int mState = 0;
     private int mStateBeforeLiteral = 0;
+    @Nullable
     private StringBuilder mNewScript;
     private int mLastReturnCharPosition;
     private int i;
@@ -87,6 +90,7 @@ public class MultiLinePreprocessor extends AbstractProcessor {
         i = 0;
     }
 
+    @NonNull
     @Override
     public Reader getReaderAndClear() {
         Reader reader = new StringReader(mNewScript.toString());

@@ -2,6 +2,8 @@ package com.stardust.autojs.core.inputevent;
 
 import android.content.Context;
 import android.os.SystemClock;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -34,6 +36,7 @@ public class RootAutomator implements Shell.Callback {
 
     @Nullable
     private ScreenMetrics mScreenMetrics;
+    @NonNull
     private final Shell mShell;
     private int mDefaultId = 0;
     private final AtomicInteger mTracingId = new AtomicInteger(1);
@@ -41,9 +44,10 @@ public class RootAutomator implements Shell.Callback {
     private final Object mReadyLock = new Object();
     private volatile boolean mReady = false;
     private final Context mContext;
+    @Nullable
     private final String mInputDevice;
 
-    public RootAutomator(Context context, String inputDevice, boolean waitForReady) throws IOException {
+    public RootAutomator(Context context, @Nullable String inputDevice, boolean waitForReady) throws IOException {
         mContext = context;
         if (inputDevice == null) {
             mInputDevice = RootAutomatorEngine.getDeviceNameOrPath(mContext, InputDevices.getTouchDeviceName());

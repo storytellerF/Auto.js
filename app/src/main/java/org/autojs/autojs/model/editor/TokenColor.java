@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.editor;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Collections;
@@ -47,6 +49,7 @@ public class TokenColor {
         mSettings = settings;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "TokenColor{" +

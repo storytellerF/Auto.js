@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -22,7 +24,7 @@ public class ForegroundService extends Service {
     private static final int NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = ForegroundService.class.getName() + ".foreground";
 
-    public static void start(Context context) {
+    public static void start(@NonNull Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(new Intent(context, ForegroundService.class));
         } else {
@@ -30,7 +32,7 @@ public class ForegroundService extends Service {
         }
     }
 
-    public static void stop(Context context){
+    public static void stop(@NonNull Context context){
         context.stopService(new Intent(context, ForegroundService.class));
     }
 
@@ -50,6 +52,7 @@ public class ForegroundService extends Service {
         startForeground(NOTIFICATION_ID, buildNotification());
     }
 
+    @NonNull
     private Notification buildNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel();

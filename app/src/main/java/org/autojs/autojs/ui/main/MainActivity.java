@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -79,8 +80,10 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
     private MenuItem mLogMenuItem;
     private boolean mDocsSearchItemExpanded;
 
+    @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context mContext) {
         return new ActivityIntentBuilder<I>(mContext, MainActivity.class) {
+            @NonNull
             @Override
             public PostActivityStarter startForResult(int requestCode) {
                 context.startActivity(intent);
@@ -297,13 +300,14 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
         return mRequestPermissionCallbacks.removeCallback(callback);
     }
 
+    @NonNull
     @Override
     public BackPressedHandler.Observer getBackPressedObserver() {
         return mBackPressObserver;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
         mLogMenuItem = menu.findItem(R.id.action_log);
@@ -312,7 +316,7 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_log) {
             if (mDocsSearchItemExpanded) {
                 submitForwardQuery();
@@ -329,7 +333,7 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
         inflate.drawerLayout.closeDrawer(GravityCompat.START);
     }
 
-    private void setUpSearchMenuItem(MenuItem searchMenuItem) {
+    private void setUpSearchMenuItem(@NonNull MenuItem searchMenuItem) {
         mSearchViewItem = new SearchViewItem(this, searchMenuItem) {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -352,7 +356,7 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
         mSearchViewItem.setQueryCallback(this::submitQuery);
     }
 
-    private void submitQuery(String query) {
+    private void submitQuery(@Nullable String query) {
         if (query == null) {
             EventBus.getDefault().post(QueryEvent.CLEAR);
             return;
@@ -376,6 +380,7 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
     }
 
     public static class DrawerOpenEvent {
+        @NonNull
         static DrawerOpenEvent SINGLETON = new DrawerOpenEvent();
     }
 }

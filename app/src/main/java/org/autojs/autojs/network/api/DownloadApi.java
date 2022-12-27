@@ -1,5 +1,7 @@
 package org.autojs.autojs.network.api;
 
+import androidx.annotation.NonNull;
+
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
@@ -12,6 +14,7 @@ import retrofit2.http.Url;
 
 public interface DownloadApi {
 
+    @NonNull
     @GET
     @Streaming
     Observable<ResponseBody> download(@Url String url);

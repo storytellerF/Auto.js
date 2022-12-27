@@ -2,6 +2,8 @@ package com.stardust.autojs.core.looper;
 
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -22,7 +24,7 @@ public class LooperHelper {
             sLoopers.put(Thread.currentThread(), l);
     }
 
-    public static void quitForThread(Thread thread) {
+    public static void quitForThread(@NonNull Thread thread) {
         Looper looper = sLoopers.remove(thread);
         if (looper != null && looper != Looper.getMainLooper())
             looper.quit();

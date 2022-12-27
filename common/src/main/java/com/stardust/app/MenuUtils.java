@@ -1,6 +1,8 @@
 package com.stardust.app;
 
 import android.graphics.drawable.Drawable;
+
+import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,7 +10,7 @@ import android.view.SubMenu;
 
 public class MenuUtils {
 
-    public static void setMenuIconColor(Menu menu, int color) {
+    public static void setMenuIconColor(@NonNull Menu menu, int color) {
         for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
             Drawable icon = item.getIcon();

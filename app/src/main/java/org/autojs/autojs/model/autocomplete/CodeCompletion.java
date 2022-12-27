@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.autocomplete;
 
+import androidx.annotation.Nullable;
+
 /**
  * Created by Stardust on 2018/2/3.
  */
@@ -8,6 +10,7 @@ public class CodeCompletion {
 
     private final String mHint;
     private final String mUrl;
+    @Nullable
     private final String mInsertText;
     private final int mInsertPos;
 
@@ -33,6 +36,7 @@ public class CodeCompletion {
         return mUrl;
     }
 
+    @Nullable
     public String getInsertText() {
         if (mInsertText != null)
             return mInsertText;

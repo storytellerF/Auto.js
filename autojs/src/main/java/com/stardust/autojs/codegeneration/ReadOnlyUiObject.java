@@ -14,14 +14,15 @@ import com.stardust.view.accessibility.NodeInfo;
 
 public class ReadOnlyUiObject extends UiObject {
 
+    @NonNull
     private final NodeInfo mNodeInfo;
 
-    public ReadOnlyUiObject(NodeInfo info) {
+    public ReadOnlyUiObject(@NonNull NodeInfo info) {
         super(null, info.getDepth(), -1);
         mNodeInfo = info;
     }
 
-    public ReadOnlyUiObject(NodeInfo info, int indexInParent) {
+    public ReadOnlyUiObject(@NonNull NodeInfo info, int indexInParent) {
         super(null, info.getDepth(), indexInParent);
         mNodeInfo = info;
     }
@@ -53,6 +54,7 @@ public class ReadOnlyUiObject extends UiObject {
         return mNodeInfo.getClassName();
     }
 
+    @Nullable
     @Override
     public CharSequence getClassName() {
         return className();
@@ -63,6 +65,7 @@ public class ReadOnlyUiObject extends UiObject {
         return mNodeInfo.getPackageName();
     }
 
+    @Nullable
     @Override
     public CharSequence getPackageName() {
         return packageName();
@@ -78,11 +81,13 @@ public class ReadOnlyUiObject extends UiObject {
         return mNodeInfo.getDesc();
     }
 
+    @Nullable
     @Override
     public String getViewIdResourceName() {
         return id();
     }
 
+    @Nullable
     @Override
     public CharSequence getContentDescription() {
         return desc();
@@ -110,6 +115,7 @@ public class ReadOnlyUiObject extends UiObject {
         return text();
     }
 
+    @NonNull
     @Override
     public AccessibilityNodeInfoCompat getChild(int index) {
         return child(index);
@@ -126,7 +132,7 @@ public class ReadOnlyUiObject extends UiObject {
 //    }
 
     @Override
-    public void getBoundsInScreen(Rect outBounds) {
+    public void getBoundsInScreen(@NonNull Rect outBounds) {
         outBounds.set(mNodeInfo.getBoundsInScreen());
     }
 
@@ -303,7 +309,7 @@ public class ReadOnlyUiObject extends UiObject {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
@@ -320,6 +326,7 @@ public class ReadOnlyUiObject extends UiObject {
         return result;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return mNodeInfo.toString();

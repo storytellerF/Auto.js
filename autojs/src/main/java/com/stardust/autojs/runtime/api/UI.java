@@ -2,6 +2,8 @@ package com.stardust.autojs.runtime.api;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.stardust.autojs.core.graphics.ScriptCanvasView;
@@ -31,8 +33,10 @@ public class UI extends ProxyObject {
 
     private final Context mContext;
     private final Map<String, Object> mProperties = new ConcurrentHashMap<>();
+    @NonNull
     private final DynamicLayoutInflater mDynamicLayoutInflater;
     private final ScriptRuntime mRuntime;
+    @NonNull
     private final ResourceParser mResourceParser;
 
     public UI(Context context, ScriptRuntime runtime) {
@@ -52,19 +56,22 @@ public class UI extends ProxyObject {
         mProperties.put("layoutInflater", this.mDynamicLayoutInflater);
     }
 
+    @NonNull
     public DynamicLayoutInflater getDynamicLayoutInflater() {
         return mDynamicLayoutInflater;
     }
 
+    @NonNull
     public ResourceParser getResourceParser() {
         return mResourceParser;
     }
 
+    @Nullable
     public Object getBindingContext() {
         return mProperties.get("bindingContext");
     }
 
-    public void setBindingContext(Object context) {
+    public void setBindingContext(@Nullable Object context) {
         if (context == null)
             mProperties.remove("bindingContext");
         else
@@ -72,16 +79,19 @@ public class UI extends ProxyObject {
     }
 
 
+    @NonNull
     public DynamicLayoutInflater getLayoutInflater() {
         return mDynamicLayoutInflater;
     }
 
+    @NonNull
     @Override
     public String getClassName() {
         return UI.class.getSimpleName();
     }
 
 
+    @Nullable
     @Override
     public Object get(String name, Scriptable start) {
         Object value = mProperties.get(name);
@@ -91,7 +101,7 @@ public class UI extends ProxyObject {
     }
 
     @Override
-    public void put(String name, Scriptable start, Object value) {
+    public void put(@NonNull String name, Scriptable start, @Nullable Object value) {
         if (mProperties.containsKey(name)) {
             if (value == null) {
                 mProperties.remove(name);

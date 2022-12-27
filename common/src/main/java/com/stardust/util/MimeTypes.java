@@ -13,13 +13,13 @@ import static com.stardust.pio.PFiles.getExtension;
 public class MimeTypes {
 
     @Nullable
-    public static String fromFile(String path) {
+    public static String fromFile(@NonNull String path) {
         String ext = getExtension(path);
         return android.text.TextUtils.isEmpty(ext) ? "*/*" : MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
     }
 
     @NonNull
-    public static String fromFileOr(String path, String defaultType) {
+    public static String fromFileOr(@NonNull String path, @NonNull String defaultType) {
         String mimeType = fromFile(path);
         return mimeType == null ? defaultType : mimeType;
     }

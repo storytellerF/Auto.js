@@ -7,6 +7,9 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.stardust.app.DialogUtils;
@@ -76,9 +79,12 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
     CircularMenuWindow mWindow;
     private int mState;
     private RoundedImageView mActionViewIcon;
+    @NonNull
     private final Context mContext;
     private final GlobalActionRecorder mRecorder;
+    @Nullable
     private MaterialDialog mSettingsDialog;
+    @Nullable
     private MaterialDialog mLayoutInspectDialog;
     private String mRunningPackage, mRunningActivity;
     private Deferred<NodeInfo, Void, Void> mCaptureDeferred;
@@ -116,6 +122,7 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
                 return actionView;
             }
 
+            @NonNull
             @Override
             public CircularActionMenu inflateMenuItems(FloatyService service, CircularMenuWindow window) {
                 CircularActionMenu menu = (CircularActionMenu) View.inflate(new ContextThemeWrapper(service, R.style.AppTheme), R.layout.circular_action_menu, null);
@@ -206,7 +213,7 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
         inspectLayout(LayoutHierarchyFloatyWindow::new);
     }
 
-    private void inspectLayout(Func1<NodeInfo, FloatyWindow> windowCreator) {
+    private void inspectLayout(@NonNull Func1<NodeInfo, FloatyWindow> windowCreator) {
         if (mLayoutInspectDialog != null) {
             mLayoutInspectDialog.dismiss();
             mLayoutInspectDialog = null;

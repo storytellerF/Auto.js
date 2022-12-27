@@ -2,6 +2,8 @@ package com.stardust.autojs.core.inputevent;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 
 import com.stardust.autojs.core.record.inputevent.EventFormatException;
@@ -20,7 +22,8 @@ public class InputEventObserver {
     public static class InputEvent {
         static final Pattern PATTERN = Pattern.compile("^\\[([^\\]]*)\\]\\s+([^:]*):\\s+([^\\s]*)\\s+([^\\s]*)\\s+([^\\s]*)\\s*$");
 
-        static InputEvent parse(String eventStr) {
+        @Nullable
+        static InputEvent parse(@NonNull String eventStr) {
             Matcher matcher = PATTERN.matcher(eventStr);
             if (!matcher.matches()) {
                 throw new EventFormatException(eventStr);
@@ -50,6 +53,7 @@ public class InputEventObserver {
         }
 
 
+        @NonNull
         @Override
         public String toString() {
             return "Event{" +
@@ -95,7 +99,7 @@ public class InputEventObserver {
         mShell = new Shell(mContext, true);
         mShell.setCallback(new Shell.SimpleCallback() {
             @Override
-            public void onNewLine(String str) {
+            public void onNewLine(@NonNull String str) {
                 if (mShell.isInitialized()) {
                     onInputEvent(str);
                 }
@@ -109,7 +113,7 @@ public class InputEventObserver {
         });
     }
 
-    public void onInputEvent(String eventStr) {
+    public void onInputEvent(@NonNull String eventStr) {
         if (TextUtils.isEmpty(eventStr) || !eventStr.startsWith("["))
             return;
         try {
@@ -120,7 +124,7 @@ public class InputEventObserver {
         }
     }
 
-    private void dispatchInputEvent(InputEvent event) {
+    private void dispatchInputEvent(@NonNull InputEvent event) {
         for (InputEventListener listener : mInputEventListeners) {
             listener.onInputEvent(event);
         }

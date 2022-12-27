@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.app.OnActivityResultDelegate;
 
 import org.autojs.autojs.R;
@@ -24,9 +27,10 @@ public class ImageSelector implements OnActivityResultDelegate {
     private final Activity mActivity;
     private final ImageSelectorCallback mCallback;
     private boolean mDisposable;
+    @NonNull
     private final Mediator mMediator;
 
-    public ImageSelector(Activity activity, OnActivityResultDelegate.Mediator mediator, ImageSelectorCallback callback) {
+    public ImageSelector(Activity activity, @NonNull OnActivityResultDelegate.Mediator mediator, ImageSelectorCallback callback) {
         mediator.addDelegate(REQUEST_CODE, this);
         mActivity = activity;
         mCallback = callback;
@@ -39,13 +43,14 @@ public class ImageSelector implements OnActivityResultDelegate {
                 REQUEST_CODE);
     }
 
+    @NonNull
     public ImageSelector disposable() {
         mDisposable = true;
         return this;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (mDisposable) {
             mMediator.removeDelegate(this);
         }

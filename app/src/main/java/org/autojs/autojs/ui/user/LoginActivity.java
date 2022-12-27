@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -39,6 +40,7 @@ import io.reactivex.schedulers.Schedulers;
 public class LoginActivity extends BaseActivity {
 
     private ActivityLoginBinding inflate;
+    @NonNull
     CompositeDisposable compositeDisposable=new CompositeDisposable();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,8 +52,10 @@ public class LoginActivity extends BaseActivity {
         inflate.forgotPassword.setOnClickListener(view -> forgotPassword());
     }
 
+    @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context context) {
         return new ActivityIntentBuilder<I>(context,LoginActivity.class) {
+            @Nullable
             @Override
             public PostActivityStarter startForResult(int requestCode) {
                 context.startActivity(intent);
@@ -99,7 +103,7 @@ public class LoginActivity extends BaseActivity {
                 .start();
     }
 
-    private boolean checkNotEmpty(String userName, String password) {
+    private boolean checkNotEmpty(@NonNull String userName, @NonNull String password) {
         if (userName.isEmpty()) {
             inflate.username.setError(getString(R.string.text_username_cannot_be_empty));
             return false;
@@ -124,7 +128,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_register) {
             RegisterActivity.intent(this).start();
             finish();

@@ -5,6 +5,8 @@ import android.os.Looper;
 import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.app.DialogUtils;
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.core.record.Recorder;
@@ -30,10 +32,11 @@ public class GlobalActionRecorder implements Recorder.OnStateChangedListener {
     private static GlobalActionRecorder sSingleton;
     private final CopyOnWriteArrayList<Recorder.OnStateChangedListener> mOnStateChangedListeners = new CopyOnWriteArrayList<>();
     private TouchRecorder mTouchRecorder;
+    @NonNull
     private final Context mContext;
     private boolean mDiscard = false;
 
-    public static GlobalActionRecorder getSingleton(Context context) {
+    public static GlobalActionRecorder getSingleton(@NonNull Context context) {
         if (sSingleton == null) {
             sSingleton = new GlobalActionRecorder(context);
         }
@@ -41,7 +44,7 @@ public class GlobalActionRecorder implements Recorder.OnStateChangedListener {
     }
 
 
-    public GlobalActionRecorder(Context context) {
+    public GlobalActionRecorder(@NonNull Context context) {
         mContext = new ContextThemeWrapper(context.getApplicationContext(), R.style.AppTheme);
     }
 
@@ -56,8 +59,10 @@ public class GlobalActionRecorder implements Recorder.OnStateChangedListener {
         mTouchRecorder.start();
     }
 
+    @NonNull
     private TouchRecorder createTouchRecorder() {
         return new TouchRecorder(mContext) {
+            @NonNull
             @Override
             protected InputEventRecorder createInputEventRecorder() {
                 if (Pref.rootRecordGeneratesBinary())
@@ -154,7 +159,7 @@ public class GlobalActionRecorder implements Recorder.OnStateChangedListener {
         }
     }
 
-    private void handleRecordedFile(final String path) {
+    private void handleRecordedFile(@NonNull final String path) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             GlobalAppContext.post(() -> handleRecordedFile(path));
             return;

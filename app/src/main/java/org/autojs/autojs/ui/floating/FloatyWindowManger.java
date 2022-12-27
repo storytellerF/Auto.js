@@ -24,15 +24,19 @@ import ezy.assist.compat.SettingsCompat;
 
 import static com.stardust.autojs.util.FloatingPermission.manageDrawOverlays;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Created by Stardust on 2017/9/30.
  */
 
 public class FloatyWindowManger {
 
+    @Nullable
     private static WeakReference<CircularMenu> sCircularMenu;
 
-    public static boolean addWindow(Context context, FloatyWindow window) {
+    public static boolean addWindow(@NonNull Context context, FloatyWindow window) {
         context.startService(new Intent(context, FloatyService.class));
         boolean hasPermission = FloatingPermission.ensurePermissionGranted(context);
         try {

@@ -3,6 +3,8 @@ package com.stardust.autojs.core.ui.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -14,25 +16,26 @@ import com.stardust.autojs.R;
 
 public class JsToolbar extends Toolbar {
 
-    public JsToolbar(Context context) {
+    public JsToolbar(@NonNull Context context) {
         super(context);
     }
 
-    public JsToolbar(Context context, @Nullable AttributeSet attrs) {
+    public JsToolbar(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public JsToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public JsToolbar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setupWithDrawer(DrawerLayout drawerLayout) {
+    public void setupWithDrawer(@NonNull DrawerLayout drawerLayout) {
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, this, R.string.text_drawer_open,
                 R.string.text_drawer_close);
         drawerToggle.syncState();
         drawerLayout.addDrawerListener(drawerToggle);
     }
 
+    @Nullable
     private Activity getActivity() {
         Context context = getContext();
         while (!(context instanceof Activity)) {

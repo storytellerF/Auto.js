@@ -1,5 +1,7 @@
 package com.stardust.util;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.pio.PFiles;
 
 import java.io.File;
@@ -19,7 +21,7 @@ public class FileSorter {
         final Collator collator = Collator.getInstance();
 
         @Override
-        public int compare(File o1, File o2) {
+        public int compare(@NonNull File o1, @NonNull File o2) {
             if (o1.isDirectory() != o2.isDirectory())
                 return o1.isDirectory() ? Integer.MIN_VALUE : Integer.MAX_VALUE;
             return -collator.compare(o1.getName(), o2.getName());
@@ -28,7 +30,7 @@ public class FileSorter {
 
     public static final Comparator<File> DATE = new Comparator<File>() {
         @Override
-        public int compare(File o1, File o2) {
+        public int compare(@NonNull File o1, @NonNull File o2) {
             return o1.lastModified() == o2.lastModified() ? 0 :
                     o1.lastModified() > o2.lastModified() ? 1 : -1;
         }
@@ -36,20 +38,20 @@ public class FileSorter {
 
     public static final Comparator<File> TYPE = new Comparator<File>() {
         @Override
-        public int compare(File o1, File o2) {
+        public int compare(@NonNull File o1, @NonNull File o2) {
             return -PFiles.getExtension(o1.getName()).compareTo(PFiles.getExtension(o2.getName()));
         }
     };
 
     public static final Comparator<File> SIZE = new Comparator<File>() {
         @Override
-        public int compare(File o1, File o2) {
+        public int compare(@NonNull File o1, @NonNull File o2) {
             return o1.length() == o2.length() ? 0 :
                     o1.length() < o2.length() ? 1 : -1;
         }
     };
 
-    public static void sort(File[] files, final Comparator<File> comparator, boolean ascending) {
+    public static void sort(@NonNull File[] files, @NonNull final Comparator<File> comparator, boolean ascending) {
         if (ascending) {
             Arrays.sort(files, comparator);
         } else {
@@ -62,11 +64,11 @@ public class FileSorter {
         }
     }
 
-    public static void sort(File[] files, Comparator<File> comparator) {
+    public static void sort(@NonNull File[] files, @NonNull Comparator<File> comparator) {
         sort(files, comparator, true);
     }
 
-    public static void sort(List<? extends File> files, final Comparator<File> comparator, boolean ascending) {
+    public static void sort(@NonNull List<? extends File> files, @NonNull final Comparator<File> comparator, boolean ascending) {
         if (ascending) {
             Collections.sort(files, comparator);
         } else {
@@ -79,7 +81,7 @@ public class FileSorter {
         }
     }
 
-    public static void sort(List<? extends File> files, Comparator<File> comparator) {
+    public static void sort(@NonNull List<? extends File> files, @NonNull Comparator<File> comparator) {
         sort(files, comparator, true);
     }
 

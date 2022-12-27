@@ -1,6 +1,8 @@
 package org.autojs.autojs.ui.edit.theme;
 
 
+import androidx.annotation.NonNull;
+
 import org.mozilla.javascript.Token;
 
 import java.util.ArrayList;
@@ -21,7 +23,8 @@ public class TokenMapping {
     private static final List<Integer> KEYWORD_CONTROL = tokenNamesToTypes(Arrays.asList("if", "else", "switch", "case", "break", "continue", "goto", "return", "try", "catch", "throw", "finally"));
     private static final List<Integer> KEYWORD_OPERATOR = Collections.emptyList();
 
-    public static List<Integer> getTokensForScope(String scope) {
+    @NonNull
+    public static List<Integer> getTokensForScope(@NonNull String scope) {
         switch (scope) {
             case "keyword":
                 return KEYWORD;
@@ -42,7 +45,7 @@ public class TokenMapping {
         return token >= -1;
     }
 
-    public static int tokenNameToType(String name) {
+    public static int tokenNameToType(@NonNull String name) {
         switch (name) {
             case "this.self":
                 return Token.THIS;
@@ -66,7 +69,8 @@ public class TokenMapping {
         return -2;
     }
 
-    private static List<Integer> tokenNamesToTypes(List<String> tokenNames) {
+    @NonNull
+    private static List<Integer> tokenNamesToTypes(@NonNull List<String> tokenNames) {
         List<Integer> types = new ArrayList<>(tokenNames.size());
         for (String name : tokenNames) {
             types.add(tokenNameToType(name));

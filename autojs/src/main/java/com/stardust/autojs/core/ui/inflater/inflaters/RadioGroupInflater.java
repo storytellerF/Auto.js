@@ -3,6 +3,9 @@ package com.stardust.autojs.core.ui.inflater.inflaters;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.util.Ids;
 
@@ -14,6 +17,7 @@ import java.util.Map;
 
 public class RadioGroupInflater<V extends RadioGroup> extends LinearLayoutInflater<V> {
 
+    @Nullable
     private Integer mCheckedButton;
 
     public RadioGroupInflater(ResourceParser resourceParser) {
@@ -21,7 +25,7 @@ public class RadioGroupInflater<V extends RadioGroup> extends LinearLayoutInflat
     }
 
     @Override
-    public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(V view, @NonNull String attr, String value, ViewGroup parent, Map<String, String> attrs) {
         if (attr.equals("checkedButton")) {
             mCheckedButton = Ids.parse(value);
             return true;
@@ -31,7 +35,7 @@ public class RadioGroupInflater<V extends RadioGroup> extends LinearLayoutInflat
     }
 
     @Override
-    public void applyPendingAttributesOfChildren(V view) {
+    public void applyPendingAttributesOfChildren(@NonNull V view) {
         if (mCheckedButton != null) {
             view.check(mCheckedButton);
             mCheckedButton = null;

@@ -1,5 +1,6 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.ViewGroup;
 
@@ -33,7 +34,7 @@ public class JsListViewInflater<V extends JsListView> extends BaseViewInflater<V
     }
 
     @Override
-    public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull V view, @NonNull String attr, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         switch (attr) {
             case "orientation":
                 view.setLayoutManager(new WrapContentLinearLayoutManager(view.getContext(), LinearLayoutInflater.ORIENTATIONS.get(value), false));
@@ -44,12 +45,12 @@ public class JsListViewInflater<V extends JsListView> extends BaseViewInflater<V
     }
 
     @Override
-    public boolean setAttr(V view, String ns, String attrName, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull V view, String ns, @NonNull String attrName, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         return super.setAttr(view, ns, attrName, value, parent, attrs);
     }
 
     @Override
-    public boolean inflateChildren(DynamicLayoutInflater inflater, Node node, JsListView parent) {
+    public boolean inflateChildren(DynamicLayoutInflater inflater, @NonNull Node node, @NonNull JsListView parent) {
         NodeList nodeList = node.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node child = nodeList.item(i);

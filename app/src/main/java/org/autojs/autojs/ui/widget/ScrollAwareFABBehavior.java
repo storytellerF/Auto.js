@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -31,7 +33,7 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
     }
 
     @Override
-    public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+    public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull FloatingActionButton child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
         if (dyConsumed > 0) {
             onScrollDown(coordinatorLayout, child);
@@ -40,14 +42,14 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
         }
     }
 
-    private void onScrollUp(CoordinatorLayout parent, FloatingActionButton button) {
+    private void onScrollUp(CoordinatorLayout parent, @NonNull FloatingActionButton button) {
         if (!mHidden) {
             return;
         }
         startShowingAnimation(parent, button);
     }
 
-    private void startShowingAnimation(CoordinatorLayout parent, FloatingActionButton button) {
+    private void startShowingAnimation(CoordinatorLayout parent, @NonNull FloatingActionButton button) {
         button.animate()
                 .translationY(0)
                 .setDuration(DURATION)
@@ -60,14 +62,14 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
                 .start();
     }
 
-    private void onScrollDown(CoordinatorLayout parent, FloatingActionButton button) {
+    private void onScrollDown(@NonNull CoordinatorLayout parent, @NonNull FloatingActionButton button) {
         if (mHidden) {
             return;
         }
         startHidingAnimation(parent, button);
     }
 
-    private void startHidingAnimation(CoordinatorLayout parent, FloatingActionButton button) {
+    private void startHidingAnimation(@NonNull CoordinatorLayout parent, @NonNull FloatingActionButton button) {
         button.animate()
                 .translationY(parent.getY() + parent.getHeight() - button.getY())
                 .setDuration(DURATION)

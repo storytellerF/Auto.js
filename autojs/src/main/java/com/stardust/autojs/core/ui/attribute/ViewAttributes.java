@@ -7,6 +7,8 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,7 @@ import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.VI
 public class ViewAttributes {
 
     public interface Getter<T> {
+        @NonNull
         T get();
     }
 
@@ -85,6 +88,7 @@ public class ViewAttributes {
     }
 
     protected interface ValueConverter<T> {
+        @NonNull
         T convert(String value);
     }
 
@@ -110,7 +114,7 @@ public class ViewAttributes {
     private final View mView;
     private ViewAttributeDelegate mViewAttributeDelegate;
 
-    public ViewAttributes(ResourceParser resourceParser, View view) {
+    public ViewAttributes(@NonNull ResourceParser resourceParser, View view) {
         mDrawables = resourceParser.getDrawables();
         mView = view;
         init();
@@ -133,6 +137,7 @@ public class ViewAttributes {
                 (mViewAttributeDelegate != null && mViewAttributeDelegate.has(name));
     }
 
+    @Nullable
     public Attribute get(String name) {
         if (mViewAttributeDelegate != null && mViewAttributeDelegate.has(name)) {
             return new Attribute() {
@@ -150,6 +155,7 @@ public class ViewAttributes {
         return mAttributes.get(name);
     }
 
+    @Nullable
     public String getAttrValue(String name) {
         Attribute attribute = mAttributes.get(name);
         if (attribute != null) {
@@ -278,7 +284,7 @@ public class ViewAttributes {
         ViewCompat.setElevation(mView, e);
     }
 
-    protected void setScrollbars(String scrollbars) {
+    protected void setScrollbars(@NonNull String scrollbars) {
         for (String str : scrollbars.split("\\|")) {
             if (str.equals("horizontal")) {
                 mView.setHorizontalScrollBarEnabled(true);
@@ -289,16 +295,16 @@ public class ViewAttributes {
     }
 
 
-    protected float parseDimensionToPixel(String value) {
+    protected float parseDimensionToPixel(@NonNull String value) {
         return Dimensions.parseToPixel(mView, value);
     }
 
-    protected int parseDimensionToIntPixel(String value) {
+    protected int parseDimensionToIntPixel(@NonNull String value) {
         return Dimensions.parseToIntPixel(value, mView);
     }
 
 
-    protected int parseDimension(String dim) {
+    protected int parseDimension(@NonNull String dim) {
         switch (dim) {
             case "wrap_content":
                 return ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -314,7 +320,7 @@ public class ViewAttributes {
         mAttributes.put(name, attribute);
     }
 
-    protected <V> void registerAttr(String name, Getter<V> getter, Setter<V> setter, BiMap<String, V> biMap) {
+    protected <V> void registerAttr(String name, @NonNull Getter<V> getter, @NonNull Setter<V> setter, @NonNull BiMap<String, V> biMap) {
         mAttributes.put(name, new Attribute() {
             @Override
             public String get() {
@@ -329,8 +335,9 @@ public class ViewAttributes {
         });
     }
 
-    protected void registerAttr(String name, AttributeGetter getter, AttributeSetter setter) {
+    protected void registerAttr(String name, @NonNull AttributeGetter getter, @NonNull AttributeSetter setter) {
         mAttributes.put(name, new Attribute() {
+            @NonNull
             @Override
             public String get() {
                 return getter.get();
@@ -351,15 +358,15 @@ public class ViewAttributes {
         mAttributes.put(name, new BaseAttribute(new MappingAttributeSetter<>(converter, applier)));
     }
 
-    protected <T> void registerAttrs(String[] names, ValueConverter<T> converter, Setter<T> applier) {
+    protected <T> void registerAttrs(@NonNull String[] names, ValueConverter<T> converter, Setter<T> applier) {
         registerAttrs(names, new MappingAttributeSetter<>(converter, applier));
     }
 
-    protected <T> void registerAttrs(String[] names, AttributeSetter setter) {
+    protected <T> void registerAttrs(@NonNull String[] names, AttributeSetter setter) {
         registerAttrs(names, new BaseAttribute(setter));
     }
 
-    protected <T> void registerAttrs(String[] names, Attribute attribute) {
+    protected <T> void registerAttrs(@NonNull String[] names, Attribute attribute) {
         for (String name : names) {
             mAttributes.put(name, attribute);
         }
@@ -371,7 +378,7 @@ public class ViewAttributes {
     }
 
 
-    protected void registerDrawableAttrs(String[] names, Setter<Drawable> applier) {
+    protected void registerDrawableAttrs(@NonNull String[] names, Setter<Drawable> applier) {
         registerAttrs(names, new BaseAttribute(new MappingAttributeSetter<>(
                 this::parseDrawable, applier)));
     }
@@ -393,7 +400,7 @@ public class ViewAttributes {
     }
 
 
-    protected Drawable parseDrawable(String value) {
+    protected Drawable parseDrawable(@NonNull String value) {
         return mDrawables.parse(mView, value);
     }
 
@@ -408,7 +415,7 @@ public class ViewAttributes {
         }
     }
 
-    protected void setMargin(String  margin) {
+    protected void setMargin(@NonNull String  margin) {
         if (mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
             int[] pixels = Dimensions.parseToIntPixelArray(getView(), margin);
@@ -465,7 +472,7 @@ public class ViewAttributes {
         }
     }
 
-    protected void setPadding(String padding) {
+    protected void setPadding(@NonNull String padding) {
         int[] pixels = Dimensions.parseToIntPixelArray(getView(), padding);
         mView.setPadding(pixels[0], pixels[1], pixels[2], pixels[3]);
     }
@@ -560,11 +567,12 @@ public class ViewAttributes {
         mView.setLayoutParams(layoutParams);
     }
 
-    protected String parseString(String value) {
+    protected String parseString(@NonNull String value) {
         return Strings.parse(mView, value);
     }
 
-    protected static <T1, T2> Setter<T2> bind(Functions.VoidFunc2<T1, T2> func2, T1 t1) {
+    @NonNull
+    protected static <T1, T2> Setter<T2> bind(@NonNull Functions.VoidFunc2<T1, T2> func2, T1 t1) {
         return value -> func2.call(t1, value);
     }
 

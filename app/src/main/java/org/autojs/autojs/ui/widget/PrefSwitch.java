@@ -6,6 +6,9 @@ import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.theme.ThemeColor;
 import com.stardust.theme.ThemeColorHelper;
 import com.stardust.theme.ThemeColorManager;
@@ -38,7 +41,7 @@ public class PrefSwitch extends SwitchCompat implements SharedPreferences.OnShar
         init(attrs);
     }
 
-    private void init(AttributeSet attrs) {
+    private void init(@Nullable AttributeSet attrs) {
         if (attrs == null)
             return;
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.PrefSwitch);
@@ -55,7 +58,7 @@ public class PrefSwitch extends SwitchCompat implements SharedPreferences.OnShar
         ThemeColorManager.add(this);
     }
 
-    public void setThemeColor(ThemeColor color) {
+    public void setThemeColor(@NonNull ThemeColor color) {
         ThemeColorHelper.setColorPrimary(this, color.colorPrimary);
     }
 

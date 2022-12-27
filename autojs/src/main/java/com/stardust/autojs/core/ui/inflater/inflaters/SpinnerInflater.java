@@ -31,7 +31,7 @@ public class SpinnerInflater extends BaseViewInflater<JsSpinner> {
     }
 
     @Override
-    public boolean setAttr(JsSpinner view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull JsSpinner view, @NonNull String attr, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         switch (attr) {
             case "dropDownHorizontalOffset":
                 view.setDropDownHorizontalOffset(Dimensions.parseToIntPixel(value, view));

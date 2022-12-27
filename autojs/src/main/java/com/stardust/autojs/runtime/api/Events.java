@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import android.view.KeyEvent;
@@ -74,14 +76,17 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
     private boolean mListeningNotification = false;
     private boolean mListeningGesture = false;
     private boolean mListeningToast = false;
+    @NonNull
     private final ScriptRuntime mScriptRuntime;
     private volatile boolean mInterceptsAllKey = false;
+    @Nullable
     private KeyInterceptor mKeyInterceptor;
     private final Set<String> mInterceptedKeys = new HashSet<>();
 
+    @NonNull
     public final BroadcastEmitter broadcast;
 
-    public Events(Context context, AccessibilityBridge accessibilityBridge, ScriptRuntime runtime) {
+    public Events(Context context, AccessibilityBridge accessibilityBridge, @NonNull ScriptRuntime runtime) {
         super(runtime.bridges);
         mAccessibilityBridge = accessibilityBridge;
         mContext = context;
@@ -90,15 +95,18 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
         broadcast = new BroadcastEmitter(runtime.bridges, runtime.timers.getMainTimer());
     }
 
+    @NonNull
     public EventEmitter emitter() {
         return new EventEmitter(mBridges);
     }
 
+    @NonNull
     public EventEmitter emitter(Thread thread) {
         Timer timer = mScriptRuntime.timers.getTimerForThread(thread);
         return new EventEmitter(mBridges, timer);
     }
 
+    @NonNull
     public EventEmitter emitter(MainThreadProxy mainThreadProxy) {
         return new EventEmitter(mBridges, mScriptRuntime.timers.getMainTimer());
     }
@@ -161,6 +169,7 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
         getAccessibilityService().getKeyInterrupterObserver().addKeyInterrupter(mKeyInterceptor);
     }
 
+    @Nullable
     private AccessibilityService getAccessibilityService() {
         mScriptRuntime.ensureAccessibilityServiceEnabled();
         AccessibilityService service = mAccessibilityBridge.getService();
@@ -170,41 +179,49 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
     }
 
 
+    @NonNull
     public Events onKeyDown(String keyName, Object listener) {
         on(PREFIX_KEY_DOWN + keyName, listener);
         return this;
     }
 
+    @NonNull
     public Events onceKeyDown(String keyName, Object listener) {
         once(PREFIX_KEY_DOWN + keyName, listener);
         return this;
     }
 
+    @NonNull
     public Events removeAllKeyDownListeners(String keyName) {
         removeAllListeners(PREFIX_KEY_DOWN + keyName);
         return this;
     }
 
+    @NonNull
     public Events onKeyUp(String keyName, Object listener) {
         on(PREFIX_KEY_UP + keyName, listener);
         return this;
     }
 
+    @NonNull
     public Events onceKeyUp(String keyName, Object listener) {
         once(PREFIX_KEY_UP + keyName, listener);
         return this;
     }
 
+    @NonNull
     public Events removeAllKeyUpListeners(String keyName) {
         removeAllListeners(PREFIX_KEY_UP + keyName);
         return this;
     }
 
+    @NonNull
     public Events onTouch(Object listener) {
         on("touch", listener);
         return this;
     }
 
+    @NonNull
     public Events removeAllTouchListeners() {
         removeAllListeners("touch");
         return this;
@@ -260,11 +277,13 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
         mListeningGesture = true;
     }
 
+    @NonNull
     public Events onNotification(Object listener) {
         on("notification", listener);
         return this;
     }
 
+    @NonNull
     public Events onToast(Object listener) {
         on("toast", listener);
         return this;
@@ -307,7 +326,7 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
     }
 
     @Override
-    public void onKeyEvent(final int keyCode, final KeyEvent event) {
+    public void onKeyEvent(final int keyCode, @NonNull final KeyEvent event) {
         mHandler.post(() -> {
             String keyName = KeyEvent.keyCodeToString(keyCode).substring(8).toLowerCase();
             emit(keyName, event);

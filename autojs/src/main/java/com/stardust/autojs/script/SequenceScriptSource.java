@@ -46,6 +46,7 @@ public class SequenceScriptSource extends JavaScriptSource {
         return new ConcatReader(mFirstScriptSource.getNonNullScriptReader(), mSecondScriptSource.getNonNullScriptReader());
     }
 
+    @NonNull
     @Override
     public String toString() {
         return mSecondScriptSource.toString();

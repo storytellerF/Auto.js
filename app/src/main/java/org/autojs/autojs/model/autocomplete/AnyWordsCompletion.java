@@ -3,6 +3,8 @@ package org.autojs.autojs.model.autocomplete;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.model.indices.Property;
 import org.autojs.autojs.ui.widget.SimpleTextWatcher;
 
@@ -29,13 +31,13 @@ public class AnyWordsCompletion extends SimpleTextWatcher {
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(@NonNull Editable s) {
         String str = s.toString();
         int id = mExecuteId.incrementAndGet();
         mExecutorService.execute(() -> splitWords(id, str));
     }
 
-    private void splitWords(int id, String s) {
+    private void splitWords(int id, @NonNull String s) {
         if(id != mExecuteId.get()){
             return;
         }
@@ -50,7 +52,7 @@ public class AnyWordsCompletion extends SimpleTextWatcher {
         mDictionaryTree = tree;
     }
 
-    public void findCodeCompletion(List<CodeCompletion> completions, String wordPrefill) {
+    public void findCodeCompletion(@NonNull List<CodeCompletion> completions, @NonNull String wordPrefill) {
         if (mDictionaryTree == null)
             return;
         List<DictionaryTree.Entry<String>> result = mDictionaryTree.searchByPrefill(wordPrefill);

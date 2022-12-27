@@ -1,5 +1,7 @@
 package org.autojs.autojs.network.entity.user;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 public class GroupsItem{
@@ -224,7 +226,8 @@ public class GroupsItem{
 		return nameEncoded;
 	}
 
-	@Override
+	@NonNull
+    @Override
  	public String toString(){
 		return 
 			"GroupsItem{" + 

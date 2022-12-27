@@ -1,5 +1,7 @@
 package com.stardust.autojs.core.ui.xml;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -104,10 +106,12 @@ public class XmlConverter {
                     .mapName("align", "layout_gravity")
             );
 
+    @NonNull
     public static String convertToAndroidLayout(String xml) throws IOException, SAXException, ParserConfigurationException {
         return convertToAndroidLayout(new InputSource(new StringReader(xml)));
     }
 
+    @NonNull
     public static String convertToAndroidLayout(InputSource source) throws ParserConfigurationException, IOException, SAXException {
         StringBuilder layoutXml = new StringBuilder();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -117,7 +121,7 @@ public class XmlConverter {
         return layoutXml.toString();
     }
 
-    private static void handleNode(Node node, String namespace, StringBuilder layoutXml) {
+    private static void handleNode(@NonNull Node node, String namespace, @NonNull StringBuilder layoutXml) {
         String nodeName = node.getNodeName();
         String mappedNodeName = NODE_HANDLER.handleNode(node, namespace, layoutXml);
         handleText(nodeName, node.getTextContent(), layoutXml);
@@ -127,7 +131,7 @@ public class XmlConverter {
         layoutXml.append("</").append(mappedNodeName).append(">\n");
     }
 
-    private static void handleText(String nodeName, String textContent, StringBuilder layoutXml) {
+    private static void handleText(@NonNull String nodeName, @Nullable String textContent, @NonNull StringBuilder layoutXml) {
         if (textContent == null || textContent.isEmpty()) {
             return;
         }
@@ -135,7 +139,7 @@ public class XmlConverter {
             layoutXml.append("android:text=\"").append(textContent).append("\"\n");
     }
 
-    private static void handleChildren(NodeList nodes, StringBuilder layoutXml) {
+    private static void handleChildren(@Nullable NodeList nodes, @NonNull StringBuilder layoutXml) {
         if (nodes == null)
             return;
         int len = nodes.getLength();
@@ -148,7 +152,7 @@ public class XmlConverter {
     }
 
 
-    private static void handleAttributes(String nodeName, NamedNodeMap attributes, StringBuilder layoutXml) {
+    private static void handleAttributes(String nodeName, @Nullable NamedNodeMap attributes, StringBuilder layoutXml) {
         if (attributes == null)
             return;
         int len = attributes.getLength();

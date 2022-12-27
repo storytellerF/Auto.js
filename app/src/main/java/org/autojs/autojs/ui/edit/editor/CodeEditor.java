@@ -7,6 +7,9 @@ import android.text.Layout;
 import android.util.AttributeSet;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.stardust.autojs.script.JsBeautifier;
 
@@ -60,10 +63,14 @@ public class CodeEditor extends HVScrollView {
     private JavaScriptHighlighter mJavaScriptHighlighter;
     private Theme mTheme;
     private JsBeautifier mJsBeautifier;
+    @Nullable
     private MaterialDialog mProcessDialog;
 
+    @NonNull
     private CharSequence mReplacement = "";
+    @Nullable
     private String mKeywords;
+    @Nullable
     private Matcher mMatcher;
     private int mFoundIndex = -1;
 
@@ -89,6 +96,7 @@ public class CodeEditor extends HVScrollView {
 
     }
 
+    @NonNull
     public Observable<Integer> getLineCount() {
         return Observable.just(mCodeEditText.getLayout().getLineCount());
     }
@@ -227,7 +235,7 @@ public class CodeEditor extends HVScrollView {
         mTextViewRedoUndo.redo();
     }
 
-    public void find(String keywords, boolean usingRegex) throws CheckedPatternSyntaxException {
+    public void find(@NonNull String keywords, boolean usingRegex) throws CheckedPatternSyntaxException {
         if (usingRegex) {
             try {
                 mMatcher = Pattern.compile(keywords).matcher(mCodeEditText.getText());
@@ -242,12 +250,12 @@ public class CodeEditor extends HVScrollView {
         findNext();
     }
 
-    public void replace(String keywords, String replacement, boolean usingRegex) throws CheckedPatternSyntaxException {
+    public void replace(@NonNull String keywords, @Nullable String replacement, boolean usingRegex) throws CheckedPatternSyntaxException {
         mReplacement = replacement == null ? "" : replacement;
         find(keywords, usingRegex);
     }
 
-    public void replaceAll(String keywords, String replacement, boolean usingRegex) throws CheckedPatternSyntaxException {
+    public void replaceAll(String keywords, @NonNull String replacement, boolean usingRegex) throws CheckedPatternSyntaxException {
         if (!usingRegex) {
             keywords = Pattern.quote(keywords);
         }
@@ -317,7 +325,7 @@ public class CodeEditor extends HVScrollView {
             }
 
             @Override
-            public void onException(Exception e) {
+            public void onException(@NonNull Exception e) {
                 setProgress(false);
                 e.printStackTrace();
             }
@@ -339,10 +347,12 @@ public class CodeEditor extends HVScrollView {
         mCodeEditText.setSelection(mCodeEditText.getSelectionStart() + dCh);
     }
 
+    @NonNull
     public String getText() {
         return mCodeEditText.getText().toString();
     }
 
+    @NonNull
     public Observable<String> getSelection() {
         int s = mCodeEditText.getSelectionStart();
         int e = mCodeEditText.getSelectionEnd();

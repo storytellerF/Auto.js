@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.util.Pair;
@@ -57,7 +58,7 @@ public class SettingsActivity extends BaseActivity {
             .add(new Pair<>(R.color.theme_color_blue_gray, R.string.theme_color_blue_gray))
             .list();
 
-    public static void selectThemeColor(Context context) {
+    public static void selectThemeColor(@NonNull Context context) {
         List<ColorSelectActivity.ColorItem> colorItems = new ArrayList<>(COLOR_ITEMS.size());
         for (Pair<Integer, Integer> item : COLOR_ITEMS) {
             colorItems.add(new ColorSelectActivity.ColorItem(context.getString(item.second),
@@ -113,7 +114,7 @@ public class SettingsActivity extends BaseActivity {
         }
 
         @Override
-        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
             Runnable action = ACTION_MAP.get(preference.getTitle().toString());
             if (action != null) {
                 action.run();
@@ -134,8 +135,10 @@ public class SettingsActivity extends BaseActivity {
 
         public static class MozillaPublicLicense20 extends License {
 
+            @NonNull
             public static MozillaPublicLicense20 instance = new MozillaPublicLicense20();
 
+            @NonNull
             @Override
             public String getName() {
                 return "Mozilla Public License 2.0";
@@ -151,11 +154,13 @@ public class SettingsActivity extends BaseActivity {
                 return getContent(context, R.raw.mpl_20_full);
             }
 
+            @NonNull
             @Override
             public String getVersion() {
                 return "2.0";
             }
 
+            @NonNull
             @Override
             public String getUrl() {
                 return "https://www.mozilla.org/en-US/MPL/2.0/";

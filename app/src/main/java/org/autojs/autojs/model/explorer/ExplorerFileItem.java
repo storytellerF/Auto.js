@@ -1,5 +1,8 @@
 package org.autojs.autojs.model.explorer;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.pio.PFile;
 import com.stardust.util.ObjectHelper;
 import com.stardust.util.Objects;
@@ -27,12 +30,12 @@ public class ExplorerFileItem implements ExplorerItem {
         mParent = parent;
     }
 
-    public ExplorerFileItem(String path, ExplorerPage parent) {
+    public ExplorerFileItem(@NonNull String path, ExplorerPage parent) {
         mFile = new PFile(path);
         mParent = parent;
     }
 
-    public ExplorerFileItem(File file, ExplorerPage parent) {
+    public ExplorerFileItem(@NonNull File file, ExplorerPage parent) {
         mFile = new PFile(file.getPath());
         mParent = parent;
     }
@@ -41,6 +44,7 @@ public class ExplorerFileItem implements ExplorerItem {
         return mFile;
     }
 
+    @NonNull
     @Override
     public String getName() {
         return mFile.getName();
@@ -51,6 +55,7 @@ public class ExplorerFileItem implements ExplorerItem {
         return mParent;
     }
 
+    @NonNull
     @Override
     public String getPath() {
         return mFile.getPath();
@@ -88,6 +93,7 @@ public class ExplorerFileItem implements ExplorerItem {
         return mFile.length();
     }
 
+    @NonNull
     @Override
     public ScriptFile toScriptFile() {
         return new ScriptFile(mFile);
@@ -104,6 +110,7 @@ public class ExplorerFileItem implements ExplorerItem {
         return type.equals("js") || type.equals("auto");
     }
 
+    @NonNull
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
@@ -111,7 +118,7 @@ public class ExplorerFileItem implements ExplorerItem {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExplorerFileItem that = (ExplorerFileItem) o;

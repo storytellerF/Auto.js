@@ -1,5 +1,7 @@
 package org.autojs.autojs.network.entity.config;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
@@ -558,7 +560,8 @@ public class Config{
 		return reconnectionDelay;
 	}
 
-	@Override
+	@NonNull
+    @Override
  	public String toString(){
 		return 
 			"Config{" + 

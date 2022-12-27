@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.timing.IntentTask;
 
 public class IntentTaskDatabase extends Database<IntentTask> {
@@ -18,8 +20,9 @@ public class IntentTaskDatabase extends Database<IntentTask> {
         super(new SQLHelper(context), IntentTask.TABLE);
     }
 
+    @NonNull
     @Override
-    protected ContentValues asContentValues(IntentTask model) {
+    protected ContentValues asContentValues(@NonNull IntentTask model) {
         ContentValues values = new ContentValues();
         values.put("script_path", model.getScriptPath());
         values.put("action", model.getAction());
@@ -29,8 +32,9 @@ public class IntentTaskDatabase extends Database<IntentTask> {
         return values;
     }
 
+    @NonNull
     @Override
-    protected IntentTask createModelFromCursor(Cursor cursor) {
+    protected IntentTask createModelFromCursor(@NonNull Cursor cursor) {
         IntentTask task = new IntentTask();
         task.setId(cursor.getInt(0));
         task.setScriptPath(cursor.getString(1));
@@ -49,7 +53,7 @@ public class IntentTaskDatabase extends Database<IntentTask> {
         }
 
         @Override
-        public void onCreate(SQLiteDatabase db) {
+        public void onCreate(@NonNull SQLiteDatabase db) {
             db.execSQL("CREATE TABLE `" + IntentTask.TABLE + "`(" +
                     "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "`script_path` TEXT NOT NULL ON CONFLICT FAIL, " +
@@ -60,7 +64,7 @@ public class IntentTaskDatabase extends Database<IntentTask> {
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
             if (oldVersion == 1 && newVersion == 2) {
                 db.execSQL("ALTER TABLE " + IntentTask.TABLE + "\n" +
                         "ADD local INT");

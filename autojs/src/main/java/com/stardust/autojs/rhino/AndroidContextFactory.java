@@ -1,6 +1,8 @@
 package com.stardust.autojs.rhino;
 
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 
 import org.mozilla.javascript.Context;
@@ -31,6 +33,7 @@ public class AndroidContextFactory extends ShellContextFactory {
      * @param parent the parent of the create classloader
      * @return a new ClassLoader
      */
+    @NonNull
     @Override
     protected AndroidClassLoader createClassLoader(ClassLoader parent) {
         return new AndroidClassLoader(parent, cacheDirectory);

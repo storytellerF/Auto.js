@@ -57,7 +57,7 @@ public class AvatarView extends FrameLayout {
         inflate.icon.setImageResource(resId);
     }
 
-    public void setUser(final User user) {
+    public void setUser(@NonNull final User user) {
         if (TextUtils.isEmpty(user.getPicture())) {
             inflate.icon.setVisibility(View.GONE);
             inflate.iconText.setVisibility(View.VISIBLE);

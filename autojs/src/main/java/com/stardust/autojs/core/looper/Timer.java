@@ -5,6 +5,8 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.SparseArray;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.concurrent.VolatileBox;
 
@@ -19,6 +21,7 @@ public class Timer {
     private final SparseArray<Runnable> mHandlerCallbacks = new SparseArray<>();
     private int mCallbackMaxId = 0;
     private final ScriptRuntime mRuntime;
+    @NonNull
     private final Handler mHandler;
     private long mMaxCallbackUptimeMillis = 0;
     private final VolatileBox<Long> mMaxCallbackMillisForAllThread;

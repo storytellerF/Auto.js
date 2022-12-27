@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import androidx.annotation.AnyThread;
 import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import android.util.Log;
 import android.util.Pair;
@@ -72,12 +74,15 @@ public class DevPluginService {
     private static final int PORT = 9317;
     private static final DevPluginService sInstance = new DevPluginService();
     private final PublishSubject<State> mConnectionState = PublishSubject.create();
+    @NonNull
     private final DevPluginResponseHandler mResponseHandler;
     private final HashMap<String, JsonWebSocket.Bytes> mBytes = new HashMap<>();
     private final HashMap<String, JsonObject> mRequiredBytesCommands = new HashMap<>();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
+    @Nullable
     private volatile JsonWebSocket mSocket;
 
+    @NonNull
     public static DevPluginService getInstance() {
         return sInstance;
     }
@@ -110,12 +115,13 @@ public class DevPluginService {
         mSocket = null;
     }
 
+    @NonNull
     public Observable<State> connectionState() {
         return mConnectionState;
     }
 
     @AnyThread
-    public Observable<JsonWebSocket> connectToServer(String host) {
+    public Observable<JsonWebSocket> connectToServer(@NonNull String host) {
         int port = PORT;
         String ip = host;
         int i = host.lastIndexOf(':');
@@ -150,7 +156,7 @@ public class DevPluginService {
     }
 
     @SuppressLint("CheckResult")
-    private void subscribeMessage(JsonWebSocket socket) {
+    private void subscribeMessage(@NonNull JsonWebSocket socket) {
         socket.data()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> mConnectionState.onNext(new State(State.DISCONNECTED)))
@@ -161,7 +167,7 @@ public class DevPluginService {
     }
 
     @MainThread
-    private void onSocketError(Throwable e) {
+    private void onSocketError(@NonNull Throwable e) {
         e.printStackTrace();
         if (mSocket != null) {
             mConnectionState.onNext(new State(State.DISCONNECTED, e));
@@ -171,7 +177,7 @@ public class DevPluginService {
     }
 
     @MainThread
-    private void onSocketData(JsonWebSocket jsonWebSocket, JsonElement element) {
+    private void onSocketData(JsonWebSocket jsonWebSocket, @NonNull JsonElement element) {
         if (!element.isJsonObject()) {
             Log.w(LOG_TAG, "onSocketData: not json object: " + element);
             return;
@@ -205,7 +211,7 @@ public class DevPluginService {
     }
 
     @SuppressLint("CheckResult")
-    private void handleBytes(JsonObject obj, JsonWebSocket.Bytes bytes) {
+    private void handleBytes(@NonNull JsonObject obj, JsonWebSocket.Bytes bytes) {
         mResponseHandler.handleBytes(obj, bytes)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dir -> {
@@ -216,7 +222,7 @@ public class DevPluginService {
     }
 
     @WorkerThread
-    private void onSocketData(JsonWebSocket jsonWebSocket, JsonWebSocket.Bytes bytes) {
+    private void onSocketData(JsonWebSocket jsonWebSocket, @NonNull JsonWebSocket.Bytes bytes) {
         JsonObject command = mRequiredBytesCommands.remove(bytes.md5);
         if (command != null) {
             handleBytes(command, bytes);
@@ -226,7 +232,7 @@ public class DevPluginService {
     }
 
     @WorkerThread
-    private void sayHelloToServer(JsonWebSocket socket) {
+    private void sayHelloToServer(@NonNull JsonWebSocket socket) {
         writeMap(socket, TYPE_HELLO, new MapBuilder<String, Object>()
                 .put("device_name", Build.BRAND + " " + Build.MODEL)
                 .put("client_version", CLIENT_VERSION)
@@ -241,7 +247,7 @@ public class DevPluginService {
     }
 
     @MainThread
-    private void onHandshakeTimeout(JsonWebSocket socket) {
+    private void onHandshakeTimeout(@NonNull JsonWebSocket socket) {
         Log.i(LOG_TAG, "onHandshakeTimeout");
         mConnectionState.onNext(new State(State.DISCONNECTED, new SocketTimeoutException("handshake timeout")));
         socket.close();
@@ -255,7 +261,7 @@ public class DevPluginService {
     }
 
     @AnyThread
-    private static boolean write(JsonWebSocket socket, String type, JsonObject data) {
+    private static boolean write(@NonNull JsonWebSocket socket, String type, JsonObject data) {
         JsonObject json = new JsonObject();
         json.addProperty("type", type);
         json.add("data", data);
@@ -263,14 +269,14 @@ public class DevPluginService {
     }
 
     @AnyThread
-    private static boolean writePair(JsonWebSocket socket, String type, Pair<String, String> pair) {
+    private static boolean writePair(@NonNull JsonWebSocket socket, String type, @NonNull Pair<String, String> pair) {
         JsonObject data = new JsonObject();
         data.addProperty(pair.first, pair.second);
         return write(socket, type, data);
     }
 
     @AnyThread
-    private static boolean writeMap(JsonWebSocket socket, String type, Map<String, ?> map) {
+    private static boolean writeMap(@NonNull JsonWebSocket socket, String type, @NonNull Map<String, ?> map) {
         JsonObject data = new JsonObject();
         for (Map.Entry<String, ?> entry : map.entrySet()) {
             Object value = entry.getValue();

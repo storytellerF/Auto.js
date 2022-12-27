@@ -44,7 +44,7 @@ public class ScriptEngineManager {
         mAndroidContext = androidContext;
     }
 
-    private void addEngine(ScriptEngine engine) {
+    private void addEngine(@NonNull ScriptEngine engine) {
         engine.setOnDestroyListener(mOnEngineDestroyListener);
         synchronized (mEngines) {
             mEngines.add(engine);
@@ -58,6 +58,7 @@ public class ScriptEngineManager {
         mEngineLifecycleCallback = engineLifecycleCallback;
     }
 
+    @NonNull
     public Set<ScriptEngine> getEngines() {
         return mEngines;
     }
@@ -89,7 +90,7 @@ public class ScriptEngineManager {
         mGlobalVariableMap.put(varName, value);
     }
 
-    protected void putProperties(ScriptEngine engine) {
+    protected void putProperties(@NonNull ScriptEngine engine) {
         for (Map.Entry<String, Object> variable : mGlobalVariableMap.entrySet()) {
             engine.put(variable.getKey(), variable.getValue());
         }
@@ -110,12 +111,12 @@ public class ScriptEngineManager {
     }
 
     @Nullable
-    public ScriptEngine createEngineOfSource(ScriptSource source, int id) {
+    public ScriptEngine createEngineOfSource(@NonNull ScriptSource source, int id) {
         return createEngine(source.getEngineName(), id);
     }
 
     @NonNull
-    public ScriptEngine createEngineOfSourceOrThrow(ScriptSource source, int id) {
+    public ScriptEngine createEngineOfSourceOrThrow(@NonNull ScriptSource source, int id) {
         ScriptEngine engine = createEngineOfSource(source, id);
         if (engine == null)
             throw new ScriptEngineFactory.EngineNotFoundException("source: " + source);
@@ -123,7 +124,7 @@ public class ScriptEngineManager {
     }
 
     @NonNull
-    public ScriptEngine createEngineOfSourceOrThrow(ScriptSource source) {
+    public ScriptEngine createEngineOfSourceOrThrow(@NonNull ScriptSource source) {
        return createEngineOfSourceOrThrow(source, ScriptExecution.NO_ID);
     }
 

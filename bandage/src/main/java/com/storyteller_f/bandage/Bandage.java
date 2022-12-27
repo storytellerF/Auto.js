@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import java.util.List;
  * @author storyteller_f
  */
 public class Bandage {
-    public static void bind(Object ob, View view1) {
+    public static void bind(@NonNull Object ob, @NonNull View view1) {
         Method[] declaredMethods = ob.getClass().getDeclaredMethods();
         ArrayList<Method> arrayList = new ArrayList<>(Arrays.asList(declaredMethods));
         ArrayList<Method> to = new ArrayList<>();
@@ -71,7 +73,7 @@ public class Bandage {
         }
     }
 
-    private static void handle(Object ob, HashMap<String, List<View>> viewHashMap, Method method) {
+    private static void handle(Object ob, @NonNull HashMap<String, List<View>> viewHashMap, @NonNull Method method) {
         OnTextChanged annotation = method.getAnnotation(OnTextChanged.class);
         String tag = annotation.tag();
         if (viewHashMap.containsKey(tag)) {
@@ -106,7 +108,7 @@ public class Bandage {
         }
     }
 
-    private static void handleClick(Object ob, HashMap<String, List<View>> viewHashMap, Method method) {
+    private static void handleClick(Object ob, @NonNull HashMap<String, List<View>> viewHashMap, @NonNull Method method) {
         Click annotation = method.getAnnotation(Click.class);
         String tag = annotation.tag();
         if (viewHashMap.containsKey(tag)) {
@@ -125,7 +127,7 @@ public class Bandage {
         }
     }
 
-    private static void handleTag(HashMap<String, List<View>> viewHashMap, ViewGroup viewGroup) {
+    private static void handleTag(@NonNull HashMap<String, List<View>> viewHashMap, @NonNull ViewGroup viewGroup) {
         if (viewGroup.getTag() != null) {
             viewHashMap.put(viewGroup.getTag().toString(), Collections.singletonList(viewGroup));
         }

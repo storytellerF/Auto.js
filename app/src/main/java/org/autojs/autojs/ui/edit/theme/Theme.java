@@ -3,6 +3,9 @@ package org.autojs.autojs.ui.edit.theme;
 import android.graphics.Color;
 import android.util.SparseIntArray;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.autojs.autojs.model.editor.EditorTheme;
 import org.autojs.autojs.model.editor.TokenColor;
 
@@ -23,12 +26,13 @@ public class Theme {
     private final SparseIntArray mTokenColors = new SparseIntArray();
     private int mImeBarBackgroundColor = 0xDDFFFFFF;
     private int mImeBarForegroundColor = Color.WHITE;
+    @NonNull
     private final EditorTheme mEditorTheme;
     private int mLineHighlightBackground;
     private final int mBreakpointColor;
     private int mDebuggingLineBackground;
 
-    public Theme(EditorTheme theme) {
+    public Theme(@NonNull EditorTheme theme) {
         mEditorTheme = theme;
         mBackgroundColor = parseColor(theme.getEditorColors().getEditorBackground(), mBackgroundColor);
         mForegroundColor = parseColor(theme.getEditorColors().getEditorForeground(), mForegroundColor);
@@ -50,7 +54,7 @@ public class Theme {
         }
     }
 
-    private int parseColor(String color, int defaultValue) {
+    private int parseColor(@Nullable String color, int defaultValue) {
         if (color == null)
             return defaultValue;
         try {
@@ -64,7 +68,7 @@ public class Theme {
         return mEditorTheme.getName();
     }
 
-    private void setTokenColor(String scope, int foreground) {
+    private void setTokenColor(@NonNull String scope, int foreground) {
         for (int token : TokenMapping.getTokensForScope(scope)) {
             mTokenColors.put(token, foreground);
         }
@@ -78,10 +82,12 @@ public class Theme {
         return mLineNumberColor;
     }
 
-    public static Theme getDefault(android.content.Context context) {
+    @Nullable
+    public static Theme getDefault(@NonNull android.content.Context context) {
         return fromAssetsJson(context, "editor/theme/light_plus.json");
     }
 
+    @Nullable
     public static Theme fromJson(String json) {
         EditorTheme theme = EditorTheme.fromJson(json);
         if (theme == null)
@@ -90,6 +96,7 @@ public class Theme {
     }
 
 
+    @Nullable
     public static Theme fromJson(Reader reader) {
         EditorTheme theme = EditorTheme.fromJson(reader);
         if (theme == null)
@@ -97,7 +104,8 @@ public class Theme {
         return new Theme(theme);
     }
 
-    public static Theme fromAssetsJson(android.content.Context context, String assetsPath) {
+    @Nullable
+    public static Theme fromAssetsJson(@NonNull android.content.Context context, String assetsPath) {
         try {
             return fromJson(new InputStreamReader(context.getAssets().open(assetsPath)));
         } catch (IOException e) {
@@ -131,7 +139,7 @@ public class Theme {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -140,6 +148,7 @@ public class Theme {
         return mEditorTheme.getName() != null ? mEditorTheme.getName().equals(theme.mEditorTheme.getName()) : theme.mEditorTheme.getName() == null;
     }
 
+    @NonNull
     public String toString() {
         return getName();
     }

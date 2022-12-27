@@ -1,11 +1,14 @@
 package org.autojs.autojs.ui.main;
 
+import androidx.annotation.Nullable;
+
 /**
  * Created by Stardust on 2017/10/25.
  */
 
 public class QueryEvent {
 
+    @Nullable
     public static final QueryEvent CLEAR = new QueryEvent(null);
     public static final QueryEvent FIND_FORWARD = new QueryEvent("", true);
 

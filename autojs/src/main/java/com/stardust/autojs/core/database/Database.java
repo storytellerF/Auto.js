@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteTransactionListener;
 
+import androidx.annotation.NonNull;
+
 public class Database {
 
 
@@ -18,18 +20,18 @@ public class Database {
         mWritableDatabase.execSQL(sql);
     }
 
-    public void transaction(TransactionCallback callback, TransactionErrorCallback errorCallback, DatabaseVoidCallback successCallback){
+    public void transaction(@NonNull TransactionCallback callback, @NonNull TransactionErrorCallback errorCallback, @NonNull DatabaseVoidCallback successCallback){
         transactionInternal(mWritableDatabase, callback, errorCallback, successCallback);
     }
 
-    public void readTransaction(TransactionCallback callback, TransactionErrorCallback errorCallback, DatabaseVoidCallback successCallback){
+    public void readTransaction(@NonNull TransactionCallback callback, @NonNull TransactionErrorCallback errorCallback, @NonNull DatabaseVoidCallback successCallback){
         transactionInternal(mReadableDatabase, callback, errorCallback, successCallback);
     }
 
-    public void changeVersion(int oldVersion, int newVersion, TransactionCallback callback, TransactionErrorCallback errorCallback, DatabaseVoidCallback successCallback){
+    public void changeVersion(int oldVersion, int newVersion, @NonNull TransactionCallback callback, @NonNull TransactionErrorCallback errorCallback, @NonNull DatabaseVoidCallback successCallback){
         transactionInternal(mWritableDatabase, new TransactionCallback() {
             @Override
-            public void handleEvent(Transaction transaction) {
+            public void handleEvent(@NonNull Transaction transaction) {
                 //TODO
                 if(transaction.getDatabase().getVersion() == oldVersion){
                     transaction.getDatabase().setVersion(newVersion);
@@ -39,7 +41,7 @@ public class Database {
         }, errorCallback, successCallback);
     }
 
-    private void transactionInternal(SQLiteDatabase database, TransactionCallback callback, TransactionErrorCallback errorCallback, DatabaseVoidCallback successCallback){
+    private void transactionInternal(@NonNull SQLiteDatabase database, @NonNull TransactionCallback callback, @NonNull TransactionErrorCallback errorCallback, @NonNull DatabaseVoidCallback successCallback){
         database.beginTransactionWithListener(new SQLiteTransactionListener() {
             @Override
             public void onBegin() {

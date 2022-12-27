@@ -1,5 +1,6 @@
 package org.autojs.autojs.ui.main.drawer;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -30,8 +31,9 @@ public class DrawerMenuAdapter extends RecyclerView.Adapter<BindableViewHolder<D
         return mDrawerMenuItems;
     }
 
+    @NonNull
     @Override
-    public BindableViewHolder<DrawerMenuItem> onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BindableViewHolder<DrawerMenuItem> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_GROUP) {
             return new DrawerMenuGroupViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.drawer_menu_group, parent, false));
@@ -43,7 +45,7 @@ public class DrawerMenuAdapter extends RecyclerView.Adapter<BindableViewHolder<D
     }
 
     @Override
-    public void onBindViewHolder(BindableViewHolder<DrawerMenuItem> holder, int position) {
+    public void onBindViewHolder(@NonNull BindableViewHolder<DrawerMenuItem> holder, int position) {
         holder.bind(mDrawerMenuItems.get(position), position);
     }
 

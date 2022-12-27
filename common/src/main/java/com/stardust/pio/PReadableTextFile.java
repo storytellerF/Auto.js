@@ -1,5 +1,7 @@
 package com.stardust.pio;
 
+import androidx.annotation.NonNull;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 public class PReadableTextFile implements Closeable, PFileInterface {
 
     private BufferedReader mBufferedReader;
+    @NonNull
     private final FileInputStream mFileInputStream;
     private final int mBufferingSize;
     private final String mEncoding;
@@ -50,6 +53,7 @@ public class PReadableTextFile implements Closeable, PFileInterface {
         }
     }
 
+    @NonNull
     public String read() {
         try {
             byte[] data = new byte[mFileInputStream.available()];
@@ -60,6 +64,7 @@ public class PReadableTextFile implements Closeable, PFileInterface {
         }
     }
 
+    @NonNull
     public String read(int size) {
         ensureBufferReader();
         try {
@@ -80,6 +85,7 @@ public class PReadableTextFile implements Closeable, PFileInterface {
         }
     }
 
+    @NonNull
     public String[] readlines() {
         ensureBufferReader();
         List<String> lines = new ArrayList<>();

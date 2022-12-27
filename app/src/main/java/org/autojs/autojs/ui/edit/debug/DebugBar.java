@@ -75,7 +75,7 @@ public class DebugBar extends FrameLayout {
     }
 
 
-    public void setTitle(String title) {
+    public void setTitle(@Nullable String title) {
         if (title == null) {
             mTitle.setText(R.string.text_debug);
         } else {
@@ -106,16 +106,16 @@ public class DebugBar extends FrameLayout {
         mVariablesAdapter.notifyItemRangeChanged(start, count);
     }
 
-    public void registerVariableChangeObserver(RecyclerView.AdapterDataObserver observer) {
+    public void registerVariableChangeObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
         mVariablesAdapter.registerAdapterDataObserver(observer);
     }
 
-    public void unregisterVariableChangeObserver(RecyclerView.AdapterDataObserver observer) {
+    public void unregisterVariableChangeObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
         mVariablesAdapter.unregisterAdapterDataObserver(observer);
     }
 
 
-    private void showVariable(WatchingVariable variable) {
+    private void showVariable(@NonNull WatchingVariable variable) {
         new ThemeColorMaterialDialogBuilder(getContext())
                 .title(variable.getDisplayName())
                 .content(variable.getValue())
@@ -132,7 +132,7 @@ public class DebugBar extends FrameLayout {
         private final TextView mVariable;
         private final ImageView mIcon;
 
-        VariableViewHolder(View itemView) {
+        VariableViewHolder(@NonNull View itemView) {
             super(itemView);
             mVariable = itemView.findViewById(R.id.variable);
             mIcon = itemView.findViewById(R.id.icon);
@@ -151,7 +151,7 @@ public class DebugBar extends FrameLayout {
         }
 
         @Override
-        public void bind(WatchingVariable data, int position) {
+        public void bind(@NonNull WatchingVariable data, int position) {
             if (TextUtils.isEmpty(data.getDisplayName())) {
                 mVariable.setText("");
             } else {

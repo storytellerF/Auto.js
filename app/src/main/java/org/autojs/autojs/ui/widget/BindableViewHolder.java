@@ -1,5 +1,6 @@
 package org.autojs.autojs.ui.widget;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
@@ -10,7 +11,7 @@ import android.view.View;
 public abstract class BindableViewHolder<DataType> extends RecyclerView.ViewHolder{
 
 
-    public BindableViewHolder(View itemView) {
+    public BindableViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 

@@ -77,7 +77,7 @@ public class MyScriptListFragment extends ViewPagerFragment implements FloatingA
     }
 
     @Override
-    protected void onFabClick(FloatingActionButton fab) {
+    protected void onFabClick(@NonNull FloatingActionButton fab) {
         initFloatingActionMenuIfNeeded(fab);
         if (mFloatingActionMenu.isExpanded()) {
             mFloatingActionMenu.collapse();
@@ -87,7 +87,7 @@ public class MyScriptListFragment extends ViewPagerFragment implements FloatingA
         }
     }
 
-    private void initFloatingActionMenuIfNeeded(final FloatingActionButton fab) {
+    private void initFloatingActionMenuIfNeeded(@NonNull final FloatingActionButton fab) {
         if (mFloatingActionMenu != null)
             return;
         mFloatingActionMenu = getActivity().findViewById(R.id.floating_action_menu);
@@ -127,7 +127,7 @@ public class MyScriptListFragment extends ViewPagerFragment implements FloatingA
     }
 
     @Subscribe
-    public void onQuerySummit(QueryEvent event) {
+    public void onQuerySummit(@NonNull QueryEvent event) {
         if (!isShown()) {
             return;
         }

@@ -1,6 +1,8 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
 import android.os.Build;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.InflateException;
 import android.view.View;
@@ -30,7 +32,7 @@ public class DatePickerInflater extends BaseViewInflater<DatePicker> {
     }
 
     @Override
-    public boolean setAttr(DatePicker view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull DatePicker view, @NonNull String attr, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         switch (attr) {
             case "calendarTextColor":
                 Exceptions.unsupports(view, attr, value);

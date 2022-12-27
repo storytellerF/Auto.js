@@ -37,6 +37,7 @@ public class FileChooserDialogBuilder extends ThemeColorMaterialDialogBuilder {
         void onSelected(List<PFile> files);
     }
 
+    @NonNull
     private final FileChooseListView mFileChooseListView;
     private MultiChoiceCallback mCallback;
     private FileFilter mFileFilter;
@@ -63,46 +64,54 @@ public class FileChooserDialogBuilder extends ThemeColorMaterialDialogBuilder {
         }
     }
 
+    @NonNull
     public FileChooserDialogBuilder dir(String rootDir, String initialDir) {
         mRootDir = rootDir;
         mInitialDir = initialDir;
         return this;
     }
 
+    @NonNull
     public FileChooserDialogBuilder dir(String dir) {
         mRootDir = dir;
         return this;
     }
 
+    @NonNull
     public FileChooserDialogBuilder justScriptFile() {
         mFileFilter = Scripts.INSTANCE.getFILE_FILTER();
         return this;
     }
 
 
+    @NonNull
     public FileChooserDialogBuilder chooseDir() {
         mFileFilter = File::isDirectory;
         mFileChooseListView.setCanChooseDir(true);
         return this;
     }
 
-    public FileChooserDialogBuilder singleChoice(SingleChoiceCallback callback) {
+    @NonNull
+    public FileChooserDialogBuilder singleChoice(@NonNull SingleChoiceCallback callback) {
         mFileChooseListView.setMaxChoice(1);
         mCallback = files -> callback.onSelected(files.get(0));
         return this;
     }
 
 
+    @NonNull
     public FileChooserDialogBuilder multiChoice(MultiChoiceCallback callback) {
         return multiChoice(Integer.MAX_VALUE, callback);
     }
 
+    @NonNull
     public FileChooserDialogBuilder multiChoice(int maxChoices, MultiChoiceCallback callback) {
         mFileChooseListView.setMaxChoice(maxChoices);
         mCallback = callback;
         return this;
     }
 
+    @NonNull
     public Observable<PFile> singleChoice() {
         PublishSubject<PFile> result = PublishSubject.create();
         singleChoice(file -> {
@@ -113,12 +122,14 @@ public class FileChooserDialogBuilder extends ThemeColorMaterialDialogBuilder {
         return result;
     }
 
+    @NonNull
     @Override
     public FileChooserDialogBuilder title(@NonNull CharSequence title) {
         super.title(title);
         return this;
     }
 
+    @NonNull
     @Override
     public FileChooserDialogBuilder title(@StringRes int titleRes) {
         super.title(titleRes);

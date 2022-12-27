@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.autocomplete;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,8 @@ public class CodeCompletions {
         mCompletions = completions;
     }
 
-    public static CodeCompletions just(List<String> hints) {
+    @NonNull
+    public static CodeCompletions just(@NonNull List<String> hints) {
         List<CodeCompletion> completions = new ArrayList<>(hints.size());
         for (String hint : hints) {
             completions.add(new CodeCompletion(hint, null, 0));

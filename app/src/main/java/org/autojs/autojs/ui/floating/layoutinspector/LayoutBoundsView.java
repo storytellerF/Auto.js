@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import android.util.AttributeSet;
@@ -28,12 +30,14 @@ public class LayoutBoundsView extends View {
 
     private static final int COLOR_SHADOW = 0x6a000000;
     private NodeInfo mRootNode;
+    @Nullable
     private NodeInfo mTouchedNode;
     private Paint mBoundsPaint;
     private Paint mFillingPaint;
     private OnNodeInfoSelectListener mOnNodeInfoSelectListener;
     private int mTouchedNodeBoundsColor = Color.RED;
     private int mNormalNodeBoundsColor = Color.GREEN;
+    @Nullable
     private Rect mTouchedNodeBounds;
 
     private int[] mBoundsInScreen;
@@ -83,7 +87,7 @@ public class LayoutBoundsView extends View {
 
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         if (mBoundsInScreen == null) {
             mBoundsInScreen = new int[4];
@@ -126,7 +130,7 @@ public class LayoutBoundsView extends View {
         mNormalNodeBoundsColor = normalNodeBoundsColor;
     }
 
-    private void draw(Canvas canvas, NodeInfo node) {
+    private void draw(@NonNull Canvas canvas, @Nullable NodeInfo node) {
         if (node == null)
             return;
         drawRect(canvas, node.getBoundsInScreen(), mStatusBarHeight, mBoundsPaint);
@@ -135,14 +139,14 @@ public class LayoutBoundsView extends View {
         }
     }
 
-    static void drawRect(Canvas canvas, Rect rect, int statusBarHeight, Paint paint) {
+    static void drawRect(@NonNull Canvas canvas, Rect rect, int statusBarHeight, Paint paint) {
         Rect offsetRect = new Rect(rect);
         offsetRect.offset(0, -statusBarHeight);
         canvas.drawRect(offsetRect, paint);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
         if (mRootNode != null) {
             setSelectedNode(findNodeAt(mRootNode, (int) event.getRawX(), (int) event.getRawY()));
         }
@@ -160,7 +164,8 @@ public class LayoutBoundsView extends View {
         }
     }
 
-    private NodeInfo findNodeAt(NodeInfo node, int x, int y) {
+    @Nullable
+    private NodeInfo findNodeAt(@NonNull NodeInfo node, int x, int y) {
         ArrayList<NodeInfo> list = new ArrayList<>();
         findNodeAt(node, x, y, list);
         if (list.isEmpty()) {
@@ -172,7 +177,7 @@ public class LayoutBoundsView extends View {
     }
 
 
-    private void findNodeAt(NodeInfo node, int x, int y, List<NodeInfo> list) {
+    private void findNodeAt(@NonNull NodeInfo node, int x, int y, @NonNull List<NodeInfo> list) {
         for (NodeInfo child : node.getChildren()) {
             if (child != null && child.getBoundsInScreen().contains(x, y)) {
                 list.add(child);

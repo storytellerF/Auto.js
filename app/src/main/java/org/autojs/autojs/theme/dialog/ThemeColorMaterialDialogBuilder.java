@@ -19,7 +19,7 @@ public class ThemeColorMaterialDialogBuilder extends MaterialDialog.Builder impl
     }
 
     @Override
-    public void setThemeColor(ThemeColor themeColor) {
+    public void setThemeColor(@NonNull ThemeColor themeColor) {
         int color = themeColor.colorPrimary;
         positiveColor(color);
         negativeColor(color);

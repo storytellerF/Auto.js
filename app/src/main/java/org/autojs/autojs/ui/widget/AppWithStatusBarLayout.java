@@ -6,6 +6,7 @@ import android.content.ContextWrapper;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.appbar.AppBarLayout;
 import android.util.AttributeSet;
@@ -19,11 +20,11 @@ import android.view.Window;
 
 public class AppWithStatusBarLayout extends AppBarLayout {
 
-    public AppWithStatusBarLayout(Context context) {
+    public AppWithStatusBarLayout(@NonNull Context context) {
         super(context);
     }
 
-    public AppWithStatusBarLayout(Context context, AttributeSet attrs) {
+    public AppWithStatusBarLayout(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

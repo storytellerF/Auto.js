@@ -10,12 +10,14 @@ import com.stardust.autojs.core.ui.inflater.ResourceParser;
 
 import java.util.HashMap;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 
 public class ViewAttributesFactory {
 
     interface ViewAttributesCreator {
+        @NonNull
         ViewAttributes create(ResourceParser resourceParser, View view);
     }
 
@@ -33,7 +35,8 @@ public class ViewAttributesFactory {
         sViewAttributesCreators.put(clazz, creator);
     }
 
-    public static ViewAttributes create(ResourceParser resourceParser, View view) {
+    @NonNull
+    public static ViewAttributes create(@NonNull ResourceParser resourceParser, @NonNull View view) {
         Class viewClass = view.getClass();
         while (viewClass != null && !viewClass.equals(Object.class)) {
             ViewAttributesCreator creator = sViewAttributesCreators.get(viewClass);

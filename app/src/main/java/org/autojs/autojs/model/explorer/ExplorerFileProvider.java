@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.explorer;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.pio.PFile;
 
 import java.io.FileFilter;
@@ -21,7 +23,7 @@ public class ExplorerFileProvider implements ExplorerProvider {
     }
 
     @Override
-    public Single<? extends ExplorerPage> getExplorerPage(ExplorerPage page) {
+    public Single<? extends ExplorerPage> getExplorerPage(@NonNull ExplorerPage page) {
         ExplorerPage parent = page.getParent();
         String path = page.getPath();
         return listFiles(new PFile(path))
@@ -39,7 +41,7 @@ public class ExplorerFileProvider implements ExplorerProvider {
         return new ExplorerDirPage(path, parent);
     }
 
-    protected Observable<PFile> listFiles(PFile directory) {
+    protected Observable<PFile> listFiles(@NonNull PFile directory) {
         return Observable.just(directory)
                 .flatMap(dir -> {
                     PFile[] files;

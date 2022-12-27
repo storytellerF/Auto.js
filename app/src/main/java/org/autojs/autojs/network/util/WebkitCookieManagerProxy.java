@@ -2,6 +2,9 @@ package org.autojs.autojs.network.util;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -36,7 +39,7 @@ public class WebkitCookieManagerProxy extends CookieManager implements CookieJar
     }
 
     @Override
-    public void put(URI uri, Map<String, List<String>> responseHeaders)
+    public void put(@Nullable URI uri, @Nullable Map<String, List<String>> responseHeaders)
             throws IOException {
         // make sure our args are valid
         if ((uri == null) || (responseHeaders == null))
@@ -60,9 +63,10 @@ public class WebkitCookieManagerProxy extends CookieManager implements CookieJar
         }
     }
 
+    @NonNull
     @Override
-    public Map<String, List<String>> get(URI uri,
-                                         Map<String, List<String>> requestHeaders) throws IOException {
+    public Map<String, List<String>> get(@Nullable URI uri,
+                                         @Nullable Map<String, List<String>> requestHeaders) throws IOException {
         // make sure our args are valid
         if ((uri == null) || (requestHeaders == null))
             throw new IllegalArgumentException("Argument is null");
@@ -84,6 +88,7 @@ public class WebkitCookieManagerProxy extends CookieManager implements CookieJar
         return res;
     }
 
+    @NonNull
     @Override
     public CookieStore getCookieStore() {
         // we don't want anyone to work with this cookie store directly
@@ -91,7 +96,7 @@ public class WebkitCookieManagerProxy extends CookieManager implements CookieJar
     }
 
     @Override
-    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+    public void saveFromResponse(@NonNull HttpUrl url, @NonNull List<Cookie> cookies) {
         HashMap<String, List<String>> generatedResponseHeaders = new HashMap<>();
         ArrayList<String> cookiesList = new ArrayList<>();
         for (Cookie c : cookies) {
@@ -107,8 +112,9 @@ public class WebkitCookieManagerProxy extends CookieManager implements CookieJar
         }
     }
 
+    @NonNull
     @Override
-    public List<Cookie> loadForRequest(HttpUrl url) {
+    public List<Cookie> loadForRequest(@NonNull HttpUrl url) {
         ArrayList<Cookie> cookieArrayList = new ArrayList<>();
         try {
             Map<String, List<String>> cookieList = get(url.uri(), new HashMap<String, List<String>>());

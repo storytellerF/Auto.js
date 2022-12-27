@@ -1,5 +1,7 @@
 package org.autojs.autojs.ui.main.drawer;
 
+import androidx.annotation.Nullable;
+
 /**
  * Created by Stardust on 2017/8/25.
  */
@@ -88,7 +90,7 @@ public class DrawerMenuItem {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 

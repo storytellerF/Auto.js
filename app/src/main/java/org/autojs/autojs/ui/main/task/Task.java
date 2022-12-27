@@ -21,6 +21,9 @@ import java.util.Map;
 
 import static org.autojs.autojs.ui.timing.TimedTaskSettingActivity.ACTION_DESC_MAP;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Created by Stardust on 2017/11/28.
  */
@@ -39,7 +42,9 @@ public abstract class Task {
     public static class PendingTask extends Task {
 
 
+        @Nullable
         private TimedTask mTimedTask;
+        @Nullable
         private IntentTask mIntentTask;
 
 
@@ -60,10 +65,12 @@ public abstract class Task {
             return mIntentTask.equals(task);
         }
 
+        @Nullable
         public TimedTask getTimedTask() {
             return mTimedTask;
         }
 
+        @NonNull
         @Override
         public String getName() {
             return PFiles.getSimplifiedPath(getScriptPath());
@@ -144,6 +151,7 @@ public abstract class Task {
             return mScriptExecution.getSource().getName();
         }
 
+        @NonNull
         @Override
         public String getDesc() {
             return mScriptExecution.getSource().toString();

@@ -4,6 +4,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.app.GlobalAppContext;
 import org.autojs.autojs.Pref;
 import org.autojs.autojs.R;
@@ -55,7 +57,7 @@ public class AccessibilityServiceTool {
             "fi\n" +
             "settings put secure accessibility_enabled 1";
 
-    public static boolean enableAccessibilityServiceByRoot(Class<? extends android.accessibilityservice.AccessibilityService> accessibilityService) {
+    public static boolean enableAccessibilityServiceByRoot(@NonNull Class<? extends android.accessibilityservice.AccessibilityService> accessibilityService) {
         String serviceName = GlobalAppContext.get().getPackageName() + "/" + accessibilityService.getName();
         try {
             return TextUtils.isEmpty(ProcessShell.execCommand(String.format(Locale.getDefault(), cmd, serviceName), true).error);
@@ -78,7 +80,7 @@ public class AccessibilityServiceTool {
             }
     }
 
-    public static boolean isAccessibilityServiceEnabled(Context context) {
+    public static boolean isAccessibilityServiceEnabled(@NonNull Context context) {
         return AccessibilityServiceUtils.INSTANCE.isAccessibilityServiceEnabled(context, sAccessibilityServiceClass);
     }
 }

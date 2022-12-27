@@ -1,5 +1,7 @@
 package org.mozilla.javascript;
 
+import androidx.annotation.NonNull;
+
 import org.mozilla.javascript.debug.DebuggableScript;
 import org.mozilla.javascript.xml.XMLLib;
 
@@ -28,7 +30,7 @@ public class ContextWrapper extends Context {
     }
 
     @Deprecated
-    public static Object call(ContextAction action) {
+    public static Object call(@NonNull ContextAction action) {
         return Context.call(action);
     }
 
@@ -37,12 +39,12 @@ public class ContextWrapper extends Context {
     }
 
     @Deprecated
-    public static void addContextListener(ContextListener listener) {
+    public static void addContextListener(@NonNull ContextListener listener) {
         Context.addContextListener(listener);
     }
 
     @Deprecated
-    public static void removeContextListener(ContextListener listener) {
+    public static void removeContextListener(@NonNull ContextListener listener) {
         Context.removeContextListener(listener);
     }
 
@@ -67,7 +69,7 @@ public class ContextWrapper extends Context {
         Context.reportWarning(message);
     }
 
-    public static void reportWarning(String message, Throwable t) {
+    public static void reportWarning(String message, @NonNull Throwable t) {
         Context.reportWarning(message, t);
     }
 
@@ -158,12 +160,12 @@ public class ContextWrapper extends Context {
         return Context.toString(value);
     }
 
-    public static Scriptable toObject(Object value, Scriptable scope) {
+    public static Scriptable toObject(@NonNull Object value, Scriptable scope) {
         return Context.toObject(value, scope);
     }
 
     @Deprecated
-    public static Scriptable toObject(Object value, Scriptable scope, Class<?> staticType) {
+    public static Scriptable toObject(@NonNull Object value, Scriptable scope, Class<?> staticType) {
         return Context.toObject(value, scope, staticType);
     }
 
@@ -180,7 +182,7 @@ public class ContextWrapper extends Context {
         return Context.toType(value, desiredType);
     }
 
-    public static RuntimeException throwAsScriptRuntimeEx(Throwable e) {
+    public static RuntimeException throwAsScriptRuntimeEx(@NonNull Throwable e) {
         return Context.throwAsScriptRuntimeEx(e);
     }
 

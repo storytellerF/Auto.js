@@ -4,6 +4,9 @@ import android.graphics.PorterDuff;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.ui.JsViewHelper;
 import com.stardust.autojs.core.ui.ViewExtras;
 import com.stardust.autojs.core.ui.attribute.ViewAttributes;
@@ -43,9 +46,10 @@ public class NativeView extends NativeJavaObjectWithPrototype {
 
     private final ViewAttributes mViewAttributes;
     private final View mView;
+    @NonNull
     private final ViewPrototype mViewPrototype;
 
-    public NativeView(Scriptable scope, View view, Class<?> staticType, com.stardust.autojs.runtime.ScriptRuntime runtime) {
+    public NativeView(Scriptable scope, View view, Class<?> staticType, @NonNull com.stardust.autojs.runtime.ScriptRuntime runtime) {
         super(scope, view, staticType);
         mViewAttributes = ViewExtras.getViewAttributes(view, runtime.ui.getResourceParser());
         mView = view;
@@ -62,8 +66,9 @@ public class NativeView extends NativeJavaObjectWithPrototype {
         return super.has(name, start);
     }
 
+    @Nullable
     @Override
-    public Object get(String name, Scriptable start) {
+    public Object get(@NonNull String name, Scriptable start) {
         if (super.has(name, start)) {
             return super.get(name, start);
         } else {
@@ -75,6 +80,7 @@ public class NativeView extends NativeJavaObjectWithPrototype {
         return Scriptable.NOT_FOUND;
     }
 
+    @NonNull
     public ViewPrototype getViewPrototype() {
         return mViewPrototype;
     }

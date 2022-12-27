@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.execution.ExecutionConfig;
 
@@ -23,7 +25,7 @@ public class BaseBroadcastReceiver extends BroadcastReceiver {
     private static final String LOG_TAG = "BaseBroadcastReceiver";
 
     @SuppressLint("CheckResult")
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(Context context, @NonNull Intent intent) {
         Log.d(LOG_TAG, "onReceive: intent = " + intent + ", this = " + this);
         try {
             TimedTaskManager.getInstance().getIntentTaskOfAction(intent.getAction())
@@ -35,7 +37,7 @@ public class BaseBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-    static void runTask(Context context, Intent intent, IntentTask task) {
+    static void runTask(Context context, @NonNull Intent intent, @NonNull IntentTask task) {
         Log.d(LOG_TAG, "runTask: action = " + intent.getAction() + ", script = " + task.getScriptPath());
         ScriptFile file = new ScriptFile(task.getScriptPath());
         ExecutionConfig config = new ExecutionConfig();

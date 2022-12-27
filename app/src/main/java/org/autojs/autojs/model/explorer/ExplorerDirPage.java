@@ -2,6 +2,7 @@ package org.autojs.autojs.model.explorer;
 
 import android.os.Build;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.stardust.pio.PFile;
@@ -16,6 +17,7 @@ import java.util.function.Consumer;
 
 public class ExplorerDirPage extends ExplorerFileItem implements ExplorerPage {
 
+    @NonNull
     private List<ExplorerItem> mChildren = Collections.emptyList();
 
     public ExplorerDirPage(PFile file, ExplorerPage parent) {
@@ -26,11 +28,11 @@ public class ExplorerDirPage extends ExplorerFileItem implements ExplorerPage {
         super(path, parent);
     }
 
-    public ExplorerDirPage(File file, ExplorerPage parent) {
+    public ExplorerDirPage(@NonNull File file, ExplorerPage parent) {
         super(file, parent);
     }
 
-    public void copyChildren(ExplorerPage g) {
+    public void copyChildren(@NonNull ExplorerPage g) {
         ensureChildListWritable();
         mChildren.clear();
         mChildren.addAll(((ExplorerDirPage) g).mChildren);
@@ -47,7 +49,7 @@ public class ExplorerDirPage extends ExplorerFileItem implements ExplorerPage {
         return new ExplorerDirPage(getFile().renameTo(newName), getParent());
     }
 
-    protected int indexOf(ExplorerItem child){
+    protected int indexOf(@NonNull ExplorerItem child){
         int i = 0;
         for(ExplorerItem item : mChildren){
             if(item.getPath().equals(child.getPath())){
@@ -58,7 +60,7 @@ public class ExplorerDirPage extends ExplorerFileItem implements ExplorerPage {
         return -1;
     }
 
-    public boolean updateChild(ExplorerItem oldItem, ExplorerItem newItem) {
+    public boolean updateChild(@NonNull ExplorerItem oldItem, ExplorerItem newItem) {
         int i = indexOf(oldItem);
         if (i < 0) {
             return false;
@@ -67,7 +69,7 @@ public class ExplorerDirPage extends ExplorerFileItem implements ExplorerPage {
         return true;
     }
 
-    public boolean removeChild(ExplorerItem item) {
+    public boolean removeChild(@NonNull ExplorerItem item) {
         int i = indexOf(item);
         if(i < 0){
             return false;
@@ -89,21 +91,24 @@ public class ExplorerDirPage extends ExplorerFileItem implements ExplorerPage {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void forEach(Consumer<? super ExplorerItem> action) {
+    public void forEach(@NonNull Consumer<? super ExplorerItem> action) {
         mChildren.forEach(action);
     }
 
+    @NonNull
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public Spliterator<ExplorerItem> spliterator() {
         return mChildren.spliterator();
     }
 
+    @Nullable
     public static ExplorerDirPage createRoot(String path){
         return new ExplorerDirPage(path, null);
     }
 
-    public static ExplorerPage createRoot(File directory) {
+    @Nullable
+    public static ExplorerPage createRoot(@NonNull File directory) {
         return new ExplorerDirPage(directory, null);
     }
 }

@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -38,7 +40,7 @@ public class FloatingPermission {
         }
     }
 
-    public static boolean ensurePermissionGranted(Context context) {
+    public static boolean ensurePermissionGranted(@NonNull Context context) {
         if (!canDrawOverlays(context)) {
             Toast.makeText(context, R.string.text_no_floating_window_permission, Toast.LENGTH_SHORT).show();
             manageDrawOverlays(context);
@@ -47,7 +49,7 @@ public class FloatingPermission {
         return true;
     }
 
-    public static void waitForPermissionGranted(Context context) throws InterruptedException {
+    public static void waitForPermissionGranted(@NonNull Context context) throws InterruptedException {
         if (canDrawOverlays(context)) {
             return;
         }
@@ -69,7 +71,7 @@ public class FloatingPermission {
     }
 
 
-    public static void manageDrawOverlays(Context context) {
+    public static void manageDrawOverlays(@NonNull Context context) {
         try {
             if (RomUtil.isMiui() && TextUtils.equals("V10", RomUtil.getVersion())
                     && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -83,7 +85,7 @@ public class FloatingPermission {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void manageDrawOverlaysForAndroidM(Context context) {
+    public static void manageDrawOverlaysForAndroidM(@NonNull Context context) {
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
         intent.setData(Uri.parse("package:" + context.getPackageName()));
         context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

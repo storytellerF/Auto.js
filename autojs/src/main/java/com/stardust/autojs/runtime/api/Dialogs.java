@@ -6,6 +6,9 @@ import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.widget.CompoundButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.stardust.autojs.R;
@@ -34,16 +37,18 @@ public class Dialogs {
         mRuntime = runtime;
     }
 
+    @Nullable
     @ScriptInterface
-    public Object rawInput(String title, String prefill, Object callback) {
+    public Object rawInput(@NonNull String title, String prefill, Object callback) {
         return ((BlockedMaterialDialog.Builder) dialogBuilder(callback)
                 .input(null, prefill, true)
                 .title(title))
                 .showAndGet();
     }
 
+    @Nullable
     @ScriptInterface
-    public Object alert(String title, String content, Object callback) {
+    public Object alert(@NonNull String title, @NonNull String content, Object callback) {
         MaterialDialog.Builder builder = dialogBuilder(callback)
                 .alert()
                 .title(title)
@@ -54,8 +59,9 @@ public class Dialogs {
         return ((BlockedMaterialDialog.Builder) builder).showAndGet();
     }
 
+    @Nullable
     @ScriptInterface
-    public Object confirm(String title, String content, Object callback) {
+    public Object confirm(@NonNull String title, @NonNull String content, Object callback) {
         MaterialDialog.Builder builder = dialogBuilder(callback)
                 .confirm()
                 .title(title)
@@ -74,8 +80,9 @@ public class Dialogs {
         return mThemeWrapper;
     }
 
+    @Nullable
     @ScriptInterface
-    public Object select(String title, String[] items, Object callback) {
+    public Object select(@NonNull String title, String[] items, Object callback) {
         return ((BlockedMaterialDialog.Builder) dialogBuilder(callback)
                 .itemsCallback()
                 .title(title)
@@ -83,7 +90,8 @@ public class Dialogs {
                 .showAndGet();
     }
 
-    private String[] getItems(Object[] args) {
+    @NonNull
+    private String[] getItems(@NonNull Object[] args) {
         int len = 0;
         if (args.length > 1) {
             if (args[args.length - 1] instanceof CharSequence) {
@@ -99,8 +107,9 @@ public class Dialogs {
         return items;
     }
 
+    @Nullable
     @ScriptInterface
-    public Object singleChoice(String title, int selectedIndex, String[] items, Object callback) {
+    public Object singleChoice(@NonNull String title, int selectedIndex, String[] items, Object callback) {
         return ((BlockedMaterialDialog.Builder) dialogBuilder(callback)
                 .itemsCallbackSingleChoice(selectedIndex)
                 .title(title)
@@ -109,8 +118,9 @@ public class Dialogs {
                 .showAndGet();
     }
 
+    @Nullable
     @ScriptInterface
-    public Object multiChoice(String title, int[] indices, String[] items, Object callback) {
+    public Object multiChoice(@NonNull String title, @NonNull int[] indices, String[] items, Object callback) {
         return ((BlockedMaterialDialog.Builder) dialogBuilder(callback)
                 .itemsCallbackMultiChoice(ArrayUtils.box(indices))
                 .title(title)
@@ -119,14 +129,16 @@ public class Dialogs {
                 .showAndGet();
     }
 
+    @Nullable
     @ScriptInterface
-    public Object selectFile(String title, String prefill, Object callback) {
+    public Object selectFile(@NonNull String title, String prefill, Object callback) {
         return ((BlockedMaterialDialog.Builder) dialogBuilder(callback)
                 .input(null, prefill, true)
                 .title(title))
                 .showAndGet();
     }
 
+    @NonNull
     private BlockedMaterialDialog.Builder dialogBuilder(Object callback) {
         Context context = mRuntime.app.getCurrentActivity();
         if (context == null || ((Activity) context).isFinishing()) {
@@ -148,32 +160,35 @@ public class Dialogs {
 
     public class NonUiDialogs {
 
-        public String rawInput(String title, String prefill, Object callback) {
+        @Nullable
+        public String rawInput(@NonNull String title, String prefill, Object callback) {
             return (String) Dialogs.this.rawInput(title, prefill, callback);
         }
 
         @ScriptInterface
-        public boolean confirm(String title, String content, Object callback) {
+        public boolean confirm(@NonNull String title, @NonNull String content, Object callback) {
             return (boolean) Dialogs.this.confirm(title, content, callback);
         }
 
         @ScriptInterface
-        public int select(String title, String[] items, Object callback) {
+        public int select(@NonNull String title, String[] items, Object callback) {
             return (Integer) Dialogs.this.select(title, items, callback);
         }
 
         @ScriptInterface
-        public int singleChoice(String title, int selectedIndex, String[] items, Object callback) {
+        public int singleChoice(@NonNull String title, int selectedIndex, String[] items, Object callback) {
             return (int) Dialogs.this.singleChoice(title, selectedIndex, items, callback);
         }
 
+        @Nullable
         @ScriptInterface
-        public int[] multiChoice(String title, int[] indices, String[] items, Object callback) {
+        public int[] multiChoice(@NonNull String title, @NonNull int[] indices, String[] items, Object callback) {
             return (int[]) Dialogs.this.multiChoice(title, indices, items, callback);
         }
 
+        @Nullable
         @ScriptInterface
-        public Object alert(String title, String content, Object callback) {
+        public Object alert(@NonNull String title, @NonNull String content, Object callback) {
             return Dialogs.this.alert(title, content, callback);
         }
 

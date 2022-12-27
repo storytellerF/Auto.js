@@ -3,6 +3,8 @@ package com.stardust.autojs.core.ui.inflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.ui.inflater.inflaters.ViewGroupInflater;
 
 import org.w3c.dom.Node;
@@ -18,18 +20,22 @@ public interface LayoutInflaterDelegate {
 
     LayoutInflaterDelegate NO_OP = new NoOp();
 
+    @Nullable
     View beforeInflation(InflateContext inflateContext, String xml, ViewGroup parent);
 
     View afterInflation(InflateContext inflateContext, View doInflation, String xml, ViewGroup parent);
 
+    @Nullable
     String beforeConvertXml(InflateContext inflateContext, String xml);
 
     String afterConvertXml(InflateContext inflateContext, String xml);
 
+    @Nullable
     View beforeInflateView(InflateContext inflateContext, Node node, ViewGroup parent, boolean attachToParent);
 
     View afterInflateView(InflateContext inflateContext, View view, Node node, ViewGroup parent, boolean attachToParent);
 
+    @Nullable
     View beforeCreateView(InflateContext inflateContext, Node node, String viewName, ViewGroup parent, HashMap<String, String> attrs);
 
     View afterCreateView(InflateContext inflateContext, View view, Node node, String viewName, ViewGroup parent, HashMap<String, String> attrs);
@@ -53,6 +59,7 @@ public interface LayoutInflaterDelegate {
 
 
     class NoOp implements LayoutInflaterDelegate {
+        @Nullable
         @Override
         public String beforeConvertXml(InflateContext inflateContext, String xml) {
             return null;
@@ -68,11 +75,13 @@ public interface LayoutInflaterDelegate {
             return result;
         }
 
+        @Nullable
         @Override
         public View beforeInflation(InflateContext inflateContext, String xml, ViewGroup parent) {
             return null;
         }
 
+        @Nullable
         @Override
         public View beforeInflateView(InflateContext inflateContext, Node node, ViewGroup parent, boolean attachToParent) {
             return null;
@@ -83,6 +92,7 @@ public interface LayoutInflaterDelegate {
             return view;
         }
 
+        @Nullable
         @Override
         public View beforeCreateView(InflateContext inflateContext, Node node, String viewName, ViewGroup parent, HashMap<String, String> attrs) {
             return null;

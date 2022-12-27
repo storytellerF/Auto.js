@@ -1,5 +1,6 @@
 package com.stardust.app;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -28,16 +29,19 @@ public class FragmentPagerAdapterBuilder {
         mActivity = activity;
     }
 
+    @NonNull
     public FragmentPagerAdapterBuilder add(Fragment fragment, String title) {
         mFragments.add(fragment);
         mTitles.add(title);
         return this;
     }
 
+    @NonNull
     public FragmentPagerAdapterBuilder add(Fragment fragment, int titleResId) {
         return add(fragment, mActivity.getString(titleResId));
     }
 
+    @NonNull
     public StoredFragmentPagerAdapter build() {
         return new StoredFragmentPagerAdapter(mActivity.getSupportFragmentManager()) {
             @Override
@@ -66,8 +70,9 @@ public class FragmentPagerAdapterBuilder {
             super(fm);
         }
 
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             mStoredFragments.put(position, fragment);
             if(mOnFragmentInstantiateListener != null){
@@ -78,7 +83,7 @@ public class FragmentPagerAdapterBuilder {
 
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             mStoredFragments.remove(position);
             super.destroyItem(container, position, object);
         }

@@ -1,5 +1,7 @@
 package com.stardust.net;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.pio.UncheckedIOException;
 
 import java.io.IOException;
@@ -15,12 +17,13 @@ import java.net.URL;
 
 public class AutoHttpURLConnection extends HttpURLConnection implements AutoCloseable {
 
+    @NonNull
     private final HttpURLConnection mHttpURLConnection;
     private InputStream mInputStream;
     private OutputStream mOutputStream;
 
 
-    public AutoHttpURLConnection(URL url) throws IOException {
+    public AutoHttpURLConnection(@NonNull URL url) throws IOException {
         super(url);
         mHttpURLConnection = (HttpURLConnection) url.openConnection();
         connect();

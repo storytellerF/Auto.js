@@ -5,6 +5,8 @@ import android.content.Context;
 
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -22,6 +24,7 @@ import com.stardust.util.UiHandler;
 
 public class JsDialogBuilder extends MaterialDialog.Builder {
 
+    @NonNull
     private final EventEmitter mEmitter;
     private final UiHandler mUiHandler;
     private final Timer mTimer;
@@ -30,7 +33,7 @@ public class JsDialogBuilder extends MaterialDialog.Builder {
     private volatile int mWaitId = -1;
 
 
-    public JsDialogBuilder(Context context, ScriptRuntime runtime) {
+    public JsDialogBuilder(@NonNull Context context, @NonNull ScriptRuntime runtime) {
         super(context);
         mTimer = runtime.timers.getTimerForCurrentThread();
         mLoopers = runtime.loopers;
@@ -81,16 +84,19 @@ public class JsDialogBuilder extends MaterialDialog.Builder {
         return mDialog;
     }
 
+    @NonNull
     public JsDialogBuilder once(String eventName, Object listener) {
         mEmitter.once(eventName, listener);
         return this;
     }
 
+    @NonNull
     public JsDialogBuilder on(String eventName, Object listener) {
         mEmitter.on(eventName, listener);
         return this;
     }
 
+    @NonNull
     public JsDialogBuilder addListener(String eventName, Object listener) {
         mEmitter.addListener(eventName, listener);
         return this;
@@ -112,31 +118,37 @@ public class JsDialogBuilder extends MaterialDialog.Builder {
         return mEmitter.listeners(eventName);
     }
 
+    @NonNull
     public JsDialogBuilder prependListener(String eventName, Object listener) {
         mEmitter.prependListener(eventName, listener);
         return this;
     }
 
+    @NonNull
     public JsDialogBuilder prependOnceListener(String eventName, Object listener) {
         mEmitter.prependOnceListener(eventName, listener);
         return this;
     }
 
+    @NonNull
     public JsDialogBuilder removeAllListeners() {
         mEmitter.removeAllListeners();
         return this;
     }
 
+    @NonNull
     public JsDialogBuilder removeAllListeners(String eventName) {
         mEmitter.removeAllListeners(eventName);
         return this;
     }
 
+    @NonNull
     public JsDialogBuilder removeListener(String eventName, Object listener) {
         mEmitter.removeListener(eventName, listener);
         return this;
     }
 
+    @NonNull
     public JsDialogBuilder setMaxListeners(int n) {
         mEmitter.setMaxListeners(n);
         return this;

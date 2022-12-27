@@ -30,6 +30,7 @@ public class ScriptEngineFactory {
 
     }
 
+    @NonNull
     public static ScriptEngineFactory getInstance() {
         return sInstance;
     }
@@ -38,7 +39,7 @@ public class ScriptEngineFactory {
         mGlobalVariableMap.put(varName, value);
     }
 
-    protected void putProperties(ScriptEngine engine) {
+    protected void putProperties(@NonNull ScriptEngine engine) {
         for (Map.Entry<String, Object> variable : mGlobalVariableMap.entrySet()) {
             engine.put(variable.getKey(), variable.getValue());
         }
@@ -57,7 +58,7 @@ public class ScriptEngineFactory {
     }
 
     @Nullable
-    public ScriptEngine createEngineOfSource(ScriptSource source) {
+    public ScriptEngine createEngineOfSource(@NonNull ScriptSource source) {
         return createEngine(source.getEngineName());
     }
 
@@ -71,7 +72,7 @@ public class ScriptEngineFactory {
     }
 
     @NonNull
-    public ScriptEngine createEngineOfSourceOrThrow(ScriptSource source) {
+    public ScriptEngine createEngineOfSourceOrThrow(@NonNull ScriptSource source) {
         ScriptEngine engine = createEngineOfSource(source);
         if (engine == null)
             throw new EngineNotFoundException("source: " + source);

@@ -2,6 +2,8 @@ package org.autojs.autojs.storage.file;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.pio.PFiles;
 
 import java.io.File;
@@ -13,23 +15,25 @@ import java.io.IOException;
 
 public class TmpScriptFiles {
 
-    public static File create(Context context) throws IOException {
+    @NonNull
+    public static File create(@NonNull Context context) throws IOException {
         ensureTmpDir(context);
         File tmp = new File(getTmpDir(context), "tmp-" + System.currentTimeMillis() + ".js");
         tmp.createNewFile();
         return tmp;
     }
 
-    public static void clearTmpDir(Context context) {
+    public static void clearTmpDir(@NonNull Context context) {
         File dir = getTmpDir(context);
         PFiles.deleteRecursively(dir);
     }
 
-    public static File getTmpDir(Context context) {
+    @NonNull
+    public static File getTmpDir(@NonNull Context context) {
         return new File(context.getCacheDir(), "tmp_scripts/");
     }
 
-    private static void ensureTmpDir(Context context) {
+    private static void ensureTmpDir(@NonNull Context context) {
         File dir = getTmpDir(context);
         if (!dir.exists()) {
             dir.mkdirs();

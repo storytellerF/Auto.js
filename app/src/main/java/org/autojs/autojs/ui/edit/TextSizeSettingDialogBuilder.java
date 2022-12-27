@@ -19,6 +19,7 @@ import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 public class TextSizeSettingDialogBuilder extends ThemeColorMaterialDialogBuilder implements SeekBar.OnSeekBarChangeListener {
 
 
+    @NonNull
     private final DialogTextSizeSettingBinding bind;
 
     public interface PositiveCallback {
@@ -53,12 +54,14 @@ public class TextSizeSettingDialogBuilder extends ThemeColorMaterialDialogBuilde
         bind.previewText.setTextSize(textSize);
     }
 
+    @NonNull
     public TextSizeSettingDialogBuilder initialValue(int value) {
         bind.seekbar.setProgress(value - MIN);
         return this;
     }
 
-    public TextSizeSettingDialogBuilder callback(PositiveCallback callback) {
+    @NonNull
+    public TextSizeSettingDialogBuilder callback(@NonNull PositiveCallback callback) {
         onPositive((dialog, which) -> callback.onPositive(mTextSize));
         return this;
     }

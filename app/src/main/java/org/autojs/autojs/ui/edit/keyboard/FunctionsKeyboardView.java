@@ -48,6 +48,7 @@ public class FunctionsKeyboardView extends FrameLayout {
     private List<Module> mModules;
     private final Map<Module, List<Integer>> mSpanSizes = new HashMap<>();
     private Module mSelectedModule;
+    @Nullable
     private View mSelectedModuleView;
     private Paint mPaint;
     private ClickCallback mClickCallback;
@@ -135,13 +136,13 @@ public class FunctionsKeyboardView extends FrameLayout {
         mSpanSizes.put(module, spanSizes);
     }
 
-    private String getDisplayText(Property property) {
+    private String getDisplayText(@NonNull Property property) {
         if (TextUtils.isEmpty(property.getSummary()))
             return property.getKey();
         return property.getKey() + "\n" + property.getSummary();
     }
 
-    private int getTextWidth(String text) {
+    private int getTextWidth(@NonNull String text) {
         if (mPaint == null) {
             mPaint = new Paint();
             mPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.textSize_item_property));
@@ -199,10 +200,11 @@ public class FunctionsKeyboardView extends FrameLayout {
     private class ModuleViewHolder extends RecyclerView.ViewHolder {
 
 
+        @NonNull
         private final TextView mTextView;
         private Module mModule;
 
-        ModuleViewHolder(View itemView) {
+        ModuleViewHolder(@NonNull View itemView) {
             super(itemView);
             mTextView = (TextView) itemView;
             mTextView.setOnClickListener(v -> {
@@ -220,7 +222,7 @@ public class FunctionsKeyboardView extends FrameLayout {
         }
 
 
-        void bind(Module module) {
+        void bind(@NonNull Module module) {
             mModule = module;
             mTextView.setText(module.getSummary());
             mTextView.setSelected(module == mSelectedModule);
@@ -233,10 +235,11 @@ public class FunctionsKeyboardView extends FrameLayout {
 
     private class PropertyViewHolder extends RecyclerView.ViewHolder {
 
+        @NonNull
         private final TextView mTextView;
         private Property mProperty;
 
-        PropertyViewHolder(View itemView) {
+        PropertyViewHolder(@NonNull View itemView) {
             super(itemView);
             mTextView = (TextView) itemView;
             mTextView.setOnLongClickListener(v -> {
@@ -253,7 +256,7 @@ public class FunctionsKeyboardView extends FrameLayout {
             });
         }
 
-        void bind(Property property) {
+        void bind(@NonNull Property property) {
             mProperty = property;
             mTextView.setText(getDisplayText(property));
         }
@@ -261,14 +264,15 @@ public class FunctionsKeyboardView extends FrameLayout {
 
     private class ModulesAdapter extends RecyclerView.Adapter<ModuleViewHolder> {
 
+        @NonNull
         @Override
-        public ModuleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ModuleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ModuleViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_module, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(ModuleViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ModuleViewHolder holder, int position) {
             holder.bind(mModules.get(position));
         }
 
@@ -280,14 +284,15 @@ public class FunctionsKeyboardView extends FrameLayout {
 
     private class PropertiesAdapter extends RecyclerView.Adapter<PropertyViewHolder> {
 
+        @NonNull
         @Override
-        public PropertyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public PropertyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new PropertyViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_property, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(PropertyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull PropertyViewHolder holder, int position) {
             holder.bind(mSelectedModule.getProperties().get(position));
         }
 

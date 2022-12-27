@@ -2,6 +2,7 @@ package com.stardust.util;
 
 import android.os.Build;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.util.Collection;
@@ -14,10 +15,12 @@ import java.util.function.Function;
 
 public class BiMaps {
 
+    @NonNull
     public static <K, V> BiMap<K, V> make(Map<K, V> keyToValue, Map<V, K> valueToKey) {
         return new BiMapImpl<>(keyToValue, valueToKey);
     }
 
+    @NonNull
     public static <K, V> BiMapBuilder<K, V> newBuilder() {
         return new BiMapBuilder<>();
     }
@@ -26,11 +29,13 @@ public class BiMaps {
 
         private final BiMap<K, V> mBiMap = make(new HashMap<K, V>(), new HashMap<V, K>());
 
+        @NonNull
         public BiMapBuilder<K, V> put(K key, V value) {
             mBiMap.put(key, value);
             return this;
         }
 
+        @NonNull
         public BiMap<K, V> build() {
             return mBiMap;
         }
@@ -105,11 +110,13 @@ public class BiMaps {
             return mKVMap.keySet();
         }
 
+        @Nullable
         @Override
         public K getKey(V value) {
             return mVKMap.get(value);
         }
 
+        @NonNull
         @Override
         public Set<V> valueSet() {
             return mVKMap.keySet();
@@ -157,13 +164,13 @@ public class BiMaps {
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        public void forEach(BiConsumer<? super K, ? super V> action) {
+        public void forEach(@NonNull BiConsumer<? super K, ? super V> action) {
             mKVMap.forEach(action);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
+        public void replaceAll(@NonNull BiFunction<? super K, ? super V, ? extends V> function) {
             mKVMap.replaceAll(function);
         }
 
@@ -193,25 +200,25 @@ public class BiMaps {
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+        public V computeIfAbsent(K key, @NonNull Function<? super K, ? extends V> mappingFunction) {
             return mKVMap.computeIfAbsent(key, mappingFunction);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        public V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+        public V computeIfPresent(K key, @NonNull BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
             return mKVMap.computeIfPresent(key, remappingFunction);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        public V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+        public V compute(K key, @NonNull BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
             return mKVMap.compute(key, remappingFunction);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+        public V merge(K key, @NonNull V value, @NonNull BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
             return mKVMap.merge(key, value, remappingFunction);
         }
     }

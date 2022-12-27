@@ -4,6 +4,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.util.Gravities;
 
@@ -15,6 +18,7 @@ import java.util.Map;
 
 public class FrameLayoutInflater<V extends FrameLayout> extends ViewGroupInflater<V> {
 
+    @Nullable
     private Integer mGravity;
 
     public FrameLayoutInflater(ResourceParser resourceParser) {
@@ -22,7 +26,7 @@ public class FrameLayoutInflater<V extends FrameLayout> extends ViewGroupInflate
     }
 
     @Override
-    public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull V view, @NonNull String attr, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         if (attr.equals("gravity")) {
             mGravity = Gravities.parse(value);
             return true;
@@ -31,7 +35,7 @@ public class FrameLayoutInflater<V extends FrameLayout> extends ViewGroupInflate
     }
 
     @Override
-    public void applyPendingAttributesOfChildren(V view) {
+    public void applyPendingAttributesOfChildren(@NonNull V view) {
         if (mGravity == null)
             return;
         for (int i = 0; i < view.getChildCount(); i++) {

@@ -40,6 +40,7 @@ public interface Console {
     @ScriptInterface
     void hide();
 
+    @Nullable
     String println(int level, CharSequence charSequence);
 
     void setTitle(CharSequence title);

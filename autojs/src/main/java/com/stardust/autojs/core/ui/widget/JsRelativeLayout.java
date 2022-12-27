@@ -2,6 +2,8 @@ package com.stardust.autojs.core.ui.widget;
 
 import android.content.Context;
 import android.os.Build;
+
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
@@ -31,6 +33,7 @@ public class JsRelativeLayout extends RelativeLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    @Nullable
     public View id(String id) {
         return JsViewHelper.findViewByStringId(this, id);
     }

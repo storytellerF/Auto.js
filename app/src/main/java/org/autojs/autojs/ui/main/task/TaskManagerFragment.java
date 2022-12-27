@@ -3,6 +3,8 @@ package org.autojs.autojs.ui.main.task;
 import android.app.Activity;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.View;
 
@@ -21,12 +23,15 @@ import org.androidannotations.annotations.ViewById;
 @EFragment(R.layout.fragment_task_manager)
 public class TaskManagerFragment extends ViewPagerFragment {
 
+    @Nullable
     @ViewById(R.id.task_list)
     TaskListRecyclerView mTaskListRecyclerView;
 
+    @Nullable
     @ViewById(R.id.notice_no_running_script)
     View mNoRunningScriptNotice;
 
+    @Nullable
     @ViewById(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 

@@ -1,5 +1,8 @@
 package org.autojs.autojs.model.explorer;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.pio.PFile;
 
 import java.io.File;
@@ -16,7 +19,7 @@ public class ExplorerSamplePage extends ExplorerDirPage {
         super(path, parent);
     }
 
-    public ExplorerSamplePage(File file, ExplorerPage parent) {
+    public ExplorerSamplePage(@NonNull File file, ExplorerPage parent) {
         super(file, parent);
     }
 
@@ -24,6 +27,7 @@ public class ExplorerSamplePage extends ExplorerDirPage {
         return mRoot;
     }
 
+    @Nullable
     public static ExplorerSamplePage createRoot(PFile dir) {
         ExplorerSamplePage page = new ExplorerSamplePage(dir, null);
         page.mRoot = true;

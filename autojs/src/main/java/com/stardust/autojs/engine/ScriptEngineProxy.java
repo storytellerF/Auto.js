@@ -1,5 +1,7 @@
 package com.stardust.autojs.engine;
 
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.script.ScriptSource;
 
 /**
@@ -48,11 +50,13 @@ public class ScriptEngineProxy<S extends ScriptSource> implements ScriptEngine<S
         mScriptEngine.setTag(key, value);
     }
 
+    @Nullable
     @Override
     public Object getTag(String key) {
         return mScriptEngine.getTag(key);
     }
 
+    @Nullable
     @Override
     public String cwd() {
         return mScriptEngine.cwd();

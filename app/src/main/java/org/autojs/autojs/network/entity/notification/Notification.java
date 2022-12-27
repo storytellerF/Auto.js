@@ -1,5 +1,7 @@
 package org.autojs.autojs.network.entity.notification;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.network.entity.user.User;
 
 public class Notification {
@@ -113,6 +115,7 @@ public class Notification {
         return user;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.stardust.autojs.core.ui.inflater.ShouldCallOnFinishInflate;
 
+import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -15,12 +16,12 @@ public class JsViewPager extends ViewPager implements ShouldCallOnFinishInflate 
 
     private String[] mTitles;
 
-    public JsViewPager(Context context) {
+    public JsViewPager(@NonNull Context context) {
         super(context);
     }
 
 
-    public JsViewPager(Context context, AttributeSet attrs) {
+    public JsViewPager(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -36,6 +37,7 @@ public class JsViewPager extends ViewPager implements ShouldCallOnFinishInflate 
         setOffscreenPageLimit(getChildCount());
         setAdapter(new PagerAdapter() {
 
+            @NonNull
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
                 return getChildAt(position);

@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.autojs.autojs.timing.IntentTask;
 
 import java.util.ArrayList;
@@ -24,27 +27,29 @@ public abstract class Database<M extends BaseModel> {
     private final String mTable;
     private final PublishSubject<ModelChange<M>> mModelChange = PublishSubject.create();
 
-    public Database(SQLiteOpenHelper sqLiteOpenHelper, String table) {
+    public Database(@NonNull SQLiteOpenHelper sqLiteOpenHelper, String table) {
         mWritableSQLiteDatabase = sqLiteOpenHelper.getWritableDatabase();
         mReadableSQLiteDatabase = sqLiteOpenHelper.getWritableDatabase();
         mTable = table;
     }
 
-    public <T> Observable<T> exec(Callable<T> callable) {
+    public <T> Observable<T> exec(@NonNull Callable<T> callable) {
         return Observable.fromCallable(callable)
                 .subscribeOn(Schedulers.io());
     }
 
-    public <T> Flowable<T> execFlowable(Callable<T> callable) {
+    @NonNull
+    public <T> Flowable<T> execFlowable(@NonNull Callable<T> callable) {
         return Flowable.fromCallable(callable)
                 .subscribeOn(Schedulers.io());
     }
 
+    @NonNull
     public PublishSubject<ModelChange<M>> getModelChange() {
         return mModelChange;
     }
 
-    public Observable<Integer> delete(M model) {
+    public Observable<Integer> delete(@NonNull M model) {
         return exec(() -> {
             int delete = mWritableSQLiteDatabase.delete(mTable, "id = ?",
                     new String[]{String.valueOf(model.getId())});
@@ -55,7 +60,7 @@ public abstract class Database<M extends BaseModel> {
         });
     }
 
-    public Observable<Integer> update(M model) {
+    public Observable<Integer> update(@NonNull M model) {
         return exec(() -> {
             ContentValues values = asContentValues(model);
             values.put("id", model.getId());
@@ -68,7 +73,7 @@ public abstract class Database<M extends BaseModel> {
     }
 
 
-    public Observable<Long> insert(M model) {
+    public Observable<Long> insert(@NonNull M model) {
         return exec(() -> {
             ContentValues values = asContentValues(model);
             long id = mWritableSQLiteDatabase.insertOrThrow(mTable, null, values);
@@ -85,6 +90,7 @@ public abstract class Database<M extends BaseModel> {
 
     protected abstract ContentValues asContentValues(M model);
 
+    @Nullable
     public M queryById(long id) {
         Cursor cursor = mReadableSQLiteDatabase.rawQuery("SELECT * FROM " + mTable + " WHERE id = ?", arg(id));
         if (!cursor.moveToFirst()) {
@@ -96,6 +102,7 @@ public abstract class Database<M extends BaseModel> {
     }
 
 
+    @NonNull
     public Flowable<M> queryAllAsFlowable() {
         return execFlowable(() ->
                 mReadableSQLiteDatabase.rawQuery("SELECT * FROM " + mTable, null)
@@ -104,6 +111,7 @@ public abstract class Database<M extends BaseModel> {
                 .map(this::createModelFromCursor);
     }
 
+    @NonNull
     public List<M> queryAll() {
         ArrayList<M> list = new ArrayList<>();
         Cursor cursor = mReadableSQLiteDatabase.rawQuery("SELECT * FROM " + mTable, null);
@@ -124,6 +132,7 @@ public abstract class Database<M extends BaseModel> {
     }
 
 
+    @NonNull
     public Flowable<M> query(String sql, Object... args) {
         String[] strArgs = args(args);
         return execFlowable(() ->
@@ -133,7 +142,8 @@ public abstract class Database<M extends BaseModel> {
                 .map(this::createModelFromCursor);
     }
 
-    private String[] args(Object[] args) {
+    @Nullable
+    private String[] args(@Nullable Object[] args) {
         if (args == null || args.length == 0) {
             return null;
         }
@@ -144,6 +154,7 @@ public abstract class Database<M extends BaseModel> {
         return a;
     }
 
+    @NonNull
     private String[] arg(Object value) {
         return new String[]{String.valueOf(value)};
     }

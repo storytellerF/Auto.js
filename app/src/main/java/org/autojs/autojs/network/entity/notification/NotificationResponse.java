@@ -1,5 +1,7 @@
 package org.autojs.autojs.network.entity.notification;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 public class NotificationResponse {
@@ -15,6 +17,7 @@ public class NotificationResponse {
     }
 
 
+    @NonNull
     @Override
     public String toString() {
         return

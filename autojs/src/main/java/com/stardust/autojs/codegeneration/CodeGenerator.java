@@ -1,5 +1,7 @@
 package com.stardust.autojs.codegeneration;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import com.stardust.automator.UiGlobalSelector;
@@ -25,7 +27,7 @@ public class CodeGenerator {
     private int mSearchMode = FIND_ONE;
     private int mAction = -1;
 
-    public CodeGenerator(NodeInfo root, NodeInfo target) {
+    public CodeGenerator(@NonNull NodeInfo root, @NonNull NodeInfo target) {
         this(new ReadOnlyUiObject(root), new ReadOnlyUiObject(target));
     }
 
@@ -55,6 +57,7 @@ public class CodeGenerator {
         mAction = action;
     }
 
+    @Nullable
     public String generateCode() {
         UiObject collection = getCollectionParent(mTarget);
         if (collection != null) {
@@ -73,7 +76,8 @@ public class CodeGenerator {
     }
 
 
-    protected String generateCode(UiSelectorGenerator generator, UiObject root, UiObject target, int maxParentLevel, int maxChildrenLevel, boolean withFind) {
+    @Nullable
+    protected String generateCode(@NonNull UiSelectorGenerator generator, UiObject root, @NonNull UiObject target, int maxParentLevel, int maxChildrenLevel, boolean withFind) {
         String selector;
         if (withFind) {
             selector = generator.generateSelectorCode();
@@ -108,17 +112,20 @@ public class CodeGenerator {
         return null;
     }
 
-    protected String generateCode(UiObject root, UiObject target, int maxParentLevel, int maxChildrenLevel) {
+    @Nullable
+    protected String generateCode(UiObject root, @NonNull UiObject target, int maxParentLevel, int maxChildrenLevel) {
         return generateCode(root, target, maxParentLevel, maxChildrenLevel, true);
     }
 
-    protected String generateCode(UiObject root, UiObject target, int maxParentLevel, int maxChildrenLevel, boolean withFind) {
+    @Nullable
+    protected String generateCode(UiObject root, @NonNull UiObject target, int maxParentLevel, int maxChildrenLevel, boolean withFind) {
         UiSelectorGenerator generator = new UiSelectorGenerator(root, target);
         generator.setUsingId(mUsingId);
         return generateCode(generator, root, target, maxParentLevel, maxChildrenLevel, withFind);
     }
 
-    private String generateAction(String selector) {
+    @Nullable
+    private String generateAction(@Nullable String selector) {
         if (selector == null)
             return null;
         if (mSearchMode == WAIT_FOR) {
@@ -135,6 +142,7 @@ public class CodeGenerator {
         }
     }
 
+    @NonNull
     private String getAction() {
         switch (mAction) {
             case AccessibilityNodeInfoCompat.ACTION_CLICK:
@@ -154,7 +162,8 @@ public class CodeGenerator {
         return "";
     }
 
-    private String generateCodeForCollectionChild(UiObject collection, UiObject target) {
+    @Nullable
+    private String generateCodeForCollectionChild(@NonNull UiObject collection, @NonNull UiObject target) {
         UiObject parent = target.parent();
         if (parent == null)
             return null;
@@ -179,7 +188,7 @@ public class CodeGenerator {
                 + "});";
     }
 
-    private boolean inherits(UiObject root, UiObject target) {
+    private boolean inherits(@NonNull UiObject root, UiObject target) {
         for (int i = 0; i < root.childCount(); i++) {
             UiObject child = root.child(i);
             if (child != null) {
@@ -191,7 +200,8 @@ public class CodeGenerator {
         return false;
     }
 
-    private UiObject getCollectionParent(UiObject target) {
+    @Nullable
+    private UiObject getCollectionParent(@NonNull UiObject target) {
         UiObject parent = target.parent();
         while (parent != null) {
             if (parent.rowCount() > 0 || parent.columnCount() > 0) {

@@ -1,6 +1,7 @@
 package com.stardust.util;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/5/3.
@@ -14,7 +15,7 @@ public class TextUtils {
 
 
     @NonNull
-    public static String toEmptyIfNull(String message) {
+    public static String toEmptyIfNull(@Nullable String message) {
         if (message == null)
             return "";
         return message;

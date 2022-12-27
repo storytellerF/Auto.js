@@ -19,6 +19,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 
 /**
  * Reference to ScrollView and HorizontalScrollView
@@ -58,6 +61,7 @@ public class HVScrollView extends FrameLayout {
      * layout is dirty. This prevents the scroll from being wrong if the child has not been
      * laid out before requesting focus.
      */
+    @Nullable
     private View mChildToScrollTo = null;
 
     /**
@@ -70,6 +74,7 @@ public class HVScrollView extends FrameLayout {
     /**
      * Determines speed during touch scrolling
      */
+    @Nullable
     private VelocityTracker mVelocityTracker;
 
     /**
@@ -323,7 +328,7 @@ public class HVScrollView extends FrameLayout {
     }
 
     @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
+    public boolean dispatchKeyEvent(@NonNull KeyEvent event) {
         // Let the focused view and/or our descendants get the key first
         return super.dispatchKeyEvent(event) || executeKeyEvent(event);
     }
@@ -336,7 +341,7 @@ public class HVScrollView extends FrameLayout {
      * @param event The key event to execute.
      * @return Return true if the event was handled, else false.
      */
-    public boolean executeKeyEvent(KeyEvent event) {
+    public boolean executeKeyEvent(@NonNull KeyEvent event) {
         mTempRect.setEmpty();
 
         boolean handled = false;
@@ -398,7 +403,7 @@ public class HVScrollView extends FrameLayout {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+    public boolean onInterceptTouchEvent(@NonNull MotionEvent ev) {
         /*
          * This method JUST determines whether we want to intercept the motion.
 		 * If we return true, onMotionEvent will be called and we do the actual
@@ -492,7 +497,7 @@ public class HVScrollView extends FrameLayout {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
+    public boolean onTouchEvent(@NonNull MotionEvent ev) {
 
         if (ev.getAction() == MotionEvent.ACTION_DOWN && ev.getEdgeFlags() != 0) {
             // Don't handle edge touches immediately -- they may actually belong to one of our
@@ -588,7 +593,7 @@ public class HVScrollView extends FrameLayout {
         return true;
     }
 
-    private void onSecondaryPointerUp(MotionEvent ev) {
+    private void onSecondaryPointerUp(@NonNull MotionEvent ev) {
         final int pointerIndex = (ev.getAction() & MotionEvent.ACTION_POINTER_ID_MASK) >>
                 MotionEvent.ACTION_POINTER_ID_SHIFT;
         final int pointerId = ev.getPointerId(pointerIndex);
@@ -620,6 +625,7 @@ public class HVScrollView extends FrameLayout {
      * @return the next focusable component in the bounds or null if none can
      * be found
      */
+    @Nullable
     private View findFocusableViewInBoundsV(boolean topFocus, int top, int bottom) {
 
         List<View> focusables = getFocusables(View.FOCUS_FORWARD);
@@ -688,6 +694,7 @@ public class HVScrollView extends FrameLayout {
         return focusCandidate;
     }
 
+    @Nullable
     private View findFocusableViewInBoundsH(boolean leftFocus, int left, int right) {
 
         List<View> focusables = getFocusables(View.FOCUS_FORWARD);
@@ -990,11 +997,11 @@ public class HVScrollView extends FrameLayout {
      * @return whether the descendant of this scroll view is scrolled off
      * screen.
      */
-    private boolean isOffScreenV(View descendant) {
+    private boolean isOffScreenV(@NonNull View descendant) {
         return !isWithinDeltaOfScreenV(descendant, 0, getHeight());
     }
 
-    private boolean isOffScreenH(View descendant) {
+    private boolean isOffScreenH(@NonNull View descendant) {
         return !isWithinDeltaOfScreenH(descendant, 0);
     }
 
@@ -1002,7 +1009,7 @@ public class HVScrollView extends FrameLayout {
      * @return whether the descendant of this scroll view is within delta
      * pixels of being on the screen.
      */
-    private boolean isWithinDeltaOfScreenV(View descendant, int delta, int height) {
+    private boolean isWithinDeltaOfScreenV(@NonNull View descendant, int delta, int height) {
         descendant.getDrawingRect(mTempRect);
         offsetDescendantRectToMyCoords(descendant, mTempRect);
 
@@ -1010,7 +1017,7 @@ public class HVScrollView extends FrameLayout {
                 && (mTempRect.top - delta) <= (getScrollY() + height);
     }
 
-    private boolean isWithinDeltaOfScreenH(View descendant, int delta) {
+    private boolean isWithinDeltaOfScreenH(@NonNull View descendant, int delta) {
         descendant.getDrawingRect(mTempRect);
         offsetDescendantRectToMyCoords(descendant, mTempRect);
 
@@ -1126,7 +1133,7 @@ public class HVScrollView extends FrameLayout {
     }
 
     @Override
-    protected void measureChild(View child, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
+    protected void measureChild(@NonNull View child, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
         int childWidthMeasureSpec;
         int childHeightMeasureSpec;
 
@@ -1138,7 +1145,7 @@ public class HVScrollView extends FrameLayout {
     }
 
     @Override
-    protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed,
+    protected void measureChildWithMargins(@NonNull View child, int parentWidthMeasureSpec, int widthUsed,
                                            int parentHeightMeasureSpec, int heightUsed) {
         final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
 
@@ -1190,7 +1197,7 @@ public class HVScrollView extends FrameLayout {
      *
      * @param child the View to scroll to
      */
-    private void scrollToChild(View child) {
+    private void scrollToChild(@NonNull View child) {
         child.getDrawingRect(mTempRect);
 
 		/* Offset from child's local coordinates to ScrollView coordinates */
@@ -1212,7 +1219,7 @@ public class HVScrollView extends FrameLayout {
      * @param immediate True to scroll immediately without animation
      * @return true if scrolling was performed
      */
-    private boolean scrollToChildRect(Rect rect, boolean immediate) {
+    private boolean scrollToChildRect(@NonNull Rect rect, boolean immediate) {
         final int deltaV = computeScrollDeltaToGetChildRectOnScreenV(rect);
         final int deltaH = computeScrollDeltaToGetChildRectOnScreenH(rect);
         final boolean scroll = deltaH != 0 || deltaV != 0;
@@ -1234,7 +1241,7 @@ public class HVScrollView extends FrameLayout {
      * @param rect The rect.
      * @return The scroll delta.
      */
-    protected int computeScrollDeltaToGetChildRectOnScreenV(Rect rect) {
+    protected int computeScrollDeltaToGetChildRectOnScreenV(@NonNull Rect rect) {
         if (getChildCount() == 0) return 0;
 
         int height = getHeight();
@@ -1292,7 +1299,7 @@ public class HVScrollView extends FrameLayout {
         return scrollYDelta;
     }
 
-    protected int computeScrollDeltaToGetChildRectOnScreenH(Rect rect) {
+    protected int computeScrollDeltaToGetChildRectOnScreenH(@NonNull Rect rect) {
         if (getChildCount() == 0) return 0;
 
         int width = getWidth();
@@ -1351,7 +1358,7 @@ public class HVScrollView extends FrameLayout {
     }
 
     @Override
-    public void requestChildFocus(View child, View focused) {
+    public void requestChildFocus(View child, @NonNull View focused) {
         if (!mScrollViewMovedFocus) {
             if (!mIsLayoutDirty) {
                 scrollToChild(focused);
@@ -1373,7 +1380,7 @@ public class HVScrollView extends FrameLayout {
      */
     @Override
     protected boolean onRequestFocusInDescendants(int direction,
-                                                  Rect previouslyFocusedRect) {
+                                                  @Nullable Rect previouslyFocusedRect) {
 
         // convert from forward / backward notation to up / down / left / right
         // (ugh).
@@ -1401,7 +1408,7 @@ public class HVScrollView extends FrameLayout {
     }
 
     @Override
-    public boolean requestChildRectangleOnScreen(View child, Rect rectangle,
+    public boolean requestChildRectangleOnScreen(@NonNull View child, @NonNull Rect rectangle,
                                                  boolean immediate) {
         // offset into coordinate space of this scroll view
         rectangle.offset(child.getLeft() - child.getScrollX(),
@@ -1460,7 +1467,7 @@ public class HVScrollView extends FrameLayout {
     /**
      * Return true if child is an descendant of parent, (or equal to the parent).
      */
-    private boolean isViewDescendantOf(View child, View parent) {
+    private boolean isViewDescendantOf(@NonNull View child, View parent) {
         if (child == parent) {
             return true;
         }

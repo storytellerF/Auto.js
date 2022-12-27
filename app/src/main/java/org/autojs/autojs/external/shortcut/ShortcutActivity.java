@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.model.script.PathChecker;
 import org.autojs.autojs.external.ScriptIntents;
 import org.autojs.autojs.model.script.ScriptFile;
@@ -24,7 +26,7 @@ public class ShortcutActivity extends Activity {
         finish();
     }
 
-    private void runScriptFile(String path) {
+    private void runScriptFile(@NonNull String path) {
         try {
             Scripts.INSTANCE.run(new ScriptFile(path));
         } catch (Exception e) {

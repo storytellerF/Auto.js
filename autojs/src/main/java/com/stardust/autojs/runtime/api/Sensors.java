@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.stardust.autojs.core.eventloop.EventEmitter;
 import com.stardust.autojs.core.looper.Loopers;
@@ -32,7 +33,7 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
         }
 
         @Override
-        public void onSensorChanged(SensorEvent event) {
+        public void onSensorChanged(@NonNull SensorEvent event) {
             Object[] args = new Object[event.values.length + 1];
             args[0] = event;
             for (int i = 1; i < args.length; i++) {
@@ -79,13 +80,16 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
     public final Delay delay = new Delay();
 
     private final Set<SensorEventEmitter> mSensorEventEmitters = new HashSet<>();
+    @NonNull
     private final SensorManager mSensorManager;
     private final ScriptBridges mScriptBridges;
+    @NonNull
     private final SensorEventEmitter mNoOpSensorEventEmitter;
+    @NonNull
     private final ScriptRuntime mScriptRuntime;
 
 
-    public Sensors(Context context, ScriptRuntime runtime) {
+    public Sensors(@NonNull Context context, @NonNull ScriptRuntime runtime) {
         super(runtime.bridges);
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mScriptBridges = runtime.bridges;
@@ -94,11 +98,13 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
         runtime.loopers.addLooperQuitHandler(this);
     }
 
+    @Nullable
     public SensorEventEmitter register(String sensorName) {
         return register(sensorName, Delay.normal);
     }
 
-    public SensorEventEmitter register(String sensorName, int delay) {
+    @Nullable
+    public SensorEventEmitter register(@Nullable String sensorName, int delay) {
         if (sensorName == null)
             throw new NullPointerException("sensorName = null");
         Sensor sensor = getSensor(sensorName);
@@ -113,6 +119,7 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
         return register(sensor, delay);
     }
 
+    @NonNull
     private SensorEventEmitter register(@NonNull Sensor sensor, int delay) {
         SensorEventEmitter emitter = new SensorEventEmitter(mScriptBridges);
         mSensorManager.registerListener(emitter, sensor, delay);
@@ -128,7 +135,8 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
         return mSensorEventEmitters.isEmpty();
     }
 
-    public Sensor getSensor(String sensorName) {
+    @Nullable
+    public Sensor getSensor(@NonNull String sensorName) {
         Integer type = SENSORS.get(sensorName.toUpperCase());
         if (type == null)
             type = getSensorTypeByReflect(sensorName);
@@ -137,6 +145,7 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
         return mSensorManager.getDefaultSensor(type);
     }
 
+    @Nullable
     private Integer getSensorTypeByReflect(String sensorName) {
         sensorName = sensorName.toUpperCase();
         try {
@@ -147,7 +156,7 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
         }
     }
 
-    public void unregister(SensorEventEmitter emitter) {
+    public void unregister(@Nullable SensorEventEmitter emitter) {
         if (emitter == null)
             return;
         synchronized (mSensorEventEmitters) {

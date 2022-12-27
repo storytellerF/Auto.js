@@ -5,6 +5,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 
 /**
@@ -14,17 +15,18 @@ import androidx.annotation.NonNull;
 public class ClipboardUtil {
 
 
-    public static void setClip(Context context, CharSequence text) {
+    public static void setClip(@NonNull Context context, CharSequence text) {
         ((ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("", text));
     }
 
-    public static CharSequence getClip(Context context) {
+    @Nullable
+    public static CharSequence getClip(@NonNull Context context) {
         ClipData clip = ((ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE)).getPrimaryClip();
         return (clip == null || clip.getItemCount() == 0) ? null : clip.getItemAt(0).getText();
     }
 
     @NonNull
-    public static CharSequence getClipOrEmpty(Context context) {
+    public static CharSequence getClipOrEmpty(@NonNull Context context) {
         CharSequence clip = getClip(context);
         if (clip == null) {
             return "";

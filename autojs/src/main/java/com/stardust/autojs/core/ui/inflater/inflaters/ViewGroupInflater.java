@@ -4,6 +4,8 @@ import android.animation.LayoutTransition;
 import android.os.Build;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.util.ValueMapper;
 
@@ -36,7 +38,7 @@ public class ViewGroupInflater<V extends ViewGroup> extends BaseViewInflater<V> 
 
 
     @Override
-    public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull V view, @NonNull String attr, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         switch (attr) {
             case "addStatesFromChildren":
                 view.setAddStatesFromChildren(Boolean.valueOf(value));

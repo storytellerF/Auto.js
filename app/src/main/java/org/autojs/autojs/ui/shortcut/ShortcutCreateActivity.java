@@ -13,6 +13,7 @@ import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +44,7 @@ public class ShortcutCreateActivity extends AppCompatActivity {
 
     public static final String EXTRA_FILE = "file";
     private static final String LOG_TAG = "ShortcutCreateActivity";
+    @NonNull
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ScriptFile mScriptFile;
     private boolean mIsDefaultIcon = true;
@@ -124,7 +126,7 @@ public class ShortcutCreateActivity extends AppCompatActivity {
 
     @SuppressLint("CheckResult")
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;

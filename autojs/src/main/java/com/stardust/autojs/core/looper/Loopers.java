@@ -17,6 +17,7 @@ import org.mozilla.javascript.Context;
 import java.util.HashSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
@@ -59,14 +60,16 @@ public class Loopers implements MessageQueue.IdleHandler {
     private final ThreadLocal<CopyOnWriteArrayList<LooperQuitHandler>> looperQuitHandlers = new ThreadLocal<>();
     private volatile Looper mServantLooper;
     private final Timers mTimers;
+    @NonNull
     private final ScriptRuntime mScriptRuntime;
     private LooperQuitHandler mMainLooperQuitHandler;
+    @NonNull
     private final Handler mMainHandler;
     private final Looper mMainLooper;
     private final Threads mThreads;
     private final MessageQueue mMainMessageQueue;
 
-    public Loopers(ScriptRuntime runtime) {
+    public Loopers(@NonNull ScriptRuntime runtime) {
         mTimers = runtime.timers;
         mThreads = runtime.threads;
         mScriptRuntime = runtime;

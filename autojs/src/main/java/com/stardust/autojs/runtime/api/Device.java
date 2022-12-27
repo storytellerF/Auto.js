@@ -68,8 +68,10 @@ public class Device {
 
     public static final String release = Build.VERSION.RELEASE;
 
+    @Nullable
     public static final String baseOS;
 
+    @Nullable
     public static final String securityPatch;
 
     static {
@@ -312,6 +314,7 @@ public class Device {
 
     private static final String FAKE_MAC_ADDRESS = "02:00:00:00:00:00";
 
+    @Nullable
     @SuppressLint("HardwareIds")
     public String getMacAddress() throws Exception {
         WifiManager wifiMan = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -336,6 +339,7 @@ public class Device {
         return mac;
     }
 
+    @Nullable
     private static String getMacByInterface() throws SocketException {
         List<NetworkInterface> networkInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
         for (NetworkInterface networkInterface : networkInterfaces) {
@@ -359,6 +363,7 @@ public class Device {
         return null;
     }
 
+    @Nullable
     private static String getMacByFile() throws Exception {
         try {
             return PFiles.read("/sys/class/net/wlan0/address");
@@ -367,6 +372,7 @@ public class Device {
         }
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Device{" +

@@ -3,6 +3,8 @@ package com.stardust.autojs.core.ui.nativeview;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Looper;
+
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,7 +32,7 @@ public class ViewPrototype {
     private final ViewAttributes mViewAttributes;
     private Object mWidget;
 
-    public ViewPrototype(View view, ViewAttributes viewAttributes, Scriptable scope, ScriptRuntime runtime) {
+    public ViewPrototype(View view, ViewAttributes viewAttributes, Scriptable scope, @NonNull ScriptRuntime runtime) {
         mView = view;
         mViewAttributes = viewAttributes;
         mEventEmitter = runtime.events.emitter();
@@ -80,22 +82,22 @@ public class ViewPrototype {
         on("long_click", listener);
     }
 
-    public EventEmitter once(String eventName, Object listener) {
+    public EventEmitter once(@NonNull String eventName, Object listener) {
         registerEventIfNeeded(eventName);
         return mEventEmitter.once(eventName, listener);
     }
 
-    public EventEmitter on(String eventName, Object listener) {
+    public EventEmitter on(@NonNull String eventName, Object listener) {
         registerEventIfNeeded(eventName);
         return mEventEmitter.on(eventName, listener);
     }
 
-    public EventEmitter addListener(String eventName, Object listener) {
+    public EventEmitter addListener(@NonNull String eventName, Object listener) {
         registerEventIfNeeded(eventName);
         return mEventEmitter.addListener(eventName, listener);
     }
 
-    private void registerEventIfNeeded(String eventName) {
+    private void registerEventIfNeeded(@NonNull String eventName) {
         if (mRegisteredEvents.contains(eventName)) {
             return;
         }
@@ -117,7 +119,7 @@ public class ViewPrototype {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private boolean registerEvent(String eventName) {
+    private boolean registerEvent(@NonNull String eventName) {
         switch (eventName) {
             case "touch_down":
             case "touch_up":

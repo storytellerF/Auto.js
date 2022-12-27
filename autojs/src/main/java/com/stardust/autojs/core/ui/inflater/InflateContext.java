@@ -1,5 +1,7 @@
 package com.stardust.autojs.core.ui.inflater;
 
+import androidx.annotation.Nullable;
+
 import java.util.HashMap;
 
 public class InflateContext {
@@ -13,6 +15,7 @@ public class InflateContext {
         mProperties.put(key, value);
     }
 
+    @Nullable
     public Object get(String key) {
         if(mProperties == null)
             return null;
@@ -20,6 +23,7 @@ public class InflateContext {
     }
 
 
+    @Nullable
     public Object remove(String key){
         if(mProperties == null)
             return null;

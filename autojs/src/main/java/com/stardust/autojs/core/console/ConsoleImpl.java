@@ -66,7 +66,9 @@ public class ConsoleImpl extends AbstractConsole {
     private final Console mGlobalConsole;
     private final ArrayList<LogEntry> mLogEntries = new ArrayList<>();
     private final AtomicInteger mIdCounter = new AtomicInteger(0);
+    @NonNull
     private final ResizableExpandableFloatyWindow mFloatyWindow;
+    @NonNull
     private final ConsoleFloaty mConsoleFloaty;
     private WeakReference<LogListener> mLogListener;
     private final UiHandler mUiHandler;
@@ -110,18 +112,20 @@ public class ConsoleImpl extends AbstractConsole {
         mLogListener = new WeakReference<>(logListener);
     }
 
+    @NonNull
     public ArrayList<LogEntry> getAllLogs() {
         return mLogEntries;
     }
 
-    public void printAllStackTrace(Throwable t) {
+    public void printAllStackTrace(@NonNull Throwable t) {
         println(android.util.Log.ERROR, ScriptRuntime.getStackTrace(t, true));
     }
 
-    public String getStackTrace(Throwable t) {
+    public String getStackTrace(@NonNull Throwable t) {
         return ScriptRuntime.getStackTrace(t, false);
     }
 
+    @Nullable
     @Override
     public String println(int level, CharSequence charSequence) {
         LogEntry logEntry = new LogEntry(mIdCounter.getAndIncrement(), level, charSequence, true);
@@ -271,7 +275,7 @@ public class ConsoleImpl extends AbstractConsole {
     }
 
     @Override
-    public void error(@Nullable Object data, Object... options) {
+    public void error(@Nullable Object data, @Nullable Object... options) {
         if (data instanceof Throwable) {
             data = getStackTrace((Throwable) data);
         }

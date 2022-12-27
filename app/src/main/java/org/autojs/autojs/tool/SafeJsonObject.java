@@ -1,5 +1,7 @@
 package org.autojs.autojs.tool;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -23,7 +25,7 @@ public class SafeJsonObject extends JsonElement {
         return mJsonObject.deepCopy();
     }
 
-    public void add(String property, JsonElement value) {
+    public void add(@NonNull String property, JsonElement value) {
         mJsonObject.add(property, value);
     }
 
@@ -31,19 +33,19 @@ public class SafeJsonObject extends JsonElement {
         return mJsonObject.remove(property);
     }
 
-    public void addProperty(String property, String value) {
+    public void addProperty(@NonNull String property, String value) {
         mJsonObject.addProperty(property, value);
     }
 
-    public void addProperty(String property, Number value) {
+    public void addProperty(@NonNull String property, Number value) {
         mJsonObject.addProperty(property, value);
     }
 
-    public void addProperty(String property, Boolean value) {
+    public void addProperty(@NonNull String property, Boolean value) {
         mJsonObject.addProperty(property, value);
     }
 
-    public void addProperty(String property, Character value) {
+    public void addProperty(@NonNull String property, Character value) {
         mJsonObject.addProperty(property, value);
     }
 

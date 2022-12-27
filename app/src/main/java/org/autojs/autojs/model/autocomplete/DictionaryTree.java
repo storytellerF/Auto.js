@@ -1,6 +1,7 @@
 package org.autojs.autojs.model.autocomplete;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +18,7 @@ public class DictionaryTree<T> {
     private static class Node<T> {
 
         char ch;
+        @NonNull
         Map<Character, Node<T>> children = new TreeMap<>();
         String wordEndHere;
         T tag;
@@ -38,7 +40,7 @@ public class DictionaryTree<T> {
 
     private final Node<T> mRoot = new Node<>('@');
 
-    public void putWord(String word, T tag) {
+    public void putWord(@NonNull String word, T tag) {
         Node<T> node = mRoot;
         for (int i = 0; i < word.length(); i++) {
             node = getOrCreateNode(node, word.charAt(i));
@@ -48,7 +50,7 @@ public class DictionaryTree<T> {
     }
 
     @NonNull
-    public List<Entry<T>> searchByPrefill(String prefill) {
+    public List<Entry<T>> searchByPrefill(@NonNull String prefill) {
         Node<T> node = mRoot;
         for (int i = 0; i < prefill.length(); i++) {
             node = node.children.get(prefill.charAt(i));
@@ -61,7 +63,7 @@ public class DictionaryTree<T> {
         return entries;
     }
 
-    private void collectChildren(Node<T> node, List<Entry<T>> entries) {
+    private void collectChildren(@NonNull Node<T> node, @NonNull List<Entry<T>> entries) {
         for (Map.Entry<Character, Node<T>> entry : node.children.entrySet()) {
             Node<T> child = entry.getValue();
             if (child.wordEndHere != null) {
@@ -71,7 +73,8 @@ public class DictionaryTree<T> {
         }
     }
 
-    private Node<T> getOrCreateNode(Node<T> parent, char ch) {
+    @Nullable
+    private Node<T> getOrCreateNode(@NonNull Node<T> parent, char ch) {
         Node<T> child = parent.children.get(ch);
         if (child == null) {
             child = new Node<>(ch);

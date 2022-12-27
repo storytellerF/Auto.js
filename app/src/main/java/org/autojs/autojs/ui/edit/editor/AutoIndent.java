@@ -3,6 +3,8 @@ package org.autojs.autojs.ui.edit.editor;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2018/2/25.
  */
@@ -28,7 +30,7 @@ public class AutoIndent implements TextWatcher {
      * 判断是否是在光标处插入一个换行符的情况，是的话在下一个afterTextChanged回调中将调整缩进
      */
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    public void onTextChanged(@NonNull CharSequence s, int start, int before, int count) {
         if (mInsertingIndent)
             return;
         //不是插入一个字符的情况
@@ -60,7 +62,7 @@ public class AutoIndent implements TextWatcher {
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(@NonNull Editable s) {
         if (mInsertingIndent || !mAutoIndent) {
             return;
         }
@@ -75,6 +77,7 @@ public class AutoIndent implements TextWatcher {
         mCursor = -1;
     }
 
+    @NonNull
     private CharSequence getLastLineIndent() {
         if (mCursor < 0 || mCursor > mEditText.length()) {
             return "";

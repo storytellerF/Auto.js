@@ -1,5 +1,6 @@
 package org.autojs.autojs.ui.floating.gesture;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -38,7 +39,7 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
         final GestureDetectorCompat gestureDetector = new GestureDetectorCompat(mView.getContext(), this);
         mView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public boolean onTouch(View v, @NonNull MotionEvent event) {
                 gestureDetector.onTouchEvent(event);
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     mView.setAlpha(mUnpressedAlpha);
@@ -98,7 +99,7 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     }
 
     @Override
-    public boolean onDown(MotionEvent event) {
+    public boolean onDown(@NonNull MotionEvent event) {
         mInitialX = mWindowBridge.getX();
         mInitialY = mWindowBridge.getY();
         mInitialTouchX = event.getRawX();
@@ -107,7 +108,7 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     }
 
     @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+    public boolean onScroll(MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
         if (!mEnabled) {
             return false;
         }

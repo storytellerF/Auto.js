@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.explorer;
 
+import androidx.annotation.NonNull;
+
 import java.text.Collator;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,7 +20,7 @@ public class ExplorerSorter {
 
     public static final Comparator<ExplorerItem> SIZE = (o1, o2) -> Long.compare(o2.getSize(), o1.getSize());
 
-    public static void sort(ExplorerItem[] items, final Comparator<ExplorerItem> comparator, boolean ascending) {
+    public static void sort(@NonNull ExplorerItem[] items, @NonNull final Comparator<ExplorerItem> comparator, boolean ascending) {
         if (ascending) {
             Arrays.sort(items, comparator);
         } else {
@@ -26,11 +28,11 @@ public class ExplorerSorter {
         }
     }
 
-    public static void sort(ExplorerItem[] items, Comparator<ExplorerItem> comparator) {
+    public static void sort(@NonNull ExplorerItem[] items, @NonNull Comparator<ExplorerItem> comparator) {
         sort(items, comparator, true);
     }
 
-    public static void sort(List<? extends ExplorerItem> items, final Comparator<ExplorerItem> comparator, boolean ascending) {
+    public static void sort(@NonNull List<? extends ExplorerItem> items, @NonNull final Comparator<ExplorerItem> comparator, boolean ascending) {
         if (ascending) {
             Collections.sort(items, comparator);
         } else {
@@ -38,7 +40,7 @@ public class ExplorerSorter {
         }
     }
 
-    public static void sort(List<? extends ExplorerItem> items, Comparator<ExplorerItem> comparator) {
+    public static void sort(@NonNull List<? extends ExplorerItem> items, @NonNull Comparator<ExplorerItem> comparator) {
         sort(items, comparator, true);
     }
 }

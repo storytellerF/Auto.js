@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -40,11 +42,11 @@ public class DynamicBroadcastReceivers {
         }
     }
 
-    public void register(IntentTask task) {
+    public void register(@NonNull IntentTask task) {
         register(Collections.singletonList(task.getAction()), task.isLocal());
     }
 
-    public synchronized void register(List<String> actions, boolean local) {
+    public synchronized void register(@NonNull List<String> actions, boolean local) {
         LinkedHashSet<String> newActions = new LinkedHashSet<>();
         for (String action : actions) {
             if (!StaticBroadcastReceiver.ACTIONS.contains(action)
@@ -92,7 +94,8 @@ public class DynamicBroadcastReceivers {
         }
     }
 
-    static IntentFilter createIntentFilter(Collection<String> actions) {
+    @NonNull
+    static IntentFilter createIntentFilter(@NonNull Collection<String> actions) {
         IntentFilter filter = new IntentFilter();
         for (String action : actions) {
             filter.addAction(action);

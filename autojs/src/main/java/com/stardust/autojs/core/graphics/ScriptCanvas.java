@@ -54,6 +54,7 @@ public class ScriptCanvas {
         mCanvas = canvas;
     }
 
+    @Nullable
     public ImageWrapper toImage() {
         return ImageWrapper.ofBitmap(mBitmap.copy(mBitmap.getConfig(), true));
     }

@@ -1,5 +1,6 @@
 package com.stardust.autojs.rhino;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 
@@ -31,7 +32,7 @@ public class RhinoAndroidHelper {
      *
      * @param context any context
      */
-    public RhinoAndroidHelper(android.content.Context context) {
+    public RhinoAndroidHelper(@NonNull android.content.Context context) {
         this(new File(context.getCacheDir(), "classes"));
     }
 
@@ -78,7 +79,7 @@ public class RhinoAndroidHelper {
      * @param jar the jar to load
      * @throws IOException if the jar cannot be read or is invalid or there is a problem with the cache
      */
-    public void loadClassJar(File jar) throws IOException {
+    public void loadClassJar(@NonNull File jar) throws IOException {
         ((AndroidClassLoader) getContextFactory().getApplicationClassLoader()).loadJar(jar);
     }
 

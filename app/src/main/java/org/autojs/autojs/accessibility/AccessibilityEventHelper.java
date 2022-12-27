@@ -14,6 +14,8 @@ import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_TEXT_CHANG
 import static android.view.accessibility.AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD;
 import static android.view.accessibility.AccessibilityNodeInfo.ACTION_SCROLL_FORWARD;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/3/16.
  */
@@ -27,7 +29,7 @@ public class AccessibilityEventHelper {
             .entry(TYPE_VIEW_TEXT_CHANGED, R.string.text_text_changed)
             .sparseArray();
 
-    public static int getEventTypeNameResId(AccessibilityEvent event) {
+    public static int getEventTypeNameResId(@NonNull AccessibilityEvent event) {
         return EVENT_ACTION_RES_ID_MAP.get(event.getEventType());
     }
 }

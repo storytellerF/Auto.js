@@ -1,5 +1,7 @@
 package org.autojs.autojs.tool;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
@@ -12,7 +14,8 @@ import java.util.List;
 
 public class GsonUtils {
 
-    public static List<String> toReservedStringList(JsonElement element) {
+    @NonNull
+    public static List<String> toReservedStringList(@NonNull JsonElement element) {
         JsonArray array = element.getAsJsonArray();
         List<String> list = new ArrayList<>(array.size());
         for (int i = array.size() - 1; i >= 0; i--) {
@@ -21,7 +24,8 @@ public class GsonUtils {
         return list;
     }
 
-    public static List<String> toStringList(JsonElement element) {
+    @NonNull
+    public static List<String> toStringList(@NonNull JsonElement element) {
         JsonArray array = element.getAsJsonArray();
         List<String> list = new ArrayList<>(array.size());
         for (int i = 0; i < array.size(); i++) {

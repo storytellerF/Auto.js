@@ -3,6 +3,7 @@ package com.stardust.autojs.core.ui.widget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -15,18 +16,19 @@ import android.util.AttributeSet;
 @SuppressLint("AppCompatCustomView")
 public class JsTextView extends AppCompatTextView {
 
-    public JsTextView(Context context) {
+    public JsTextView(@NonNull Context context) {
         super(context);
     }
 
-    public JsTextView(Context context, @Nullable AttributeSet attrs) {
+    public JsTextView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public JsTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public JsTextView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+    @NonNull
     public String text() {
         return getText().toString();
     }

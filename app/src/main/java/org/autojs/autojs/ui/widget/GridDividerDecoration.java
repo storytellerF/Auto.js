@@ -8,6 +8,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
@@ -22,17 +24,18 @@ import android.view.View;
 public class GridDividerDecoration extends RecyclerView.ItemDecoration {
 
 
+    @NonNull
     private final Drawable mDivider;
     private final int mInsets;
 
-    public GridDividerDecoration(Context context, Drawable divider) {
+    public GridDividerDecoration(Context context, @NonNull Drawable divider) {
         mDivider = divider;
         mInsets = divider.getIntrinsicWidth();
     }
 
 
     @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDrawOver(Canvas c, @NonNull RecyclerView parent, RecyclerView.State state) {
         drawVertical(c, parent);
         drawHorizontal(c, parent);
     }
@@ -40,7 +43,7 @@ public class GridDividerDecoration extends RecyclerView.ItemDecoration {
     /**
      * Draw dividers at each expected grid interval
      */
-    public void drawVertical(Canvas c, RecyclerView parent) {
+    public void drawVertical(Canvas c, @NonNull RecyclerView parent) {
         if (parent.getChildCount() == 0) return;
 
         final int childCount = parent.getChildCount();
@@ -62,7 +65,7 @@ public class GridDividerDecoration extends RecyclerView.ItemDecoration {
     /**
      * Draw dividers to the right of each child view
      */
-    public void drawHorizontal(Canvas c, RecyclerView parent) {
+    public void drawHorizontal(Canvas c, @NonNull RecyclerView parent) {
         final int childCount = parent.getChildCount();
 
         for (int i = 0; i < childCount; i++) {
@@ -80,7 +83,7 @@ public class GridDividerDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    public void getItemOffsets(@NonNull Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         //We can supply forced insets for each item view here in the Rect
         outRect.set(mInsets, mInsets, mInsets, mInsets);
     }

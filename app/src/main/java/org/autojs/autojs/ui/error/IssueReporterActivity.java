@@ -3,6 +3,8 @@ package org.autojs.autojs.ui.error;
 import android.os.Bundle;
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
+
 import com.heinrichreimersoftware.androidissuereporter.model.github.GithubTarget;
 
 /**
@@ -19,13 +21,15 @@ public class IssueReporterActivity extends AbstractIssueReporterActivity {
         setGuestToken(token);
     }
 
+    @NonNull
     @Override
     protected GithubTarget getTarget() {
         return new GithubTarget("hyb1996-guest", "auto.js-feedbacks");
     }
 
 
-    public static String decode(String str) {
+    @NonNull
+    public static String decode(@NonNull String str) {
         return new String(Base64.decode(str.getBytes(), Base64.DEFAULT));
     }
 

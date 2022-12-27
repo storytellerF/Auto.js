@@ -1,5 +1,7 @@
 package org.autojs.autojs.network.api;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.network.entity.VersionInfo;
 
 import io.reactivex.Observable;
@@ -12,6 +14,7 @@ import retrofit2.http.Headers;
 
 public interface UpdateCheckApi {
 
+    @NonNull
     @GET("/assets/autojs/version.json")
     @Headers("Cache-Control: no-cache")
     Observable<VersionInfo> checkForUpdates();

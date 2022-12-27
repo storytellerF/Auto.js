@@ -75,7 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return findViewById(resId);
     }
 
-    protected boolean checkPermission(String... permissions) {
+    protected boolean checkPermission(@NonNull String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String[] requestPermissions = getRequestPermissions(permissions);
             if (requestPermissions.length > 0) {
@@ -92,8 +92,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
+    @NonNull
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private String[] getRequestPermissions(String[] permissions) {
+    private String[] getRequestPermissions(@NonNull String[] permissions) {
         List<String> list = new ArrayList<>();
         for (String permission : permissions) {
             if (checkSelfPermission(permission) == PERMISSION_DENIED) {
@@ -107,7 +108,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setToolbarAsBack(this, R.id.toolbar, title);
     }
 
-    public static void setToolbarAsBack(final AppCompatActivity activity, int id, String title) {
+    public static void setToolbarAsBack(@NonNull final AppCompatActivity activity, int id, String title) {
         Toolbar toolbar = activity.findViewById(id);
         toolbar.setTitle(title);
         activity.setSupportActionBar(toolbar);
@@ -124,7 +125,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
         if (mShouldApplyDayNightModeForOptionsMenu && Pref.isNightModeEnabled()) {
             for (int i = 0; i < menu.size(); i++) {
                 Drawable drawable = menu.getItem(i).getIcon();

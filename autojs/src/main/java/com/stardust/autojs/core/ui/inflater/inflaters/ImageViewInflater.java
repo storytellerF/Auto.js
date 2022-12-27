@@ -5,6 +5,8 @@ import android.view.InflateException;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.util.Colors;
 import com.stardust.autojs.core.ui.inflater.util.Dimensions;
@@ -22,7 +24,7 @@ public class ImageViewInflater<V extends ImageView> extends BaseViewInflater<V> 
     }
 
     @Override
-    public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull V view, @NonNull String attr, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         if (super.setAttr(view, attr, value, parent, attrs)) {
             return true;
         }
@@ -70,21 +72,24 @@ public class ImageViewInflater<V extends ImageView> extends BaseViewInflater<V> 
         }
         return true;
     }
-    private String wrapAsPath(String value) {
+    @NonNull
+    private String wrapAsPath(@NonNull String value) {
         if (!value.startsWith("file://")) {
             return "file://" + value;
         }
         return value;
     }
 
-    private String wrapAsUrl(String value) {
+    @NonNull
+    private String wrapAsUrl(@NonNull String value) {
         if (!value.startsWith("http://") && !value.startsWith("https://")) {
             return "http://" + value;
         }
         return value;
     }
 
-    private ImageView.ScaleType parseScaleType(String value) {
+    @NonNull
+    private ImageView.ScaleType parseScaleType(@NonNull String value) {
         switch (value.toLowerCase()) {
             case "center":
                 return ImageView.ScaleType.CENTER;

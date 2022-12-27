@@ -1,5 +1,8 @@
 package com.stardust.autojs.core.looper;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.lang.ThreadCompat;
 
@@ -47,6 +50,7 @@ public class MainThreadProxy {
         return getMainTimer().clearImmediate(id);
     }
 
+    @NonNull
     public static Thread currentThread() {
         return Thread.currentThread();
     }
@@ -120,14 +124,16 @@ public class MainThreadProxy {
         return mThread.getPriority();
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         mThread.setName(name);
     }
 
+    @NonNull
     public String getName() {
         return mThread.getName();
     }
 
+    @Nullable
     public ThreadGroup getThreadGroup() {
         return mThread.getThreadGroup();
     }
@@ -173,6 +179,7 @@ public class MainThreadProxy {
         mThread.checkAccess();
     }
 
+    @Nullable
     public ClassLoader getContextClassLoader() {
         return mThread.getContextClassLoader();
     }
@@ -181,14 +188,16 @@ public class MainThreadProxy {
         mThread.setContextClassLoader(cl);
     }
 
-    public static boolean holdsLock(Object obj) {
+    public static boolean holdsLock(@NonNull Object obj) {
         return Thread.holdsLock(obj);
     }
 
+    @NonNull
     public StackTraceElement[] getStackTrace() {
         return mThread.getStackTrace();
     }
 
+    @NonNull
     public static Map<Thread, StackTraceElement[]> getAllStackTraces() {
         return Thread.getAllStackTraces();
     }
@@ -197,10 +206,12 @@ public class MainThreadProxy {
         return mThread.getId();
     }
 
+    @NonNull
     public Thread.State getState() {
         return mThread.getState();
     }
 
+    @NonNull
     @Override
     public String toString() {
         return mThread.toString();
@@ -210,10 +221,12 @@ public class MainThreadProxy {
         Thread.setDefaultUncaughtExceptionHandler(eh);
     }
 
+    @Nullable
     public static Thread.UncaughtExceptionHandler getDefaultUncaughtExceptionHandler() {
         return Thread.getDefaultUncaughtExceptionHandler();
     }
 
+    @Nullable
     public Thread.UncaughtExceptionHandler getUncaughtExceptionHandler() {
         return mThread.getUncaughtExceptionHandler();
     }

@@ -16,6 +16,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 /**
@@ -23,24 +25,26 @@ import androidx.annotation.RequiresApi;
  */
 public class ImageWrapper {
 
+    @Nullable
     private Mat mMat;
     private final int mWidth;
     private final int mHeight;
+    @Nullable
     private Bitmap mBitmap;
 
-    protected ImageWrapper(Mat mat) {
+    protected ImageWrapper(@NonNull Mat mat) {
         mMat = mat;
         mWidth = mat.cols();
         mHeight = mat.rows();
     }
 
-    protected ImageWrapper(Bitmap bitmap) {
+    protected ImageWrapper(@NonNull Bitmap bitmap) {
         mBitmap = bitmap;
         mWidth = bitmap.getWidth();
         mHeight = bitmap.getHeight();
     }
 
-    protected ImageWrapper(Bitmap bitmap, Mat mat) {
+    protected ImageWrapper(@NonNull Bitmap bitmap, Mat mat) {
         mBitmap = bitmap;
         mMat = mat;
         mWidth = bitmap.getWidth();
@@ -52,15 +56,17 @@ public class ImageWrapper {
     }
 
 
+    @Nullable
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static ImageWrapper ofImage(Image image) {
+    public static ImageWrapper ofImage(@Nullable Image image) {
         if (image == null) {
             return null;
         }
         return new ImageWrapper(toBitmap(image));
     }
 
-    public static ImageWrapper ofMat(Mat mat) {
+    @Nullable
+    public static ImageWrapper ofMat(@Nullable Mat mat) {
         if (mat == null) {
             return null;
         }
@@ -68,7 +74,8 @@ public class ImageWrapper {
     }
 
 
-    public static ImageWrapper ofBitmap(Bitmap bitmap) {
+    @Nullable
+    public static ImageWrapper ofBitmap(@Nullable Bitmap bitmap) {
         if (bitmap == null) {
             return null;
         }
@@ -76,7 +83,7 @@ public class ImageWrapper {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static Bitmap toBitmap(Image image) {
+    public static Bitmap toBitmap(@NonNull Image image) {
         Image.Plane plane = image.getPlanes()[0];
         ByteBuffer buffer = plane.getBuffer();
         buffer.position(0);
@@ -100,6 +107,7 @@ public class ImageWrapper {
         return mHeight;
     }
 
+    @Nullable
     public Mat getMat() {
         ensureNotRecycled();
         if (mMat == null && mBitmap != null) {
@@ -131,6 +139,7 @@ public class ImageWrapper {
         return Color.argb((int) channels[3], (int) channels[0], (int) channels[1], (int) channels[2]);
     }
 
+    @Nullable
     public Bitmap getBitmap() {
         ensureNotRecycled();
         if (mBitmap == null && mMat != null) {
@@ -157,6 +166,7 @@ public class ImageWrapper {
             throw new IllegalStateException("image has been recycled");
     }
 
+    @NonNull
     public ImageWrapper clone() {
         ensureNotRecycled();
         if (mBitmap == null) {

@@ -1,5 +1,7 @@
 package com.stardust.autojs.core.opencv;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.util.ResourceMonitor;
 
 import org.opencv.core.Mat;
@@ -23,7 +25,7 @@ public class MatOfPoint extends org.opencv.core.MatOfPoint implements ResourceMo
         ResourceMonitor.onOpen(this);
     }
 
-    public MatOfPoint(Mat m) {
+    public MatOfPoint(@NonNull Mat m) {
         super(m);
         ResourceMonitor.onOpen(this);
     }

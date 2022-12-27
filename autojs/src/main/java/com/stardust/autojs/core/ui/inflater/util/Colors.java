@@ -5,13 +5,15 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2017/11/3.
  */
 
 public class Colors {
 
-    public static int parse(Context context, String color) {
+    public static int parse(@NonNull Context context, @NonNull String color) {
         Resources resources = context.getResources();
         if (color.startsWith("@color/")) {
             return resources.getColor(resources.getIdentifier(color.substring("@color/".length()), "color", context.getPackageName()));
@@ -22,7 +24,7 @@ public class Colors {
         return Color.parseColor(color);
     }
 
-    public static int parse(View view, String color){
+    public static int parse(@NonNull View view, @NonNull String color){
         return parse(view.getContext(), color);
     }
 }

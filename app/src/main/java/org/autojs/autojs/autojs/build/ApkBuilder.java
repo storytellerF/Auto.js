@@ -3,6 +3,8 @@ package org.autojs.autojs.autojs.build;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.apkbuilder.ApkPackager;
 import com.stardust.autojs.apkbuilder.ManifestEditor;
@@ -58,10 +60,12 @@ public class ApkBuilder {
         int versionCode;
         String sourcePath;
         String packageName;
+        @NonNull
         ArrayList<File> ignoredDirs = new ArrayList<>();
         Callable<Bitmap> icon;
 
-        public static AppConfig fromProjectConfig(String projectDir, ProjectConfig projectConfig) {
+        @NonNull
+        public static AppConfig fromProjectConfig(String projectDir, @NonNull ProjectConfig projectConfig) {
             String icon = projectConfig.getIcon();
             AppConfig appConfig = new AppConfig()
                     .setAppName(projectConfig.getName())
@@ -77,42 +81,50 @@ public class ApkBuilder {
         }
 
 
+        @NonNull
         public AppConfig ignoreDir(File dir) {
             ignoredDirs.add(dir);
             return this;
         }
 
+        @NonNull
         public AppConfig setAppName(String appName) {
             this.appName = appName;
             return this;
         }
 
+        @NonNull
         public AppConfig setVersionName(String versionName) {
             this.versionName = versionName;
             return this;
         }
 
+        @NonNull
         public AppConfig setVersionCode(int versionCode) {
             this.versionCode = versionCode;
             return this;
         }
 
+        @NonNull
         public AppConfig setSourcePath(String sourcePath) {
             this.sourcePath = sourcePath;
             return this;
         }
 
+        @NonNull
         public AppConfig setPackageName(String packageName) {
             this.packageName = packageName;
             return this;
         }
 
 
+        @NonNull
         public AppConfig setIcon(Callable<Bitmap> icon) {
             this.icon = icon;
             return this;
         }
 
+        @NonNull
         public AppConfig setIcon(String iconPath) {
             icon = () -> BitmapFactory.decodeFile(iconPath);
             return this;
@@ -140,28 +152,32 @@ public class ApkBuilder {
     }
 
     private ProgressCallback mProgressCallback;
+    @NonNull
     private final ApkPackager mApkPackager;
     private String mArscPackageName;
     private ManifestEditor mManifestEditor;
     private final String mWorkspacePath;
     private AppConfig mAppConfig;
+    @NonNull
     private final File mOutApkFile;
     private String mInitVector;
     private String mKey;
 
 
-    public ApkBuilder(InputStream apkInputStream, File outApkFile, String workspacePath) {
+    public ApkBuilder(InputStream apkInputStream, @NonNull File outApkFile, String workspacePath) {
         mWorkspacePath = workspacePath;
         mOutApkFile = outApkFile;
         mApkPackager = new ApkPackager(apkInputStream, mWorkspacePath);
         PFiles.ensureDir(outApkFile.getPath());
     }
 
+    @NonNull
     public ApkBuilder setProgressCallback(ProgressCallback callback) {
         mProgressCallback = callback;
         return this;
     }
 
+    @NonNull
     public ApkBuilder prepare() throws IOException {
         if (mProgressCallback != null) {
             GlobalAppContext.post(() -> mProgressCallback.onPrepare(ApkBuilder.this));
@@ -171,7 +187,8 @@ public class ApkBuilder {
         return this;
     }
 
-    public ApkBuilder setScriptFile(String path) throws IOException {
+    @NonNull
+    public ApkBuilder setScriptFile(@NonNull String path) throws IOException {
         if (PFiles.isDir(path)) {
             copyDir("assets/project/", path);
         } else {
@@ -180,7 +197,7 @@ public class ApkBuilder {
         return this;
     }
 
-    public void copyDir(String relativePath, String path) throws IOException {
+    public void copyDir(@NonNull String relativePath, @NonNull String path) throws IOException {
         File fromDir = new File(path);
         File toDir = new File(mWorkspacePath, relativePath);
         toDir.mkdir();
@@ -200,12 +217,12 @@ public class ApkBuilder {
         }
     }
 
-    private void encrypt(File toDir, File file) throws IOException {
+    private void encrypt(File toDir, @NonNull File file) throws IOException {
         FileOutputStream fos = new FileOutputStream(new File(toDir, file.getName()));
         encrypt(fos, file);
     }
 
-    private void encrypt(FileOutputStream fos, File file) throws IOException {
+    private void encrypt(@NonNull FileOutputStream fos, @NonNull File file) throws IOException {
         try {
             EncryptedScriptFileHeader.INSTANCE.writeHeader(fos, (short) new JavaScriptFileSource(file).getExecutionMode());
             byte[] bytes = new AdvancedEncryptionStandard(mKey.getBytes(), mInitVector).encrypt(PFiles.readBytes(file.getPath()));
@@ -217,7 +234,8 @@ public class ApkBuilder {
     }
 
 
-    public ApkBuilder replaceFile(String relativePath, String newFilePath) throws IOException {
+    @NonNull
+    public ApkBuilder replaceFile(@NonNull String relativePath, @NonNull String newFilePath) throws IOException {
         if (newFilePath.endsWith(".js")) {
             encrypt(new FileOutputStream(new File(mWorkspacePath, relativePath)), new File(newFilePath));
         } else {
@@ -226,7 +244,8 @@ public class ApkBuilder {
         return this;
     }
 
-    public ApkBuilder withConfig(AppConfig config) throws IOException {
+    @NonNull
+    public ApkBuilder withConfig(@NonNull AppConfig config) throws IOException {
         mAppConfig = config;
         mManifestEditor = editManifest()
                 .setAppName(config.appName)
@@ -244,11 +263,12 @@ public class ApkBuilder {
         return mManifestEditor;
     }
 
+    @NonNull
     protected File getManifestFile() {
         return new File(mWorkspacePath, "AndroidManifest.xml");
     }
 
-    private void updateProjectConfig(AppConfig appConfig) {
+    private void updateProjectConfig(@NonNull AppConfig appConfig) {
         ProjectConfig config;
         if (!PFiles.isDir(appConfig.sourcePath)) {
             config = new ProjectConfig()
@@ -269,6 +289,7 @@ public class ApkBuilder {
         mInitVector = MD5.md5(config.getBuildInfo().getBuildId() + config.getName()).substring(0, 16);
     }
 
+    @NonNull
     public ApkBuilder build() throws IOException {
         if (mProgressCallback != null) {
             GlobalAppContext.post(() -> mProgressCallback.onBuild(ApkBuilder.this));
@@ -294,6 +315,7 @@ public class ApkBuilder {
         return this;
     }
 
+    @NonNull
     public ApkBuilder sign() throws Exception {
         if (mProgressCallback != null) {
             GlobalAppContext.post(() -> mProgressCallback.onSign(ApkBuilder.this));
@@ -304,6 +326,7 @@ public class ApkBuilder {
         return this;
     }
 
+    @NonNull
     public ApkBuilder cleanWorkspace() {
         if (mProgressCallback != null) {
             GlobalAppContext.post(() -> mProgressCallback.onClean(ApkBuilder.this));
@@ -312,6 +335,7 @@ public class ApkBuilder {
         return this;
     }
 
+    @NonNull
     public ApkBuilder setArscPackageName(String packageName) throws IOException {
         mArscPackageName = packageName;
         return this;
@@ -327,7 +351,7 @@ public class ApkBuilder {
         newArsc.renameTo(oldArsc);
     }
 
-    private void delete(File file) {
+    private void delete(@NonNull File file) {
         if (file.isFile()) {
             file.delete();
         } else {
@@ -347,7 +371,7 @@ public class ApkBuilder {
         }
 
         @Override
-        public void onAttr(AxmlWriter.Attr attr) {
+        public void onAttr(@NonNull AxmlWriter.Attr attr) {
             if ("authorities".equals(attr.name.data) && attr.value instanceof StringItem) {
                 ((StringItem) attr.value).data = mAppConfig.packageName + ".fileprovider";
             } else {

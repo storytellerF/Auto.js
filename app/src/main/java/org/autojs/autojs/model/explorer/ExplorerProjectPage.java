@@ -1,5 +1,7 @@
 package org.autojs.autojs.model.explorer;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.project.ProjectConfig;
 import com.stardust.pio.PFile;
 
@@ -19,7 +21,7 @@ public class ExplorerProjectPage extends ExplorerDirPage {
         mProjectConfig = projectConfig;
     }
 
-    public ExplorerProjectPage(File file, ExplorerPage parent, ProjectConfig projectConfig) {
+    public ExplorerProjectPage(@NonNull File file, ExplorerPage parent, ProjectConfig projectConfig) {
         super(file, parent);
         mProjectConfig = projectConfig;
     }
@@ -28,6 +30,7 @@ public class ExplorerProjectPage extends ExplorerDirPage {
         return mProjectConfig;
     }
 
+    @NonNull
     @Override
     public ExplorerFileItem rename(String newName) {
         return new ExplorerProjectPage(getFile().renameTo(newName), getParent(), mProjectConfig);

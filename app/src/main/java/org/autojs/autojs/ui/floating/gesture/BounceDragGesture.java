@@ -5,6 +5,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.enhancedfloaty.WindowBridge;
 
 /**
@@ -16,6 +18,7 @@ public class BounceDragGesture extends DragGesture {
     private long mBounceDuration = 300;
     private static final int MIN_DY_TO_SCREEN_BOTTOM = 100;
     private static final int MIN_DY_TO_SCREEN_TOP = 0;
+    @NonNull
     private final BounceInterpolator mBounceInterpolator;
 
     public BounceDragGesture(WindowBridge windowBridge, View view) {
@@ -29,7 +32,7 @@ public class BounceDragGesture extends DragGesture {
     }
 
     @Override
-    public boolean onDown(MotionEvent event) {
+    public boolean onDown(@NonNull MotionEvent event) {
         return super.onDown(event);
     }
 
@@ -49,7 +52,7 @@ public class BounceDragGesture extends DragGesture {
         ValueAnimator animator = ValueAnimator.ofFloat(fromX, toX);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
+            public void onAnimationUpdate(@NonNull ValueAnimator animation) {
                 mWindowBridge.updatePosition((int) ((float) animation.getAnimatedValue()), y);
             }
         });

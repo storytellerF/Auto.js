@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -37,11 +38,14 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class RegisterActivity extends BaseActivity {
 
+    @NonNull
     CompositeDisposable compositeDisposable=new CompositeDisposable();
     private ActivityRegisterBinding inflate;
 
+    @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context context) {
         return new ActivityIntentBuilder<I>(context,RegisterActivity.class) {
+            @Nullable
             @Override
             public PostActivityStarter startForResult(int requestCode) {
                 context.startActivity(intent);
@@ -96,7 +100,7 @@ public class RegisterActivity extends BaseActivity {
         finish();
     }
 
-    private boolean validateInput(String email, String userName, String password) {
+    private boolean validateInput(@NonNull String email, @NonNull String userName, @NonNull String password) {
         if (email.isEmpty()) {
             inflate.email.setError(getString(R.string.text_email_cannot_be_empty));
             return false;

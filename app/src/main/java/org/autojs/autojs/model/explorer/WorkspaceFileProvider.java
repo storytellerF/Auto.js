@@ -3,6 +3,9 @@ package org.autojs.autojs.model.explorer;
 import android.content.Context;
 import android.content.res.AssetManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.project.ProjectConfig;
 import com.stardust.pio.PFile;
 import com.stardust.pio.PFiles;
@@ -24,19 +27,22 @@ public class WorkspaceFileProvider extends ExplorerFileProvider {
 
     private static final String SAMPLE_PATH = "sample";
 
+    @NonNull
     private final PFile mSampleDir;
     private final AssetManager mAssetManager;
+    @NonNull
     private final Context mContext;
 
-    public WorkspaceFileProvider(Context context, FileFilter fileFilter) {
+    public WorkspaceFileProvider(@NonNull Context context, FileFilter fileFilter) {
         super(fileFilter);
         mContext = context;
         mAssetManager = context.getAssets();
         mSampleDir = new PFile(context.getFilesDir(), SAMPLE_PATH);
     }
 
+    @NonNull
     @Override
-    public Single<? extends ExplorerPage> getExplorerPage(ExplorerPage page) {
+    public Single<? extends ExplorerPage> getExplorerPage(@NonNull ExplorerPage page) {
         ExplorerPage parent = page.getParent();
         String path = page.getPath();
         return listFiles(new PFile(path))
@@ -63,19 +69,19 @@ public class WorkspaceFileProvider extends ExplorerFileProvider {
                 .subscribeOn(Schedulers.io());
     }
 
-    private boolean inSampleDir(PFile file) {
+    private boolean inSampleDir(@NonNull PFile file) {
         return file.getPath().startsWith(mSampleDir.getPath());
     }
 
     @Override
-    protected Observable<PFile> listFiles(PFile directory) {
+    protected Observable<PFile> listFiles(@NonNull PFile directory) {
         if (inSampleDir(directory)) {
             return listSamples(directory);
         }
         return super.listFiles(directory);
     }
 
-    private Observable<PFile> listSamples(PFile directory) {
+    private Observable<PFile> listSamples(@NonNull PFile directory) {
         String pathOfSample;
         if (directory.getPath().length() <= mSampleDir.getPath().length() + 1) {
             pathOfSample = "";
@@ -100,7 +106,8 @@ public class WorkspaceFileProvider extends ExplorerFileProvider {
                 });
     }
 
-    public Observable<ScriptFile> resetSample(ScriptFile file) {
+    @Nullable
+    public Observable<ScriptFile> resetSample(@NonNull ScriptFile file) {
         if (file.getPath().length() <= mSampleDir.getPath().length() + 1) {
             return null;
         }
@@ -115,7 +122,7 @@ public class WorkspaceFileProvider extends ExplorerFileProvider {
     }
 
     @Override
-    protected ExplorerDirPage createExplorerPage(String path, ExplorerPage parent) {
+    protected ExplorerDirPage createExplorerPage(@NonNull String path, ExplorerPage parent) {
         ExplorerDirPage page = super.createExplorerPage(path, parent);
         if (new File(path).equals(new File(Pref.getScriptDirPath()))) {
             page.addChild(ExplorerSamplePage.createRoot(mSampleDir));

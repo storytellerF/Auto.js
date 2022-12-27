@@ -1,5 +1,8 @@
 package com.stardust.autojs.core.record;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.Arrays;
 
 /**
@@ -53,8 +56,10 @@ public interface Recorder {
 
     void resume();
 
+    @Nullable
     String getCode();
 
+    @Nullable
     String getPath();
 
     int getState();
@@ -86,6 +91,7 @@ public interface Recorder {
         };
 
 
+        @NonNull
         private OnStateChangedListener mOnStateChangedListener = NO_OPERATION_LISTENER;
 
         private final boolean mSync;
@@ -107,7 +113,7 @@ public interface Recorder {
         }
 
 
-        private void ensureIsStateOf(int... expectedStates) {
+        private void ensureIsStateOf(@NonNull int... expectedStates) {
             for (int expectedState : expectedStates) {
                 if (mState == expectedState)
                     return;
@@ -169,10 +175,11 @@ public interface Recorder {
 
         }
 
-        public void setOnStateChangedListener(OnStateChangedListener onStateChangedListener) {
+        public void setOnStateChangedListener(@Nullable OnStateChangedListener onStateChangedListener) {
             mOnStateChangedListener = onStateChangedListener == null ? NO_OPERATION_LISTENER : onStateChangedListener;
         }
 
+        @Nullable
         @Override
         public String getPath() {
             return null;

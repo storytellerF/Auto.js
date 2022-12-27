@@ -2,6 +2,9 @@ package com.stardust.autojs.core.database;
 
 import android.database.Cursor;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +30,11 @@ public class DatabaseResultSet {
 
     public final long insertId;
     public final long rowsAffected;
+    @NonNull
     public final RowList rows;
 
-    public static DatabaseResultSet fromCursor(Cursor cursor) {
+    @Nullable
+    public static DatabaseResultSet fromCursor(@NonNull Cursor cursor) {
         ArrayList<Map<String, Object>> rows = new ArrayList<>();
         if (!cursor.moveToFirst()) {
             return null;
@@ -44,7 +49,8 @@ public class DatabaseResultSet {
         return new DatabaseResultSet(insertId, new RowList(rows));
     }
 
-    private static Map<String, Object> readRowAsMap(Cursor cursor, int columnCount) {
+    @NonNull
+    private static Map<String, Object> readRowAsMap(@NonNull Cursor cursor, int columnCount) {
         Map<String, Object> map = new HashMap<>();
         for (int i = 0; i < columnCount; i++) {
             map.put(cursor.getColumnName(i), CursorHelper.getValue(cursor, columnCount));
@@ -52,7 +58,7 @@ public class DatabaseResultSet {
         return map;
     }
 
-    public DatabaseResultSet(long insertId, RowList rowList) {
+    public DatabaseResultSet(long insertId, @NonNull RowList rowList) {
         this.insertId = insertId;
         this.rowsAffected = rowList.length;
         this.rows = rowList;

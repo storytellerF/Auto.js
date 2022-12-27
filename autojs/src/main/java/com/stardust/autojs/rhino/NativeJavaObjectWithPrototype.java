@@ -1,5 +1,8 @@
 package com.stardust.autojs.rhino;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.Scriptable;
 
@@ -22,13 +25,14 @@ public class NativeJavaObjectWithPrototype extends NativeJavaObject {
     }
 
     @Override
-    public boolean has(String name, Scriptable start) {
+    public boolean has(@NonNull String name, Scriptable start) {
         return super.has(name, start) || (prototype != null && prototype.has(name, start))
                 || name.equals("__proto__");
     }
 
+    @Nullable
     @Override
-    public Object get(String name, Scriptable start) {
+    public Object get(@NonNull String name, Scriptable start) {
         if (name.equals("__proto__")) {
             return prototype;
         }
@@ -42,7 +46,7 @@ public class NativeJavaObjectWithPrototype extends NativeJavaObject {
     }
 
     @Override
-    public void put(String name, Scriptable start, Object value) {
+    public void put(@NonNull String name, Scriptable start, Object value) {
         if (name.equals("__proto__")) {
             prototype = (Scriptable) value;
             return;

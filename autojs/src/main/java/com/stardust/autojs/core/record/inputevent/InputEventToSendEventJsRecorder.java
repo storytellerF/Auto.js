@@ -96,6 +96,7 @@ public class InputEventToSendEventJsRecorder extends InputEventRecorder {
         mTouchDevice = i;
     }
 
+    @NonNull
     public String getCode() {
         return mCode.toString();
     }

@@ -1,5 +1,6 @@
 package org.autojs.autojs.ui.widget;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -25,13 +26,14 @@ public class AutoAdapter<DT> extends RecyclerView.Adapter<BindableViewHolder<DT>
     }
 
 
+    @NonNull
     @Override
     public BindableViewHolder<DT> onCreateViewHolder(ViewGroup parent, int viewType) {
         return mViewHolderSupplier.createViewHolder(parent, viewType);
     }
 
     @Override
-    public void onBindViewHolder(BindableViewHolder<DT> holder, int position) {
+    public void onBindViewHolder(@NonNull BindableViewHolder<DT> holder, int position) {
         holder.bind(mData.get(position), position);
     }
 
@@ -53,7 +55,7 @@ public class AutoAdapter<DT> extends RecyclerView.Adapter<BindableViewHolder<DT>
         notifyItemRemoved(index);
     }
 
-    public void addAll(Collection<? extends DT> c) {
+    public void addAll(@NonNull Collection<? extends DT> c) {
         mData.addAll(c);
         notifyItemRangeInserted(mData.size() - c.size() - 1, mData.size() - 1);
     }
@@ -62,7 +64,7 @@ public class AutoAdapter<DT> extends RecyclerView.Adapter<BindableViewHolder<DT>
         return mData.get(index);
     }
 
-    public void setData(Collection<? extends DT> c) {
+    public void setData(@NonNull Collection<? extends DT> c) {
         mData.clear();
         mData.addAll(c);
         notifyDataSetChanged();
@@ -73,6 +75,7 @@ public class AutoAdapter<DT> extends RecyclerView.Adapter<BindableViewHolder<DT>
         notifyItemInserted(mData.size() - 1);
     }
 
+    @NonNull
     public List<DT> getData() {
         return mData;
     }
@@ -82,7 +85,7 @@ public class AutoAdapter<DT> extends RecyclerView.Adapter<BindableViewHolder<DT>
         notifyDataSetChanged();
     }
 
-    public void notifyDataSetChanged(List<DT> result) {
+    public void notifyDataSetChanged(@NonNull List<DT> result) {
         mData.clear();
         mData.addAll(result);
         notifyDataSetChanged();

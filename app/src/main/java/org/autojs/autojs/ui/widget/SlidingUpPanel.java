@@ -12,6 +12,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.R;
 
 /**
@@ -100,7 +102,7 @@ public class SlidingUpPanel extends FrameLayout {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+    public boolean onInterceptTouchEvent(@NonNull MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_UP && isShowing()) {
             dismiss();
         }

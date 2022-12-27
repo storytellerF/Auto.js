@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
@@ -19,10 +21,12 @@ import com.stardust.util.IntentExtras;
 public class ScreenCaptureRequestActivity extends Activity {
 
     private final OnActivityResultDelegate.Mediator mOnActivityResultDelegateMediator = new OnActivityResultDelegate.Mediator();
+    @Nullable
     private ScreenCaptureRequester mScreenCaptureRequester;
+    @Nullable
     private ScreenCaptureRequester.Callback mCallback;
 
-    public static void request(Context context, ScreenCaptureRequester.Callback callback) {
+    public static void request(@NonNull Context context, ScreenCaptureRequester.Callback callback) {
         Intent intent = new Intent(context, ScreenCaptureRequestActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         IntentExtras.newExtras()

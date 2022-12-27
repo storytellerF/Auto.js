@@ -1,5 +1,7 @@
 package com.stardust.autojs.core.http;
 
+import androidx.annotation.NonNull;
+
 import java.net.SocketTimeoutException;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
@@ -48,7 +50,8 @@ public class MutableOkHttp extends OkHttpClient {
         return mOkHttpClient;
     }
 
-    protected OkHttpClient newClient(Builder builder) {
+    @NonNull
+    protected OkHttpClient newClient(@NonNull Builder builder) {
         builder.readTimeout(getTimeout(), TimeUnit.MILLISECONDS)
                 .writeTimeout(getTimeout(), TimeUnit.MILLISECONDS)
                 .connectTimeout(getTimeout(), TimeUnit.MILLISECONDS);
@@ -58,6 +61,7 @@ public class MutableOkHttp extends OkHttpClient {
         return builder.build();
     }
 
+    @NonNull
     public Iterable<? extends Interceptor> getInterceptors() {
         return Collections.singletonList(mRetryInterceptor);
     }
@@ -80,7 +84,7 @@ public class MutableOkHttp extends OkHttpClient {
         muteClient();
     }
 
-    public synchronized void muteClient(Builder builder) {
+    public synchronized void muteClient(@NonNull Builder builder) {
         mOkHttpClient = newClient(builder);
     }
 

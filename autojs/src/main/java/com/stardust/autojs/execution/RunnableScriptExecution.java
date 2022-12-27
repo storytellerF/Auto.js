@@ -2,6 +2,9 @@ package com.stardust.autojs.execution;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.engine.ScriptEngine;
 import com.stardust.autojs.engine.ScriptEngineManager;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
@@ -31,13 +34,15 @@ public class RunnableScriptExecution extends ScriptExecution.AbstractScriptExecu
         execute();
     }
 
+    @Nullable
     public Object execute() {
         mScriptEngine = mScriptEngineManager.createEngineOfSourceOrThrow(getSource(), getId());
         mScriptEngine.setTag(ExecutionConfig.getTag(), getConfig());
         return execute(mScriptEngine);
     }
 
-    private Object execute(ScriptEngine engine) {
+    @Nullable
+    private Object execute(@NonNull ScriptEngine engine) {
         try {
             prepare(engine);
             Object r = doExecution(engine);
@@ -62,13 +67,14 @@ public class RunnableScriptExecution extends ScriptExecution.AbstractScriptExecu
         getListener().onException(this, e);
     }
 
-    private void prepare(ScriptEngine engine) {
+    private void prepare(@NonNull ScriptEngine engine) {
         engine.setTag(ScriptEngine.TAG_WORKING_DIRECTORY, getConfig().getWorkingDirectory());
         engine.setTag(ScriptEngine.TAG_ENV_PATH, getConfig().getPath());
         engine.init();
     }
 
-    protected Object doExecution(ScriptEngine engine) {
+    @Nullable
+    protected Object doExecution(@NonNull ScriptEngine engine) {
         engine.setTag(ScriptEngine.TAG_SOURCE, getSource());
         getListener().onStart(this);
         Object result = null;
@@ -88,7 +94,7 @@ public class RunnableScriptExecution extends ScriptExecution.AbstractScriptExecu
     }
 
     @SuppressWarnings("unchecked")
-    protected Object execute(ScriptEngine engine, ScriptSource source) {
+    protected Object execute(@NonNull ScriptEngine engine, ScriptSource source) {
         return engine.execute(source);
     }
 

@@ -5,6 +5,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TimingLogger;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.rhino.TokenStream;
 import com.stardust.pio.UncheckedIOException;
 
@@ -24,12 +26,14 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
 
     public static class HighlightTokens {
 
+        @NonNull
         public final int[] colors;
+        @NonNull
         private final String mText;
         private int mCount;
         private final int mId;
 
-        public HighlightTokens(String text, int id) {
+        public HighlightTokens(@NonNull String text, int id) {
             colors = new int[text.length()];
             mText = text;
             mId = id;
@@ -52,6 +56,7 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
             mCount = tokenEnd;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return super.toString() + "{count = " + mCount + ", length = " + mText.length() + "}";
@@ -61,20 +66,23 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
             return mCount;
         }
 
+        @NonNull
         public String getText() {
             return mText;
         }
     }
 
     private Theme mTheme;
+    @NonNull
     private final CodeEditText mCodeEditText;
     private final ThreadPoolExecutor mExecutorService = new ThreadPoolExecutor(3, 6,
             2L, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
     private final AtomicInteger mRunningHighlighterId = new AtomicInteger();
     private final TimingLogger mLogger = new TimingLogger(CodeEditText.LOG_TAG, "highlight");
+    @NonNull
     private final TextWatcher mTextWatcher;
 
-    public JavaScriptHighlighter(Theme theme, CodeEditText codeEditText) {
+    public JavaScriptHighlighter(Theme theme, @NonNull CodeEditText codeEditText) {
         mExecutorService.allowCoreThreadTimeOut(true);
         mTheme = theme;
         mCodeEditText = codeEditText;
@@ -83,7 +91,7 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(@NonNull Editable s) {
         updateTokens(s.toString());
     }
 
@@ -92,7 +100,7 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
         mTheme = theme;
     }
 
-    public void updateTokens(String sourceString) {
+    public void updateTokens(@NonNull String sourceString) {
         if (mTheme == null) {
             return;
         }
@@ -113,7 +121,7 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
         });
     }
 
-    private void updateTokens(String sourceString, int id) throws IOException {
+    private void updateTokens(@NonNull String sourceString, int id) throws IOException {
         TokenStream ts = new TokenStream(null, sourceString, 0);
         HighlightTokens highlightTokens = new HighlightTokens(sourceString, id);
         int token;

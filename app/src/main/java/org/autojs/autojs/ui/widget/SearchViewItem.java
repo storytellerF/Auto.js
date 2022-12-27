@@ -3,6 +3,8 @@ package org.autojs.autojs.ui.widget;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.widget.SearchView;
 import android.view.MenuItem;
@@ -18,9 +20,10 @@ public class SearchViewItem implements MenuItemCompat.OnActionExpandListener, Se
     }
 
     private QueryCallback mQueryCallback;
+    @NonNull
     private final MenuItem mSearchMenuItem;
 
-    public SearchViewItem(Activity activity, MenuItem searchMenuItem) {
+    public SearchViewItem(@NonNull Activity activity, @NonNull MenuItem searchMenuItem) {
         mSearchMenuItem = searchMenuItem;
         SearchManager searchManager = (SearchManager) activity.getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) searchMenuItem.getActionView();

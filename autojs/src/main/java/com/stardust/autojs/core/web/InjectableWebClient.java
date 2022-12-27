@@ -10,6 +10,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 
 import org.mozilla.javascript.Context;
@@ -44,7 +47,7 @@ public class InjectableWebClient extends WebViewClient {
     }
 
     @Override
-    public void onPageFinished(WebView view, String url) {
+    public void onPageFinished(@NonNull WebView view, String url) {
         mWebView = view;
         setUpWebView(view);
         while (!mToInjectJavaScripts.isEmpty()) {
@@ -55,14 +58,14 @@ public class InjectableWebClient extends WebViewClient {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void setUpWebView(WebView view) {
+    private void setUpWebView(@NonNull WebView view) {
         view.addJavascriptInterface(mScriptBridge, "rhino");
         WebSettings webSettings = view.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
     }
 
-    private void inject(WebView view, String script, ValueCallback<String> callback) {
+    private void inject(@NonNull WebView view, String script, ValueCallback<String> callback) {
         view.evaluateJavascript(script, callback);
     }
 
@@ -87,8 +90,10 @@ public class InjectableWebClient extends WebViewClient {
 
     private class ScriptBridge {
 
+        @Nullable
         private Object result;
 
+        @NonNull
         @JavascriptInterface
         public String eval(final String script) {
             result = null;

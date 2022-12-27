@@ -3,6 +3,9 @@ package com.stardust.autojs.script;
 import android.content.Context;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.engine.module.AssetAndUrlModuleSourceProvider;
 import com.stardust.pio.PFiles;
 import com.stardust.pio.UncheckedIOException;
@@ -37,20 +40,23 @@ public class JsBeautifier {
     private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
     private final Context mContext;
     private Function mJsBeautifyFunction;
+    @Nullable
     private org.mozilla.javascript.Context mScriptContext;
     private Scriptable mScriptable;
+    @NonNull
     private final String mBeautifyJsPath;
     private final String mBeautifyJsDir;
+    @Nullable
     private View mView;
 
-    public JsBeautifier(View view, String beautifyJsDirPath) {
+    public JsBeautifier(@NonNull View view, String beautifyJsDirPath) {
         mContext = view.getContext();
         mView = view;
         mBeautifyJsDir = beautifyJsDirPath;
         mBeautifyJsPath = PFiles.join(beautifyJsDirPath, "beautify.js");
     }
 
-    public void beautify(final String code, final Callback callback) {
+    public void beautify(final String code, @NonNull final Callback callback) {
         mExecutor.execute(() -> {
             try {
                 prepareIfNeeded();

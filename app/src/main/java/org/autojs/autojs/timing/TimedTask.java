@@ -4,6 +4,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.execution.ExecutionConfig;
 
 import org.autojs.autojs.external.ScriptIntents;
@@ -49,7 +51,7 @@ public class TimedTask extends BaseModel {
 
     }
 
-    public TimedTask(long millis, long timeFlag, String scriptPath, ExecutionConfig config) {
+    public TimedTask(long millis, long timeFlag, String scriptPath, @NonNull ExecutionConfig config) {
         mMillis = millis;
         mTimeFlag = timeFlag;
         mScriptPath = scriptPath;
@@ -199,6 +201,7 @@ public class TimedTask extends BaseModel {
                 createIntent(), PendingIntent.FLAG_UPDATE_CURRENT | flagImmutable);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "TimedTask{" +
@@ -214,15 +217,18 @@ public class TimedTask extends BaseModel {
     }
 
 
-    public static TimedTask dailyTask(LocalTime time, String scriptPath, ExecutionConfig config) {
+    @NonNull
+    public static TimedTask dailyTask(@NonNull LocalTime time, String scriptPath, @NonNull ExecutionConfig config) {
         return new TimedTask(time.getMillisOfDay(), FLAG_EVERYDAY, scriptPath, config);
     }
 
-    public static TimedTask disposableTask(LocalDateTime dateTime, String scriptPath, ExecutionConfig config) {
+    @NonNull
+    public static TimedTask disposableTask(@NonNull LocalDateTime dateTime, String scriptPath, @NonNull ExecutionConfig config) {
         return new TimedTask(dateTime.toDateTime().getMillis(), FLAG_DISPOSABLE, scriptPath, config);
     }
 
-    public static TimedTask weeklyTask(LocalTime time, long timeFlag, String scriptPath, ExecutionConfig config) {
+    @NonNull
+    public static TimedTask weeklyTask(@NonNull LocalTime time, long timeFlag, String scriptPath, @NonNull ExecutionConfig config) {
         return new TimedTask(time.getMillisOfDay(), timeFlag, scriptPath, config);
     }
 

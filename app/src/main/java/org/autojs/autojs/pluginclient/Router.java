@@ -2,6 +2,9 @@ package org.autojs.autojs.pluginclient;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -15,6 +18,7 @@ import java.util.Map;
 public class Router implements Handler {
 
     private static final String LOG_TAG = "Router";
+    @NonNull
     protected Map<String, Handler> mHandlerMap = new HashMap<>();
     private final String mKey;
 
@@ -26,13 +30,14 @@ public class Router implements Handler {
         return mKey;
     }
 
+    @NonNull
     public Router handler(String value, Handler handler) {
         mHandlerMap.put(value, handler);
         return this;
     }
 
     @Override
-    public boolean handle(JsonObject data) {
+    public boolean handle(@NonNull JsonObject data) {
         Log.d(LOG_TAG, "handle: " + data);
         JsonElement key = data.get(getKey());
         if (key == null || !key.isJsonPrimitive()) {
@@ -43,7 +48,7 @@ public class Router implements Handler {
         return handleInternal(data, key.getAsString(), handler);
     }
 
-    protected boolean handleInternal(JsonObject json, String key, Handler handler) {
+    protected boolean handleInternal(JsonObject json, String key, @Nullable Handler handler) {
         return handler != null && handler.handle(json);
     }
 
@@ -54,7 +59,7 @@ public class Router implements Handler {
         }
 
         @Override
-        protected boolean handleInternal(JsonObject json, String key, Handler handler) {
+        protected boolean handleInternal(@NonNull JsonObject json, String key, @Nullable Handler handler) {
             JsonElement data = json.get("data");
             if (data == null || !data.isJsonObject()) {
                 Log.w(LOG_TAG, "json has no object data: " + json);

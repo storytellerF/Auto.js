@@ -1,5 +1,7 @@
 package org.autojs.autojs.storage.file;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.pio.PFiles;
 
 import org.apache.commons.io.FileUtils;
@@ -12,18 +14,21 @@ import io.reactivex.Observer;
 
 public class FileObservable {
 
-    public static Observable<File> copy(String fromPath, String toPath) {
+    @NonNull
+    public static Observable<File> copy(@NonNull String fromPath, @NonNull String toPath) {
         return copy(fromPath, toPath, false);
     }
 
-    public static Observable<File> move(String fromPath, String toPath) {
+    @NonNull
+    public static Observable<File> move(@NonNull String fromPath, @NonNull String toPath) {
         return copy(fromPath, toPath, true);
     }
 
-    private static Observable<File> copy(String fromPath, String toPath, boolean deleteOld) {
+    @NonNull
+    private static Observable<File> copy(@NonNull String fromPath, @NonNull String toPath, boolean deleteOld) {
         return new Observable<File>() {
             @Override
-            protected void subscribeActual(Observer<? super File> observer) {
+            protected void subscribeActual(@NonNull Observer<? super File> observer) {
                 try {
                     copy(new File(fromPath), new File(toPath), deleteOld, observer);
                     observer.onComplete();
@@ -34,7 +39,7 @@ public class FileObservable {
         };
     }
 
-    private static void copyDir(File fromDir, File toDir, boolean deleteOld, Observer<? super File> progress) throws IOException {
+    private static void copyDir(@NonNull File fromDir, File toDir, boolean deleteOld, @NonNull Observer<? super File> progress) throws IOException {
         if (!fromDir.isDirectory()) {
             return;
         }
@@ -47,7 +52,7 @@ public class FileObservable {
         }
     }
 
-    private static void copy(File fromFile, File toFile, boolean deleteOld, Observer<? super File> progress) throws IOException {
+    private static void copy(@NonNull File fromFile, @NonNull File toFile, boolean deleteOld, @NonNull Observer<? super File> progress) throws IOException {
         progress.onNext(fromFile);
         if (fromFile.isDirectory()) {
             copyDir(fromFile, toFile, deleteOld, progress);

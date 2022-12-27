@@ -1,5 +1,7 @@
 package com.stardust.autojs.core.ui;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.rhino.NativeJavaObjectWithPrototype;
 
 import org.mozilla.javascript.NativeJavaObject;
@@ -20,7 +22,7 @@ public class BaseEvent extends NativeJavaObjectWithPrototype {
 
 
 
-    public BaseEvent(Scriptable scope, Object javaObject) {
+    public BaseEvent(Scriptable scope, @NonNull Object javaObject) {
         super(scope, javaObject, javaObject.getClass());
     }
 
@@ -31,7 +33,7 @@ public class BaseEvent extends NativeJavaObjectWithPrototype {
     }
 
     @Override
-    public Object get(String name, Scriptable start) {
+    public Object get(@NonNull String name, Scriptable start) {
         if ("consumed".equals(name)) {
             return mConsumed;
         }
@@ -39,7 +41,7 @@ public class BaseEvent extends NativeJavaObjectWithPrototype {
     }
 
     @Override
-    public void put(String name, Scriptable start, Object value) {
+    public void put(@NonNull String name, Scriptable start, Object value) {
         if ("consumed".equals(name)) {
             mConsumed = ScriptRuntime.toBoolean(value);
             return;

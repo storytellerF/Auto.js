@@ -3,6 +3,9 @@ package org.autojs.autojs.network.entity;
 import android.text.TextUtils;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.autojs.autojs.BuildConfig;
 
 import org.json.JSONObject;
@@ -28,6 +31,7 @@ public class VersionInfo {
                 && !TextUtils.isEmpty(versionName) && !TextUtils.isEmpty(releaseNotes);
     }
 
+    @Nullable
     public OldVersion getOldVersion(int versionCode) {
         for (OldVersion oldVersion : oldVersions) {
             if (oldVersion.versionCode == versionCode) {
@@ -41,6 +45,7 @@ public class VersionInfo {
         return versionCode > BuildConfig.VERSION_CODE;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "UpdateInfo{" +
@@ -60,6 +65,7 @@ public class VersionInfo {
         public int versionCode;
         public String issues;
 
+        @NonNull
         @Override
         public String toString() {
             return "OldVersion{" +
@@ -74,6 +80,7 @@ public class VersionInfo {
         public String name;
         public String url;
 
+        @NonNull
         @Override
         public String toString() {
             return "Download{" +

@@ -79,7 +79,7 @@ public class FloatingActionMenu extends FrameLayout implements View.OnClickListe
         mState.onNext(true);
     }
 
-    private void rotate(FloatingActionButton fab) {
+    private void rotate(@NonNull FloatingActionButton fab) {
         fab.setRotation(0);
         fab.animate()
                 .rotation(360)
@@ -89,7 +89,7 @@ public class FloatingActionMenu extends FrameLayout implements View.OnClickListe
     }
 
 
-    private void animateY(View view, float y, Animator.AnimatorListener l) {
+    private void animateY(@NonNull View view, float y, Animator.AnimatorListener l) {
         view.animate()
                 .translationY(y)
                 .setDuration(mDuration)
@@ -113,7 +113,7 @@ public class FloatingActionMenu extends FrameLayout implements View.OnClickListe
         mState.onNext(false);
     }
 
-    private void buildFabs(int[] icons, int[] labels) {
+    private void buildFabs(@NonNull int[] icons, @NonNull int[] labels) {
         if (icons.length != labels.length)
             throw new IllegalArgumentException("icons.length = " + icons.length + " is not equal to labels.length = " + labels.length);
         mFabs = new FloatingActionButton[icons.length];
@@ -144,12 +144,13 @@ public class FloatingActionMenu extends FrameLayout implements View.OnClickListe
         setMeasuredDimension(getMeasuredWidth(), (h + mInterval) * mFabs.length + h);
     }
 
+    @NonNull
     public PublishSubject<Boolean> getState() {
         return mState;
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(@NonNull View v) {
         collapse();
         if (mOnFloatingActionButtonClickListener != null) {
             mOnFloatingActionButtonClickListener.onClick((FloatingActionButton) v, (int) v.getTag());

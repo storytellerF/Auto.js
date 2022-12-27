@@ -23,7 +23,7 @@ public class UpdateCheckDialog {
     private final MaterialDialog mProgress;
     private Context mContext;
 
-    public UpdateCheckDialog(Context context) {
+    public UpdateCheckDialog(@androidx.annotation.NonNull Context context) {
         mProgress = new MaterialDialog.Builder(context)
                 .progress(true, 0)
                 .content(R.string.text_checking_update)

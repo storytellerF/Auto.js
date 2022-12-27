@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.autojs.autojs.R;
 import com.stardust.view.accessibility.NodeInfo;
 import com.stardust.util.ViewUtil;
@@ -45,7 +48,7 @@ public class LayoutHierarchyView extends MultiLevelListView {
     private OnItemLongClickListener mOnItemLongClickListener;
     private final AdapterView.OnItemLongClickListener mOnItemLongClickListenerProxy = new AdapterView.OnItemLongClickListener() {
         @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        public boolean onItemLongClick(AdapterView<?> parent, @NonNull View view, int position, long id) {
             if (mOnItemLongClickListener != null) {
                 mOnItemLongClickListener.onItemLongClick(view, ((ViewHolder) view.getTag()).nodeInfo);
                 return true;
@@ -58,6 +61,7 @@ public class LayoutHierarchyView extends MultiLevelListView {
     private Paint mPaint;
     private int[] mBoundsInScreen;
     private int mStatusBarHeight;
+    @Nullable
     private NodeInfo mClickedNodeInfo;
     private View mClickedView;
     private Drawable mOriginalBackground;
@@ -99,18 +103,18 @@ public class LayoutHierarchyView extends MultiLevelListView {
         initPaint();
         setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClicked(MultiLevelListView parent, View view, Object item, ItemInfo itemInfo) {
+            public void onItemClicked(MultiLevelListView parent, @NonNull View view, Object item, ItemInfo itemInfo) {
                 setClickedItem(view, (NodeInfo) item);
             }
 
             @Override
-            public void onGroupItemClicked(MultiLevelListView parent, View view, Object item, ItemInfo itemInfo) {
+            public void onGroupItemClicked(MultiLevelListView parent, @NonNull View view, Object item, ItemInfo itemInfo) {
                 setClickedItem(view, (NodeInfo) item);
             }
         });
     }
 
-    private void setClickedItem(View view, NodeInfo item) {
+    private void setClickedItem(@NonNull View view, NodeInfo item) {
         mClickedNodeInfo = item;
         if (mClickedView == null) {
             mOriginalBackground = view.getBackground();
@@ -147,7 +151,7 @@ public class LayoutHierarchyView extends MultiLevelListView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         if (mBoundsInScreen == null) {
             mBoundsInScreen = new int[4];
@@ -168,7 +172,7 @@ public class LayoutHierarchyView extends MultiLevelListView {
         mAdapter.reloadData();
     }
 
-    private boolean searchNodeParents(NodeInfo nodeInfo, NodeInfo rootNode, Stack<NodeInfo> stack) {
+    private boolean searchNodeParents(NodeInfo nodeInfo, @NonNull NodeInfo rootNode, @NonNull Stack<NodeInfo> stack) {
         stack.push(rootNode);
         if (nodeInfo == rootNode) {
             return true;
@@ -193,7 +197,7 @@ public class LayoutHierarchyView extends MultiLevelListView {
         LevelBeamView levelBeamView;
         NodeInfo nodeInfo;
 
-        ViewHolder(View view) {
+        ViewHolder(@NonNull View view) {
             infoView = view.findViewById(R.id.dataItemInfo);
             nameView = view.findViewById(R.id.dataItemName);
             arrowView = view.findViewById(R.id.dataItemArrow);
@@ -205,13 +209,14 @@ public class LayoutHierarchyView extends MultiLevelListView {
     private class Adapter extends MultiLevelListAdapter {
 
 
+        @NonNull
         @Override
-        protected List<?> getSubObjects(Object object) {
+        protected List<?> getSubObjects(@NonNull Object object) {
             return ((NodeInfo) object).getChildren();
         }
 
         @Override
-        protected boolean isExpandable(Object object) {
+        protected boolean isExpandable(@NonNull Object object) {
             return !((NodeInfo) object).getChildren().isEmpty();
         }
 
@@ -220,8 +225,9 @@ public class LayoutHierarchyView extends MultiLevelListView {
             return mInitiallyExpandedNodes.contains((NodeInfo) object);
         }
 
+        @Nullable
         @Override
-        public View getViewForObject(Object object, View convertView, ItemInfo itemInfo) {
+        public View getViewForObject(Object object, @Nullable View convertView, @NonNull ItemInfo itemInfo) {
             NodeInfo nodeInfo = (NodeInfo) object;
             ViewHolder viewHolder;
             if (convertView == null) {
@@ -253,7 +259,8 @@ public class LayoutHierarchyView extends MultiLevelListView {
             return convertView;
         }
 
-        private String simplifyClassName(CharSequence className) {
+        @Nullable
+        private String simplifyClassName(@Nullable CharSequence className) {
             if (className == null)
                 return null;
             String s = className.toString();
@@ -264,7 +271,8 @@ public class LayoutHierarchyView extends MultiLevelListView {
         }
 
 
-        private String getItemInfoDsc(ItemInfo itemInfo) {
+        @NonNull
+        private String getItemInfoDsc(@NonNull ItemInfo itemInfo) {
             StringBuilder builder = new StringBuilder();
             builder.append(String.format(Locale.getDefault(), "level[%d], idx in level[%d/%d]",
                     itemInfo.getLevel() + 1, /*Indexing starts from 0*/

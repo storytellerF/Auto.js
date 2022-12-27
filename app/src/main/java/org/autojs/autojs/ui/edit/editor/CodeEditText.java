@@ -25,6 +25,9 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatEditText;
 import android.text.Editable;
@@ -64,6 +67,7 @@ public class CodeEditText extends AppCompatEditText {
 
     private final CopyOnWriteArrayList<CodeEditor.CursorChangeCallback> mCursorChangeCallbacks = new CopyOnWriteArrayList<>();
     private volatile JavaScriptHighlighter.HighlightTokens mHighlightTokens;
+    @Nullable
     private Theme mTheme;
     private final TimingLogger mLogger = new TimingLogger(LOG_TAG, "draw");
     private final Paint mLineHighlightPaint = new Paint();
@@ -75,12 +79,12 @@ public class CodeEditText extends AppCompatEditText {
     private CodeEditor.BreakpointChangeListener mBreakpointChangeListener;
 
 
-    public CodeEditText(Context context) {
+    public CodeEditText(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public CodeEditText(Context context, AttributeSet attrs) {
+    public CodeEditText(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -107,6 +111,7 @@ public class CodeEditText extends AppCompatEditText {
         return AUTOFILL_TYPE_NONE;
     }
 
+    @NonNull
     public LinkedHashMap<Integer, CodeEditor.Breakpoint> getBreakpoints() {
         return mBreakpoints;
     }
@@ -117,7 +122,7 @@ public class CodeEditText extends AppCompatEditText {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         mLogger.reset();
         if (mParentScrollView == null) {
             mParentScrollView = (HVScrollView) getParent();
@@ -156,7 +161,7 @@ public class CodeEditText extends AppCompatEditText {
         invalidate();
     }
 
-    private void drawLineHighlights(Canvas canvas) {
+    private void drawLineHighlights(@NonNull Canvas canvas) {
         int currentLine = getCurrentLine();
         int debugHighlightLine = mDebuggingLine;
         if (debugHighlightLine != currentLine) {
@@ -171,7 +176,7 @@ public class CodeEditText extends AppCompatEditText {
 
     }
 
-    private void updateLineRangeForDraw(Canvas canvas) {
+    private void updateLineRangeForDraw(@NonNull Canvas canvas) {
         Layout layout = getLayout();
         if (layout == null)
             return;
@@ -191,7 +196,7 @@ public class CodeEditText extends AppCompatEditText {
 
     //该方法中内联了很多函数来提高效率 但是 这是必要的吗？？？
     // 绘制文本着色
-    private void drawText(Canvas canvas) {
+    private void drawText(@NonNull Canvas canvas) {
         if (mFirstLineForDraw < 0) {
             return;
         }
@@ -278,7 +283,7 @@ public class CodeEditText extends AppCompatEditText {
         }
     }
 
-    private void drawLineHighlight(Canvas canvas, Paint paint, int line) {
+    private void drawLineHighlight(@NonNull Canvas canvas, Paint paint, int line) {
         if (line < mFirstLineForDraw || line > mLastLineForDraw || mFirstLineForDraw < 0 || line < 0) {
             return;
         }
@@ -299,7 +304,7 @@ public class CodeEditText extends AppCompatEditText {
     }
 
 
-    private int getVisibleCharIndex(Paint paint, int x, int lineStart, int lineEnd) {
+    private int getVisibleCharIndex(@NonNull Paint paint, int x, int lineStart, int lineEnd) {
         if (x == 0)
             return lineStart;
         int low = lineStart;
@@ -316,7 +321,7 @@ public class CodeEditText extends AppCompatEditText {
         return low;
     }
 
-    private long getLineRangeForDraw(Layout layout, Canvas canvas) {
+    private long getLineRangeForDraw(Layout layout, @NonNull Canvas canvas) {
         canvas.save();
         int scrollY = getRealScrollY();
         float clipTop = (scrollY == 0) ? 0
@@ -350,7 +355,7 @@ public class CodeEditText extends AppCompatEditText {
         matchesBracket(getText(), selStart);
     }
 
-    private void matchesBracket(CharSequence text, int cursor) {
+    private void matchesBracket(@NonNull CharSequence text, int cursor) {
         if (checkBracketMatchingAt(text, cursor)) {
             return;
         }
@@ -362,7 +367,7 @@ public class CodeEditText extends AppCompatEditText {
         mUnmatchedBracket = -1;
     }
 
-    private boolean checkBracketMatchingAt(CharSequence text, int cursor) {
+    private boolean checkBracketMatchingAt(@NonNull CharSequence text, int cursor) {
         if (cursor < 0 || cursor >= text.length()) {
             return false;
         }
@@ -382,7 +387,7 @@ public class CodeEditText extends AppCompatEditText {
 
     }
 
-    private void callCursorChangeCallback(CharSequence text, int sel) {
+    private void callCursorChangeCallback(@NonNull CharSequence text, int sel) {
         if (text.length() == 0) {
             return;
         }
@@ -417,7 +422,7 @@ public class CodeEditText extends AppCompatEditText {
     }
 
 
-    public void updateHighlightTokens(JavaScriptHighlighter.HighlightTokens highlightTokens) {
+    public void updateHighlightTokens(@NonNull JavaScriptHighlighter.HighlightTokens highlightTokens) {
         if (mHighlightTokens != null && mHighlightTokens.getId() >= highlightTokens.getId()) {
             return;
         }
@@ -438,6 +443,7 @@ public class CodeEditText extends AppCompatEditText {
     }
 
 
+    @NonNull
     @Override
     public Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
@@ -476,7 +482,7 @@ public class CodeEditText extends AppCompatEditText {
     private boolean mTouchValid = true;
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
         //如果行号区域被按下
         if (event.getAction() == MotionEvent.ACTION_DOWN && event.getX() < getPaddingLeft()) {
             //则计算当前行，如果行号有效，记录起来

@@ -66,6 +66,7 @@ public abstract class AccessibilityBridge {
     @Nullable
     public abstract AccessibilityService getService();
 
+    @NonNull
     public List<AccessibilityNodeInfo> windowRoots() {
         AccessibilityService service = getService();
         if (service == null)
@@ -107,6 +108,7 @@ public abstract class AccessibilityBridge {
         return service.getRootInActiveWindow();
     }
 
+    @Nullable
     public AccessibilityNodeInfo getRootInActiveWindow() {
         AccessibilityService service = getService();
         if (service == null)

@@ -30,19 +30,19 @@ public class ScriptDirPathPreference extends MaterialEditTextPreference {
 
     private RadioGroup mRadioGroup;
 
-    public ScriptDirPathPreference(Context context) {
+    public ScriptDirPathPreference(@NonNull Context context) {
         super(context);
     }
 
-    public ScriptDirPathPreference(Context context, AttributeSet attrs) {
+    public ScriptDirPathPreference(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ScriptDirPathPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ScriptDirPathPreference(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public ScriptDirPathPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ScriptDirPathPreference(@NonNull Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
@@ -79,7 +79,7 @@ public class ScriptDirPathPreference extends MaterialEditTextPreference {
         showFileProgressDialog(fileObservable);
     }
 
-    private void showFileProgressDialog(Observable<File> observable) {
+    private void showFileProgressDialog(@NonNull Observable<File> observable) {
         MaterialDialog dialog = new ThemeColorMaterialDialogBuilder(getContext())
                 .progress(true, 0)
                 .progressIndeterminateStyle(true)
@@ -92,12 +92,12 @@ public class ScriptDirPathPreference extends MaterialEditTextPreference {
                 .subscribe(new SimpleObserver<File>() {
 
                     @Override
-                    public void onNext(File file) {
+                    public void onNext(@NonNull File file) {
                         dialog.setContent(file.getPath());
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         e.printStackTrace();
                         dialog.dismiss();
                         Explorers.workspace().refreshAll();

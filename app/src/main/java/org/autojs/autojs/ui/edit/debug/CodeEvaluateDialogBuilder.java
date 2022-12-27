@@ -47,6 +47,7 @@ public class CodeEvaluateDialogBuilder extends ThemeColorMaterialDialogBuilder {
         }));
     }
 
+    @NonNull
     public CodeEvaluateDialogBuilder codeEvaluator(CodeEvaluator evaluator) {
         mCodeEvaluator = evaluator;
         return this;

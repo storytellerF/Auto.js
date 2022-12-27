@@ -3,6 +3,9 @@ package org.autojs.autojs.network.entity.topic;
 
 import android.text.Html;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -322,6 +325,7 @@ public class Topic {
         mPosts = posts;
     }
 
+    @Nullable
     public AppInfo getAppInfo() {
         if (mAppInfo != null) {
             return mAppInfo;
@@ -356,6 +360,7 @@ public class Topic {
         mMainPost = mainPost;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Topic{" +

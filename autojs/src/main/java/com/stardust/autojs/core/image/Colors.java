@@ -2,6 +2,8 @@ package com.stardust.autojs.core.image;
 
 import android.graphics.Color;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 /**
@@ -62,6 +64,7 @@ public class Colors {
         return Color.HSVToColor(alpha, hsv);
     }
 
+    @NonNull
     public String toString(int color) {
         StringBuilder c = new StringBuilder(Integer.toHexString(color));
         while (c.length() < 6) {

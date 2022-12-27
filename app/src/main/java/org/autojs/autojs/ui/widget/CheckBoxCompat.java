@@ -1,6 +1,8 @@
 package org.autojs.autojs.ui.widget;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
 import android.widget.CompoundButton;
@@ -12,21 +14,21 @@ import android.widget.CompoundButton;
 public class CheckBoxCompat extends AppCompatCheckBox {
     private boolean mIgnoreCheckedChange;
 
-    public CheckBoxCompat(Context context) {
+    public CheckBoxCompat(@NonNull Context context) {
         super(context);
     }
 
-    public CheckBoxCompat(Context context, AttributeSet attrs) {
+    public CheckBoxCompat(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CheckBoxCompat(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CheckBoxCompat(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
 
     @Override
-    public void setOnCheckedChangeListener(final OnCheckedChangeListener listener) {
+    public void setOnCheckedChangeListener(@NonNull final OnCheckedChangeListener listener) {
         super.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

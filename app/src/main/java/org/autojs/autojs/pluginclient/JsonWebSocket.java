@@ -3,6 +3,7 @@ package org.autojs.autojs.pluginclient;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.JsonElement;
@@ -37,13 +38,14 @@ public class JsonWebSocket extends WebSocketListener {
 
     private static final String LOG_TAG = "JsonWebSocket";
 
+    @NonNull
     private final WebSocket mWebSocket;
     private final JsonParser mJsonParser = new JsonParser();
     private final PublishSubject<JsonElement> mJsonElementPublishSubject = PublishSubject.create();
     private final PublishSubject<Bytes> mBytesPublishSubject = PublishSubject.create();
     private volatile boolean mClosed = false;
 
-    public JsonWebSocket(OkHttpClient client, Request request) {
+    public JsonWebSocket(@NonNull OkHttpClient client, @NonNull Request request) {
         mWebSocket = client.newWebSocket(request, this);
     }
 
@@ -54,20 +56,22 @@ public class JsonWebSocket extends WebSocketListener {
     }
 
     @Override
-    public void onMessage(WebSocket webSocket, ByteString bytes) {
+    public void onMessage(WebSocket webSocket, @NonNull ByteString bytes) {
         Log.d(LOG_TAG, "onMessage: ByteString = " + bytes.toString());
         mBytesPublishSubject.onNext(new Bytes(bytes.md5().hex(), bytes));
     }
 
+    @NonNull
     public Observable<JsonElement> data() {
         return mJsonElementPublishSubject;
     }
 
+    @NonNull
     public Observable<Bytes> bytes(){
         return mBytesPublishSubject;
     }
 
-    public boolean write(JsonElement element) {
+    public boolean write(@NonNull JsonElement element) {
         String json = element.toString();
         Log.d(LOG_TAG, "write: length = " + json.length() + ", json = " + element);
         return mWebSocket.send(json);
@@ -86,7 +90,7 @@ public class JsonWebSocket extends WebSocketListener {
     }
 
     @Override
-    public void onFailure(WebSocket webSocket, Throwable t, @Nullable Response response) {
+    public void onFailure(WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
         Log.d(LOG_TAG, "onFailure: response = " + response, t);
         close(t);
     }
@@ -97,7 +101,7 @@ public class JsonWebSocket extends WebSocketListener {
     }
 
 
-    private void close(Throwable e) {
+    private void close(@NonNull Throwable e) {
         if (mClosed) {
             return;
         }

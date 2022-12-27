@@ -41,8 +41,10 @@ public class WebActivity extends BaseActivity implements OnActivityResultDelegat
         setupViews();
     }
 
+    @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context context) {
         return new ActivityIntentBuilder<I>(context,WebActivity.class) {
+            @Nullable
             @Override
             public PostActivityStarter startForResult(int requestCode) {
                 return null;

@@ -1,5 +1,7 @@
 package com.storyteller_f.bandage;
 
+import androidx.annotation.NonNull;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -8,5 +10,5 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Click {
-    String tag();
+    @NonNull String tag();
 }

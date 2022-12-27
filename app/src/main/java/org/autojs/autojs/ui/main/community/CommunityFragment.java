@@ -121,12 +121,12 @@ public class CommunityFragment extends ViewPagerFragment implements BackPressedH
     }
 
     @Subscribe
-    public void loadUrl(LoadUrl loadUrl) {
+    public void loadUrl(@NonNull LoadUrl loadUrl) {
         mWebView.loadUrl(NodeBB.url(loadUrl.url));
     }
 
     @Subscribe
-    public void submitQuery(QueryEvent event) {
+    public void submitQuery(@NonNull QueryEvent event) {
         if (!isShown() || event == QueryEvent.CLEAR) {
             return;
         }

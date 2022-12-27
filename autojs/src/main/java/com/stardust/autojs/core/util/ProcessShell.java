@@ -3,6 +3,9 @@ package com.stardust.autojs.core.util;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.runtime.api.AbstractShell;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 import com.stardust.autojs.util.ProcessUtils;
@@ -24,9 +27,12 @@ public class ProcessShell extends AbstractShell {
 
     private static final String TAG = "ProcessShell";
 
+    @Nullable
     private Process mProcess;
     private DataOutputStream mCommandOutputStream;
+    @Nullable
     private BufferedReader mSucceedReader;
+    @Nullable
     private BufferedReader mErrorReader;
 
     private final StringBuilder mSucceedOutput = new StringBuilder();
@@ -53,7 +59,7 @@ public class ProcessShell extends AbstractShell {
     }
 
     @Override
-    public void exec(String command) {
+    public void exec(@NonNull String command) {
         try {
             mCommandOutputStream.writeBytes(command);
             if (!command.endsWith(COMMAND_LINE_END)) {
@@ -106,16 +112,18 @@ public class ProcessShell extends AbstractShell {
         }
     }
 
+    @NonNull
     public ProcessShell readAll() {
         return readSucceedOutput().readErrorOutput();
     }
 
+    @NonNull
     public ProcessShell readSucceedOutput() {
         read(mSucceedReader, mSucceedOutput);
         return this;
     }
 
-    private void read(BufferedReader reader, StringBuilder sb) {
+    private void read(@NonNull BufferedReader reader, @NonNull StringBuilder sb) {
         try {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -126,37 +134,45 @@ public class ProcessShell extends AbstractShell {
         }
     }
 
+    @NonNull
     public ProcessShell readErrorOutput() {
         read(mErrorReader, mErrorOutput);
         return this;
     }
 
+    @NonNull
     public StringBuilder getSucceedOutput() {
         return mSucceedOutput;
     }
 
+    @NonNull
     public StringBuilder getErrorOutput() {
         return mErrorOutput;
     }
 
+    @Nullable
     public Process getProcess() {
         return mProcess;
     }
 
+    @Nullable
     public BufferedReader getSucceedReader() {
         return mSucceedReader;
     }
 
+    @Nullable
     public BufferedReader getErrorReader() {
         return mErrorReader;
     }
 
-    public static Result exec(String command, boolean isRoot) {
+    @NonNull
+    public static Result exec(@NonNull String command, boolean isRoot) {
         String[] commands = command.split("\n");
         return exec(commands, isRoot);
     }
 
-    public static Result exec(String[] commands, boolean isRoot) {
+    @NonNull
+    public static Result exec(@NonNull String[] commands, boolean isRoot) {
         ProcessShell shell = null;
         try {
             shell = new ProcessShell(isRoot);
@@ -178,7 +194,8 @@ public class ProcessShell extends AbstractShell {
         }
     }
 
-    public static Result execCommand(String[] commands, boolean isRoot) {
+    @NonNull
+    public static Result execCommand(@Nullable String[] commands, boolean isRoot) {
         Result commandResult = new Result();
         if (commands == null || commands.length == 0)
             throw new IllegalArgumentException("command is empty");
@@ -220,6 +237,7 @@ public class ProcessShell extends AbstractShell {
         return commandResult;
     }
 
+    @NonNull
     private static String readAll(InputStream inputStream) throws IOException {
         String line;
         StringBuilder builder = new StringBuilder();
@@ -230,7 +248,8 @@ public class ProcessShell extends AbstractShell {
         return builder.toString();
     }
 
-    public static Result execCommand(String command, boolean isRoot) {
+    @NonNull
+    public static Result execCommand(@NonNull String command, boolean isRoot) {
         String[] commands = command.split("\n");
         return execCommand(commands, isRoot);
     }

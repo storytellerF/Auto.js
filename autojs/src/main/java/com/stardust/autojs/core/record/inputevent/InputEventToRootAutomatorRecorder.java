@@ -67,6 +67,7 @@ public class InputEventToRootAutomatorRecorder extends InputEventRecorder {
         }
     }
 
+    @NonNull
     public String getCode() {
         return mCode.toString();
     }

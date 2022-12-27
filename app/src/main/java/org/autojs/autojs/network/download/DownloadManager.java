@@ -3,6 +3,8 @@ package org.autojs.autojs.network.download;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.stardust.concurrent.VolatileBox;
@@ -42,7 +44,9 @@ public class DownloadManager {
     private static DownloadManager sInstance;
 
     private static final int RETRY_COUNT = 3;
+    @NonNull
     private final Retrofit mRetrofit;
+    @NonNull
     private final DownloadApi mDownloadApi;
     private final ConcurrentHashMap<String, VolatileBox<Boolean>> mDownloadStatuses = new ConcurrentHashMap<>();
 
@@ -76,7 +80,7 @@ public class DownloadManager {
     }
 
 
-    public static String parseFileNameLocally(String url) {
+    public static String parseFileNameLocally(@NonNull String url) {
         int i = url.lastIndexOf('-');
         if (i < 0) {
             i = url.lastIndexOf('/');
@@ -84,6 +88,7 @@ public class DownloadManager {
         return URLDecoder.decode(url.substring(i + 1));
     }
 
+    @NonNull
     public Observable<Integer> download(String url, String path) {
         DownloadTask task = new DownloadTask(url, path);
         mDownloadApi.download(url)
@@ -92,12 +97,13 @@ public class DownloadManager {
         return task.progress();
     }
 
-    public Observable<File> downloadWithProgress(Context context, String url, String path) {
+    @NonNull
+    public Observable<File> downloadWithProgress(@NonNull Context context, @NonNull String url, @NonNull String path) {
         String fileName = DownloadManager.parseFileNameLocally(url);
         return download(url, path, createDownloadProgressDialog(context, url, fileName));
     }
 
-    private MaterialDialog createDownloadProgressDialog(Context context, String url, String fileName) {
+    private MaterialDialog createDownloadProgressDialog(@NonNull Context context, @NonNull String url, @NonNull String fileName) {
         return new MaterialDialog.Builder(context)
                 .progress(false, 100)
                 .title(fileName)
@@ -107,7 +113,8 @@ public class DownloadManager {
                 .show();
     }
 
-    private Observable<File> download(String url, String path, MaterialDialog progressDialog) {
+    @NonNull
+    private Observable<File> download(String url, @NonNull String path, @NonNull MaterialDialog progressDialog) {
         PublishSubject<File> subject = PublishSubject.create();
         DownloadManager.getInstance().download(url, path)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -121,7 +128,7 @@ public class DownloadManager {
                     }
 
                     @Override
-                    public void onError(Throwable error) {
+                    public void onError(@NonNull Throwable error) {
                         Log.e(LOG_TAG, "Download failed", error);
                         progressDialog.dismiss();
                         subject.onError(error);
@@ -130,7 +137,7 @@ public class DownloadManager {
         return subject;
     }
 
-    public void cancelDownload(String url) {
+    public void cancelDownload(@NonNull String url) {
         VolatileBox<Boolean> status = mDownloadStatuses.get(url);
         if (status != null) {
             status.set(false);
@@ -141,9 +148,11 @@ public class DownloadManager {
 
         private final String mUrl;
         private final String mPath;
+        @NonNull
         private final VolatileBox<Boolean> mStatus;
         private InputStream mInputStream;
         private FileOutputStream mFileOutputStream;
+        @NonNull
         private final PublishSubject<Integer> mProgress;
 
         public DownloadTask(String url, String path) {
@@ -156,7 +165,7 @@ public class DownloadManager {
             mProgress = PublishSubject.create();
         }
 
-        private void startImpl(ResponseBody body) throws IOException {
+        private void startImpl(@NonNull ResponseBody body) throws IOException {
             byte[] buffer = new byte[4096];
             mFileOutputStream = new FileOutputStream(mPath);
             mInputStream = body.byteStream();
@@ -181,7 +190,7 @@ public class DownloadManager {
             recycle();
         }
 
-        public void start(ResponseBody body) {
+        public void start(@NonNull ResponseBody body) {
             try {
                 PFiles.ensureDir(mPath);
                 startImpl(body);
@@ -213,6 +222,7 @@ public class DownloadManager {
 
         }
 
+        @NonNull
         public PublishSubject<Integer> progress() {
             return mProgress;
         }

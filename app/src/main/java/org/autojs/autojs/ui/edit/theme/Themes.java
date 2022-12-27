@@ -2,6 +2,8 @@ package org.autojs.autojs.ui.edit.theme;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.pio.UncheckedIOException;
 import org.autojs.autojs.Pref;
 
@@ -29,7 +31,8 @@ public class Themes {
     private static List<Theme> sThemes;
     private static Theme sDefaultTheme;
 
-    public static Observable<List<Theme>> getAllThemes(Context context) {
+    @NonNull
+    public static Observable<List<Theme>> getAllThemes(@NonNull Context context) {
         if (sThemes != null) {
             return Observable.just(sThemes);
         }
@@ -44,14 +47,14 @@ public class Themes {
         return subject;
     }
 
-    public static Observable<Theme> getDefault(Context context) {
+    public static Observable<Theme> getDefault(@NonNull Context context) {
         if (sDefaultTheme != null)
             return Observable.just(sDefaultTheme);
         return getAllThemes(context)
                 .map(themes -> sDefaultTheme);
     }
 
-    private synchronized static void setThemes(List<Theme> themes) {
+    private synchronized static void setThemes(@NonNull List<Theme> themes) {
         if (sThemes != null)
             return;
         sThemes = Collections.unmodifiableList(themes);
@@ -64,7 +67,7 @@ public class Themes {
         sDefaultTheme = sThemes.get(0);
     }
 
-    private static Observable<List<Theme>> getAllThemesInner(Context context) {
+    private static Observable<List<Theme>> getAllThemesInner(@NonNull Context context) {
         if (sThemes != null) {
             return Observable.just(sThemes);
         }
@@ -79,7 +82,7 @@ public class Themes {
         }
     }
 
-    public static Observable<Theme> getCurrent(Context context) {
+    public static Observable<Theme> getCurrent(@NonNull Context context) {
         String currentTheme = Pref.isNightModeEnabled() ? DARK_THEME : Pref.getCurrentTheme();
         if (currentTheme == null)
             return getDefault(context);

@@ -1,6 +1,8 @@
 package org.autojs.autojs.model.indices;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 
 public abstract class ClassSearchingItem implements Comparable<ClassSearchingItem> {
@@ -13,6 +15,7 @@ public abstract class ClassSearchingItem implements Comparable<ClassSearchingIte
 
     public abstract String getLabel();
 
+    @NonNull
     public abstract String getUrl();
 
     @Override
@@ -20,7 +23,7 @@ public abstract class ClassSearchingItem implements Comparable<ClassSearchingIte
         return Integer.compare(o.rank, rank);
     }
 
-    protected int rank(String words, String keywords) {
+    protected int rank(@NonNull String words, @NonNull String keywords) {
         int length = words.length();
         int i = words.indexOf(keywords);
         if (i < 0) {
@@ -55,11 +58,13 @@ public abstract class ClassSearchingItem implements Comparable<ClassSearchingIte
         return 1;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "ClassSearchingItem{" + getLabel() + "}";
     }
 
+    @NonNull
     public abstract String getImportText();
 
     public static class ClassItem extends ClassSearchingItem {
@@ -71,23 +76,26 @@ public abstract class ClassSearchingItem implements Comparable<ClassSearchingIte
         }
 
         @Override
-        public boolean matches(String keywords) {
+        public boolean matches(@NonNull String keywords) {
             rank = rank(mAndroidClass.getFullName(), keywords);
             Log.d("ClassSearching", "rank = " + rank + ", word = " + mAndroidClass.getFullName());
             return rank > 0;
         }
 
 
+        @NonNull
         public String getLabel() {
             return String.format("%s (%s)", mAndroidClass.getClassName(), mAndroidClass.getPackageName());
         }
 
+        @NonNull
         @Override
         public String getUrl() {
             return BASE_URL + mAndroidClass.getPackageName().replace('.', '/')
                      + "/" + mAndroidClass.getClassName() + ".html";
         }
 
+        @NonNull
         @Override
         public String getImportText() {
             return String.format("importClass(%s)", mAndroidClass.getFullName());
@@ -98,7 +106,7 @@ public abstract class ClassSearchingItem implements Comparable<ClassSearchingIte
         }
 
         @Override
-        public boolean equals(Object o) {
+        public boolean equals(@Nullable Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             ClassItem classItem = (ClassItem) o;
@@ -120,7 +128,7 @@ public abstract class ClassSearchingItem implements Comparable<ClassSearchingIte
         }
 
         @Override
-        public boolean matches(String keywords) {
+        public boolean matches(@NonNull String keywords) {
             rank = rank(mPackageName, keywords);
             return rank > 0;
         }
@@ -130,11 +138,13 @@ public abstract class ClassSearchingItem implements Comparable<ClassSearchingIte
             return mPackageName;
         }
 
+        @NonNull
         @Override
         public String getUrl() {
             return BASE_URL + mPackageName.replace('.', '/') + "/package-summary.html";
         }
 
+        @NonNull
         @Override
         public String getImportText() {
             return String.format("importPackage(%s)", mPackageName);
@@ -145,7 +155,7 @@ public abstract class ClassSearchingItem implements Comparable<ClassSearchingIte
         }
 
         @Override
-        public boolean equals(Object o) {
+        public boolean equals(@Nullable Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             PackageItem that = (PackageItem) o;

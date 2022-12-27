@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import android.util.AttributeSet;
@@ -121,8 +123,8 @@ public class EWebView extends FrameLayout implements SwipeRefreshLayout.OnRefres
         }
 
         //For Android  >= 4.1
-        public void openFileChooser(ValueCallback<Uri> valueCallback,
-                                    String acceptType, String capture) {
+        public void openFileChooser(@NonNull ValueCallback<Uri> valueCallback,
+                                    @Nullable String acceptType, String capture) {
             if (acceptType == null) {
                 openFileChooser(valueCallback, null);
             } else {
@@ -130,7 +132,7 @@ public class EWebView extends FrameLayout implements SwipeRefreshLayout.OnRefres
             }
         }
 
-        public boolean openFileChooser(ValueCallback<Uri> valueCallback,
+        public boolean openFileChooser(@NonNull ValueCallback<Uri> valueCallback,
                                        String[] acceptType) {
             if (getContext() instanceof OnActivityResultDelegate.DelegateHost &&
                     getContext() instanceof Activity && isImageType(acceptType)) {
@@ -144,8 +146,8 @@ public class EWebView extends FrameLayout implements SwipeRefreshLayout.OnRefres
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public boolean onShowFileChooser(WebView webView,
-                                         ValueCallback<Uri[]> filePathCallback,
-                                         WebChromeClient.FileChooserParams fileChooserParams) {
+                                         @NonNull ValueCallback<Uri[]> filePathCallback,
+                                         @NonNull WebChromeClient.FileChooserParams fileChooserParams) {
             openFileChooser(value -> {
                 if (value == null) {
                     filePathCallback.onReceiveValue(null);
@@ -159,7 +161,7 @@ public class EWebView extends FrameLayout implements SwipeRefreshLayout.OnRefres
 
     }
 
-    private void chooseImage(ValueCallback<Uri> valueCallback) {
+    private void chooseImage(@NonNull ValueCallback<Uri> valueCallback) {
         DelegateHost delegateHost = ((OnActivityResultDelegate.DelegateHost) getContext());
         Mediator mediator = delegateHost.getOnActivityResultDelegateMediator();
         Activity activity = (Activity) getContext();
@@ -168,7 +170,7 @@ public class EWebView extends FrameLayout implements SwipeRefreshLayout.OnRefres
                 .select();
     }
 
-    private boolean isImageType(String[] acceptTypes) {
+    private boolean isImageType(@Nullable String[] acceptTypes) {
         if (acceptTypes == null) {
             return false;
         }
@@ -200,12 +202,12 @@ public class EWebView extends FrameLayout implements SwipeRefreshLayout.OnRefres
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull WebResourceRequest request) {
             return shouldOverrideUrlLoading(view, request.getUrl().toString());
         }
 
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull String url) {
             if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file://")) {
                 view.loadUrl(url);
             } else {

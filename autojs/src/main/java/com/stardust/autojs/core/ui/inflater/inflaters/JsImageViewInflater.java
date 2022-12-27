@@ -1,5 +1,6 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.ImageView.ScaleType;
@@ -37,7 +38,7 @@ public class JsImageViewInflater extends ImageViewInflater<JsImageView> {
     }
 
     @Override
-    public boolean setAttr(JsImageView view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull JsImageView view, @NonNull String attr, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         switch (attr) {
             case "radius":
                 view.setCornerRadius(Dimensions.parseToPixel(value, view));

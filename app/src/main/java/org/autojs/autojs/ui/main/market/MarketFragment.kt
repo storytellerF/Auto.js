@@ -96,7 +96,7 @@ class MarketFragment : ViewPagerFragment(0) {
 
         fun bind(topic: Topic) {
             this.topic = topic
-            rootView.setText(if (topic.appInfo.permissions.contains(AppInfo.PERMISSION_ROOT)) {
+            rootView.setText(if (topic.appInfo?.permissions?.contains(AppInfo.PERMISSION_ROOT) == true) {
                 R.string.text_root
             } else {
                 R.string.text_no_root

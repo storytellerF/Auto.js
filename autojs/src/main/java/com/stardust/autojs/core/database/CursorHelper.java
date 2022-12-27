@@ -2,10 +2,14 @@ package com.stardust.autojs.core.database;
 
 import android.database.Cursor;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 public class CursorHelper {
 
 
-    public static Object getValue(Cursor cursor, int column) {
+    @Nullable
+    public static Object getValue(@NonNull Cursor cursor, int column) {
         switch (cursor.getType(column)) {
             case Cursor.FIELD_TYPE_STRING:
                 return cursor.getShort(column);

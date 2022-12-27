@@ -7,6 +7,9 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.util.Func1;
 
 import java.io.Closeable;
@@ -35,7 +38,8 @@ public class PFiles {
     static final int DEFAULT_BUFFER_SIZE = 8192;
     static final String DEFAULT_ENCODING = Charset.defaultCharset().name();
 
-    public static PFileInterface open(String path, String mode, String encoding, int bufferSize) {
+    @Nullable
+    public static PFileInterface open(String path, @NonNull String mode, String encoding, int bufferSize) {
         switch (mode) {
             case "r":
                 return new PReadableTextFile(path, encoding, bufferSize);
@@ -47,19 +51,22 @@ public class PFiles {
         return null;
     }
 
-    public static Object open(String path, String mode, String encoding) {
+    @Nullable
+    public static Object open(String path, @NonNull String mode, String encoding) {
         return open(path, mode, encoding, DEFAULT_BUFFER_SIZE);
     }
 
-    public static Object open(String path, String mode) {
+    @Nullable
+    public static Object open(String path, @NonNull String mode) {
         return open(path, mode, DEFAULT_ENCODING, DEFAULT_BUFFER_SIZE);
     }
 
+    @Nullable
     public static Object open(String path) {
         return open(path, "r", DEFAULT_ENCODING, DEFAULT_BUFFER_SIZE);
     }
 
-    public static boolean create(String path) {
+    public static boolean create(@NonNull String path) {
         File f = new File(path);
         if (path.endsWith(File.separator)) {
             return f.mkdir();
@@ -72,7 +79,7 @@ public class PFiles {
         }
     }
 
-    public static boolean createIfNotExists(String path) {
+    public static boolean createIfNotExists(@NonNull String path) {
         ensureDir(path);
         File file = new File(path);
         if (!file.exists()) {
@@ -85,15 +92,15 @@ public class PFiles {
         return false;
     }
 
-    public static boolean createWithDirs(String path) {
+    public static boolean createWithDirs(@NonNull String path) {
         return createIfNotExists(path);
     }
 
-    public static boolean exists(String path) {
+    public static boolean exists(@NonNull String path) {
         return new File(path).exists();
     }
 
-    public static boolean ensureDir(String path) {
+    public static boolean ensureDir(@NonNull String path) {
         int i = path.lastIndexOf("\\");
         if (i < 0)
             i = path.lastIndexOf("/");
@@ -108,16 +115,19 @@ public class PFiles {
         }
     }
 
-    public static String read(String path, String encoding) {
+    @NonNull
+    public static String read(@NonNull String path, @NonNull String encoding) {
         return read(new File(path), encoding);
     }
 
-    public static String read(String path) {
+    @NonNull
+    public static String read(@NonNull String path) {
         return read(new File(path));
     }
 
 
-    public static String read(File file, String encoding) {
+    @NonNull
+    public static String read(File file, @NonNull String encoding) {
         try {
             return read(new FileInputStream(file), encoding);
         } catch (FileNotFoundException e) {
@@ -125,11 +135,13 @@ public class PFiles {
         }
     }
 
+    @NonNull
     public static String read(File file) {
         return read(file, "utf-8");
     }
 
-    public static String read(InputStream is, String encoding) {
+    @NonNull
+    public static String read(@NonNull InputStream is, @NonNull String encoding) {
         try {
             byte[] bytes = new byte[is.available()];
             is.read(bytes);
@@ -141,11 +153,13 @@ public class PFiles {
         }
     }
 
-    public static String read(InputStream inputStream) {
+    @NonNull
+    public static String read(@NonNull InputStream inputStream) {
         return read(inputStream, "utf-8");
     }
 
-    public static byte[] readBytes(InputStream is) {
+    @NonNull
+    public static byte[] readBytes(@NonNull InputStream is) {
         try {
             byte[] bytes = new byte[is.available()];
             is.read(bytes);
@@ -155,12 +169,12 @@ public class PFiles {
         }
     }
 
-    public static boolean copyRaw(Context context, int rawId, String path) {
+    public static boolean copyRaw(@NonNull Context context, int rawId, @NonNull String path) {
         InputStream is = context.getResources().openRawResource(rawId);
         return copyStream(is, path);
     }
 
-    public static boolean copyStream(InputStream is, String path) {
+    public static boolean copyStream(@NonNull InputStream is, @NonNull String path) {
         if (!ensureDir(path))
             return false;
         File file = new File(path);
@@ -177,7 +191,7 @@ public class PFiles {
         }
     }
 
-    public static void write(InputStream is, OutputStream os, boolean close) {
+    public static void write(@NonNull InputStream is, @NonNull OutputStream os, boolean close) {
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         try {
             while (is.available() > 0) {
@@ -195,16 +209,16 @@ public class PFiles {
         }
     }
 
-    public static void write(InputStream is, OutputStream os) {
+    public static void write(@NonNull InputStream is, @NonNull OutputStream os) {
         write(is, os, true);
     }
 
 
-    public static void write(String path, String text) {
+    public static void write(@NonNull String path, @NonNull String text) {
         write(new File(path), text);
     }
 
-    public static void write(String path, String text, String encoding) {
+    public static void write(String path, @NonNull String text, @NonNull String encoding) {
         try {
             write(new FileOutputStream(path), text, encoding);
         } catch (FileNotFoundException e) {
@@ -212,7 +226,7 @@ public class PFiles {
         }
     }
 
-    public static void write(File file, String text) {
+    public static void write(File file, @NonNull String text) {
         try {
             write(new FileOutputStream(file), text);
         } catch (FileNotFoundException e) {
@@ -220,12 +234,12 @@ public class PFiles {
         }
     }
 
-    public static void write(OutputStream fileOutputStream, String text) {
+    public static void write(@NonNull OutputStream fileOutputStream, @NonNull String text) {
         write(fileOutputStream, text, "utf-8");
     }
 
 
-    public static void write(OutputStream outputStream, String text, String encoding) {
+    public static void write(@NonNull OutputStream outputStream, @NonNull String text, @NonNull String encoding) {
         try {
             outputStream.write(text.getBytes(encoding));
         } catch (IOException e) {
@@ -235,7 +249,7 @@ public class PFiles {
         }
     }
 
-    public static void append(String path, String text) {
+    public static void append(@NonNull String path, @NonNull String text) {
         create(path);
         try {
             write(new FileOutputStream(path, true), text);
@@ -245,7 +259,7 @@ public class PFiles {
     }
 
 
-    public static void append(String path, String text, String encoding) {
+    public static void append(@NonNull String path, @NonNull String text, @NonNull String encoding) {
         create(path);
         try {
             write(new FileOutputStream(path, true), text, encoding);
@@ -254,7 +268,7 @@ public class PFiles {
         }
     }
 
-    public static void writeBytes(OutputStream outputStream, byte[] bytes) {
+    public static void writeBytes(@NonNull OutputStream outputStream, byte[] bytes) {
         try {
             outputStream.write(bytes);
             outputStream.close();
@@ -263,7 +277,7 @@ public class PFiles {
         }
     }
 
-    public static void appendBytes(String path, byte[] bytes) {
+    public static void appendBytes(@NonNull String path, byte[] bytes) {
         create(path);
         try {
             writeBytes(new FileOutputStream(path, true), bytes);
@@ -280,7 +294,7 @@ public class PFiles {
         }
     }
 
-    public static boolean copy(String pathFrom, String pathTo) {
+    public static boolean copy(String pathFrom, @NonNull String pathTo) {
         try {
             return copyStream(new FileInputStream(pathFrom), pathTo);
         } catch (FileNotFoundException e) {
@@ -289,7 +303,7 @@ public class PFiles {
         }
     }
 
-    public static boolean copyAsset(Context context, String assetFile, String path) {
+    public static boolean copyAsset(@NonNull Context context, String assetFile, @NonNull String path) {
         try {
             return copyStream(context.getAssets().open(assetFile), path);
         } catch (IOException e) {
@@ -299,7 +313,7 @@ public class PFiles {
     }
 
 
-    public static void copyAssetDir(AssetManager manager, String assetsDir, String toDir, String[] list) throws IOException {
+    public static void copyAssetDir(@NonNull AssetManager manager, @NonNull String assetsDir, @NonNull String toDir, @Nullable String[] list) throws IOException {
         new File(toDir).mkdirs();
         if (list == null) {
             list = manager.list(assetsDir);
@@ -330,36 +344,39 @@ public class PFiles {
         }
     }
 
-    public static String renameWithoutExtensionAndReturnNewPath(String path, String newName) {
+    @NonNull
+    public static String renameWithoutExtensionAndReturnNewPath(@NonNull String path, String newName) {
         File file = new File(path);
         File newFile = new File(file.getParent(), newName + "." + getExtension(file.getName()));
         file.renameTo(newFile);
         return newFile.getAbsolutePath();
     }
 
-    public static boolean renameWithoutExtension(String path, String newName) {
+    public static boolean renameWithoutExtension(@NonNull String path, String newName) {
         File file = new File(path);
         File newFile = new File(file.getParent(), newName + "." + getExtension(file.getName()));
         return file.renameTo(newFile);
     }
 
-    public static boolean rename(String path, String newName) {
+    public static boolean rename(@NonNull String path, @NonNull String newName) {
         File f = new File(path);
         return f.renameTo(new File(f.getParent(), newName));
     }
 
-    public static boolean move(String path, String newPath) {
+    public static boolean move(@NonNull String path, @NonNull String newPath) {
         File f = new File(path);
         return f.renameTo(new File(newPath));
     }
 
-    public static String getExtension(String fileName) {
+    @NonNull
+    public static String getExtension(@NonNull String fileName) {
         int i = fileName.lastIndexOf('.');
         if (i < 0 || i + 1 >= fileName.length() - 1)
             return "";
         return fileName.substring(i + 1);
     }
 
+    @NonNull
     public static String generateNotExistingPath(String path, String extension) {
         if (!new File(path + extension).exists())
             return path + extension;
@@ -372,11 +389,13 @@ public class PFiles {
         }
     }
 
+    @NonNull
     public static String getName(String filePath) {
         filePath = filePath.replace('\\', '/');
         return new File(filePath).getName();
     }
 
+    @NonNull
     public static String getNameWithoutExtension(String filePath) {
         String fileName = getName(filePath);
         int b = fileName.lastIndexOf('.');
@@ -386,7 +405,8 @@ public class PFiles {
         return fileName;
     }
 
-    public static File copyAssetToTmpFile(Context context, String path) {
+    @NonNull
+    public static File copyAssetToTmpFile(@NonNull Context context, @NonNull String path) {
         String extension = "." + getExtension(path);
         String name = getNameWithoutExtension(path);
         if (name.length() < 5) {
@@ -401,7 +421,7 @@ public class PFiles {
         }
     }
 
-    public static boolean deleteRecursively(File file) {
+    public static boolean deleteRecursively(@NonNull File file) {
         if (file.isFile())
             return file.delete();
         File[] children = file.listFiles();
@@ -414,7 +434,7 @@ public class PFiles {
         return file.delete();
     }
 
-    public static boolean deleteFilesOfDir(File dir) {
+    public static boolean deleteFilesOfDir(@NonNull File dir) {
         if (!dir.isDirectory())
             throw new IllegalArgumentException("not a directory: " + dir);
         File[] children = dir.listFiles();
@@ -427,19 +447,21 @@ public class PFiles {
         return true;
     }
 
-    public static boolean remove(String path) {
+    public static boolean remove(@NonNull String path) {
         return new File(path).delete();
     }
 
-    public static boolean removeDir(String path) {
+    public static boolean removeDir(@NonNull String path) {
         return deleteRecursively(new File(path));
     }
 
+    @NonNull
     public static String getSdcardPath() {
         return Environment.getExternalStorageDirectory().getPath();
     }
 
-    public static String readAsset(AssetManager assets, String path) {
+    @NonNull
+    public static String readAsset(@NonNull AssetManager assets, String path) {
         try {
             return read(assets.open(path));
         } catch (IOException e) {
@@ -447,18 +469,21 @@ public class PFiles {
         }
     }
 
-    public static String[] listDir(String path) {
+    @NonNull
+    public static String[] listDir(@NonNull String path) {
         File file = new File(path);
         return wrapNonNull(file.list());
     }
 
-    private static String[] wrapNonNull(String[] list) {
+    @Nullable
+    private static String[] wrapNonNull(@Nullable String[] list) {
         if (list == null)
             return new String[0];
         return list;
     }
 
-    public static String[] listDir(String path, final Func1<String, Boolean> filter) {
+    @NonNull
+    public static String[] listDir(@NonNull String path, @NonNull final Func1<String, Boolean> filter) {
         final File file = new File(path);
         return wrapNonNull(file.list(new FilenameFilter() {
             @Override
@@ -468,20 +493,21 @@ public class PFiles {
         }));
     }
 
-    public static boolean isFile(String path) {
+    public static boolean isFile(@NonNull String path) {
         return new File(path).isFile();
     }
 
-    public static boolean isDir(String path) {
+    public static boolean isDir(@NonNull String path) {
         return new File(path).isDirectory();
     }
 
-    public static boolean isEmptyDir(String path) {
+    public static boolean isEmptyDir(@NonNull String path) {
         File file = new File(path);
         return file.isDirectory() && file.list().length == 0;
     }
 
-    public static String join(String base, String... paths) {
+    @NonNull
+    public static String join(@NonNull String base, @NonNull String... paths) {
         File file = new File(base);
         for (String path : paths) {
             file = new File(file, path);
@@ -489,6 +515,7 @@ public class PFiles {
         return file.getPath();
     }
 
+    @NonNull
     public static String getHumanReadableSize(long bytes) {
         int unit = 1024;
         if (bytes < unit) return bytes + " B";
@@ -497,13 +524,15 @@ public class PFiles {
         return String.format(Locale.getDefault(), "%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 
-    public static String getSimplifiedPath(String path) {
+    @NonNull
+    public static String getSimplifiedPath(@NonNull String path) {
         if (path.startsWith(Environment.getExternalStorageDirectory().getPath())) {
             return path.substring(Environment.getExternalStorageDirectory().getPath().length());
         }
         return path;
     }
 
+    @NonNull
     public static byte[] readBytes(String path) {
         try {
             return readBytes(new FileInputStream(path));
@@ -512,7 +541,7 @@ public class PFiles {
         }
     }
 
-    public static void closeSilently(Closeable closeable) {
+    public static void closeSilently(@Nullable Closeable closeable) {
         if (closeable == null) {
             return;
         }

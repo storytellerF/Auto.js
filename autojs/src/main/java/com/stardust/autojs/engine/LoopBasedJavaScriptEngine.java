@@ -7,6 +7,9 @@ import android.os.Looper;
 import android.os.MessageQueue;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.core.looper.LooperHelper;
 import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.autojs.script.ScriptSource;
@@ -29,10 +32,11 @@ public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
     private Handler mHandler;
     private boolean mLooping = false;
 
-    public LoopBasedJavaScriptEngine(Context context) {
+    public LoopBasedJavaScriptEngine(@NonNull Context context) {
         super(context);
     }
 
+    @Nullable
     @Override
     public Object execute(final JavaScriptSource source) {
         execute(source, null);
@@ -40,7 +44,7 @@ public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
     }
 
 
-    public void execute(final ScriptSource source, final ExecuteCallback callback) {
+    public void execute(final ScriptSource source, @Nullable final ExecuteCallback callback) {
         Runnable r = () -> {
             try {
                 Object o = LoopBasedJavaScriptEngine.super.execute((JavaScriptSource) source);

@@ -3,6 +3,8 @@ package com.stardust.autojs.core.ui.inflater.inflaters;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.util.Gravities;
 import com.stardust.autojs.core.ui.inflater.util.ValueMapper;
@@ -30,7 +32,7 @@ public class LinearLayoutInflater<V extends LinearLayout> extends ViewGroupInfla
     }
 
     @Override
-    public boolean setAttr(V view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
+    public boolean setAttr(@NonNull V view, @NonNull String attr, @NonNull String value, ViewGroup parent, Map<String, String> attrs) {
         switch (attr) {
             case "baselineAligned":
                 view.setBaselineAligned(Boolean.valueOf(value));

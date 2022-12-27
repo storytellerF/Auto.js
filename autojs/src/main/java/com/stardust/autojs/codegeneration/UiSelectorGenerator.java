@@ -4,6 +4,8 @@ import com.stardust.automator.UiGlobalSelector;
 import com.stardust.automator.UiObject;
 import com.stardust.util.Consumer;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import static com.stardust.autojs.codegeneration.CodeGenerator.FIND_ONE;
@@ -28,6 +30,7 @@ public class UiSelectorGenerator {
         mTarget = target;
     }
 
+    @Nullable
     public UiGlobalSelector generateSelector() {
         UiGlobalSelector selector = new UiGlobalSelector();
         if (mUsingId &&
@@ -70,6 +73,7 @@ public class UiSelectorGenerator {
         return null;
     }
 
+    @Nullable
     public String generateSelectorCode() {
         UiGlobalSelector selector = generateSelector();
         if (selector == null) {
@@ -101,13 +105,13 @@ public class UiSelectorGenerator {
         mSearchMode = searchMode;
     }
 
-    private boolean tryWithBooleanCondition(UiGlobalSelector selector, boolean value, Consumer<Boolean> condition) {
+    private boolean tryWithBooleanCondition(@NonNull UiGlobalSelector selector, boolean value, @NonNull Consumer<Boolean> condition) {
         condition.accept(value);
         return shouldStopGeneration(selector);
     }
 
 
-    private boolean tryWithStringCondition(UiGlobalSelector selector, String value, Consumer<String> condition) {
+    private boolean tryWithStringCondition(@NonNull UiGlobalSelector selector, @Nullable String value, @NonNull Consumer<String> condition) {
         if (value == null || value.isEmpty()) {
             return false;
         }
@@ -115,7 +119,7 @@ public class UiSelectorGenerator {
         return shouldStopGeneration(selector);
     }
 
-    private boolean shouldStopGeneration(UiGlobalSelector selector) {
+    private boolean shouldStopGeneration(@NonNull UiGlobalSelector selector) {
         if (mSearchMode == UNTIL_FIND) {
             return !selector.findAndReturnList(mRoot, 1).isEmpty();
         } else {
@@ -124,7 +128,7 @@ public class UiSelectorGenerator {
         }
     }
 
-    private boolean tryWithIntCondition(UiGlobalSelector selector, int value, Consumer<Integer> condition) {
+    private boolean tryWithIntCondition(@NonNull UiGlobalSelector selector, int value, @NonNull Consumer<Integer> condition) {
         condition.accept(value);
         return shouldStopGeneration(selector);
     }

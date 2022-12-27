@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.R;
 import com.stardust.autojs.core.ui.inflater.inflaters.Exceptions;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
@@ -23,6 +25,7 @@ public class RawWindow extends FloatyWindow {
 
     public interface RawFloaty {
 
+        @NonNull
         View inflateWindowView(FloatyService service, ViewGroup parent);
     }
 
@@ -45,6 +48,7 @@ public class RawWindow extends FloatyWindow {
         mInflateException.setAndNotify(Exceptions.NO_EXCEPTION);
     }
 
+    @NonNull
     @Override
     protected View onCreateView(FloatyService floatyService) {
         ViewGroup windowView = (ViewGroup) View.inflate(floatyService, R.layout.raw_window, null);
@@ -60,6 +64,7 @@ public class RawWindow extends FloatyWindow {
         return mContentView;
     }
 
+    @NonNull
     @Override
     protected WindowManager.LayoutParams onCreateWindowLayoutParams() {
         int flags =

@@ -2,6 +2,9 @@ package com.stardust.autojs.core.ui.xml;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.w3c.dom.Node;
 
 import java.util.HashMap;
@@ -21,18 +24,20 @@ public interface AttributeHandler {
         private AttributeHandler mDefaultHandler;
 
         @Override
-        public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
+        public boolean handle(String nodeName, @NonNull Node attr, StringBuilder layoutXml) {
             AttributeHandler handler = mHandlerMap.get(attr.getNodeName());
             if (handler == null)
                 handler = mDefaultHandler;
             return handler != null && handler.handle(nodeName, attr, layoutXml);
         }
 
+        @NonNull
         public AttrNameRouter handler(String attrName, AttributeHandler handler) {
             mHandlerMap.put(attrName, handler);
             return this;
         }
 
+        @NonNull
         public AttrNameRouter defaultHandler(AttributeHandler defaultHandler) {
             mDefaultHandler = defaultHandler;
             return this;
@@ -45,7 +50,7 @@ public interface AttributeHandler {
         private final Map<String, Map<String, String>> mAttrValueMap = new HashMap<>();
 
         @Override
-        public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
+        public boolean handle(String nodeName, @NonNull Node attr, @NonNull StringBuilder layoutXml) {
             if (!attr.getNodeName().equals("style")) {
                 layoutXml.append("android:");
             }
@@ -54,11 +59,13 @@ public interface AttributeHandler {
             return true;
         }
 
+        @NonNull
         public MappedAttributeHandler mapName(String oldAttrName, String newAttrName) {
             mAttrNameMap.put(oldAttrName, newAttrName);
             return this;
         }
 
+        @NonNull
         public MappedAttributeHandler mapValue(String attrName, String oldValue, String newValue) {
             Map<String, String> valueMap = mAttrValueMap.get(attrName);
             if (valueMap == null) {
@@ -70,6 +77,7 @@ public interface AttributeHandler {
         }
 
 
+        @Nullable
         private String mapAttrName(String nodeName, String attrName) {
             String mappedAttrName = mAttrNameMap.get(attrName);
             if (mappedAttrName == null)
@@ -89,7 +97,7 @@ public interface AttributeHandler {
     class IdHandler implements AttributeHandler {
 
         @Override
-        public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
+        public boolean handle(String nodeName, @NonNull Node attr, @NonNull StringBuilder layoutXml) {
             layoutXml.append("android:id=\"@+id/").append(attr.getNodeValue()).append("\"\n");
             return true;
         }
@@ -104,13 +112,14 @@ public interface AttributeHandler {
         }
 
         @Override
-        public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
+        public boolean handle(String nodeName, @NonNull Node attr, @NonNull StringBuilder layoutXml) {
             String dimen = convertToAndroidDimen(attr.getNodeValue());
             layoutXml.append("android:").append(mAttrName).append("=\"").append(dimen).append("\"\n");
             return true;
         }
 
-        static String convertToAndroidDimen(String dimen) {
+        @NonNull
+        static String convertToAndroidDimen(@NonNull String dimen) {
             if (dimen.equals("*")) {
                 return "match_parent";
             }
@@ -127,7 +136,7 @@ public interface AttributeHandler {
     class OrientationHandler implements AttributeHandler {
 
         @Override
-        public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
+        public boolean handle(String nodeName, @NonNull Node attr, @NonNull StringBuilder layoutXml) {
             if (attr.getNodeValue().equals("true")) {
                 layoutXml.append("android:orientation=\"vertical\"\n");
             } else if (attr.getNodeValue().equals("false")) {
@@ -148,7 +157,7 @@ public interface AttributeHandler {
         }
 
         @Override
-        public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
+        public boolean handle(String nodeName, @NonNull Node attr, @NonNull StringBuilder layoutXml) {
             String[] intervals = attr.getNodeValue().split("[ ,]");
             String[] dimens = new String[intervals.length];
             for (int i = 0; i < intervals.length; i++) {

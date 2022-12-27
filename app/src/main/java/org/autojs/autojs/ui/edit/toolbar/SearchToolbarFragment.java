@@ -20,9 +20,11 @@ public class SearchToolbarFragment extends ToolbarFragment {
 
     public static final String ARGUMENT_SHOW_REPLACE_ITEM = "show_replace_item";
 
+    @NonNull
     public static <I extends FragmentBuilder<I, SearchToolbarFragment>> FragmentBuilder<I, SearchToolbarFragment> builder() {
         return new FragmentBuilder<I, SearchToolbarFragment>() {
 
+            @NonNull
             @Override
             public SearchToolbarFragment build() {
                 SearchToolbarFragment searchToolbarFragment=new SearchToolbarFragment();
@@ -40,12 +42,13 @@ public class SearchToolbarFragment extends ToolbarFragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         boolean showReplaceItem = getArguments().getBoolean(ARGUMENT_SHOW_REPLACE_ITEM, false);
         view.findViewById(R.id.replace).setVisibility(showReplaceItem ? View.VISIBLE : View.GONE);
     }
 
+    @NonNull
     @Override
     public List<Integer> getMenuItemIds() {
         return Arrays.asList(R.id.replace, R.id.find_next, R.id.find_prev, R.id.cancel_search);

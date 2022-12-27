@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.autojs.autojs.tool.BitmapTool;
 
 /**
@@ -20,6 +23,7 @@ public class Shortcut {
     private Intent.ShortcutIconResource mIconRes;
     private boolean mDuplicate = false;
     private final Intent mLaunchIntent = new Intent();
+    @Nullable
     private Bitmap mIcon;
 
     public Shortcut(Context context) {
@@ -32,27 +36,32 @@ public class Shortcut {
         mName = name;
     }
 
+    @NonNull
     public Shortcut name(String name) {
         mName = name;
         return this;
     }
 
+    @NonNull
     public Shortcut targetPackage(String targetPackage) {
         mTargetPackage = targetPackage;
         return this;
     }
 
+    @NonNull
     public Shortcut targetClass(String targetClass) {
         mTargetClass = targetClass;
         return this;
     }
 
-    public Shortcut targetClass(Class<?> targetClass) {
+    @NonNull
+    public Shortcut targetClass(@NonNull Class<?> targetClass) {
         mTargetClass = targetClass.getName();
         return this;
     }
 
 
+    @NonNull
     public Shortcut iconRes(Intent.ShortcutIconResource icon) {
         if (mIcon != null) {
             throw new IllegalStateException("Cannot set both iconRes and icon");
@@ -61,12 +70,14 @@ public class Shortcut {
         return this;
     }
 
+    @NonNull
     public Shortcut iconRes(int resId) {
         return iconRes(Intent.ShortcutIconResource.fromContext(mContext, resId));
     }
 
 
-    public Shortcut icon(Bitmap icon) {
+    @NonNull
+    public Shortcut icon(@NonNull Bitmap icon) {
         if (mIconRes != null) {
             throw new IllegalStateException("Cannot set both iconRes and icon");
         }
@@ -83,6 +94,7 @@ public class Shortcut {
     }
 
 
+    @NonNull
     public Shortcut duplicate(boolean duplicate) {
         mDuplicate = duplicate;
         return this;
@@ -92,6 +104,7 @@ public class Shortcut {
         return mName;
     }
 
+    @Nullable
     public Bitmap getIcon() {
         return mIcon;
     }
@@ -123,6 +136,7 @@ public class Shortcut {
         return intent;
     }
 
+    @NonNull
     public Intent getLaunchIntent() {
         mLaunchIntent.setClassName(getPackageName(), getClassName());
         return mLaunchIntent;
@@ -132,11 +146,13 @@ public class Shortcut {
         mContext.sendBroadcast(getCreateIntent());
     }
 
+    @NonNull
     public Shortcut extras(Bundle bundle) {
         mLaunchIntent.putExtras(bundle);
         return this;
     }
 
+    @NonNull
     public Shortcut extras(Intent intent) {
         mLaunchIntent.putExtras(intent);
         return this;

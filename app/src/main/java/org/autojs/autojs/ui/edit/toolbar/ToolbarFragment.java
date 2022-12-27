@@ -2,6 +2,7 @@ package org.autojs.autojs.ui.edit.toolbar;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -37,11 +38,12 @@ public abstract class ToolbarFragment extends Fragment implements View.OnClickLi
     public abstract List<Integer> getMenuItemIds();
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         updateMenuItemStatus(view);
     }
 
+    @NonNull
     protected EditorView findEditorView(View view) {
         while (!(view instanceof EditorView) && view.getParent() != null) {
             view = (View) view.getParent();
@@ -53,7 +55,7 @@ public abstract class ToolbarFragment extends Fragment implements View.OnClickLi
     }
 
 
-    private void updateMenuItemStatus(View rootView) {
+    private void updateMenuItemStatus(@Nullable View rootView) {
         if (rootView == null) {
             return;
         }
@@ -71,7 +73,7 @@ public abstract class ToolbarFragment extends Fragment implements View.OnClickLi
 
 
     @Override
-    public void onClick(View view) {
+    public void onClick(@NonNull View view) {
         if (mOnMenuItemClickListener != null) {
             mOnMenuItemClickListener.onToolbarMenuItemClick(view.getId());
         }
@@ -79,7 +81,7 @@ public abstract class ToolbarFragment extends Fragment implements View.OnClickLi
 
 
     @Override
-    public boolean onLongClick(View v) {
+    public boolean onLongClick(@NonNull View v) {
         return mOnMenuItemLongClickListener != null &&
                 mOnMenuItemLongClickListener.onToolbarMenuItemLongClick(v.getId());
     }

@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
@@ -96,7 +97,7 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
     private FunctionsKeyboardHelper mFunctionsKeyboardHelper;
     private final BroadcastReceiver mOnRunFinishedReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @NonNull Intent intent) {
             if (ACTION_ON_EXECUTION_FINISHED.equals(intent.getAction())) {
                 mScriptExecutionId = ScriptExecution.NO_ID;
                 if (mDebugging) {
@@ -117,6 +118,7 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
     };
 
     private final SparseBooleanArray mMenuItemStatus = new SparseBooleanArray();
+    @Nullable
     private String mRestoredText;
     private final NormalToolbarFragment mNormalToolbar = new NormalToolbarFragment();
     private boolean mDebugging = false;
@@ -165,7 +167,7 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         return mUri;
     }
 
-    public Observable<String> handleIntent(Intent intent) {
+    public Observable<String> handleIntent(@NonNull Intent intent) {
         mName = intent.getStringExtra(EXTRA_NAME);
         return handleText(intent)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -189,7 +191,7 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         inflate.editor.setText(text);
     }
 
-    private Observable<String> handleText(Intent intent) {
+    private Observable<String> handleText(@NonNull Intent intent) {
         String path = intent.getStringExtra(EXTRA_PATH);
         String content = intent.getStringExtra(EXTRA_CONTENT);
         if (content != null) {
@@ -312,11 +314,12 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         mAutoCompletion.onCursorChange(line, cursor);
     }
 
+    @NonNull
     public DebugBar getDebugBar() {
         return inflate.debugBar;
     }
 
-    public void setTheme(Theme theme) {
+    public void setTheme(@NonNull Theme theme) {
         mEditorTheme = theme;
         inflate.editor.setTheme(theme);
         inflate.inputMethodEnhanceBar.setBackgroundColor(theme.getImeBarBackgroundColor());
@@ -367,7 +370,9 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         compositeDisposable.add(subscribe);
     }
 
+    @NonNull
     CompositeDisposable compositeDisposable=new CompositeDisposable();
+    @NonNull
     public ScriptExecution run(boolean showMessage) {
         if (showMessage) {
             Snackbar.make(this, R.string.text_start_running, Snackbar.LENGTH_SHORT).show();
@@ -405,7 +410,7 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         doWithCurrentEngine(ScriptEngine::forceStop);
     }
 
-    private void doWithCurrentEngine(Callback<ScriptEngine> callback) {
+    private void doWithCurrentEngine(@NonNull Callback<ScriptEngine> callback) {
         ScriptExecution execution = AutoJs.getInstance().getScriptEngineService().getScriptExecution(mScriptExecutionId);
         if (execution != null) {
             ScriptEngine engine = execution.getEngine();
@@ -444,6 +449,7 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
                 .commitAllowingStateLoss();
     }
 
+    @NonNull
     FragmentActivity getActivity() {
         Context context = getContext();
         while (!(context instanceof Activity) && context instanceof ContextWrapper) {
@@ -502,7 +508,7 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         inflate.editor.getCodeEditText().setTextSize(value);
     }
 
-    private void selectEditorTheme(List<Theme> themes) {
+    private void selectEditorTheme(@NonNull List<Theme> themes) {
         int i = themes.indexOf(mEditorTheme);
         if (i < 0) {
             i = 0;
@@ -518,11 +524,12 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
                 .show();
     }
 
+    @NonNull
     public CodeEditor getEditor() {
         return inflate.editor;
     }
 
-    public void find(String keywords, boolean usingRegex) throws CodeEditor.CheckedPatternSyntaxException {
+    public void find(@NonNull String keywords, boolean usingRegex) throws CodeEditor.CheckedPatternSyntaxException {
         inflate.editor.find(keywords, usingRegex);
         showSearchToolbar(false);
     }
@@ -537,12 +544,12 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
                 .commit();
     }
 
-    public void replace(String keywords, String replacement, boolean usingRegex) throws CodeEditor.CheckedPatternSyntaxException {
+    public void replace(@NonNull String keywords, String replacement, boolean usingRegex) throws CodeEditor.CheckedPatternSyntaxException {
         inflate.editor.replace(keywords, replacement, usingRegex);
         showSearchToolbar(true);
     }
 
-    public void replaceAll(String keywords, String replacement, boolean usingRegex) throws CodeEditor.CheckedPatternSyntaxException {
+    public void replaceAll(String keywords, @NonNull String replacement, boolean usingRegex) throws CodeEditor.CheckedPatternSyntaxException {
         inflate.editor.replaceAll(keywords, replacement, usingRegex);
     }
 
@@ -578,13 +585,13 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
     }
 
     @Override
-    public void onHintClick(CodeCompletions completions, int pos) {
+    public void onHintClick(@NonNull CodeCompletions completions, int pos) {
         CodeCompletion completion = completions.get(pos);
         inflate.editor.insert(completion.getInsertText());
     }
 
     @Override
-    public void onHintLongClick(CodeCompletions completions, int pos) {
+    public void onHintLongClick(@NonNull CodeCompletions completions, int pos) {
         CodeCompletion completion = completions.get(pos);
         if (completion.getUrl() == null)
             return;
@@ -604,12 +611,12 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
     }
 
     @Override
-    public void onModuleLongClick(Module module) {
+    public void onModuleLongClick(@NonNull Module module) {
         showManual(module.getUrl(), module.getName());
     }
 
     @Override
-    public void onPropertyClick(Module m, Property property) {
+    public void onPropertyClick(@NonNull Module m, @NonNull Property property) {
         String p = property.getKey();
         if (!property.isVariable()) {
             p = p + "()";
@@ -626,7 +633,7 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
     }
 
     @Override
-    public void onPropertyLongClick(Module m, Property property) {
+    public void onPropertyLongClick(@NonNull Module m, @NonNull Property property) {
         if (TextUtils.isEmpty(property.getUrl())) {
             showManual(m.getUrl(), property.getKey());
         } else {

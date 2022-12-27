@@ -15,6 +15,7 @@ import com.stardust.util.ViewUtil;
 
 public abstract class Fragment extends androidx.fragment.app.Fragment {
 
+    @Nullable
     private View mView;
 
     @NonNull

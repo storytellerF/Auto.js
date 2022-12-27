@@ -6,6 +6,9 @@
 
 package com.stardust.autojs.rhino;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.mozilla.javascript.Kit;
 import org.mozilla.javascript.ObjToIntMap;
 import org.mozilla.javascript.Token;
@@ -18,7 +21,7 @@ public  class TokenStream {
 	public static final double NaN = Double
 			.longBitsToDouble(0x7ff8000000000000L);
 
-	static double stringToNumber(String s, int start, int radix) {
+	static double stringToNumber(@NonNull String s, int start, int radix) {
 		char digitMax = '9';
 		char lowerCaseBound = 'a';
 		char upperCaseBound = 'A';
@@ -176,7 +179,7 @@ public  class TokenStream {
 
 	private final static char BYTE_ORDER_MARK = '\uFEFF';
 
-	public TokenStream(Reader sourceReader, String sourceString, int lineno) {
+	public TokenStream(@Nullable Reader sourceReader, @Nullable String sourceString, int lineno) {
 		this.lineno = lineno;
 		if (sourceReader != null) {
 			if (sourceString != null)
@@ -198,7 +201,8 @@ public  class TokenStream {
 	 * TokenStream; if getToken has been called since the passed token was
 	 * scanned, the op or string printed may be incorrect.
 	 */
-	String tokenToString(int token) {
+    @NonNull
+    String tokenToString(int token) {
 		if (Token.printTrees) {
 			String name = Token.name(token);
 
@@ -909,7 +913,8 @@ public  class TokenStream {
 		return id & 0xff;
 	}
 
-	final String getSourceString() {
+	@Nullable
+    final String getSourceString() {
 		return sourceString;
 	}
 
@@ -917,7 +922,8 @@ public  class TokenStream {
 		return lineno;
 	}
 
-	final String getString() {
+	@Nullable
+    final String getString() {
 		return string;
 	}
 
@@ -1600,7 +1606,8 @@ public  class TokenStream {
 				- reEnd);
 	}
 
-	String readAndClearRegExpFlags() {
+	@Nullable
+    String readAndClearRegExpFlags() {
 		String flags = this.regExpFlags;
 		this.regExpFlags = null;
 		return flags;
@@ -1875,7 +1882,8 @@ public  class TokenStream {
 		return false;
 	}
 
-	private String getStringFromBuffer() {
+	@NonNull
+    private String getStringFromBuffer() {
 		tokenEnd = cursor;
 		return new String(stringBuffer, 0, stringBufferTop);
 	}
@@ -2079,7 +2087,8 @@ public  class TokenStream {
 		}
 	}
 
-	private final String substring(int beginIndex, int endIndex) {
+	@NonNull
+    private final String substring(int beginIndex, int endIndex) {
 		if (sourceString != null) {
 			return sourceString.substring(beginIndex, endIndex);
 		} else {
@@ -2097,7 +2106,8 @@ public  class TokenStream {
 		return c == '\n' || c == '\r' || c == 0x2028 || c == 0x2029;
 	}
 
-	final String getLine() {
+	@NonNull
+    final String getLine() {
 		int lineEnd = sourceCursor;
 		if (lineEndChar >= 0) {
 			// move cursor before newline sequence
@@ -2119,7 +2129,8 @@ public  class TokenStream {
 		return substring(lineStart, lineEnd);
 	}
 
-	final String getLine(int position, int[] linep) {
+	@Nullable
+    final String getLine(int position, @NonNull int[] linep) {
 		assert position >= 0 && position <= cursor;
 		assert linep.length == 2;
 		int delta = (cursor + ungetCursor) - position;
@@ -2227,7 +2238,8 @@ public  class TokenStream {
 		return commentCursor != -1;
 	}
 
-	final String getAndResetCurrentComment() {
+	@NonNull
+    final String getAndResetCurrentComment() {
 		if (sourceString != null) {
 			if (isMarkingComment())
 				org.mozilla.javascript.Kit.codeBug();
@@ -2243,7 +2255,8 @@ public  class TokenStream {
 		}
 	}
 
-	private String convertLastCharToHex(String str) {
+	@NonNull
+    private String convertLastCharToHex(@NonNull String str) {
 		int lastIndex = str.length() - 1;
 		StringBuilder buf = new StringBuilder(str.substring(0, lastIndex));
 		buf.append("\\u");
@@ -2258,13 +2271,15 @@ public  class TokenStream {
 	// stuff other than whitespace since start of line
 	private boolean dirtyLine;
 
-	String regExpFlags;
+	@Nullable
+    String regExpFlags;
 
 	// Set this to an initial non-null value so that the Parser has
 	// something to retrieve even if an error has occurred and no
 	// string is found. Fosters one class of error, but saves lots of
 	// code.
-	private String string = "";
+	@Nullable
+    private String string = "";
 	private double number;
 	private boolean isBinary;
 	private boolean isOldOctal;
@@ -2274,7 +2289,8 @@ public  class TokenStream {
 	// delimiter for last string literal scanned
 	private int quoteChar;
 
-	private char[] stringBuffer = new char[128];
+	@NonNull
+    private char[] stringBuffer = new char[128];
 	private int stringBufferTop;
 	private final ObjToIntMap allStrings = new ObjToIntMap(50);
 
@@ -2288,8 +2304,10 @@ public  class TokenStream {
 	private int lineEndChar = -1;
 	int lineno;
 
-	private String sourceString;
-	private Reader sourceReader;
+	@Nullable
+    private String sourceString;
+	@Nullable
+    private Reader sourceReader;
 	private char[] sourceBuffer;
 	private int sourceEnd;
 

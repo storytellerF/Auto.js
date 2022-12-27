@@ -1,5 +1,7 @@
 package com.stardust.util;
 
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class MapBuilder<K, V> {
         mMap = map;
     }
 
+    @NonNull
     public MapBuilder<K, V> put(K key, V value) {
         mMap.put(key, value);
         return this;
@@ -28,7 +31,8 @@ public class MapBuilder<K, V> {
         return mMap;
     }
 
-    public Map<K, V> putIn(Map<K, V> map) {
+    @NonNull
+    public Map<K, V> putIn(@NonNull Map<K, V> map) {
         map.putAll(mMap);
         return map;
     }

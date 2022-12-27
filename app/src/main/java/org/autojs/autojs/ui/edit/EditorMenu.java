@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.stardust.autojs.script.JavaScriptSource;
@@ -38,17 +40,18 @@ import io.reactivex.disposables.Disposable;
 @SuppressLint("CheckResult")
 public class EditorMenu {
 
+    @NonNull
     private final EditorView mEditorView;
     private final Context mContext;
     private final CodeEditor mEditor;
 
-    public EditorMenu(EditorView editorView) {
+    public EditorMenu(@NonNull EditorView editorView) {
         mEditorView = editorView;
         mContext = editorView.getContext();
         mEditor = editorView.getEditor();
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_log) {
             showLog();
@@ -70,7 +73,7 @@ public class EditorMenu {
         }
     }
 
-    private boolean onDebugOptionsSelected(MenuItem item) {
+    private boolean onDebugOptionsSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_breakpoint) {
             mEditor.addOrRemoveBreakpointAtCurrentLine();
@@ -90,7 +93,7 @@ public class EditorMenu {
         return false;
     }
 
-    private boolean onJumpOptionsSelected(MenuItem item) {
+    private boolean onJumpOptionsSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_jump_to_line) {
             jumpToLine();
@@ -112,7 +115,7 @@ public class EditorMenu {
     }
 
 
-    private boolean onMoreOptionsSelected(MenuItem item) {
+    private boolean onMoreOptionsSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_console) {
             showConsole();
@@ -151,9 +154,10 @@ public class EditorMenu {
                 );
         compositeDisposable.add(subscribe);
     }
+    @NonNull
     CompositeDisposable compositeDisposable=new CompositeDisposable();
 
-    private void showClassSearchingItem(MaterialDialog dialog, ClassSearchingItem item) {
+    private void showClassSearchingItem(@NonNull MaterialDialog dialog, ClassSearchingItem item) {
         String title;
         String desc;
         if (item instanceof ClassSearchingItem.ClassItem) {
@@ -194,7 +198,7 @@ public class EditorMenu {
     }
 
 
-    private boolean onEditOptionsSelected(MenuItem item) {
+    private boolean onEditOptionsSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_find_or_replace) {
             findOrReplace();
@@ -254,7 +258,7 @@ public class EditorMenu {
         compositeDisposable.add(subscribe);
     }
 
-    private void showInfo(String info) {
+    private void showInfo(@NonNull String info) {
         new ThemeColorMaterialDialogBuilder(mContext)
                 .title(R.string.text_info)
                 .content(info)

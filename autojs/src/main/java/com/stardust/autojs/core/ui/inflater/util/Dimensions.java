@@ -7,6 +7,9 @@ import android.view.InflateException;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +32,7 @@ public class Dimensions {
 
     private static final Pattern DIMENSION_PATTERN = Pattern.compile("([+-]?[0-9.]+)([a-zA-Z]*)");
 
-    public static int parseToPixel(String dimension, View view, ViewGroup parent, boolean horizontal) {
+    public static int parseToPixel(@NonNull String dimension, @NonNull View view, @Nullable ViewGroup parent, boolean horizontal) {
         if (dimension.endsWith("%") && parent != null) {
             float pct = Float.parseFloat(dimension.substring(0, dimension.length() - 1)) / 100.0f;
             return (int) (pct * (horizontal ? parent.getMeasuredWidth() : parent.getMeasuredHeight()));
@@ -37,15 +40,15 @@ public class Dimensions {
         return parseToIntPixel(dimension, view.getContext());
     }
 
-    public static float parseToPixel(String dimension, View view) {
+    public static float parseToPixel(@NonNull String dimension, @NonNull View view) {
         return parseToPixel(dimension, view.getContext());
     }
 
-    public static float parseToPixel(View view, String dimension) {
+    public static float parseToPixel(@NonNull View view, @NonNull String dimension) {
         return parseToPixel(dimension, view.getContext());
     }
 
-    public static float parseToPixel(String dimension, Context context) {
+    public static float parseToPixel(@NonNull String dimension, @NonNull Context context) {
         if (dimension.startsWith("?")) {
             int[] attr = {context.getResources().getIdentifier(dimension.substring(1), "attr",
                     context.getPackageName())};
@@ -63,15 +66,16 @@ public class Dimensions {
         return TypedValue.applyDimension(unit, value, context.getResources().getDisplayMetrics());
     }
 
-    public static int parseToIntPixel(String value, View view) {
+    public static int parseToIntPixel(@NonNull String value, @NonNull View view) {
         return Math.round(parseToPixel(value, view));
     }
 
-    public static int parseToIntPixel(String value, Context context) {
+    public static int parseToIntPixel(@NonNull String value, @NonNull Context context) {
         return Math.round(parseToPixel(value, context));
     }
 
-    public static int[] parseToIntPixelArray(View view, String value) {
+    @NonNull
+    public static int[] parseToIntPixelArray(@NonNull View view, @NonNull String value) {
         String[] split = value.split(" ");
         int[] pixels = new int[4];
         for (int i = 0; i < split.length; i++) {

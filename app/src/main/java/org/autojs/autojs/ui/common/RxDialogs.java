@@ -2,6 +2,8 @@ package org.autojs.autojs.ui.common;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.R;
 import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 
@@ -15,7 +17,8 @@ import io.reactivex.subjects.PublishSubject;
 public class RxDialogs {
 
 
-    public static Observable<Boolean> confirm(Context context, String text) {
+    @NonNull
+    public static Observable<Boolean> confirm(@NonNull Context context, @NonNull String text) {
         PublishSubject<Boolean> subject = PublishSubject.create();
         new ThemeColorMaterialDialogBuilder(context)
                 .positiveText(R.string.ok)
@@ -27,7 +30,8 @@ public class RxDialogs {
         return subject;
     }
 
-    public static Observable<Boolean> confirm(Context context, int res) {
+    @NonNull
+    public static Observable<Boolean> confirm(@NonNull Context context, int res) {
         return confirm(context, context.getString(res));
     }
 

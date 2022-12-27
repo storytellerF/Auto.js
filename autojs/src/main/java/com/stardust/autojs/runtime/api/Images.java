@@ -12,6 +12,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import android.util.Base64;
@@ -58,11 +60,14 @@ public class Images {
     private final ScreenCaptureRequester mScreenCaptureRequester;
     private ScreenCapturer mScreenCapturer;
     private final Context mContext;
+    @Nullable
     private Image mPreCapture;
+    @Nullable
     private ImageWrapper mPreCaptureImage;
     private final ScreenMetrics mScreenMetrics;
     private volatile boolean mOpenCvInitialized = false;
 
+    @NonNull
     @ScriptVariable
     public final ColorFinder colorFinder;
 
@@ -74,6 +79,7 @@ public class Images {
         colorFinder = new ColorFinder(mScreenMetrics);
     }
 
+    @NonNull
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public ScriptPromiseAdapter requestScreenCapture(int orientation) {
         ScriptRuntime.requiresApi(21);
@@ -97,6 +103,7 @@ public class Images {
         return promiseAdapter;
     }
 
+    @Nullable
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public synchronized ImageWrapper captureScreen() {
         ScriptRuntime.requiresApi(21);
@@ -126,11 +133,12 @@ public class Images {
         return false;
     }
 
-    public ImageWrapper copy(ImageWrapper image) {
+    @NonNull
+    public ImageWrapper copy(@NonNull ImageWrapper image) {
         return image.clone();
     }
 
-    public boolean save(ImageWrapper image, String path, String format, int quality) throws IOException {
+    public boolean save(@NonNull ImageWrapper image, String path, @NonNull String format, int quality) throws IOException {
         Bitmap.CompressFormat compressFormat = parseImageFormat(format);
         if (compressFormat == null)
             throw new IllegalArgumentException("unknown format " + format);
@@ -139,13 +147,14 @@ public class Images {
         return bitmap.compress(compressFormat, quality, outputStream);
     }
 
-    public static int pixel(ImageWrapper image, int x, int y) {
+    public static int pixel(@Nullable ImageWrapper image, int x, int y) {
         if (image == null) {
             throw new NullPointerException("image = null");
         }
         return image.pixel(x, y);
     }
 
+    @Nullable
     public static ImageWrapper concat(ImageWrapper img1, ImageWrapper img2, int direction) {
         if (!Arrays.asList(Gravity.LEFT, Gravity.RIGHT, Gravity.TOP, Gravity.BOTTOM).contains(direction)) {
             throw new IllegalArgumentException("unknown direction " + direction);
@@ -177,31 +186,36 @@ public class Images {
         return ImageWrapper.ofBitmap(bitmap);
     }
 
-    public ImageWrapper rotate(ImageWrapper img, float x, float y, float degree) {
+    @Nullable
+    public ImageWrapper rotate(@NonNull ImageWrapper img, float x, float y, float degree) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree, x, y);
         return ImageWrapper.ofBitmap(Bitmap.createBitmap(img.getBitmap(), 0, 0, img.getWidth(), img.getHeight(), matrix, true));
     }
 
-    public ImageWrapper clip(ImageWrapper img, int x, int y, int w, int h) {
+    @Nullable
+    public ImageWrapper clip(@NonNull ImageWrapper img, int x, int y, int w, int h) {
         return ImageWrapper.ofBitmap(Bitmap.createBitmap(img.getBitmap(), x, y, w, h));
     }
 
+    @Nullable
     public ImageWrapper read(String path) {
         path = mScriptRuntime.files.path(path);
         Bitmap bitmap = BitmapFactory.decodeFile(path);
         return ImageWrapper.ofBitmap(bitmap);
     }
 
-    public ImageWrapper fromBase64(String data) {
+    @Nullable
+    public ImageWrapper fromBase64(@NonNull String data) {
         return ImageWrapper.ofBitmap(Drawables.loadBase64Data(data));
     }
 
-    public String toBase64(ImageWrapper wrapper, String format, int quality) {
+    public String toBase64(@NonNull ImageWrapper wrapper, @NonNull String format, int quality) {
         return Base64.encodeToString(toBytes(wrapper, format, quality), Base64.NO_WRAP);
     }
 
-    public byte[] toBytes(ImageWrapper wrapper, String format, int quality) {
+    @NonNull
+    public byte[] toBytes(@NonNull ImageWrapper wrapper, @NonNull String format, int quality) {
         Bitmap.CompressFormat compressFormat = parseImageFormat(format);
         if (compressFormat == null)
             throw new IllegalArgumentException("unknown format " + format);
@@ -211,11 +225,13 @@ public class Images {
         return outputStream.toByteArray();
     }
 
-    public ImageWrapper fromBytes(byte[] bytes) {
+    @Nullable
+    public ImageWrapper fromBytes(@NonNull byte[] bytes) {
         return ImageWrapper.ofBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
     }
 
-    private Bitmap.CompressFormat parseImageFormat(String format) {
+    @Nullable
+    private Bitmap.CompressFormat parseImageFormat(@NonNull String format) {
         switch (format) {
             case "png":
                 return Bitmap.CompressFormat.PNG;
@@ -228,6 +244,7 @@ public class Images {
         return null;
     }
 
+    @Nullable
     public ImageWrapper load(String src) {
         try {
             URL url = new URL(src);
@@ -242,7 +259,7 @@ public class Images {
         }
     }
 
-    public static void saveBitmap(Bitmap bitmap, String path) {
+    public static void saveBitmap(@NonNull Bitmap bitmap, String path) {
         try {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(path));
         } catch (FileNotFoundException e) {
@@ -250,7 +267,8 @@ public class Images {
         }
     }
 
-    public static Bitmap scaleBitmap(Bitmap origin, int newWidth, int newHeight) {
+    @Nullable
+    public static Bitmap scaleBitmap(@Nullable Bitmap origin, int newWidth, int newHeight) {
         if (origin == null) {
             return null;
         }
@@ -269,19 +287,23 @@ public class Images {
         }
     }
 
+    @Nullable
     public Point findImage(ImageWrapper image, ImageWrapper template) {
         return findImage(image, template, 0.9f, null);
     }
 
+    @Nullable
     public Point findImage(ImageWrapper image, ImageWrapper template, float threshold) {
         return findImage(image, template, threshold, null);
     }
 
+    @Nullable
     public Point findImage(ImageWrapper image, ImageWrapper template, float threshold, Rect rect) {
         return findImage(image, template, 0.7f, threshold, rect, TemplateMatching.MAX_LEVEL_AUTO);
     }
 
-    public Point findImage(ImageWrapper image, ImageWrapper template, float weakThreshold, float threshold, Rect rect, int maxLevel) {
+    @Nullable
+    public Point findImage(@Nullable ImageWrapper image, @Nullable ImageWrapper template, float weakThreshold, float threshold, @Nullable Rect rect, int maxLevel) {
         initOpenCvIfNeeded();
         if (image == null)
             throw new NullPointerException("image = null");
@@ -307,7 +329,8 @@ public class Images {
         return point;
     }
 
-    public List<TemplateMatching.Match> matchTemplate(ImageWrapper image, ImageWrapper template, float weakThreshold, float threshold, Rect rect, int maxLevel, int limit) {
+    @NonNull
+    public List<TemplateMatching.Match> matchTemplate(@Nullable ImageWrapper image, @Nullable ImageWrapper template, float weakThreshold, float threshold, @Nullable Rect rect, int maxLevel, int limit) {
         initOpenCvIfNeeded();
         if (image == null)
             throw new NullPointerException("image = null");
@@ -334,11 +357,13 @@ public class Images {
         return result;
     }
 
+    @NonNull
     public Mat newMat() {
         return new Mat();
     }
 
-    public Mat newMat(Mat mat, Rect roi) {
+    @NonNull
+    public Mat newMat(@NonNull Mat mat, @NonNull Rect roi) {
         return new Mat(mat, roi);
     }
 

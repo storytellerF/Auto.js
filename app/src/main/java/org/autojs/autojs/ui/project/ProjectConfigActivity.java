@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
@@ -61,8 +62,10 @@ public class ProjectConfigActivity extends BaseActivity {
     private Bitmap mIconBitmap;
     private ActivityProjectConfigBinding inflate;
 
+    @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context mContext) {
         return new ActivityIntentBuilder<I>(mContext, ProjectConfigActivity.class) {
+            @Nullable
             @Override
             public PostActivityStarter startForResult(int requestCode) {
                 context.startActivity(intent);
@@ -151,6 +154,7 @@ public class ProjectConfigActivity extends BaseActivity {
         }
 
     }
+    @NonNull
     CompositeDisposable compositeDisposable=new CompositeDisposable();
     @SuppressLint("CheckResult")
     private void saveProjectConfig() {
@@ -213,7 +217,7 @@ public class ProjectConfigActivity extends BaseActivity {
         return inputValid;
     }
 
-    private boolean checkPackageNameValid(EditText editText) {
+    private boolean checkPackageNameValid(@NonNull EditText editText) {
         Editable text = editText.getText();
         String hint = ((TextInputLayout) editText.getParent().getParent()).getHint().toString();
         if(TextUtils.isEmpty(text)){
@@ -228,7 +232,7 @@ public class ProjectConfigActivity extends BaseActivity {
 
     }
 
-    private boolean checkNotEmpty(EditText editText) {
+    private boolean checkNotEmpty(@NonNull EditText editText) {
         if (!TextUtils.isEmpty(editText.getText()))
             return true;
         // TODO: 2017/12/8 more beautiful ways?
@@ -240,7 +244,7 @@ public class ProjectConfigActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;
@@ -256,7 +260,7 @@ public class ProjectConfigActivity extends BaseActivity {
     }
 
     @SuppressLint("CheckResult")
-    private Observable<String> saveIcon(Bitmap b) {
+    private Observable<String> saveIcon(@NonNull Bitmap b) {
         return Observable.just(b)
                 .map(bitmap -> {
                     String iconPath = mProjectConfig.getIcon();

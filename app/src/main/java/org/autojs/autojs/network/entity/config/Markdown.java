@@ -1,5 +1,7 @@
 package org.autojs.autojs.network.entity.config;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Markdown{
@@ -26,7 +28,8 @@ public class Markdown{
 		return theme;
 	}
 
-	@Override
+	@NonNull
+    @Override
  	public String toString(){
 		return 
 			"Markdown{" + 

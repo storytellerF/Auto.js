@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.stardust.autojs.core.console.ConsoleImpl;
@@ -20,6 +21,7 @@ public class LogActivity extends BaseActivity {
     private ConsoleImpl mConsoleImpl;
     private ActivityLogBinding inflate;
 
+    @NonNull
     public static IntentWrapper intent(Context mainActivity) {
         return new IntentWrapper(mainActivity,new Intent(mainActivity,LogActivity.class));
     }

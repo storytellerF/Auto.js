@@ -1,5 +1,7 @@
 package org.autojs.autojs.ui.edit.editor;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Stardust on 2018/2/25.
  */
@@ -14,7 +16,7 @@ public class BracketMatching {
     private static final char[] PAIR_RIGHT = {')', '}', ')'};
 
 
-    public static int bracketMatching(CharSequence text, int index) {
+    public static int bracketMatching(@NonNull CharSequence text, int index) {
         char ch = text.charAt(index);
         for (int i = 0; i < PAIR_LEFT.length; i++) {
             if (PAIR_LEFT[i] == ch) {
@@ -29,7 +31,7 @@ public class BracketMatching {
         return BRACKET_NOT_FOUND;
     }
 
-    public static int findLeftBracket(CharSequence text, int index, char left, char right) {
+    public static int findLeftBracket(@NonNull CharSequence text, int index, char left, char right) {
         int rightBracketCount = 0;
         for (int i = index; i >= 0; i--) {
             char ch = text.charAt(i);
@@ -45,7 +47,7 @@ public class BracketMatching {
         return UNMATCHED_BRACKET;
     }
 
-    public static int findRightBracket(CharSequence text, int index, char left, char right) {
+    public static int findRightBracket(@NonNull CharSequence text, int index, char left, char right) {
         int leftBracketCount = 0;
         for (int i = index; i < text.length(); i++) {
             char ch = text.charAt(i);

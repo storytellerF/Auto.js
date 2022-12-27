@@ -3,6 +3,8 @@ package com.stardust.autojs.core.ui.widget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.widget.EditText;
@@ -31,6 +33,7 @@ public class JsEditText extends EditText {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    @NonNull
     public String text() {
         return getText().toString();
     }

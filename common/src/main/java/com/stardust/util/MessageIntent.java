@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.HashMap;
 
 /**
@@ -37,6 +40,7 @@ public class MessageIntent extends Intent {
         super(action, uri, packageContext, cls);
     }
 
+    @NonNull
     public MessageIntent putExtra(String key, Object value) {
         if (mObjectExtras == null) {
             mObjectExtras = new HashMap<>();
@@ -45,6 +49,7 @@ public class MessageIntent extends Intent {
         return this;
     }
 
+    @Nullable
     public Object getObjectExtra(String key) {
         return mObjectExtras.get(key);
     }

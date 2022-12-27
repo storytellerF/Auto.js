@@ -1,6 +1,8 @@
 package com.stardust.autojs;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.stardust.autojs.engine.JavaScriptEngine;
@@ -42,7 +44,7 @@ public class ScriptEngineService {
     private static final EventBus EVENT_BUS = new EventBus();
     private static final ScriptExecutionListener GLOBAL_LISTENER = new SimpleScriptExecutionListener() {
         @Override
-        public void onStart(ScriptExecution execution) {
+        public void onStart(@NonNull ScriptExecution execution) {
             if (execution.getEngine() instanceof JavaScriptEngine) {
                 ((JavaScriptEngine) execution.getEngine()).getRuntime()
                         .console.setTitle(execution.getSource().getName());
@@ -60,7 +62,7 @@ public class ScriptEngineService {
         }
 
         @Override
-        public void onException(ScriptExecution execution, Throwable e) {
+        public void onException(@NonNull ScriptExecution execution, @NonNull Throwable e) {
             e.printStackTrace();
             onFinish(execution);
             String message = null;
@@ -95,7 +97,7 @@ public class ScriptEngineService {
     private final EngineLifecycleObserver mEngineLifecycleObserver = new EngineLifecycleObserver() {
 
         @Override
-        public void onEngineRemove(ScriptEngine engine) {
+        public void onEngineRemove(@NonNull ScriptEngine engine) {
             mScriptExecutions.remove(engine.getId());
             super.onEngineRemove(engine);
         }
@@ -103,7 +105,7 @@ public class ScriptEngineService {
     private final ScriptExecutionObserver mScriptExecutionObserver = new ScriptExecutionObserver();
     private final LinkedHashMap<Integer, ScriptExecution> mScriptExecutions = new LinkedHashMap<>();
 
-    ScriptEngineService(ScriptEngineServiceBuilder builder) {
+    ScriptEngineService(@NonNull ScriptEngineServiceBuilder builder) {
         mUiHandler = builder.mUiHandler;
         mContext = mUiHandler.getContext();
         mScriptEngineManager = builder.mScriptEngineManager;
@@ -135,13 +137,14 @@ public class ScriptEngineService {
         return mScriptExecutionObserver.removeScriptExecutionListener(listener);
     }
 
-    public ScriptExecution execute(ScriptExecutionTask task) {
+    @NonNull
+    public ScriptExecution execute(@NonNull ScriptExecutionTask task) {
         ScriptExecution execution = executeInternal(task);
         mScriptExecutions.put(execution.getId(), execution);
         return execution;
     }
 
-    private ScriptExecution executeInternal(ScriptExecutionTask task) {
+    private ScriptExecution executeInternal(@NonNull ScriptExecutionTask task) {
         if (task.getListener() != null) {
             task.setExecutionListener(new ScriptExecutionObserver.Wrapper(mScriptExecutionObserver, task.getListener()));
         } else {
@@ -164,16 +167,18 @@ public class ScriptEngineService {
         return r;
     }
 
+    @NonNull
     public ScriptExecution execute(ScriptSource source, ScriptExecutionListener listener, ExecutionConfig config) {
         return execute(new ScriptExecutionTask(source, listener, config));
     }
 
+    @NonNull
     public ScriptExecution execute(ScriptSource source, ExecutionConfig config) {
         return execute(new ScriptExecutionTask(source, null, config));
     }
 
     @Subscribe
-    public void onScriptExecution(ScriptExecutionEvent event) {
+    public void onScriptExecution(@NonNull ScriptExecutionEvent event) {
         if (event.getCode() == ScriptExecutionEvent.ON_START) {
             mGlobalConsole.verbose(mContext.getString(R.string.text_start_running) + "[" + event.getMessage() + "]");
         } else if (event.getCode() == ScriptExecutionEvent.ON_EXCEPTION) {
@@ -192,10 +197,12 @@ public class ScriptEngineService {
             mUiHandler.toast(String.format(mContext.getString(R.string.text_already_stop_n_scripts), n));
     }
 
+    @NonNull
     public Set<ScriptEngine> getEngines() {
         return mScriptEngineManager.getEngines();
     }
 
+    @NonNull
     public Collection<ScriptExecution> getScriptExecutions() {
         return mScriptExecutions.values();
     }

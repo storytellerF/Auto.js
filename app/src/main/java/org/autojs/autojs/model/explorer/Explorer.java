@@ -1,5 +1,6 @@
 package org.autojs.autojs.model.explorer;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.LruCache;
 
@@ -34,12 +35,12 @@ public class Explorer {
         return mExplorerProvider;
     }
 
-    public void notifyChildrenChanged(ExplorerPage page) {
+    public void notifyChildrenChanged(@NonNull ExplorerPage page) {
         clearCache(page);
         mEventBus.post(new ExplorerChangeEvent(page, CHILDREN_CHANGE, null));
     }
 
-    public void notifyItemChanged(ExplorerItem oldItem, ExplorerItem newItem) {
+    public void notifyItemChanged(@NonNull ExplorerItem oldItem, ExplorerItem newItem) {
         ExplorerPage parent = getParent(oldItem);
         ExplorerPage cachedParent = getFromCache(parent);
         if (cachedParent != null) {
@@ -48,19 +49,21 @@ public class Explorer {
         mEventBus.post(new ExplorerChangeEvent(parent, CHANGE, oldItem, newItem));
     }
 
-    private ExplorerPage getFromCache(ExplorerPage parent) {
+    @Nullable
+    private ExplorerPage getFromCache(@Nullable ExplorerPage parent) {
         if(mExplorerPageLruCache == null || parent == null){
             return null;
         }
         return mExplorerPageLruCache.get(parent.getPath());
     }
 
-    private ExplorerPage getParentFromCache(ExplorerItem item) {
+    @Nullable
+    private ExplorerPage getParentFromCache(@NonNull ExplorerItem item) {
         return getFromCache(getParent(item));
     }
 
 
-    public void notifyItemRemoved(ExplorerItem item) {
+    public void notifyItemRemoved(@NonNull ExplorerItem item) {
         ExplorerPage parent = getParent(item);
         ExplorerPage cachedParent = getFromCache(parent);
         if (cachedParent != null) {
@@ -69,7 +72,8 @@ public class Explorer {
         mEventBus.post(new ExplorerChangeEvent(parent, REMOVE, item));
     }
 
-    private ExplorerPage getParent(ExplorerItem item) {
+    @Nullable
+    private ExplorerPage getParent(@NonNull ExplorerItem item) {
         ExplorerPage parent = item.getParent();
         if (parent == null) {
             if (item instanceof ExplorerFileItem) {
@@ -81,7 +85,7 @@ public class Explorer {
         return parent;
     }
 
-    public void notifyItemCreated(ExplorerItem item) {
+    public void notifyItemCreated(@NonNull ExplorerItem item) {
         ExplorerPage parent = getParent(item);
         ExplorerPage cachedParent = getFromCache(parent);
         if (cachedParent != null) {
@@ -98,7 +102,8 @@ public class Explorer {
     }
 
 
-    public Single<ExplorerPage> fetchChildren(ExplorerPage page) {
+    @NonNull
+    public Single<ExplorerPage> fetchChildren(@NonNull ExplorerPage page) {
         ExplorerPage cachedGroup = mExplorerPageLruCache == null ? null : mExplorerPageLruCache.get(page.getPath());
         if (cachedGroup != null) {
             page.copyChildren(cachedGroup);
@@ -114,7 +119,7 @@ public class Explorer {
                 });
     }
 
-    private void clearCache(ExplorerPage item) {
+    private void clearCache(@NonNull ExplorerPage item) {
         if (mExplorerPageLruCache != null)
             mExplorerPageLruCache.remove(item.getPath());
     }

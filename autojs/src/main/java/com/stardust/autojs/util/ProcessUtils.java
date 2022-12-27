@@ -2,6 +2,8 @@ package com.stardust.autojs.util;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.autojs.core.util.ProcessShell;
 
 import java.lang.reflect.Field;
@@ -15,7 +17,7 @@ public class ProcessUtils {
 
     private static final String LOG_TAG = "ProcessUtils";
 
-    public static int getProcessPid(Process process) {
+    public static int getProcessPid(@NonNull Process process) {
         try {
             Field pid = process.getClass().getDeclaredField("pid");
             pid.setAccessible(true);

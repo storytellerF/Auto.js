@@ -89,6 +89,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
     private final DrawerMenuItem mUsageStatsPermissionItem = new DrawerMenuItem(R.drawable.ic_ali_notification, R.string.text_usage_stats_permission, 0, this::goToUsageStatsSettings);
     private final DrawerMenuItem mForegroundServiceItem = new DrawerMenuItem(R.drawable.ic_service_green, R.string.text_foreground_service, R.string.key_foreground_servie, this::toggleForegroundService);
     private final CommunityDrawerMenu mCommunityDrawerMenu = new CommunityDrawerMenu();
+    @NonNull
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final DrawerMenuItem mAccessibilityServiceItem = new DrawerMenuItem(R.drawable.ic_service_green, R.string.text_accessibility_service, 0, this::enableOrDisableAccessibilityService);
     private DrawerMenuAdapter mDrawerMenuAdapter;
@@ -196,7 +197,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         compositeDisposable.dispose();
     }
 
-    void enableOrDisableAccessibilityService(DrawerMenuItemViewHolder holder) {
+    void enableOrDisableAccessibilityService(@NonNull DrawerMenuItemViewHolder holder) {
         boolean isAccessibilityServiceEnabled = isAccessibilityServiceEnabled();
         boolean checked = holder.getSwitchCompat().isChecked();
         if (checked && !isAccessibilityServiceEnabled) {
@@ -208,7 +209,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         }
     }
 
-    void goToNotificationServiceSettings(DrawerMenuItemViewHolder holder) {
+    void goToNotificationServiceSettings(@NonNull DrawerMenuItemViewHolder holder) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
             return;
         }
@@ -219,7 +220,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         }
     }
 
-    void goToUsageStatsSettings(DrawerMenuItemViewHolder holder) {
+    void goToUsageStatsSettings(@NonNull DrawerMenuItemViewHolder holder) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
@@ -240,7 +241,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         }
     }
 
-    void showOrDismissFloatingWindow(DrawerMenuItemViewHolder holder) {
+    void showOrDismissFloatingWindow(@NonNull DrawerMenuItemViewHolder holder) {
         boolean isFloatingWindowShowing = FloatyWindowManger.isCircularMenuShowing();
         boolean checked = holder.getSwitchCompat().isChecked();
         if (getActivity() != null && !getActivity().isFinishing()) {
@@ -258,7 +259,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         SettingsActivity.selectThemeColor(getActivity());
     }
 
-    void toggleNightMode(DrawerMenuItemViewHolder holder) {
+    void toggleNightMode(@NonNull DrawerMenuItemViewHolder holder) {
         ((BaseActivity) getActivity()).setNightModeEnabled(holder.getSwitchCompat().isChecked());
     }
 
@@ -274,7 +275,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
 
     }
 
-    void connectOrDisconnectToRemote(DrawerMenuItemViewHolder holder) {
+    void connectOrDisconnectToRemote(@NonNull DrawerMenuItemViewHolder holder) {
         boolean checked = holder.getSwitchCompat().isChecked();
         boolean connected = DevPluginService.getInstance().isConnected();
         if (checked && !connected) {
@@ -285,7 +286,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
     }
 
 
-    private void toggleForegroundService(DrawerMenuItemViewHolder holder) {
+    private void toggleForegroundService(@NonNull DrawerMenuItemViewHolder holder) {
         boolean checked = holder.getSwitchCompat().isChecked();
         if (checked) {
             ForegroundService.start(GlobalAppContext.get());
@@ -314,7 +315,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
                 .show();
     }
 
-    private void onConnectException(Throwable e) {
+    private void onConnectException(@NonNull Throwable e) {
         setChecked(mConnectionItem, false);
         Toast.makeText(GlobalAppContext.get(), getString(R.string.error_connect_to_remote, e.getMessage()),
                 Toast.LENGTH_LONG).show();
@@ -380,7 +381,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         setCoverImage(user);
     }
 
-    private void setCoverImage(User user) {
+    private void setCoverImage(@Nullable User user) {
         if (user == null || TextUtils.isEmpty(user.getCoverUrl()) || user.getCoverUrl().equals("/assets/images/cover-default.png")) {
             inflate.defaultCover.setVisibility(View.VISIBLE);
             inflate.shadow.setVisibility(View.GONE);
@@ -432,12 +433,12 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
 
 
     @Subscribe
-    public void onCircularMenuStateChange(CircularMenu.StateChangeEvent event) {
+    public void onCircularMenuStateChange(@NonNull CircularMenu.StateChangeEvent event) {
         setChecked(mFloatingWindowItem, event.getCurrentState() != CircularMenu.STATE_CLOSED);
     }
 
     @Subscribe
-    public void onCommunityPageVisibilityChange(CommunityFragment.VisibilityChange change) {
+    public void onCommunityPageVisibilityChange(@NonNull CommunityFragment.VisibilityChange change) {
         if (change.visible) {
             mCommunityDrawerMenu.showCommunityMenu(mDrawerMenuAdapter);
         } else {
@@ -447,7 +448,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onLoginStateChange(UserService.LoginStateChange change) {
+    public void onLoginStateChange(@NonNull UserService.LoginStateChange change) {
         syncUserInfo();
         if (mCommunityDrawerMenu.isShown()) {
             mCommunityDrawerMenu.setUserOnlineStatus(mDrawerMenuAdapter, change.isOnline());
@@ -486,12 +487,12 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
     }
 
 
-    private void setProgress(DrawerMenuItem item, boolean progress) {
+    private void setProgress(@NonNull DrawerMenuItem item, boolean progress) {
         item.setProgress(progress);
         mDrawerMenuAdapter.notifyItemChanged(item);
     }
 
-    private void setChecked(DrawerMenuItem item, boolean checked) {
+    private void setChecked(@NonNull DrawerMenuItem item, boolean checked) {
         item.setChecked(checked);
         mDrawerMenuAdapter.notifyItemChanged(item);
     }

@@ -16,6 +16,9 @@ import android.text.TextWatcher;
 import android.text.style.UnderlineSpan;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * A generic undo/redo implementation for TextViews.
  */
@@ -31,11 +34,13 @@ public class TextViewUndoRedo {
     /**
      * The edit history.
      */
+    @NonNull
     private final EditHistory mEditHistory;
 
     /**
      * The change listener.
      */
+    @NonNull
     private final EditTextChangeListener mChangeListener;
 
     /**
@@ -73,7 +78,7 @@ public class TextViewUndoRedo {
         mEnabled = enabled;
     }
 
-    public final void setDefaultText(CharSequence text) {
+    public final void setDefaultText(@NonNull CharSequence text) {
         clearHistory();
         mIsUndoOrRedo = true;
         ((Editable) mTextView.getText()).replace(0, text.length(), text);
@@ -185,7 +190,7 @@ public class TextViewUndoRedo {
     /**
      * Store preferences.
      */
-    public void storePersistentState(Editor editor, String prefix) {
+    public void storePersistentState(@NonNull Editor editor, String prefix) {
         // Store hash code of text in the editor so that we can check if the
         // editor contents has changed.
         editor.putString(prefix + ".hash",
@@ -213,7 +218,7 @@ public class TextViewUndoRedo {
      * @return did restore succeed? If this is false, the undo history will be
      * empty.
      */
-    public boolean restorePersistentState(SharedPreferences sp, String prefix)
+    public boolean restorePersistentState(@NonNull SharedPreferences sp, String prefix)
             throws IllegalStateException {
 
         boolean ok = doRestorePersistentState(sp, prefix);
@@ -224,7 +229,7 @@ public class TextViewUndoRedo {
         return ok;
     }
 
-    private boolean doRestorePersistentState(SharedPreferences sp, String prefix) {
+    private boolean doRestorePersistentState(@NonNull SharedPreferences sp, String prefix) {
 
         String hash = sp.getString(prefix + ".hash", null);
         if (hash == null) {
@@ -343,6 +348,7 @@ public class TextViewUndoRedo {
          * Traverses the history backward by one position, returns and item at
          * that position.
          */
+        @Nullable
         private EditItem getPrevious() {
             if (mmPosition == 0) {
                 return null;
@@ -355,6 +361,7 @@ public class TextViewUndoRedo {
          * Traverses the history forward by one position, returns and item at
          * that position.
          */
+        @Nullable
         private EditItem getNext() {
             if (mmPosition >= mmHistory.size()) {
                 return null;
@@ -400,7 +407,7 @@ public class TextViewUndoRedo {
          */
         private CharSequence mAfterChange;
 
-        public void beforeTextChanged(CharSequence s, int start, int count,
+        public void beforeTextChanged(@NonNull CharSequence s, int start, int count,
                                       int after) {
             if (mIsUndoOrRedo || !mEnabled) {
                 return;
@@ -408,7 +415,7 @@ public class TextViewUndoRedo {
             mBeforeChange = s.subSequence(start, start + count);
         }
 
-        public void onTextChanged(CharSequence s, int start, int before,
+        public void onTextChanged(@NonNull CharSequence s, int start, int before,
                                   int count) {
             if (mIsUndoOrRedo || !mEnabled) {
                 return;

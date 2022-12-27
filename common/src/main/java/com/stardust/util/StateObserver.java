@@ -2,6 +2,9 @@ package com.stardust.util;
 
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +42,7 @@ public class StateObserver {
     }
 
 
-    public void register(String key, OnStateChangedListener listener) {
+    public void register(String key, @NonNull OnStateChangedListener listener) {
         initState(key, listener);
         synchronized (mKeyStateListenersMap) {
             List<OnStateChangedListener> listeners = getListenerListOrCreateIfNotExists(key);
@@ -68,18 +71,19 @@ public class StateObserver {
         }
     }
 
-    private void notifyBooleanStateChanged(List<OnStateChangedListener> listeners, boolean state) {
+    private void notifyBooleanStateChanged(@NonNull List<OnStateChangedListener> listeners, boolean state) {
         for (OnStateChangedListener listener : listeners) {
             listener.onStateChanged(state);
         }
     }
 
-    private void initState(String key, OnStateChangedListener listener) {
+    private void initState(String key, @NonNull OnStateChangedListener listener) {
         if (mSharedPreferences.contains(key)) {
             listener.initState(mSharedPreferences.getBoolean(key, false));
         }
     }
 
+    @Nullable
     private List<OnStateChangedListener> getListenerListOrCreateIfNotExists(String key) {
         List<OnStateChangedListener> listeners = mKeyStateListenersMap.get(key);
         if (listeners == null) {

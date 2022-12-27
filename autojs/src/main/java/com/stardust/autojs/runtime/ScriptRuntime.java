@@ -5,6 +5,9 @@ import android.os.Build;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.R;
 import com.stardust.autojs.ScriptEngineService;
@@ -87,42 +90,50 @@ public class ScriptRuntime {
 
         }
 
+        @NonNull
         public Builder setUiHandler(UiHandler uiHandler) {
             mUiHandler = uiHandler;
             return this;
         }
 
+        @NonNull
         public Builder setConsole(Console console) {
             mConsole = console;
             return this;
         }
 
+        @NonNull
         public Builder setAccessibilityBridge(AccessibilityBridge accessibilityBridge) {
             mAccessibilityBridge = accessibilityBridge;
             return this;
         }
 
+        @NonNull
         public Builder setShellSupplier(Supplier<AbstractShell> shellSupplier) {
             mShellSupplier = shellSupplier;
             return this;
         }
 
+        @NonNull
         public Builder setScreenCaptureRequester(ScreenCaptureRequester requester) {
             mScreenCaptureRequester = requester;
             return this;
         }
 
+        @NonNull
         public Builder setAppUtils(AppUtils appUtils) {
             mAppUtils = appUtils;
             return this;
         }
 
+        @NonNull
         public Builder setEngineService(ScriptEngineService service) {
             mEngineService = service;
             return this;
         }
 
 
+        @NonNull
         public ScriptRuntime build() {
             return new ScriptRuntime(this);
         }
@@ -136,15 +147,18 @@ public class ScriptRuntime {
     @ScriptVariable
     public final Console console;
 
+    @NonNull
     @ScriptVariable
     public final SimpleActionAutomator automator;
 
     @ScriptVariable
     public final ActivityInfoProvider info;
 
+    @NonNull
     @ScriptVariable
     public final UI ui;
 
+    @NonNull
     @ScriptVariable
     public final Dialogs dialogs;
 
@@ -166,12 +180,14 @@ public class ScriptRuntime {
     @ScriptVariable
     public final AccessibilityBridge accessibilityBridge;
 
+    @NonNull
     @ScriptVariable
     public final Engines engines;
 
     @ScriptVariable
     public Threads threads;
 
+    @NonNull
     @ScriptVariable
     public final Floaty floaty;
 
@@ -181,15 +197,18 @@ public class ScriptRuntime {
     @ScriptVariable
     public final Colors colors = new Colors();
 
+    @NonNull
     @ScriptVariable
     public final Files files;
 
     @ScriptVariable
     public Sensors sensors;
 
+    @NonNull
     @ScriptVariable
     public final Media media;
 
+    @NonNull
     @ScriptVariable
     public final Plugins plugins;
 
@@ -197,14 +216,16 @@ public class ScriptRuntime {
 
     private static WeakReference<Context> applicationContext;
     private final Map<String, Object> mProperties = new ConcurrentHashMap<>();
+    @Nullable
     private AbstractShell mRootShell;
+    @Nullable
     private Supplier<AbstractShell> mShellSupplier;
     private final ScreenMetrics mScreenMetrics = new ScreenMetrics();
     private Thread mThread;
     private TopLevelScope mTopLevelScope;
 
 
-    protected ScriptRuntime(Builder builder) {
+    protected ScriptRuntime(@NonNull Builder builder) {
         uiHandler = builder.mUiHandler;
         Context context = uiHandler.getContext();
         app = builder.mAppUtils;
@@ -302,6 +323,7 @@ public class ScriptRuntime {
         return clip.blockedGetOrThrow(ScriptInterruptedException.class);
     }
 
+    @Nullable
     public AbstractShell getRootShell() {
         ensureRootShell();
         return mRootShell;
@@ -315,10 +337,12 @@ public class ScriptRuntime {
         }
     }
 
-    public AbstractShell.Result shell(String cmd, int root) {
+    @NonNull
+    public AbstractShell.Result shell(@NonNull String cmd, int root) {
         return ProcessShell.execCommand(cmd, root != 0);
     }
 
+    @NonNull
     public UiSelector selector() {
         return new UiSelector(accessibilityBridge);
     }
@@ -386,6 +410,7 @@ public class ScriptRuntime {
         mScreenMetrics.setScreenMetrics(width, height);
     }
 
+    @NonNull
     public ScreenMetrics getScreenMetrics() {
         return mScreenMetrics;
     }
@@ -422,7 +447,7 @@ public class ScriptRuntime {
         ignoresException(ui::recycle);
     }
 
-    private void ignoresException(Runnable r) {
+    private void ignoresException(@NonNull Runnable r) {
         try {
             r.run();
         } catch (Throwable e) {
@@ -434,28 +459,34 @@ public class ScriptRuntime {
         return images;
     }
 
+    @Nullable
     public Object getProperty(String key) {
         return mProperties.get(key);
     }
 
+    @Nullable
     public Object putProperty(String key, Object value) {
         return mProperties.put(key, value);
     }
 
+    @Nullable
     public Object removeProperty(String key) {
         return mProperties.remove(key);
     }
 
+    @NonNull
     public Continuation createContinuation() {
         return Continuation.Companion.create(this, mTopLevelScope);
     }
 
-    public Continuation createContinuation(Scriptable scope) {
+    @NonNull
+    public Continuation createContinuation(@NonNull Scriptable scope) {
         return Continuation.Companion.create(this, scope);
     }
 
 
-    public static String getStackTrace(Throwable e, boolean printJavaStackTrace) {
+    @Nullable
+    public static String getStackTrace(@NonNull Throwable e, boolean printJavaStackTrace) {
         String message = e.getMessage();
         StringBuilder scriptTrace = new StringBuilder(message == null ? "" : message + "\n");
         if (e instanceof RhinoException) {

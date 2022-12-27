@@ -9,6 +9,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.content.pm.Signature;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Base64;
 
@@ -36,7 +38,7 @@ public class DeveloperUtils {
     }
 
     @Nullable
-    public static String getSignatureSHA(Context context, String packageName) {
+    public static String getSignatureSHA(@NonNull Context context, String packageName) {
         try {
             @SuppressLint("PackageManagerGetSignatures")
             PackageInfo packageInfo = getPackageInfo(context, packageName, PackageManager.GET_SIGNATURES);
@@ -57,7 +59,8 @@ public class DeveloperUtils {
         return null;
     }
 
-    private static PackageInfo getPackageInfo(Context context, String packageName, int flags) {
+    @Nullable
+    private static PackageInfo getPackageInfo(@NonNull Context context, String packageName, int flags) {
         try {
             return context.getPackageManager().getPackageInfo(packageName, flags);
         } catch (PackageManager.NameNotFoundException e) {
@@ -69,11 +72,11 @@ public class DeveloperUtils {
      * 此方法仅防止那些不会改源码直接用apk编辑器修改应用内字符串(QQ群号)等的恶意用户行为。
      * 为了开源社区的发展，请善用源码:-)
      */
-    public static boolean checkSignature(Context context) {
+    public static boolean checkSignature(@NonNull Context context) {
         return checkSignature(context, context.getPackageName());
     }
 
-    public static boolean checkSignature(Context context, String packageName) {
+    public static boolean checkSignature(@NonNull Context context, String packageName) {
         String sha = getSignatureSHA(context, packageName);
         if (sha == null)
             return false;
@@ -84,12 +87,13 @@ public class DeveloperUtils {
     }
 
 
+    @NonNull
     public static String selfPackage() {
         return PACKAGE_NAME;
     }
 
 
-    public static boolean isActivityRegistered(Context context, Class<? extends Activity> c) {
+    public static boolean isActivityRegistered(@NonNull Context context, @NonNull Class<? extends Activity> c) {
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
             ActivityInfo[] activities = packageInfo.activities;
@@ -107,7 +111,7 @@ public class DeveloperUtils {
         }
     }
 
-    public static boolean isServiceRegistered(Context context, Class<? extends Service> c) {
+    public static boolean isServiceRegistered(@NonNull Context context, @NonNull Class<? extends Service> c) {
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SERVICES);
             ServiceInfo[] activities = packageInfo.services;
@@ -125,7 +129,7 @@ public class DeveloperUtils {
         }
     }
 
-    public static boolean checkDexFile(Context context, long[] crc) {
+    public static boolean checkDexFile(@NonNull Context context, @NonNull long[] crc) {
         String apkPath = context.getPackageCodePath();
         try {
             ZipFile zipFile = new ZipFile(apkPath);
@@ -171,7 +175,8 @@ public class DeveloperUtils {
         });
     }
 
-    private static long[] readCrc(String crcStr) {
+    @NonNull
+    private static long[] readCrc(@NonNull String crcStr) {
         String[] crcStrings = crcStr.split("\n");
         StringBuilder iHash = new StringBuilder();
         long[] crc = new long[crcStrings.length - 1];
@@ -185,6 +190,7 @@ public class DeveloperUtils {
         return crc;
     }
 
+    @Nullable
     private static String iHash(String data) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");

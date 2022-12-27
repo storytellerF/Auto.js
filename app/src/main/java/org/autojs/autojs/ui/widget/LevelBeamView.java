@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import org.autojs.autojs.R;
 
 /**
@@ -77,7 +79,7 @@ public class LevelBeamView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         for (int lvl = 0; lvl <= mLevel; lvl++) {
             float LINE_X = mPaddingLeft + lvl * mLinesWidth;

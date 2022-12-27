@@ -68,6 +68,7 @@ public class EventEmitter {
             return mListenerWrappers.size();
         }
 
+        @NonNull
         Object[] toArray() {
             Iterator<ListenerWrapper> listenerIterator = mListenerWrappers.iterator();
             ArrayList<Object> listeners = new ArrayList<>(mListenerWrappers.size());
@@ -109,6 +110,7 @@ public class EventEmitter {
         mBridges = bridges;
     }
 
+    @NonNull
     public EventEmitter once(String eventName, Object listener) {
         getListeners(eventName).add(listener, true);
         return this;
@@ -124,11 +126,13 @@ public class EventEmitter {
     }
 
 
+    @NonNull
     public EventEmitter on(String eventName, Object listener) {
         getListeners(eventName).add(listener, false);
         return this;
     }
 
+    @NonNull
     public EventEmitter addListener(String eventName, Object listener) {
         return on(eventName, listener);
     }
@@ -141,6 +145,7 @@ public class EventEmitter {
         return true;
     }
 
+    @NonNull
     public String[] eventNames() {
         return mListenersMap.keySet().toArray(new String[0]);
     }
@@ -152,30 +157,36 @@ public class EventEmitter {
         return listeners.count();
     }
 
+    @NonNull
     public Object[] listeners(String eventName) {
         return getListeners(eventName).toArray();
     }
 
+    @NonNull
     public EventEmitter prependListener(String eventName, Object listener) {
         getListeners(eventName).prepend(listener, false);
         return this;
     }
 
+    @NonNull
     public EventEmitter prependOnceListener(String eventName, Object listener) {
         getListeners(eventName).prepend(listener, true);
         return this;
     }
 
+    @NonNull
     public EventEmitter removeAllListeners() {
         mListenersMap.clear();
         return this;
     }
 
+    @NonNull
     public EventEmitter removeAllListeners(String eventName) {
         mListenersMap.remove(eventName);
         return this;
     }
 
+    @NonNull
     public EventEmitter removeListener(String eventName, Object listener) {
         Listeners listeners = mListenersMap.get(eventName);
         if (listeners != null)
@@ -183,6 +194,7 @@ public class EventEmitter {
         return this;
     }
 
+    @NonNull
     public EventEmitter setMaxListeners(int n) {
         mMaxListeners = n;
         return this;
