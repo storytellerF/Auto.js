@@ -59,7 +59,7 @@ public class ConsoleView extends FrameLayout implements ConsoleImpl.LogListener 
     private ResizableExpandableFloatyWindow mWindow;
     private LinearLayout mInputContainer;
     private boolean mShouldStopRefresh = false;
-    private ArrayList<ConsoleImpl.LogEntry> mLogEntries = new ArrayList<>();
+    private final ArrayList<ConsoleImpl.LogEntry> mLogEntries = new ArrayList<>();
 
     public ConsoleView(Context context) {
         super(context);

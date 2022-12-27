@@ -105,7 +105,7 @@ public class ViewAttributes {
     }
 
 
-    private Map<String, Attribute> mAttributes = new HashMap<>();
+    private final Map<String, Attribute> mAttributes = new HashMap<>();
     private final Drawables mDrawables;
     private final View mView;
     private ViewAttributeDelegate mViewAttributeDelegate;

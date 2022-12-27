@@ -25,7 +25,7 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
     public static class HighlightTokens {
 
         public final int[] colors;
-        private String mText;
+        private final String mText;
         private int mCount;
         private final int mId;
 
@@ -67,11 +67,11 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
     }
 
     private Theme mTheme;
-    private CodeEditText mCodeEditText;
-    private ThreadPoolExecutor mExecutorService = new ThreadPoolExecutor(3, 6,
+    private final CodeEditText mCodeEditText;
+    private final ThreadPoolExecutor mExecutorService = new ThreadPoolExecutor(3, 6,
             2L, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
-    private AtomicInteger mRunningHighlighterId = new AtomicInteger();
-    private TimingLogger mLogger = new TimingLogger(CodeEditText.LOG_TAG, "highlight");
+    private final AtomicInteger mRunningHighlighterId = new AtomicInteger();
+    private final TimingLogger mLogger = new TimingLogger(CodeEditText.LOG_TAG, "highlight");
     private final TextWatcher mTextWatcher;
 
     public JavaScriptHighlighter(Theme theme, CodeEditText codeEditText) {

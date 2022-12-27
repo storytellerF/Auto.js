@@ -19,7 +19,7 @@ public class Media implements MediaScannerConnection.MediaScannerConnectionClien
 
     private MediaScannerConnection mScannerConnection;
     private MediaPlayerWrapper mMediaPlayer;
-    private ScriptRuntime mRuntime;
+    private final ScriptRuntime mRuntime;
 
     public Media(Context context, ScriptRuntime runtime) {
         mScannerConnection = new MediaScannerConnection(context, this);

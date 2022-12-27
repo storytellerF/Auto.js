@@ -35,7 +35,7 @@ public class LayoutBoundsFloatyWindow extends FullScreenFloatyWindow {
     private NodeInfoView mNodeInfoView;
     private NodeInfo mSelectedNode;
     private Context mContext;
-    private NodeInfo mRootNode;
+    private final NodeInfo mRootNode;
 
     public LayoutBoundsFloatyWindow(NodeInfo rootNode) {
         mRootNode = rootNode;

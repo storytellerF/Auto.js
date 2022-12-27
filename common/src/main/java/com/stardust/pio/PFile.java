@@ -92,7 +92,7 @@ public class PFile extends File {
 
     @Override
     public PFile[] listFiles() {
-        String ss[] = list();
+        String[] ss = list();
         if (ss == null) return null;
         ArrayList<PFile> files = new ArrayList<>();
         for (int i = 0; i < ss.length; i++) {
@@ -105,7 +105,7 @@ public class PFile extends File {
 
     @Override
     public PFile[] listFiles(FilenameFilter filter) {
-        String ss[] = list();
+        String[] ss = list();
         if (ss == null) return null;
         ArrayList<PFile> files = new ArrayList<>();
         for (String s : ss)
@@ -116,7 +116,7 @@ public class PFile extends File {
 
     @Override
     public PFile[] listFiles(FileFilter filter) {
-        String ss[] = list();
+        String[] ss = list();
         if (ss == null) return null;
         ArrayList<PFile> files = new ArrayList<>();
         for (String s : ss) {

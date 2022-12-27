@@ -23,7 +23,7 @@ import org.opencv.core.Scalar;
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class ColorFinder {
 
-    private ScreenMetrics mScreenMetrics;
+    private final ScreenMetrics mScreenMetrics;
 
     public ColorFinder(ScreenMetrics screenMetrics) {
         mScreenMetrics = screenMetrics;

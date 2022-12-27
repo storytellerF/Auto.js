@@ -147,14 +147,6 @@ open class AccessibilityNodeInfoAllocator {
             return root.findAccessibilityNodeInfosByText(text)
         }
 
-        override fun recycle(nodeInfo: AccessibilityNodeInfo) {
-            super.recycle(nodeInfo)
-        }
-
-        override fun recycle(nodeInfo: AccessibilityNodeInfoCompat) {
-            super.recycle(nodeInfo)
-        }
-
         override fun recycleAll(): Int {
             return -1
         }

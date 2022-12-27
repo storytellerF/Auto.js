@@ -32,7 +32,7 @@ public class EventEmitter {
 
 
     private class Listeners {
-        private CopyOnWriteArrayList<ListenerWrapper> mListenerWrappers = new CopyOnWriteArrayList<>();
+        private final CopyOnWriteArrayList<ListenerWrapper> mListenerWrappers = new CopyOnWriteArrayList<>();
 
         void add(Object listener, boolean once) {
             ensureListenersNotAtLimit();
@@ -94,7 +94,7 @@ public class EventEmitter {
         }
     }
 
-    private Map<String, Listeners> mListenersMap = new HashMap<>();
+    private final Map<String, Listeners> mListenersMap = new HashMap<>();
     public static int defaultMaxListeners = 10;
     private int mMaxListeners = defaultMaxListeners;
     protected ScriptBridges mBridges;

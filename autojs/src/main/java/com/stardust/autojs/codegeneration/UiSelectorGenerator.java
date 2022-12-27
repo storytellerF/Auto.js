@@ -16,8 +16,8 @@ import static com.stardust.autojs.codegeneration.CodeGenerator.WAIT_FOR;
 
 public class UiSelectorGenerator {
 
-    private UiObject mRoot;
-    private UiObject mTarget;
+    private final UiObject mRoot;
+    private final UiObject mTarget;
     private boolean mUsingId = true;
     private boolean mUsingDesc = true;
     private boolean mUsingText = true;

@@ -65,12 +65,12 @@ public class ConsoleImpl extends AbstractConsole {
     private final Object WINDOW_SHOW_LOCK = new Object();
     private final Console mGlobalConsole;
     private final ArrayList<LogEntry> mLogEntries = new ArrayList<>();
-    private AtomicInteger mIdCounter = new AtomicInteger(0);
-    private ResizableExpandableFloatyWindow mFloatyWindow;
-    private ConsoleFloaty mConsoleFloaty;
+    private final AtomicInteger mIdCounter = new AtomicInteger(0);
+    private final ResizableExpandableFloatyWindow mFloatyWindow;
+    private final ConsoleFloaty mConsoleFloaty;
     private WeakReference<LogListener> mLogListener;
-    private UiHandler mUiHandler;
-    private BlockingQueue<String> mInput = new ArrayBlockingQueue<>(1);
+    private final UiHandler mUiHandler;
+    private final BlockingQueue<String> mInput = new ArrayBlockingQueue<>(1);
     private WeakReference<ConsoleView> mConsoleView;
     private volatile boolean mShown = false;
     private int mX, mY;

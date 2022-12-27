@@ -31,25 +31,25 @@ public class TextViewUndoRedo {
     /**
      * The edit history.
      */
-    private EditHistory mEditHistory;
+    private final EditHistory mEditHistory;
 
     /**
      * The change listener.
      */
-    private EditTextChangeListener mChangeListener;
+    private final EditTextChangeListener mChangeListener;
 
     /**
      * The edit text.
      */
-    private TextView mTextView;
+    private final TextView mTextView;
 
     private boolean mEnabled = true;
 
     private int mInitialHistoryStackSize;
 
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
     private int mTextChangeId = 0;
-    private boolean mTextChanging = false;
+    private final boolean mTextChanging = false;
 
     // =================================================================== //
 
@@ -258,11 +258,7 @@ public class TextViewUndoRedo {
         }
 
         mEditHistory.mmPosition = sp.getInt(prefix + ".position", -1);
-        if (mEditHistory.mmPosition == -1) {
-            return false;
-        }
-
-        return true;
+        return mEditHistory.mmPosition != -1;
     }
 
     // =================================================================== //

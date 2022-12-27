@@ -196,10 +196,10 @@ public class ScriptRuntime {
     private Images images;
 
     private static WeakReference<Context> applicationContext;
-    private Map<String, Object> mProperties = new ConcurrentHashMap<>();
+    private final Map<String, Object> mProperties = new ConcurrentHashMap<>();
     private AbstractShell mRootShell;
     private Supplier<AbstractShell> mShellSupplier;
-    private ScreenMetrics mScreenMetrics = new ScreenMetrics();
+    private final ScreenMetrics mScreenMetrics = new ScreenMetrics();
     private Thread mThread;
     private TopLevelScope mTopLevelScope;
 

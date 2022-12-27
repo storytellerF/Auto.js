@@ -20,7 +20,7 @@ public class DrawerMenuAdapter extends RecyclerView.Adapter<BindableViewHolder<D
     private static final int VIEW_TYPE_GROUP = 1;
 
 
-    private List<DrawerMenuItem> mDrawerMenuItems;
+    private final List<DrawerMenuItem> mDrawerMenuItems;
 
     public DrawerMenuAdapter(List<DrawerMenuItem> drawerMenuItems) {
         mDrawerMenuItems = drawerMenuItems;

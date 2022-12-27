@@ -199,7 +199,7 @@ public class FunctionsKeyboardView extends FrameLayout {
     private class ModuleViewHolder extends RecyclerView.ViewHolder {
 
 
-        private TextView mTextView;
+        private final TextView mTextView;
         private Module mModule;
 
         ModuleViewHolder(View itemView) {
@@ -233,7 +233,7 @@ public class FunctionsKeyboardView extends FrameLayout {
 
     private class PropertyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mTextView;
+        private final TextView mTextView;
         private Property mProperty;
 
         PropertyViewHolder(View itemView) {

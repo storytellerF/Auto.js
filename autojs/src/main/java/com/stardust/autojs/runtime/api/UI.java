@@ -29,11 +29,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UI extends ProxyObject {
 
 
-    private Context mContext;
-    private Map<String, Object> mProperties = new ConcurrentHashMap<>();
-    private DynamicLayoutInflater mDynamicLayoutInflater;
-    private ScriptRuntime mRuntime;
-    private ResourceParser mResourceParser;
+    private final Context mContext;
+    private final Map<String, Object> mProperties = new ConcurrentHashMap<>();
+    private final DynamicLayoutInflater mDynamicLayoutInflater;
+    private final ScriptRuntime mRuntime;
+    private final ResourceParser mResourceParser;
 
     public UI(Context context, ScriptRuntime runtime) {
         mContext = context;

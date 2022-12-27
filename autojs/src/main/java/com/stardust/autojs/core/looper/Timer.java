@@ -16,10 +16,10 @@ public class Timer {
 
     private static final String LOG_TAG = "Timer";
 
-    private SparseArray<Runnable> mHandlerCallbacks = new SparseArray<>();
+    private final SparseArray<Runnable> mHandlerCallbacks = new SparseArray<>();
     private int mCallbackMaxId = 0;
-    private ScriptRuntime mRuntime;
-    private Handler mHandler;
+    private final ScriptRuntime mRuntime;
+    private final Handler mHandler;
     private long mMaxCallbackUptimeMillis = 0;
     private final VolatileBox<Long> mMaxCallbackMillisForAllThread;
 

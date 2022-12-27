@@ -32,7 +32,7 @@ public class NodeBB {
     private static final String LOG_TAG = "NodeBB";
     private Map<String, String> mXCsrfToken;
 
-    private Retrofit mRetrofit;
+    private final Retrofit mRetrofit;
 
     NodeBB() {
         mRetrofit = new Retrofit.Builder()

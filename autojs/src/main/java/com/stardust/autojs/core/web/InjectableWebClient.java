@@ -26,7 +26,7 @@ public class InjectableWebClient extends WebViewClient {
 
     private static final String TAG = "InjectableWebClient";
 
-    private Queue<Pair<String, ValueCallback<String>>> mToInjectJavaScripts = new LinkedList<>();
+    private final Queue<Pair<String, ValueCallback<String>>> mToInjectJavaScripts = new LinkedList<>();
     private final ValueCallback<String> defaultCallback = new ValueCallback<String>() {
         @Override
         public void onReceiveValue(String value) {
@@ -34,9 +34,9 @@ public class InjectableWebClient extends WebViewClient {
         }
     };
     private WebView mWebView;
-    private Context mContext;
-    private Scriptable mScriptable;
-    private ScriptBridge mScriptBridge = new ScriptBridge();
+    private final Context mContext;
+    private final Scriptable mScriptable;
+    private final ScriptBridge mScriptBridge = new ScriptBridge();
 
     public InjectableWebClient(Context context, Scriptable scriptable) {
         mContext = context;

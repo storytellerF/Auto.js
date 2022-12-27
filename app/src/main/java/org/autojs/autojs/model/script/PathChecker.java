@@ -18,7 +18,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class PathChecker {
     public static final int CHECK_RESULT_OK = 0;
 
-    private Context mContext;
+    private final Context mContext;
 
     public PathChecker(Context context) {
         mContext = context;

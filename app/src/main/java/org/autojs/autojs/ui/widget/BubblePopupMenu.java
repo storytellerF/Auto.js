@@ -25,15 +25,15 @@ public class BubblePopupMenu extends PopupWindow {
         void onClick(View view, int position);
     }
 
-    private RecyclerView mRecyclerView;
+    private final RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;
-    private View mLittleTriangle;
+    private final View mLittleTriangle;
 
     public BubblePopupMenu(Context context, List<String> options) {
         super(context);
         View view = View.inflate(context, R.layout.bubble_popup_menu, null);
         mLittleTriangle = view.findViewById(R.id.little_triangle);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
+        mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setAdapter(new SimpleRecyclerViewAdapter<>(R.layout.bubble_popup_menu_item, options, MenuItemViewHolder::new));
         setContentView(view);
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -79,11 +79,11 @@ public class BubblePopupMenu extends PopupWindow {
 
     private class MenuItemViewHolder extends BindableViewHolder<String> {
 
-        private TextView mOption;
+        private final TextView mOption;
 
         public MenuItemViewHolder(View itemView) {
             super(itemView);
-            mOption = (TextView) itemView.findViewById(R.id.option);
+            mOption = itemView.findViewById(R.id.option);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

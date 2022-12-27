@@ -248,8 +248,8 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
 
         OptionGroupViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            icon = (ImageView) itemView.findViewById(R.id.icon);
+            title = itemView.findViewById(R.id.title);
+            icon = itemView.findViewById(R.id.icon);
             itemView.setOnClickListener(view -> {
                 if (isExpanded()) {
                     collapseView();

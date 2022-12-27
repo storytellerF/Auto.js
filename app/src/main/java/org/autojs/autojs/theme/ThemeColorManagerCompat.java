@@ -21,7 +21,7 @@ public class ThemeColorManagerCompat {
 
     private static SharedPreferences sSharedPreferences;
     private static Context sContext;
-    private static SharedPreferences.OnSharedPreferenceChangeListener sPreferenceChangeListener = (sharedPreferences, key) -> {
+    private static final SharedPreferences.OnSharedPreferenceChangeListener sPreferenceChangeListener = (sharedPreferences, key) -> {
         if (key.equals(sContext.getString(R.string.key_night_mode))) {
             setNightModeEnabled(sharedPreferences.getBoolean(key, false));
         }

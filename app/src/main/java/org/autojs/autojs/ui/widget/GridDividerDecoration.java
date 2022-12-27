@@ -22,8 +22,8 @@ import android.view.View;
 public class GridDividerDecoration extends RecyclerView.ItemDecoration {
 
 
-    private Drawable mDivider;
-    private int mInsets;
+    private final Drawable mDivider;
+    private final int mInsets;
 
     public GridDividerDecoration(Context context, Drawable divider) {
         mDivider = divider;

@@ -34,7 +34,7 @@ public class LayoutHierarchyFloatyWindow extends FullScreenFloatyWindow {
     private BubblePopupMenu mBubblePopMenu;
     private NodeInfoView mNodeInfoView;
     private Context mContext;
-    private NodeInfo mRootNode;
+    private final NodeInfo mRootNode;
     private NodeInfo mSelectedNode;
 
     public LayoutHierarchyFloatyWindow(NodeInfo rootNode) {

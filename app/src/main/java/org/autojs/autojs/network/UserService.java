@@ -39,7 +39,7 @@ public class UserService {
 
     private static final UserService sInstance = new UserService();
     private final Retrofit mRetrofit;
-    private UserApi mUserApi;
+    private final UserApi mUserApi;
     private volatile User mUser;
 
     UserService() {

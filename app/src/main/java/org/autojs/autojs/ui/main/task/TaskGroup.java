@@ -24,7 +24,7 @@ import java.util.Set;
 public abstract class TaskGroup implements Parent<Task> {
 
     protected List<Task> mTasks = new ArrayList<>();
-    private String mTitle;
+    private final String mTitle;
 
     protected TaskGroup(String title) {
         mTitle = title;

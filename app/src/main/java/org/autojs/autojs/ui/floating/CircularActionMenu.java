@@ -68,13 +68,13 @@ public class CircularActionMenu extends FrameLayout {
     }
 
     private PointF[] mItemExpandedPositionOffsets;
-    private CopyOnWriteArrayList<OnStateChangeListener> mOnStateChangeListeners = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<OnStateChangeListener> mOnStateChangeListeners = new CopyOnWriteArrayList<>();
     private boolean mExpanded;
     private boolean mExpanding = false;
     private boolean mCollapsing = false;
     private float mRadius = 200;
     private float mAngle = (float) Math.toRadians(90);
-    private long mDuration = 200;
+    private final long mDuration = 200;
     private int mExpandedHeight = -1;
     private int mExpandedWidth = -1;
     private final Interpolator mInterpolator = new FastOutSlowInInterpolator();

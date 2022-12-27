@@ -40,7 +40,7 @@ public class JsListView extends RecyclerView {
 
     private Node mItemTemplate;
     private DynamicLayoutInflater mDynamicLayoutInflater;
-    private ScriptRuntime mScriptRuntime;
+    private final ScriptRuntime mScriptRuntime;
     private Object mDataSource;
     private DataSourceAdapter mDataSourceAdapter;
     private OnItemTouchListener mOnItemTouchListener;

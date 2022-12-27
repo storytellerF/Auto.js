@@ -32,7 +32,7 @@ public class BaseResizableFloatyWindow extends ResizableFloatyWindow {
 
     }
 
-    private VolatileDispose<RuntimeException> mInflateException = new VolatileDispose<>();
+    private final VolatileDispose<RuntimeException> mInflateException = new VolatileDispose<>();
     private View mCloseButton;
     private int mOffset;
 
@@ -123,9 +123,9 @@ public class BaseResizableFloatyWindow extends ResizableFloatyWindow {
     private static class MyFloaty implements ResizableFloaty {
 
 
-        private ViewSupplier mContentViewSupplier;
+        private final ViewSupplier mContentViewSupplier;
         private View mRootView;
-        private Context mContext;
+        private final Context mContext;
 
 
         public MyFloaty(Context context, ViewSupplier supplier) {

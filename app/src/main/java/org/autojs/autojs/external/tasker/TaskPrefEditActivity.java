@@ -50,7 +50,7 @@ public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
 
 
     private void initScriptListRecyclerView() {
-        ExplorerView explorerView = (ExplorerView) findViewById(R.id.script_list);
+        ExplorerView explorerView = findViewById(R.id.script_list);
         explorerView.setExplorer(Explorers.external(), ExplorerDirPage.createRoot(Environment.getExternalStorageDirectory()));
         explorerView.setOnItemClickListener((view, item) -> {
             mSelectedScriptFilePath = item.getPath();

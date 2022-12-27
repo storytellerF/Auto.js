@@ -140,10 +140,10 @@ public class ApkBuilder {
     }
 
     private ProgressCallback mProgressCallback;
-    private ApkPackager mApkPackager;
+    private final ApkPackager mApkPackager;
     private String mArscPackageName;
     private ManifestEditor mManifestEditor;
-    private String mWorkspacePath;
+    private final String mWorkspacePath;
     private AppConfig mAppConfig;
     private final File mOutApkFile;
     private String mInitVector;
@@ -320,7 +320,7 @@ public class ApkBuilder {
     private void buildArsc() throws IOException {
         File oldArsc = new File(mWorkspacePath, "resources.arsc");
         File newArsc = new File(mWorkspacePath, "resources.arsc.new");
-        ARSCDecoder decoder = new ARSCDecoder(new BufferedInputStream(new FileInputStream(oldArsc)), (ResTable) null, false);
+        ARSCDecoder decoder = new ARSCDecoder(new BufferedInputStream(new FileInputStream(oldArsc)), null, false);
         FileOutputStream fos = new FileOutputStream(newArsc);
         decoder.CloneArsc(fos, mArscPackageName, true);
         oldArsc.delete();

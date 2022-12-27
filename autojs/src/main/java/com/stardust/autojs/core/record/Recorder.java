@@ -22,8 +22,8 @@ public interface Recorder {
 
     class StateChangeEvent {
 
-        private int mOldState;
-        private int mCurrentState;
+        private final int mOldState;
+        private final int mCurrentState;
 
         public StateChangeEvent(int oldState, int currentState) {
             mOldState = oldState;

@@ -3,7 +3,6 @@ package org.autojs.autojs.ui.error;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,7 +25,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.heinrichreimersoftware.androidissuereporter.R;
@@ -93,8 +91,6 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
     private RadioButton optionAnonymous;
     private ExpandableRelativeLayout layoutLogin;
     private FloatingActionButton buttonSend;
-
-    private Drawable optionUseAccountButtonDrawable = null;
 
     private String token;
 
@@ -204,11 +200,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
 
     private void setOptionUseAccountMarginStart(int marginStart) {
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) optionUseAccount.getLayoutParams();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            layoutParams.setMarginStart(marginStart);
-        } else {
-            layoutParams.leftMargin = marginStart;
-        }
+        layoutParams.setMarginStart(marginStart);
         optionUseAccount.setLayoutParams(layoutParams);
     }
 
@@ -240,7 +232,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
 
     private void reportIssue() {
 
-        if (!validateInput()) return;
+        if (validateInput()) return;
 
         if (optionUseAccount.isChecked()) {
             String username = inputUsername.getText().toString();
@@ -310,7 +302,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
             } else
                 removeError(inputDescription);
         }
-        return !hasErrors;
+        return hasErrors;
     }
 
     private void setError(EditText editText, @StringRes int errorRes) {
@@ -350,7 +342,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
     }
 
     private void sendBugReport(GithubLogin login, String email) {
-        if (!validateInput()) return;
+        if (validateInput()) return;
 
         String bugTitle = inputTitle.getText().toString();
         String bugDescription = inputDescription.getText().toString();
@@ -525,7 +517,7 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
     }
 
     private static abstract class DialogAsyncTask<Pa, Pr, Re> extends AsyncTask<Pa, Pr, Re> {
-        private WeakReference<Context> contextWeakReference;
+        private final WeakReference<Context> contextWeakReference;
         private WeakReference<Dialog> dialogWeakReference;
 
         private boolean supposedToBeDismissed;

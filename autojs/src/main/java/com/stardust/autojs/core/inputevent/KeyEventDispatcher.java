@@ -16,9 +16,9 @@ public class KeyEventDispatcher {
         void onCamera();
     }
 
-    private static KeyEventDispatcher sSingleton = new KeyEventDispatcher();
+    private static final KeyEventDispatcher sSingleton = new KeyEventDispatcher();
 
-    private CopyOnWriteArrayList<OnKeyListener> mOnKeyListeners = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<OnKeyListener> mOnKeyListeners = new CopyOnWriteArrayList<>();
 
     public static KeyEventDispatcher getSingleton() {
         return sSingleton;

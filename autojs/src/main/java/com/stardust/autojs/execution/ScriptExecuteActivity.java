@@ -226,7 +226,7 @@ public class ScriptExecuteActivity extends AppCompatActivity {
 
     public void emit(String event, Object... args) {
         try {
-            mEventEmitter.emit(event, (Object[]) args);
+            mEventEmitter.emit(event, args);
         } catch (Exception e) {
             mRuntime.exit(e);
         }
@@ -235,7 +235,7 @@ public class ScriptExecuteActivity extends AppCompatActivity {
     private static class ActivityScriptExecution extends ScriptExecution.AbstractScriptExecution {
 
         private ScriptEngine mScriptEngine;
-        private ScriptEngineManager mScriptEngineManager;
+        private final ScriptEngineManager mScriptEngineManager;
 
         ActivityScriptExecution(ScriptEngineManager manager, ScriptExecutionTask task) {
             super(task);

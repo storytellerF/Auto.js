@@ -70,7 +70,7 @@ public class DevPluginService {
     }
 
     private static final int PORT = 9317;
-    private static DevPluginService sInstance = new DevPluginService();
+    private static final DevPluginService sInstance = new DevPluginService();
     private final PublishSubject<State> mConnectionState = PublishSubject.create();
     private final DevPluginResponseHandler mResponseHandler;
     private final HashMap<String, JsonWebSocket.Bytes> mBytes = new HashMap<>();

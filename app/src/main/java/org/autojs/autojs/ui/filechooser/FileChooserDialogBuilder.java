@@ -37,7 +37,7 @@ public class FileChooserDialogBuilder extends ThemeColorMaterialDialogBuilder {
         void onSelected(List<PFile> files);
     }
 
-    private FileChooseListView mFileChooseListView;
+    private final FileChooseListView mFileChooseListView;
     private MultiChoiceCallback mCallback;
     private FileFilter mFileFilter;
     private String mRootDir;

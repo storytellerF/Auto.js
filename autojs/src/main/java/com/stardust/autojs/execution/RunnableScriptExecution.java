@@ -18,7 +18,7 @@ public class RunnableScriptExecution extends ScriptExecution.AbstractScriptExecu
 
     private static final String TAG = "RunnableJSExecution";
     private ScriptEngine mScriptEngine;
-    private ScriptEngineManager mScriptEngineManager;
+    private final ScriptEngineManager mScriptEngineManager;
 
     public RunnableScriptExecution(ScriptEngineManager manager, ScriptExecutionTask task) {
         super(task);

@@ -42,9 +42,9 @@ public class DownloadManager {
     private static DownloadManager sInstance;
 
     private static final int RETRY_COUNT = 3;
-    private Retrofit mRetrofit;
-    private DownloadApi mDownloadApi;
-    private ConcurrentHashMap<String, VolatileBox<Boolean>> mDownloadStatuses = new ConcurrentHashMap<>();
+    private final Retrofit mRetrofit;
+    private final DownloadApi mDownloadApi;
+    private final ConcurrentHashMap<String, VolatileBox<Boolean>> mDownloadStatuses = new ConcurrentHashMap<>();
 
     public DownloadManager() {
         mRetrofit = new Retrofit.Builder()
@@ -139,12 +139,12 @@ public class DownloadManager {
 
     private class DownloadTask {
 
-        private String mUrl;
-        private String mPath;
-        private VolatileBox<Boolean> mStatus;
+        private final String mUrl;
+        private final String mPath;
+        private final VolatileBox<Boolean> mStatus;
         private InputStream mInputStream;
         private FileOutputStream mFileOutputStream;
-        private PublishSubject<Integer> mProgress;
+        private final PublishSubject<Integer> mProgress;
 
         public DownloadTask(String url, String path) {
             mUrl = url;

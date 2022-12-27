@@ -34,8 +34,8 @@ public class PWritableTextFile implements Closeable, PFileInterface {
         return new PWritableTextFile(path);
     }
 
-    private BufferedWriter mBufferedWriter;
-    private String mPath;
+    private final BufferedWriter mBufferedWriter;
+    private final String mPath;
 
     public PWritableTextFile(String path, String encoding, int bufferingSize, boolean append) {
         mPath = path;

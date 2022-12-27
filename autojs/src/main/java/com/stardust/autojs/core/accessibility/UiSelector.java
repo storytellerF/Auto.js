@@ -65,7 +65,7 @@ public class UiSelector extends UiGlobalSelector {
 
     private static final String TAG = "UiSelector";
 
-    private AccessibilityBridge mAccessibilityBridge;
+    private final AccessibilityBridge mAccessibilityBridge;
     private AccessibilityNodeInfoAllocator mAllocator = null;
 
     public UiSelector(AccessibilityBridge accessibilityBridge) {

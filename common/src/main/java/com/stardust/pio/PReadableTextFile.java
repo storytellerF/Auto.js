@@ -11,10 +11,10 @@ import java.util.List;
 public class PReadableTextFile implements Closeable, PFileInterface {
 
     private BufferedReader mBufferedReader;
-    private FileInputStream mFileInputStream;
-    private int mBufferingSize;
-    private String mEncoding;
-    private String mPath;
+    private final FileInputStream mFileInputStream;
+    private final int mBufferingSize;
+    private final String mEncoding;
+    private final String mPath;
 
     public PReadableTextFile(String path) {
         this(path, PFiles.DEFAULT_ENCODING);

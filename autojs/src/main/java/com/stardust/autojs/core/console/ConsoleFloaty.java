@@ -24,7 +24,7 @@ public class ConsoleFloaty extends ResizableExpandableFloaty.AbstractResizableEx
     private ContextWrapper mContextWrapper;
     private View mResizer, mMoveCursor;
     private TextView mTitleView;
-    private ConsoleImpl mConsole;
+    private final ConsoleImpl mConsole;
     private CharSequence mTitle;
     private View mExpandedView;
 

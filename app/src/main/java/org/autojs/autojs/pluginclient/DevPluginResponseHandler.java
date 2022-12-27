@@ -38,7 +38,7 @@ import io.reactivex.schedulers.Schedulers;
 public class DevPluginResponseHandler implements Handler {
 
 
-    private Router mRouter = new Router.RootRouter("type")
+    private final Router mRouter = new Router.RootRouter("type")
             .handler("command", new Router("command")
                     .handler("run", data -> {
                         String script = data.get("script").getAsString();
@@ -81,7 +81,7 @@ public class DevPluginResponseHandler implements Handler {
                     }));
 
 
-    private HashMap<String, ScriptExecution> mScriptExecutions = new HashMap<>();
+    private final HashMap<String, ScriptExecution> mScriptExecutions = new HashMap<>();
     private final File mCacheDir;
 
     public DevPluginResponseHandler(File cacheDir) {

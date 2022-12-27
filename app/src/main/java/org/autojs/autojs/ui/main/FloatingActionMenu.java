@@ -39,8 +39,8 @@ public class FloatingActionMenu extends FrameLayout implements View.OnClickListe
     private FloatingActionButton[] mFabs;
     private View[] mFabContainers;
     private boolean mExpanded = false;
-    private int mInterval = 30;
-    private int mDuration = 250;
+    private final int mInterval = 30;
+    private final int mDuration = 250;
     private final Interpolator mInterpolator = new FastOutSlowInInterpolator();
     private final PublishSubject<Boolean> mState = PublishSubject.create();
     private OnFloatingActionButtonClickListener mOnFloatingActionButtonClickListener;
@@ -122,11 +122,11 @@ public class FloatingActionMenu extends FrameLayout implements View.OnClickListe
         LayoutInflater inflater = LayoutInflater.from(getContext());
         for (int i = 0; i < icons.length; i++) {
             mFabContainers[i] = inflater.inflate(R.layout.item_floating_action_menu, this, false);
-            mFabs[i] = (FloatingActionButton) mFabContainers[i].findViewById(R.id.floating_action_button);
+            mFabs[i] = mFabContainers[i].findViewById(R.id.floating_action_button);
             mFabs[i].setImageResource(icons[i]);
             mFabs[i].setOnClickListener(this);
             mFabs[i].setTag(i);
-            mLabels[i] = (TextView) mFabContainers[i].findViewById(R.id.label);
+            mLabels[i] = mFabContainers[i].findViewById(R.id.label);
             mLabels[i].setText(labels[i]);
             addView(mFabContainers[i]);
         }

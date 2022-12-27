@@ -34,14 +34,14 @@ public class RootAutomator implements Shell.Callback {
 
     @Nullable
     private ScreenMetrics mScreenMetrics;
-    private Shell mShell;
+    private final Shell mShell;
     private int mDefaultId = 0;
-    private AtomicInteger mTracingId = new AtomicInteger(1);
-    private SparseIntArray mSlotIdMap = new SparseIntArray();
+    private final AtomicInteger mTracingId = new AtomicInteger(1);
+    private final SparseIntArray mSlotIdMap = new SparseIntArray();
     private final Object mReadyLock = new Object();
     private volatile boolean mReady = false;
     private final Context mContext;
-    private String mInputDevice;
+    private final String mInputDevice;
 
     public RootAutomator(Context context, String inputDevice, boolean waitForReady) throws IOException {
         mContext = context;

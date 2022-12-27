@@ -15,7 +15,7 @@ import java.net.URL;
 
 public class AutoHttpURLConnection extends HttpURLConnection implements AutoCloseable {
 
-    private HttpURLConnection mHttpURLConnection;
+    private final HttpURLConnection mHttpURLConnection;
     private InputStream mInputStream;
     private OutputStream mOutputStream;
 

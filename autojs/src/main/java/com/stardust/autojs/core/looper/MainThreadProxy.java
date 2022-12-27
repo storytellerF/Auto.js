@@ -12,7 +12,7 @@ import java.util.Map;
 public class MainThreadProxy {
 
     private final Thread mThread;
-    private ScriptRuntime mRuntime;
+    private final ScriptRuntime mRuntime;
 
     public MainThreadProxy(Thread thread, ScriptRuntime runtime) {
         mThread = thread;

@@ -11,7 +11,7 @@ import org.autojs.autojs.R;
 
 public class ProgressDialog {
 
-    private MaterialDialog mDialog;
+    private final MaterialDialog mDialog;
 
     public ProgressDialog(Context context) {
         this(context, R.string.text_on_progress);

@@ -54,13 +54,13 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class Images {
 
-    private ScriptRuntime mScriptRuntime;
-    private ScreenCaptureRequester mScreenCaptureRequester;
+    private final ScriptRuntime mScriptRuntime;
+    private final ScreenCaptureRequester mScreenCaptureRequester;
     private ScreenCapturer mScreenCapturer;
-    private Context mContext;
+    private final Context mContext;
     private Image mPreCapture;
     private ImageWrapper mPreCaptureImage;
-    private ScreenMetrics mScreenMetrics;
+    private final ScreenMetrics mScreenMetrics;
     private volatile boolean mOpenCvInitialized = false;
 
     @ScriptVariable

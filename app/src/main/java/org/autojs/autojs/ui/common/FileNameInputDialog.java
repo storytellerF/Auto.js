@@ -30,7 +30,7 @@ public class FileNameInputDialog implements MaterialDialog.InputCallback {
             dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
             return;
         }
-        if (new File(mDir, extension == null ? input.toString() : input.toString() + extension).exists()) {
+        if (new File(mDir, extension == null ? input.toString() : input + extension).exists()) {
             errorResId = R.string.text_file_exists;
         }
         if (errorResId == 0) {

@@ -39,12 +39,12 @@ public class AutoCompletion {
     private String mModuleName;
     private String mPropertyPrefill;
     private List<Module> mModules;
-    private DictionaryTree<Property> mGlobalPropertyTree = new DictionaryTree<>();
+    private final DictionaryTree<Property> mGlobalPropertyTree = new DictionaryTree<>();
     private AutoCompleteCallback mAutoCompleteCallback;
-    private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
-    private AnyWordsCompletion mAnyWordsCompletion;
-    private AtomicInteger mExecuteId = new AtomicInteger();
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+    private final AnyWordsCompletion mAnyWordsCompletion;
+    private final AtomicInteger mExecuteId = new AtomicInteger();
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final EditText mEditText;
 
     public AutoCompletion(Context context, EditText editText) {

@@ -67,8 +67,8 @@ public class InputEventObserver {
     }
 
     private static InputEventObserver sGlobal;
-    private CopyOnWriteArrayList<InputEventListener> mInputEventListeners = new CopyOnWriteArrayList<>();
-    private Context mContext;
+    private final CopyOnWriteArrayList<InputEventListener> mInputEventListeners = new CopyOnWriteArrayList<>();
+    private final Context mContext;
     private Shell mShell;
 
     public InputEventObserver(Context context) {

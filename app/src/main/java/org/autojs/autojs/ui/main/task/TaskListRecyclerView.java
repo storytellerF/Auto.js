@@ -205,7 +205,7 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
     class TaskViewHolder extends ChildViewHolder<Task> {
 
         private Task mTask;
-        private GradientDrawable mFirstCharBackground;
+        private final GradientDrawable mFirstCharBackground;
         private final TaskListRecyclerViewItemBinding bind;
 
         TaskViewHolder(View itemView) {

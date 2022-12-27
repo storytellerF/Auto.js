@@ -20,9 +20,9 @@ public class FragmentPagerAdapterBuilder {
         void OnInstantiate(int pos, Fragment fragment);
     }
 
-    private List<Fragment> mFragments = new ArrayList<>();
-    private List<String> mTitles = new ArrayList<>();
-    private FragmentActivity mActivity;
+    private final List<Fragment> mFragments = new ArrayList<>();
+    private final List<String> mTitles = new ArrayList<>();
+    private final FragmentActivity mActivity;
 
     public FragmentPagerAdapterBuilder(FragmentActivity activity) {
         mActivity = activity;
@@ -59,7 +59,7 @@ public class FragmentPagerAdapterBuilder {
 
     public abstract static class StoredFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        private SparseArray<Fragment> mStoredFragments = new SparseArray<>();
+        private final SparseArray<Fragment> mStoredFragments = new SparseArray<>();
         private OnFragmentInstantiateListener mOnFragmentInstantiateListener;
 
         public StoredFragmentPagerAdapter(FragmentManager fm) {

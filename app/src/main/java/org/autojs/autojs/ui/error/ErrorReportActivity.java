@@ -115,7 +115,7 @@ public class ErrorReportActivity extends BaseActivity {
 
     private void setUpToolbar() {
         Toolbar toolbar;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.text_error_report));
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(false);

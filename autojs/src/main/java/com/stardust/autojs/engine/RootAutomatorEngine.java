@@ -34,7 +34,7 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
     private static int sTouchDevice = -1;
     private static final String ROOT_AUTOMATOR_EXECUTABLE_ASSET = "binary/root_automator";
 
-    private Context mContext;
+    private final Context mContext;
     private final String mDeviceNameOrPath;
     private Thread mThread;
     private String mExecutablePath;

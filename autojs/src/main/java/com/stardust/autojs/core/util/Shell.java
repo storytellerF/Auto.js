@@ -213,8 +213,8 @@ public class Shell extends AbstractShell {
 
     private class MyShellTermSession extends ShellTermSession {
 
-        private StringBuilder mStringBuffer = new StringBuilder();
-        private ArrayList<String> mCommandOutputs = new ArrayList<>();
+        private final StringBuilder mStringBuffer = new StringBuilder();
+        private final ArrayList<String> mCommandOutputs = new ArrayList<>();
 
         public MyShellTermSession(TermSettings settings, String initialCommand) throws IOException {
             super(settings, initialCommand);

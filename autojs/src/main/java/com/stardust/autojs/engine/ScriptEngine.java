@@ -69,11 +69,11 @@ public interface ScriptEngine<S extends ScriptSource> {
     abstract class AbstractScriptEngine<S extends ScriptSource> implements ScriptEngine<S> {
 
 
-        private Map<String, Object> mTags = new ConcurrentHashMap<>();
+        private final Map<String, Object> mTags = new ConcurrentHashMap<>();
         private OnDestroyListener mOnDestroyListener;
         private volatile boolean mDestroyed = false;
         private Throwable mUncaughtException;
-        private volatile AtomicInteger mId = new AtomicInteger(ScriptExecution.NO_ID);
+        private final AtomicInteger mId = new AtomicInteger(ScriptExecution.NO_ID);
 
         @Override
         public void setTag(String key, Object value) {

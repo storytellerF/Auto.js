@@ -79,7 +79,7 @@ public class Dialogs {
         return ((BlockedMaterialDialog.Builder) dialogBuilder(callback)
                 .itemsCallback()
                 .title(title)
-                .items((CharSequence[]) items))
+                .items(items))
                 .showAndGet();
     }
 
@@ -105,7 +105,7 @@ public class Dialogs {
                 .itemsCallbackSingleChoice(selectedIndex)
                 .title(title)
                 .positiveText(R.string.ok)
-                .items((CharSequence[]) items))
+                .items(items))
                 .showAndGet();
     }
 
@@ -115,7 +115,7 @@ public class Dialogs {
                 .itemsCallbackMultiChoice(ArrayUtils.box(indices))
                 .title(title)
                 .positiveText(R.string.ok)
-                .items((CharSequence[]) items))
+                .items(items))
                 .showAndGet();
     }
 

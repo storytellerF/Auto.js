@@ -41,7 +41,7 @@ import org.autojs.autojs.ui.settings.SettingsActivity;
 public class AutoJs extends com.stardust.autojs.AutoJs {
 
     private static AutoJs instance;
-    private BroadcastReceiver mLayoutInspectBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mLayoutInspectBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             try {

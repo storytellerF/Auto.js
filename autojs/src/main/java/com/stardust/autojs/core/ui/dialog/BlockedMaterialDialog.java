@@ -61,9 +61,9 @@ public class BlockedMaterialDialog extends MaterialDialog {
     public static class Builder extends MaterialDialog.Builder {
 
         private VolatileDispose<Object> mResultBox;
-        private UiHandler mUiHandler;
-        private Object mCallback;
-        private ScriptBridges mScriptBridges;
+        private final UiHandler mUiHandler;
+        private final Object mCallback;
+        private final ScriptBridges mScriptBridges;
         private boolean mNotified = false;
 
         public Builder(Context context, ScriptRuntime runtime, Object callback) {
@@ -131,11 +131,7 @@ public class BlockedMaterialDialog extends MaterialDialog {
         public Builder confirm() {
             dismissListener(dialog -> setAndNotify(false));
             onAny((dialog, which) -> {
-                if (which == DialogAction.POSITIVE) {
-                    setAndNotify(true);
-                } else {
-                    setAndNotify(false);
-                }
+                setAndNotify(which == DialogAction.POSITIVE);
             });
             return this;
         }

@@ -26,7 +26,7 @@ public class Modules {
 
     }.getType();
     private static final String MODULES_JSON_PATH = "indices/all.json";
-    private static Modules sInstance = new Modules();
+    private static final Modules sInstance = new Modules();
 
     private List<Module> mModules;
 

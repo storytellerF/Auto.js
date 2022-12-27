@@ -32,11 +32,11 @@ public class VersionService {
     private static final String KEY_DEPRECATED = "KEY_DEPRECATED";
     private static final String KEY_DEPRECATED_VERSION_CODE = "KEY_DEPRECATED_VERSION_CODE";
 
-    private static VersionService sInstance = new VersionService();
+    private static final VersionService sInstance = new VersionService();
     private boolean mDeprecated = false;
     private VersionInfo mVersionInfo;
     private SharedPreferences mSharedPreferences;
-    private Retrofit mRetrofit;
+    private final Retrofit mRetrofit;
 
     public VersionService() {
         mRetrofit = new Retrofit.Builder()

@@ -10,8 +10,8 @@ import java.util.HashMap;
 
 public class ValueMapper<V> {
 
-    private HashMap<String, V> mHashMap = new HashMap<>();
-    private String mAttrName;
+    private final HashMap<String, V> mHashMap = new HashMap<>();
+    private final String mAttrName;
 
     public ValueMapper(String attrName) {
         mAttrName = attrName;

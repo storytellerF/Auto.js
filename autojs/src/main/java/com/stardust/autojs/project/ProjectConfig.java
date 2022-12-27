@@ -53,7 +53,7 @@ public class ProjectConfig {
     private String mIcon;
 
     @SerializedName("scripts")
-    private Map<String, ScriptConfig> mScriptConfigs = new HashMap<>();
+    private final Map<String, ScriptConfig> mScriptConfigs = new HashMap<>();
 
     @SerializedName("useFeatures")
     private List<String> mFeatures = new ArrayList<>();
@@ -83,10 +83,7 @@ public class ProjectConfig {
         if (TextUtils.isEmpty(config.getMainScriptFile())) {
             return false;
         }
-        if (config.getVersionCode() == -1) {
-            return false;
-        }
-        return true;
+        return config.getVersionCode() != -1;
     }
 
 

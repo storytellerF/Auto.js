@@ -18,12 +18,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class TimerThread extends ThreadCompat {
 
-    private static ConcurrentHashMap<Thread, Timer> sTimerMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Thread, Timer> sTimerMap = new ConcurrentHashMap<>();
 
     private Timer mTimer;
     private final VolatileBox<Long> mMaxCallbackUptimeMillisForAllThreads;
     private final ScriptRuntime mRuntime;
-    private Runnable mTarget;
+    private final Runnable mTarget;
     private boolean mRunning = false;
     private final Object mRunningLock = new Object();
 
@@ -46,7 +46,7 @@ public class TimerThread extends ThreadCompat {
             Looper.loop();
         } catch (Throwable e) {
             if (!ScriptInterruptedException.causedByInterrupted(e)) {
-                mRuntime.console.error(Thread.currentThread().toString() + ": ", e);
+                mRuntime.console.error(Thread.currentThread() + ": ", e);
             }
         } finally {
             onExit();

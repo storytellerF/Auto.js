@@ -30,10 +30,10 @@ public class ScriptEngineManager {
 
     private final Set<ScriptEngine> mEngines = new HashSet<>();
     private EngineLifecycleCallback mEngineLifecycleCallback;
-    private Map<String, Supplier<ScriptEngine>> mEngineSuppliers = new HashMap<>();
-    private Map<String, Object> mGlobalVariableMap = new HashMap<>();
-    private android.content.Context mAndroidContext;
-    private ScriptEngine.OnDestroyListener mOnEngineDestroyListener = new ScriptEngine.OnDestroyListener() {
+    private final Map<String, Supplier<ScriptEngine>> mEngineSuppliers = new HashMap<>();
+    private final Map<String, Object> mGlobalVariableMap = new HashMap<>();
+    private final android.content.Context mAndroidContext;
+    private final ScriptEngine.OnDestroyListener mOnEngineDestroyListener = new ScriptEngine.OnDestroyListener() {
         @Override
         public void onDestroy(ScriptEngine engine) {
             removeEngine(engine);
@@ -118,7 +118,7 @@ public class ScriptEngineManager {
     public ScriptEngine createEngineOfSourceOrThrow(ScriptSource source, int id) {
         ScriptEngine engine = createEngineOfSource(source, id);
         if (engine == null)
-            throw new ScriptEngineFactory.EngineNotFoundException("source: " + source.toString());
+            throw new ScriptEngineFactory.EngineNotFoundException("source: " + source);
         return engine;
     }
 

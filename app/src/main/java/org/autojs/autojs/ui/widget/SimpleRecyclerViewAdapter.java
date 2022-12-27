@@ -19,9 +19,9 @@ public class SimpleRecyclerViewAdapter<M, VH extends BindableViewHolder<M>> exte
         VH create(View itemView);
     }
 
-    private List<M> mDataList = new ArrayList<>();
-    private int mLayoutResource;
-    private ViewHolderFactory<VH> mVHViewHolderFactory;
+    private final List<M> mDataList = new ArrayList<>();
+    private final int mLayoutResource;
+    private final ViewHolderFactory<VH> mVHViewHolderFactory;
 
     public SimpleRecyclerViewAdapter(int layoutResource, List<M> dataList, ViewHolderFactory<VH> VHViewHolderFactory) {
         mLayoutResource = layoutResource;
@@ -30,7 +30,7 @@ public class SimpleRecyclerViewAdapter<M, VH extends BindableViewHolder<M>> exte
     }
 
     public SimpleRecyclerViewAdapter(int layoutResource, ViewHolderFactory<VH> VHViewHolderFactory) {
-        this(layoutResource, Collections.<M>emptyList(), VHViewHolderFactory);
+        this(layoutResource, Collections.emptyList(), VHViewHolderFactory);
     }
 
     @Override

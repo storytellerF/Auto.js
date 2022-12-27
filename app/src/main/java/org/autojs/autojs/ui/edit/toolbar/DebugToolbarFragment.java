@@ -54,7 +54,7 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
             updateWatchingVariables(positionStart, positionStart + itemCount);
         }
     };
-    private CodeEditor.BreakpointChangeListener mBreakpointChangeListener = new CodeEditor.BreakpointChangeListener() {
+    private final CodeEditor.BreakpointChangeListener mBreakpointChangeListener = new CodeEditor.BreakpointChangeListener() {
         @Override
         public void onBreakpointChange(int line, boolean enabled) {
             if (mDebugger != null) {

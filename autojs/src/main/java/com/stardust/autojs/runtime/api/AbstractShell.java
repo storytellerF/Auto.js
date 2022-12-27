@@ -36,7 +36,7 @@ public abstract class AbstractShell {
     private int mTouchDevice = -1;
     private ScreenMetrics mScreenMetrics;
 
-    private boolean mRoot;
+    private final boolean mRoot;
     protected Context mContext;
 
     public AbstractShell() {

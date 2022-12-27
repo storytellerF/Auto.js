@@ -23,7 +23,7 @@ import java.util.List;
 
 public class AppUtils {
 
-    private Context mContext;
+    private final Context mContext;
     private volatile WeakReference<Activity> mCurrentActivity = new WeakReference<>(null);
     private final String mFileProviderAuthority;
 

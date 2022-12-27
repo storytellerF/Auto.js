@@ -18,7 +18,7 @@ public class AccessibilityConfig {
 
     private static boolean isUnintendedGuardEnabled = false;
 
-    private List<String> mWhiteList = new ArrayList<>();
+    private final List<String> mWhiteList = new ArrayList<>();
     private boolean mSealed = false;
 
     public AccessibilityConfig() {

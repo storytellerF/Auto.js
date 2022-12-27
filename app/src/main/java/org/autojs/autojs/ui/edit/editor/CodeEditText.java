@@ -65,12 +65,12 @@ public class CodeEditText extends AppCompatEditText {
     private final CopyOnWriteArrayList<CodeEditor.CursorChangeCallback> mCursorChangeCallbacks = new CopyOnWriteArrayList<>();
     private volatile JavaScriptHighlighter.HighlightTokens mHighlightTokens;
     private Theme mTheme;
-    private TimingLogger mLogger = new TimingLogger(LOG_TAG, "draw");
-    private Paint mLineHighlightPaint = new Paint();
+    private final TimingLogger mLogger = new TimingLogger(LOG_TAG, "draw");
+    private final Paint mLineHighlightPaint = new Paint();
     private int mFirstLineForDraw = -1, mLastLineForDraw;
-    private int[] mMatchingBrackets = {-1, -1};
+    private final int[] mMatchingBrackets = {-1, -1};
     private int mUnmatchedBracket = -1;
-    private LinkedHashMap<Integer, CodeEditor.Breakpoint> mBreakpoints = new LinkedHashMap<>();
+    private final LinkedHashMap<Integer, CodeEditor.Breakpoint> mBreakpoints = new LinkedHashMap<>();
     private int mDebuggingLine = -1;
     private CodeEditor.BreakpointChangeListener mBreakpointChangeListener;
 

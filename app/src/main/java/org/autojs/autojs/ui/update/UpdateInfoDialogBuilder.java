@@ -38,7 +38,7 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
 
     private static final String KEY_DO_NOT_ASK_AGAIN_FOR_VERSION = "I cannot forget you...cannot help missing you...";
     private View mView;
-    private SharedPreferences mSharedPreferences;
+    private final SharedPreferences mSharedPreferences;
     private VersionInfo mVersionInfo;
 
     public UpdateInfoDialogBuilder(@NonNull Context context, VersionInfo info) {
@@ -60,7 +60,7 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
 
     public UpdateInfoDialogBuilder showDoNotAskAgain() {
         mView.findViewById(R.id.do_not_ask_again_container).setVisibility(View.VISIBLE);
-        CheckBox checkBox = (CheckBox) mView.findViewById(R.id.do_not_ask_again);
+        CheckBox checkBox = mView.findViewById(R.id.do_not_ask_again);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -79,7 +79,7 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
     }
 
     private void setCurrentVersionIssues(View view, VersionInfo info) {
-        TextView issues = (TextView) view.findViewById(R.id.issues);
+        TextView issues = view.findViewById(R.id.issues);
         VersionInfo.OldVersion currentVersion = info.getOldVersion(BuildConfig.VERSION_CODE);
         if (currentVersion == null) {
             issues.setVisibility(View.GONE);
@@ -89,7 +89,7 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
     }
 
     private void setUpdateDownloadButtons(View view, VersionInfo info) {
-        LinearLayout downloads = (LinearLayout) view.findViewById(R.id.downloads);
+        LinearLayout downloads = view.findViewById(R.id.downloads);
         setDirectlyDownloadButton(downloads, info);
         for (final VersionInfo.Download download : info.downloads) {
             Button button = (Button) View.inflate(getContext(), R.layout.dialog_update_info_btn, null);

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AutoAdapter<DT> extends RecyclerView.Adapter<BindableViewHolder<DT>> {
 
-    private ViewHolderSupplier<? extends BindableViewHolder<DT>> mViewHolderSupplier;
+    private final ViewHolderSupplier<? extends BindableViewHolder<DT>> mViewHolderSupplier;
     private final List<DT> mData = new ArrayList<>();
 
     public AutoAdapter(ViewHolderSupplier<? extends BindableViewHolder<DT>> viewHolderSupplier) {

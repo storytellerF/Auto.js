@@ -80,7 +80,7 @@ public class SlidingUpPanel extends FrameLayout {
         initShadow();
         initAnimation();
         setVisibility(GONE);
-        mContentContainer = (FrameLayout) findViewById(R.id.content_container);
+        mContentContainer = findViewById(R.id.content_container);
     }
 
     private void initAnimation() {

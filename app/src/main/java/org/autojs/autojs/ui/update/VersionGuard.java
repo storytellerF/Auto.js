@@ -20,9 +20,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class VersionGuard {
 
-    private Activity mActivity;
+    private final Activity mActivity;
     private MaterialDialog mDeprecatedDialog;
-    private VersionService mVersionService = VersionService.getInstance();
+    private final VersionService mVersionService = VersionService.getInstance();
 
     public VersionGuard(Activity activity) {
         mActivity = activity;

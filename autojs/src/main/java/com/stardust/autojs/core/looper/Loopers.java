@@ -35,36 +35,36 @@ public class Loopers implements MessageQueue.IdleHandler {
     private static final Runnable EMPTY_RUNNABLE = () -> {
     };
 
-    private volatile ThreadLocal<Boolean> waitWhenIdle = new ThreadLocal<Boolean>() {
+    private final ThreadLocal<Boolean> waitWhenIdle = new ThreadLocal<Boolean>() {
         @Nullable
         @Override
         protected Boolean initialValue() {
             return Looper.myLooper() == Looper.getMainLooper();
         }
     };
-    private volatile ThreadLocal<HashSet<Integer>> waitIds = new ThreadLocal<HashSet<Integer>>() {
+    private final ThreadLocal<HashSet<Integer>> waitIds = new ThreadLocal<HashSet<Integer>>() {
         @Nullable
         @Override
         protected HashSet<Integer> initialValue() {
             return new HashSet<>();
         }
     };
-    private volatile ThreadLocal<Integer> maxWaitId = new ThreadLocal<Integer>() {
+    private final ThreadLocal<Integer> maxWaitId = new ThreadLocal<Integer>() {
         @Nullable
         @Override
         protected Integer initialValue() {
             return 0;
         }
     };
-    private volatile ThreadLocal<CopyOnWriteArrayList<LooperQuitHandler>> looperQuitHandlers = new ThreadLocal<>();
+    private final ThreadLocal<CopyOnWriteArrayList<LooperQuitHandler>> looperQuitHandlers = new ThreadLocal<>();
     private volatile Looper mServantLooper;
-    private Timers mTimers;
-    private ScriptRuntime mScriptRuntime;
+    private final Timers mTimers;
+    private final ScriptRuntime mScriptRuntime;
     private LooperQuitHandler mMainLooperQuitHandler;
-    private Handler mMainHandler;
-    private Looper mMainLooper;
-    private Threads mThreads;
-    private MessageQueue mMainMessageQueue;
+    private final Handler mMainHandler;
+    private final Looper mMainLooper;
+    private final Threads mThreads;
+    private final MessageQueue mMainMessageQueue;
 
     public Loopers(ScriptRuntime runtime) {
         mTimers = runtime.timers;

@@ -20,7 +20,7 @@ import io.reactivex.annotations.NonNull;
 
 public class UpdateCheckDialog {
 
-    private MaterialDialog mProgress;
+    private final MaterialDialog mProgress;
     private Context mContext;
 
     public UpdateCheckDialog(Context context) {

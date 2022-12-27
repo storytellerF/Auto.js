@@ -56,8 +56,8 @@ public interface ScreenCaptureRequester {
     class ActivityScreenCaptureRequester extends AbstractScreenCaptureRequester implements ScreenCaptureRequester, OnActivityResultDelegate {
 
         private static final int REQUEST_CODE_MEDIA_PROJECTION = 17777;
-        private OnActivityResultDelegate.Mediator mMediator;
-        private Activity mActivity;
+        private final OnActivityResultDelegate.Mediator mMediator;
+        private final Activity mActivity;
 
         public ActivityScreenCaptureRequester(Mediator mediator, Activity activity) {
             mMediator = mediator;

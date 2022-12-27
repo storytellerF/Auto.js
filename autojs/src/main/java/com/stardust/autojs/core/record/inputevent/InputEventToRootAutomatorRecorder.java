@@ -17,7 +17,7 @@ public class InputEventToRootAutomatorRecorder extends InputEventRecorder {
 
 
     private double mLastEventTime;
-    private StringBuilder mCode = new StringBuilder();
+    private final StringBuilder mCode = new StringBuilder();
     private int mTouchDevice = -1;
 
     public InputEventToRootAutomatorRecorder() {

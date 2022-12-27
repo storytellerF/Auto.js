@@ -64,7 +64,7 @@ public class DynamicLayoutInflater {
     private Map<String, ViewInflater<?>> mViewAttrSetters = new HashMap<>();
     private Map<String, ViewCreator<?>> mViewCreators = new HashMap<>();
     private Context mContext;
-    private ResourceParser mResourceParser;
+    private final ResourceParser mResourceParser;
     @NonNull
     private LayoutInflaterDelegate mLayoutInflaterDelegate = LayoutInflaterDelegate.NO_OP;
     private int mInflateFlags;

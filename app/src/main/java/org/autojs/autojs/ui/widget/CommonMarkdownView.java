@@ -31,8 +31,8 @@ public class CommonMarkdownView extends WebView {
         void onPageFinished(WebView view, String url);
     }
 
-    private Parser mParser = Parser.builder().build();
-    private HtmlRenderer mHtmlRender = HtmlRenderer.builder()
+    private final Parser mParser = Parser.builder().build();
+    private final HtmlRenderer mHtmlRender = HtmlRenderer.builder()
             .extensions(Collections.singleton(new HeadingAnchorExtension.Builder().build()))
             .build();
 
@@ -126,8 +126,8 @@ public class CommonMarkdownView extends WebView {
 
     public static class DialogBuilder extends ThemeColorMaterialDialogBuilder {
 
-        private CommonMarkdownView mMarkdownView;
-        private FrameLayout mContainer;
+        private final CommonMarkdownView mMarkdownView;
+        private final FrameLayout mContainer;
 
         public DialogBuilder(@NonNull Context context) {
             super(context);

@@ -11,7 +11,7 @@ import com.stardust.enhancedfloaty.WindowBridge;
 public class OrientationAwareWindowBridge extends WindowBridge.DefaultImpl {
 
 
-    private Context mContext;
+    private final Context mContext;
     private int mOrientation;
 
     public OrientationAwareWindowBridge(WindowManager.LayoutParams windowLayoutParams, WindowManager windowManager, View windowView, Context context) {

@@ -2276,7 +2276,7 @@ public  class TokenStream {
 
 	private char[] stringBuffer = new char[128];
 	private int stringBufferTop;
-	private ObjToIntMap allStrings = new ObjToIntMap(50);
+	private final ObjToIntMap allStrings = new ObjToIntMap(50);
 
 	// Room to backtrace from to < on failed match of the last - in <!--
 	private final int[] ungetBuffer = new int[3];
@@ -2314,6 +2314,6 @@ public  class TokenStream {
 	private boolean xmlIsTagContent;
 	private int xmlOpenTagsCount;
 
-	private String commentPrefix = "";
+	private final String commentPrefix = "";
 	private int commentCursor = -1;
 }

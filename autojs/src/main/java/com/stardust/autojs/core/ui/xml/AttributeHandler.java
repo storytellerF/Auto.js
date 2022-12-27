@@ -17,7 +17,7 @@ public interface AttributeHandler {
 
     class AttrNameRouter implements AttributeHandler {
 
-        private Map<String, AttributeHandler> mHandlerMap = new HashMap<>();
+        private final Map<String, AttributeHandler> mHandlerMap = new HashMap<>();
         private AttributeHandler mDefaultHandler;
 
         @Override
@@ -41,8 +41,8 @@ public interface AttributeHandler {
 
     class MappedAttributeHandler implements AttributeHandler {
 
-        private Map<String, String> mAttrNameMap = new HashMap<>();
-        private Map<String, Map<String, String>> mAttrValueMap = new HashMap<>();
+        private final Map<String, String> mAttrNameMap = new HashMap<>();
+        private final Map<String, Map<String, String>> mAttrValueMap = new HashMap<>();
 
         @Override
         public boolean handle(String nodeName, Node attr, StringBuilder layoutXml) {
@@ -97,7 +97,7 @@ public interface AttributeHandler {
 
     class DimenHandler implements AttributeHandler {
 
-        private String mAttrName;
+        private final String mAttrName;
 
         public DimenHandler(String attrName) {
             mAttrName = attrName;
@@ -141,7 +141,7 @@ public interface AttributeHandler {
 
     class MarginPaddingHandler implements AttributeHandler {
 
-        private String mAttrName;
+        private final String mAttrName;
 
         public MarginPaddingHandler(String attrName) {
             mAttrName = attrName;

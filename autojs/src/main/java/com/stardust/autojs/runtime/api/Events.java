@@ -63,21 +63,21 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
             .put(AccessibilityService.GESTURE_SWIPE_DOWN_AND_RIGHT, "down_right")
             .build();
 
-    private AccessibilityBridge mAccessibilityBridge;
-    private Context mContext;
+    private final AccessibilityBridge mAccessibilityBridge;
+    private final Context mContext;
     private TouchObserver mTouchObserver;
     private long mLastTouchEventMillis;
     private long mTouchEventTimeout = 10;
     private boolean mListeningKey = false;
-    private Loopers mLoopers;
+    private final Loopers mLoopers;
     private Handler mHandler;
     private boolean mListeningNotification = false;
     private boolean mListeningGesture = false;
     private boolean mListeningToast = false;
-    private ScriptRuntime mScriptRuntime;
+    private final ScriptRuntime mScriptRuntime;
     private volatile boolean mInterceptsAllKey = false;
     private KeyInterceptor mKeyInterceptor;
-    private Set<String> mInterceptedKeys = new HashSet<>();
+    private final Set<String> mInterceptedKeys = new HashSet<>();
 
     public final BroadcastEmitter broadcast;
 

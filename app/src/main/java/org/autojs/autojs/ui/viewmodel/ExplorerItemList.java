@@ -83,8 +83,8 @@ public class ExplorerItemList {
     public static final int SORT_TYPE_DATE = 0x40;
 
     private SortConfig mSortConfig = new SortConfig();
-    private ArrayList<ExplorerItem> mItems = new ArrayList<>();
-    private ArrayList<ExplorerPage> mItemGroups = new ArrayList<>();
+    private final ArrayList<ExplorerItem> mItems = new ArrayList<>();
+    private final ArrayList<ExplorerPage> mItemGroups = new ArrayList<>();
 
 
     public boolean isDirSortedAscending() {

@@ -20,10 +20,10 @@ public class Timers {
 
     private static final String LOG_TAG = "Timers";
 
-    private VolatileBox<Long> mMaxCallbackUptimeMillisForAllThreads = new VolatileBox<>(0L);
-    private Threads mThreads;
-    private Timer mMainTimer;
-    private Timer mUiTimer;
+    private final VolatileBox<Long> mMaxCallbackUptimeMillisForAllThreads = new VolatileBox<>(0L);
+    private final Threads mThreads;
+    private final Timer mMainTimer;
+    private final Timer mUiTimer;
 
 
     public Timers(ScriptRuntime runtime) {

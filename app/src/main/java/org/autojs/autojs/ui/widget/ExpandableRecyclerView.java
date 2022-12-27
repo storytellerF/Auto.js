@@ -30,14 +30,14 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
     }
 
 
-    private OnClickListener mOnTitleClickListener = new OnClickListener() {
+    private final OnClickListener mOnTitleClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             toggle();
         }
 
     };
-    private OnClickListener mOnChildClickListenerWrapper = new OnClickListener() {
+    private final OnClickListener mOnChildClickListenerWrapper = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -191,7 +191,7 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
 
             TitleViewHolder(View itemView) {
                 super(itemView);
-                mExpandHint = (ImageView) itemView.findViewById(R.id.expand_hint);
+                mExpandHint = itemView.findViewById(R.id.expand_hint);
                 ((TextView) itemView.findViewById(R.id.title)).setText(mTitle);
                 if (mIconResId != -1) {
                     ((ImageView) itemView.findViewById(R.id.icon)).setImageResource(mIconResId);

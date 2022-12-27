@@ -28,9 +28,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GlobalActionRecorder implements Recorder.OnStateChangedListener {
 
     private static GlobalActionRecorder sSingleton;
-    private CopyOnWriteArrayList<Recorder.OnStateChangedListener> mOnStateChangedListeners = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Recorder.OnStateChangedListener> mOnStateChangedListeners = new CopyOnWriteArrayList<>();
     private TouchRecorder mTouchRecorder;
-    private Context mContext;
+    private final Context mContext;
     private boolean mDiscard = false;
 
     public static GlobalActionRecorder getSingleton(Context context) {

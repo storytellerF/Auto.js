@@ -20,9 +20,9 @@ public class AnyWordsCompletion extends SimpleTextWatcher {
 
 
     private static final String PATTERN = "[\\W]";
-    private ExecutorService mExecutorService;
+    private final ExecutorService mExecutorService;
     private volatile DictionaryTree<String> mDictionaryTree;
-    private AtomicInteger mExecuteId = new AtomicInteger();
+    private final AtomicInteger mExecuteId = new AtomicInteger();
 
     public AnyWordsCompletion(ExecutorService executorService) {
         mExecutorService = executorService;

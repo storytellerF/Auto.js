@@ -32,7 +32,7 @@ public class StateObserver {
 
 
     private final Map<String, List<OnStateChangedListener>> mKeyStateListenersMap = new HashMap<>();
-    private SharedPreferences mSharedPreferences;
+    private final SharedPreferences mSharedPreferences;
 
     public StateObserver(SharedPreferences sharedPreferences) {
         mSharedPreferences = sharedPreferences;

@@ -72,7 +72,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @SuppressWarnings("unchecked")
     public <T extends View> T $(int resId) {
-        return (T) findViewById(resId);
+        return findViewById(resId);
     }
 
     protected boolean checkPermission(String... permissions) {

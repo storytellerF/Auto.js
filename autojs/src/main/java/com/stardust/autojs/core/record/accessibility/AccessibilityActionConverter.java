@@ -36,7 +36,7 @@ public class AccessibilityActionConverter {
         }
     }
 
-    private StringBuilder mScript = new StringBuilder();
+    private final StringBuilder mScript = new StringBuilder();
     private boolean mFirstAction = true;
 
     public AccessibilityActionConverter(boolean shouldIgnoreFirstAction) {
@@ -89,7 +89,7 @@ public class AccessibilityActionConverter {
 
     private static class DoOnceConverter extends BoundsEventConverter {
 
-        private String mActionFunction;
+        private final String mActionFunction;
 
         DoOnceConverter(String actionFunction) {
             mActionFunction = actionFunction;
@@ -103,7 +103,7 @@ public class AccessibilityActionConverter {
 
     private static class DoUtilSucceedConverter extends BoundsEventConverter {
 
-        private String mActionFunction;
+        private final String mActionFunction;
 
         DoUtilSucceedConverter(String actionFunction) {
             mActionFunction = actionFunction;

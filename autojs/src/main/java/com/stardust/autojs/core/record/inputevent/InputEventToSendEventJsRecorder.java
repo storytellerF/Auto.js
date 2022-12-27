@@ -14,7 +14,7 @@ import static com.stardust.util.ScreenMetrics.getDeviceScreenWidth;
 public class InputEventToSendEventJsRecorder extends InputEventRecorder {
 
     private double mLastEventTime;
-    private StringBuilder mCode = new StringBuilder();
+    private final StringBuilder mCode = new StringBuilder();
     private int mTouchDevice = -1;
     private int mLastTouchX = -1;
     private int mLastTouchY = -1;

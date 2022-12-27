@@ -19,7 +19,7 @@ public class CodeEvaluateDialogBuilder extends ThemeColorMaterialDialogBuilder {
     private CodeEvaluator mCodeEvaluator;
     private TextView mResult;
     private EditText mCode;
-    private SharedPreferences mSharedPreferences;
+    private final SharedPreferences mSharedPreferences;
 
     public CodeEvaluateDialogBuilder(@NonNull Context context) {
         super(context);

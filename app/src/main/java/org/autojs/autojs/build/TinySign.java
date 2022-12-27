@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.DigestOutputStream;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
@@ -32,7 +33,7 @@ public class TinySign {
     }
 
     private static byte[] dBase64(String data) throws UnsupportedEncodingException {
-        return Base64.decode(data.getBytes("UTF-8"), Base64.NO_WRAP);
+        return Base64.decode(data.getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP);
     }
 
     private static void doDir(String prefix, File dir, ZipOutputStream zos, DigestOutputStream dos, Manifest m) throws IOException {
@@ -149,10 +150,10 @@ public class TinySign {
         Signature signature = instanceSignature();
         zos.putNextEntry(new ZipEntry("META-INF/CERT.SF"));
         TinySign.SignatureOutputStream out = new TinySign.SignatureOutputStream(zos, signature);
-        out.write("Signature-Version: 1.0\r\n".getBytes("UTF-8"));
-        out.write(("Created-By: tiny-sign-" + TinySign.class.getPackage().getImplementationVersion() + "\r\n").getBytes("UTF-8"));
-        out.write("SHA1-Digest-Manifest: ".getBytes("UTF-8"));
-        out.write(sha1Manifest.getBytes("UTF-8"));
+        out.write("Signature-Version: 1.0\r\n".getBytes(StandardCharsets.UTF_8));
+        out.write(("Created-By: tiny-sign-" + TinySign.class.getPackage().getImplementationVersion() + "\r\n").getBytes(StandardCharsets.UTF_8));
+        out.write("SHA1-Digest-Manifest: ".getBytes(StandardCharsets.UTF_8));
+        out.write(sha1Manifest.getBytes(StandardCharsets.UTF_8));
         out.write(13);
         out.write(10);
         sf.write(out);
@@ -178,7 +179,7 @@ public class TinySign {
     }
 
     private static class SignatureOutputStream extends FilterOutputStream {
-        private Signature mSignature;
+        private final Signature mSignature;
 
         public SignatureOutputStream(OutputStream out, Signature sig) {
             super(out);

@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 public class Config {
 
     private static Config sInstance;
-    private SharedPreferences mSharedPreferences;
+    private final SharedPreferences mSharedPreferences;
     private final Context mContext;
 
     public Config(Context context) {

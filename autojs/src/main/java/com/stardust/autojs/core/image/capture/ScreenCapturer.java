@@ -44,12 +44,12 @@ public class ScreenCapturer {
     private VirtualDisplay mVirtualDisplay;
     private volatile Looper mImageAcquireLooper;
     private volatile Image mUnderUsingImage;
-    private volatile AtomicReference<Image> mCachedImage = new AtomicReference<>();
+    private final AtomicReference<Image> mCachedImage = new AtomicReference<>();
     private volatile Exception mException;
     private final int mScreenDensity;
     private Handler mHandler;
-    private Intent mData;
-    private Context mContext;
+    private final Intent mData;
+    private final Context mContext;
     private int mOrientation = -1;
     private int mDetectedOrientation;
     private OrientationEventListener mOrientationEventListener;

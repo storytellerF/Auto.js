@@ -42,7 +42,7 @@ open class UiObject(info: Any?, private val allocator: AccessibilityNodeInfoAllo
     }
 
 
-    constructor(info: Any?, allocator: AccessibilityNodeInfoAllocator, indexInParent: Int) : this(info, allocator, 0, indexInParent) {}
+    constructor(info: Any?, allocator: AccessibilityNodeInfoAllocator, indexInParent: Int) : this(info, allocator, 0, indexInParent)
 
     @JvmOverloads
     constructor(info: Any?, depth: Int = 0, indexInParent: Int = -1) : this(info, null, depth, indexInParent)

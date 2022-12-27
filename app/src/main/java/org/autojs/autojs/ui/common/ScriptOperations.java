@@ -61,10 +61,10 @@ public class ScriptOperations {
 
     private static final String LOG_TAG = "ScriptOperations";
     private final ExplorerPage mExplorerPage;
-    private Context mContext;
-    private View mView;
-    private ScriptFile mCurrentDirectory;
-    private Explorer mExplorer;
+    private final Context mContext;
+    private final View mView;
+    private final ScriptFile mCurrentDirectory;
+    private final Explorer mExplorer;
 
     public ScriptOperations(Context context, View view, ScriptFile currentDirectory) {
         mContext = context;
@@ -157,7 +157,7 @@ public class ScriptOperations {
             dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
             return;
         }
-        if (new File(getCurrentDirectory(), extension == null ? input.toString() : input.toString() + extension).exists()) {
+        if (new File(getCurrentDirectory(), extension == null ? input.toString() : input + extension).exists()) {
             errorResId = R.string.text_file_exists;
         }
         if (errorResId == 0) {
@@ -374,9 +374,9 @@ public class ScriptOperations {
 
     private class InputCallback implements MaterialDialog.InputCallback {
 
-        private String mExcluded;
+        private final String mExcluded;
         private boolean mIsFirstTextChanged = true;
-        private String mExtension;
+        private final String mExtension;
 
         InputCallback(@Nullable String ext, String excluded) {
             mExtension = ext == null ? null : "." + ext;

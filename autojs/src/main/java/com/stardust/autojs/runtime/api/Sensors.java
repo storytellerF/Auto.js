@@ -125,10 +125,7 @@ public class Sensors extends EventEmitter implements Loopers.LooperQuitHandler {
 
     @Override
     public boolean shouldQuit() {
-        if (mSensorEventEmitters.isEmpty()) {
-            return true;
-        }
-        return false;
+        return mSensorEventEmitters.isEmpty();
     }
 
     public Sensor getSensor(String sensorName) {

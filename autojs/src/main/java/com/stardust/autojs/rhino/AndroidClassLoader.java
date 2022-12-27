@@ -100,7 +100,7 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
             final File classFile = generateTempFile(jar.getPath(), false);
             final ZipFile zipFile = new ZipFile(classFile);
             final ZipFile jarFile = new ZipFile(jar);
-            for (FileHeader header : (List<FileHeader>) jarFile.getFileHeaders()) {
+            for (FileHeader header : jarFile.getFileHeaders()) {
                 if (!header.isDirectory()) {
                     final ZipParameters parameters = new ZipParameters();
                     parameters.setFileNameInZip(header.getFileName());

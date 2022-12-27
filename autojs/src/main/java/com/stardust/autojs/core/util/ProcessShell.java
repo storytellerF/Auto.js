@@ -29,8 +29,8 @@ public class ProcessShell extends AbstractShell {
     private BufferedReader mSucceedReader;
     private BufferedReader mErrorReader;
 
-    private StringBuilder mSucceedOutput = new StringBuilder();
-    private StringBuilder mErrorOutput = new StringBuilder();
+    private final StringBuilder mSucceedOutput = new StringBuilder();
+    private final StringBuilder mErrorOutput = new StringBuilder();
 
     public ProcessShell() {
 

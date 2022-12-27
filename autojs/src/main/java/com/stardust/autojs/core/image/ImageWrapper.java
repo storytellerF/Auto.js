@@ -24,8 +24,8 @@ import androidx.annotation.RequiresApi;
 public class ImageWrapper {
 
     private Mat mMat;
-    private int mWidth;
-    private int mHeight;
+    private final int mWidth;
+    private final int mHeight;
     private Bitmap mBitmap;
 
     protected ImageWrapper(Mat mat) {

@@ -18,7 +18,7 @@ public class SearchViewItem implements MenuItemCompat.OnActionExpandListener, Se
     }
 
     private QueryCallback mQueryCallback;
-    private MenuItem mSearchMenuItem;
+    private final MenuItem mSearchMenuItem;
 
     public SearchViewItem(Activity activity, MenuItem searchMenuItem) {
         mSearchMenuItem = searchMenuItem;

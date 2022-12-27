@@ -26,8 +26,8 @@ public class RawWindow extends FloatyWindow {
         View inflateWindowView(FloatyService service, ViewGroup parent);
     }
 
-    private VolatileDispose<RuntimeException> mInflateException = new VolatileDispose<>();
-    private RawFloaty mRawFloaty;
+    private final VolatileDispose<RuntimeException> mInflateException = new VolatileDispose<>();
+    private final RawFloaty mRawFloaty;
     private View mContentView;
 
     public RawWindow(RawFloaty rawFloaty) {

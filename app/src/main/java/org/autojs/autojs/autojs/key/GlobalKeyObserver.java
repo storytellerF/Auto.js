@@ -29,7 +29,7 @@ public class GlobalKeyObserver implements OnKeyListener, ShellKeyObserver.KeyLis
     private static final String LOG_TAG = "GlobalKeyObserver";
     private static final long EVENT_TIMEOUT = 200;
     private static GlobalKeyObserver sSingleton;
-    private EventDispatcher<OnVolumeDownListener> mVolumeDownEventDispatcher = new EventDispatcher<>();
+    private final EventDispatcher<OnVolumeDownListener> mVolumeDownEventDispatcher = new EventDispatcher<>();
     private boolean mVolumeDownFromShell, mVolumeDownFromAccessibility;
     private boolean mVolumeUpFromShell, mVolumeUpFromAccessibility;
 

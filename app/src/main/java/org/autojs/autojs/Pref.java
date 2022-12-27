@@ -27,7 +27,7 @@ public class Pref {
     private static final String KEY_EDITOR_THEME = "editor.theme";
     private static final String KEY_EDITOR_TEXT_SIZE = "editor.textSize";
 
-    private static SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+    private static final SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences p, String key) {
             if (key.equals(getString(R.string.key_guard_mode))) {
