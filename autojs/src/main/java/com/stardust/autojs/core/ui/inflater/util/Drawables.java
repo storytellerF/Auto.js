@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.stardust.autojs.core.ui.inflater.ImageLoader;
 
@@ -36,8 +37,7 @@ public class Drawables {
     private ImageLoader mImageLoader = sDefaultImageLoader;
 
     public static void setDefaultImageLoader(@Nullable ImageLoader defaultImageLoader) {
-        if (defaultImageLoader == null)
-            throw new NullPointerException();
+        if (defaultImageLoader == null) throw new NullPointerException();
         sDefaultImageLoader = defaultImageLoader;
     }
 
@@ -61,16 +61,13 @@ public class Drawables {
     }
 
     public Drawable loadDrawableResources(@NonNull Context context, String value) {
-        int resId = context.getResources().getIdentifier(value, "drawable",
-                context.getPackageName());
-        if (resId == 0)
-            throw new Resources.NotFoundException("drawable not found: " + value);
-        return context.getResources().getDrawable(resId);
+        int resId = context.getResources().getIdentifier(value, "drawable", context.getPackageName());
+        if (resId == 0) throw new Resources.NotFoundException("drawable not found: " + value);
+        return ContextCompat.getDrawable(context, resId);
     }
 
     public Drawable loadAttrResources(@NonNull Context context, @NonNull String value) {
-        int[] attr = {context.getResources().getIdentifier(value.substring(1), "attr",
-                context.getPackageName())};
+        int[] attr = {context.getResources().getIdentifier(value.substring(1), "attr", context.getPackageName())};
         TypedArray ta = context.obtainStyledAttributes(attr);
         Drawable drawable = ta.getDrawable(0 /* index */);
         ta.recycle();

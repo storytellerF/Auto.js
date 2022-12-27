@@ -136,7 +136,6 @@ object Scripts {
                 delay = delay, loopTimes = loopTimes, interval = interval))
     }
 
-    @Nullable
     fun getRhinoException(throwable: Throwable?): RhinoException? {
         var e = throwable
         while (e != null) {

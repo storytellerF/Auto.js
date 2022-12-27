@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar
 class SettingsActivity : AppCompatActivity() {
 
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupViews()
     }
@@ -30,7 +30,7 @@ class SettingsActivity : AppCompatActivity() {
 
     class PreferenceFragment : android.preference.PreferenceFragment() {
 
-        override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+        override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.preference)
         }

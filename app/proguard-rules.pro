@@ -70,10 +70,6 @@
    *** get*();
 }
 
--keep class * extends android.support.v4.app.Fragment {
-    <methods>;
-}
-
 -keepclassmembers class * extends android.app.Activity {
    public void *(android.view.View);
 }

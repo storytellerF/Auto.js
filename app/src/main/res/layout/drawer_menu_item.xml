@@ -19,8 +19,8 @@
             android:id="@+id/icon"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:tint="#999999"
-            tools:src="@drawable/ic_service_green"/>
+            tools:src="@drawable/ic_service_green"
+            app:tint="#999999" />
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/progress_bar"

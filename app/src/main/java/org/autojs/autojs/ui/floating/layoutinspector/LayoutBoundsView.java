@@ -102,7 +102,7 @@ public class LayoutBoundsView extends View {
             }
             canvas.clipRect(mTouchedNodeBounds, Region.Op.DIFFERENCE);
         }
-        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), mFillingPaint);
+        canvas.drawRect(0, 0, getWidth(), getHeight(), mFillingPaint);
         if (mTouchedNode != null) {
             canvas.restore();
         }

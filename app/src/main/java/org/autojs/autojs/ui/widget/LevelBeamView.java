@@ -87,7 +87,7 @@ public class LevelBeamView extends View {
                 LINE_X += lvl * mLinesOffset;
             }
             mLinePaint.setColor(getColorForLevel(lvl));
-            canvas.drawLine(LINE_X, 0, LINE_X, canvas.getHeight(), mLinePaint);
+            canvas.drawLine(LINE_X, 0, LINE_X, getHeight(), mLinePaint);
         }
     }
 

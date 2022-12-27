@@ -31,6 +31,7 @@ public class ImportIntentActivity extends BaseActivity {
 
     @Override
     protected void onNewIntent(@NonNull Intent intent) {
+        super.onNewIntent(intent);
         try {
             handleIntent(intent);
         } catch (Exception e) {

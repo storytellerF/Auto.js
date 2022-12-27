@@ -22,9 +22,9 @@
         android:padding="6dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_resizer"
-        android:tint="@android:color/white"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible"
+        app:tint="@android:color/white" />
 
     <ImageView
         android:id="@+id/close"

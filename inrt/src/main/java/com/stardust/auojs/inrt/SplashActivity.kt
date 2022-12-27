@@ -26,7 +26,7 @@ import android.content.pm.PackageManager.PERMISSION_DENIED
 
 class SplashActivity : AppCompatActivity() {
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         val slug = findViewById<TextView>(R.id.slug)
@@ -59,7 +59,8 @@ class SplashActivity : AppCompatActivity() {
         }.start()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         runScript()
     }
 
