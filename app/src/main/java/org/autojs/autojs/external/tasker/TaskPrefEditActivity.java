@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import com.storyteller_f.bandage.Click;
 import com.twofortyfouram.locale.sdk.client.ui.activity.AbstractAppCompatPluginActivity;
 
-import org.androidannotations.annotations.EActivity;
 import org.autojs.autojs.R;
 import org.autojs.autojs.databinding.ActivityTaskerEditBinding;
 import org.autojs.autojs.external.ScriptIntents;

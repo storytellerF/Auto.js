@@ -11,7 +11,6 @@ import com.stardust.util.IntentUtil;
 import com.storyteller_f.bandage.Bandage;
 import com.storyteller_f.bandage.Click;
 
-import org.androidannotations.annotations.EActivity;
 import org.autojs.autojs.BuildConfig;
 import org.autojs.autojs.R;
 import org.autojs.autojs.databinding.ActivityAboutBinding;

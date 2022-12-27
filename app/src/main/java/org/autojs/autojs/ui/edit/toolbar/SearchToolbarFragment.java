@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.androidannotations.annotations.EFragment;
 import org.androidannotations.api.builder.FragmentBuilder;
 import org.autojs.autojs.R;
 import org.autojs.autojs.databinding.FragmentSearchToolbarBinding;

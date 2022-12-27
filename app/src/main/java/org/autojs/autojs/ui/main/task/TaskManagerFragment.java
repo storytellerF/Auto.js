@@ -2,46 +2,64 @@ package org.autojs.autojs.ui.main.task;
 
 import android.app.Activity;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import android.view.View;
 
-import org.autojs.autojs.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.autojs.autojs.autojs.AutoJs;
+import org.autojs.autojs.databinding.FragmentTaskManagerBinding;
 import org.autojs.autojs.ui.main.ViewPagerFragment;
 import org.autojs.autojs.ui.widget.SimpleAdapterDataObserver;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
 
 /**
  * Created by Stardust on 2017/3/24.
  */
-@EFragment(R.layout.fragment_task_manager)
 public class TaskManagerFragment extends ViewPagerFragment {
+    private FragmentTaskManagerBinding binding;
 
     @Nullable
-    @ViewById(R.id.task_list)
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        FragmentTaskManagerBinding inflate = FragmentTaskManagerBinding.inflate(inflater, container, false);
+        binding = inflate;
+        mTaskListRecyclerView = inflate.taskList;
+        mNoRunningScriptNotice = inflate.noticeNoRunningScript;
+        mSwipeRefreshLayout = inflate.swipeRefreshLayout;
+        return inflate.getRoot();
+    }
+
+    @Nullable
     TaskListRecyclerView mTaskListRecyclerView;
 
     @Nullable
-    @ViewById(R.id.notice_no_running_script)
     View mNoRunningScriptNotice;
 
     @Nullable
-    @ViewById(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setUpViews();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 
     public TaskManagerFragment() {
         super(45);
         setArguments(new Bundle());
     }
 
-    @AfterViews
     void setUpViews() {
         init();
         final boolean noRunningScript = mTaskListRecyclerView.getAdapter().getItemCount() == 0;

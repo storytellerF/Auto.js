@@ -34,7 +34,6 @@ import com.stardust.util.MapBuilder;
 import com.storyteller_f.bandage.Bandage;
 import com.storyteller_f.bandage.Click;
 
-import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.api.builder.ActivityIntentBuilder;
 import org.androidannotations.api.builder.PostActivityStarter;
 import org.autojs.autojs.R;

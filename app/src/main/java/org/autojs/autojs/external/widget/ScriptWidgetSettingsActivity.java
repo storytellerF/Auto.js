@@ -4,14 +4,12 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.autojs.autojs.R;
 import org.autojs.autojs.databinding.ActivityScriptWidgetSettingsBinding;
 import org.autojs.autojs.model.explorer.Explorer;

@@ -94,7 +94,6 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
     // Android Annotations
-    kapt "org.androidannotations:androidannotations:$AAVersion"
     implementation "org.androidannotations:androidannotations-api:$AAVersion"
     // Android supports
     implementation 'androidx.appcompat:appcompat:1.5.1'

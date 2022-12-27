@@ -17,25 +17,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.androidannotations.api.builder.ActivityIntentBuilder;
-import org.androidannotations.api.builder.ActivityStarter;
 import org.androidannotations.api.builder.PostActivityStarter;
 import org.autojs.autojs.R;
 import org.autojs.autojs.databinding.ActivityShortcutIconSelectBinding;
 import org.autojs.autojs.tool.BitmapTool;
 import org.autojs.autojs.ui.BaseActivity;
-import org.autojs.autojs.ui.project.BuildActivity;
 import org.autojs.autojs.workground.WrapContentGridLayoutManger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

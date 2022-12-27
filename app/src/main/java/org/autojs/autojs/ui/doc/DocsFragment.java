@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stardust.util.BackPressedHandler;
 
-import org.androidannotations.annotations.AfterViews;
 import org.autojs.autojs.Pref;
 import org.autojs.autojs.databinding.FragmentOnlineDocsBinding;
 import org.autojs.autojs.ui.main.QueryEvent;

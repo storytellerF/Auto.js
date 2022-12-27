@@ -2,31 +2,22 @@ package org.autojs.autojs.ui.user;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.stardust.theme.ThemeColorManager;
 
 import org.androidannotations.api.builder.ActivityIntentBuilder;
 import org.androidannotations.api.builder.PostActivityStarter;
 import org.autojs.autojs.R;
 import org.autojs.autojs.databinding.ActivityRegisterBinding;
-import org.autojs.autojs.external.foreground.ForegroundService;
 import org.autojs.autojs.network.NodeBB;
 import org.autojs.autojs.network.UserService;
 import org.autojs.autojs.ui.BaseActivity;
-import com.stardust.theme.ThemeColorManager;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
