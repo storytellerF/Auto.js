@@ -46,10 +46,14 @@ public class ScriptWidget extends AppWidgetProvider {
         Log.d(LOG_TAG, "updateWidget: id = " + widgetId + ", requestCode = " + requestCode + ", path = " + path);
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_script_shortcut);
+        int flagImmutable;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            flagImmutable = PendingIntent.FLAG_IMMUTABLE;
+        } else flagImmutable = 0;
         views.setOnClickPendingIntent(R.id.widget, PendingIntent.getActivity(context, requestCode,
                 new Intent(context, RunIntentActivity.class)
                         .putExtra(ScriptIntents.EXTRA_KEY_PATH, path)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), PendingIntent.FLAG_UPDATE_CURRENT));
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), PendingIntent.FLAG_UPDATE_CURRENT | flagImmutable));
         views.setTextViewText(R.id.name, name);
         appWidgetManager.updateAppWidget(widgetId, views);
         ScriptWidgets.setPathForAppWidgetId(widgetId, path);

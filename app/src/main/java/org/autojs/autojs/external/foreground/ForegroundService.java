@@ -54,7 +54,11 @@ public class ForegroundService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel();
         }
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, MainActivity.intent(this).get(), 0);
+        int flagImmutable;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            flagImmutable = PendingIntent.FLAG_IMMUTABLE;
+        } else  flagImmutable = 0;
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, MainActivity.intent(this).get(), flagImmutable);
         return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getString(R.string.foreground_notification_title))
                 .setContentText(getString(R.string.foreground_notification_text))

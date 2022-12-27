@@ -191,8 +191,12 @@ public class TimedTask extends BaseModel {
 
 
     public PendingIntent createPendingIntent(Context context) {
+        int flagImmutable;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            flagImmutable = PendingIntent.FLAG_IMMUTABLE;
+        } else flagImmutable = 0;
         return PendingIntent.getBroadcast(context, (int) ((REQUEST_CODE + 1 + getId()) % 65535),
-                createIntent(), PendingIntent.FLAG_UPDATE_CURRENT);
+                createIntent(), PendingIntent.FLAG_UPDATE_CURRENT | flagImmutable);
     }
 
     @Override
