@@ -11,7 +11,6 @@ import com.stardust.concurrent.VolatileBox;
 import com.stardust.pio.PFiles;
 
 import org.autojs.autojs.R;
-import org.autojs.autojs.model.script.ScriptFile;
 import org.autojs.autojs.network.NodeBB;
 import org.autojs.autojs.network.api.DownloadApi;
 import org.autojs.autojs.tool.SimpleObserver;
@@ -20,7 +19,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.SocketTimeoutException;
 import java.net.URLDecoder;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,9 +39,8 @@ import retrofit2.Retrofit;
 public class DownloadManager {
 
     private static final String LOG_TAG = "DownloadManager";
-    private static DownloadManager sInstance;
-
     private static final int RETRY_COUNT = 3;
+    private static DownloadManager sInstance;
     @NonNull
     private final Retrofit mRetrofit;
     @NonNull
@@ -150,10 +147,10 @@ public class DownloadManager {
         private final String mPath;
         @NonNull
         private final VolatileBox<Boolean> mStatus;
-        private InputStream mInputStream;
-        private FileOutputStream mFileOutputStream;
         @NonNull
         private final PublishSubject<Integer> mProgress;
+        private InputStream mInputStream;
+        private FileOutputStream mFileOutputStream;
 
         public DownloadTask(String url, String path) {
             mUrl = url;

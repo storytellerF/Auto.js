@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.stardust.autojs.rhino.NativeJavaObjectWithPrototype;
 
-import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 
@@ -19,7 +18,6 @@ public class BaseEvent extends NativeJavaObjectWithPrototype {
     public BaseEvent(Scriptable scope, Object javaObject, Class<?> staticType, boolean isAdapter) {
         super(scope, javaObject, staticType, isAdapter);
     }
-
 
 
     public BaseEvent(Scriptable scope, @NonNull Object javaObject) {

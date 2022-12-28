@@ -9,11 +9,6 @@ import androidx.annotation.NonNull;
 public class EventFormatException extends RuntimeException {
 
 
-    @NonNull
-    public static EventFormatException forEventStr(String eventStr, NumberFormatException e) {
-        return new EventFormatException(eventStr, e);
-    }
-
     public EventFormatException(Exception e) {
         super(e);
     }
@@ -24,5 +19,10 @@ public class EventFormatException extends RuntimeException {
 
     public EventFormatException(String eventStr) {
         super("eventStr=" + eventStr);
+    }
+
+    @NonNull
+    public static EventFormatException forEventStr(String eventStr, NumberFormatException e) {
+        return new EventFormatException(eventStr, e);
     }
 }

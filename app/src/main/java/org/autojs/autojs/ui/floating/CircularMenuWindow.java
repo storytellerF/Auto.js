@@ -22,7 +22,7 @@ public class CircularMenuWindow extends FloatyWindow {
 
     private static final String KEY_POSITION_X = CircularMenuWindow.class.getName() + ".position.x";
     private static final String KEY_POSITION_Y = CircularMenuWindow.class.getName() + ".position.y";
-
+    private final Context mContext;
     protected CircularMenuFloaty mFloaty;
     protected CircularActionMenu mCircularActionMenu;
     protected View mCircularActionView;
@@ -35,7 +35,6 @@ public class CircularMenuWindow extends FloatyWindow {
     protected float mKeepToSideHiddenWidthRadio;
     protected float mActiveAlpha = 1.0F;
     protected float mInactiveAlpha = 0.4F;
-    private final Context mContext;
     private OrientationEventListener mOrientationEventListener;
 
     public CircularMenuWindow(Context context, CircularMenuFloaty floaty) {

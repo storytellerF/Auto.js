@@ -26,9 +26,9 @@ import org.joda.time.format.DateTimeFormat
 class MarketFragment : ViewPagerFragment(0) {
 
     private val mTopics = ArrayList<Topic>()
-    lateinit var inflate:FragmentMarketBinding
+    lateinit var inflate: FragmentMarketBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        inflate= FragmentMarketBinding.inflate(inflater)
+        inflate = FragmentMarketBinding.inflate(inflater)
         return inflate.root
     }
 
@@ -96,11 +96,13 @@ class MarketFragment : ViewPagerFragment(0) {
 
         fun bind(topic: Topic) {
             this.topic = topic
-            rootView.setText(if (topic.appInfo?.permissions?.contains(AppInfo.PERMISSION_ROOT) == true) {
-                R.string.text_root
-            } else {
-                R.string.text_no_root
-            })
+            rootView.setText(
+                if (topic.appInfo?.permissions?.contains(AppInfo.PERMISSION_ROOT) == true) {
+                    R.string.text_root
+                } else {
+                    R.string.text_no_root
+                }
+            )
             titleView.text = topic.title
             avatarView.setUser(topic.user)
             usernameView.text = topic.user.username
@@ -132,21 +134,25 @@ class MarketFragment : ViewPagerFragment(0) {
                 } else {
                     mainPost.upvotes.toString()
                 }
-                upvoteView.setColor(if (mainPost.upvoted) {
-                    ContextCompat.getColor(context, R.color.market_button_selected)
-                } else {
-                    ContextCompat.getColor(context, R.color.market_button_unselected)
-                })
+                upvoteView.setColor(
+                    if (mainPost.upvoted) {
+                        ContextCompat.getColor(context, R.color.market_button_selected)
+                    } else {
+                        ContextCompat.getColor(context, R.color.market_button_unselected)
+                    }
+                )
                 downvoteView.text = if (mainPost.downvotes == 0L) {
                     context.getString(R.string.text_downvote)
                 } else {
                     mainPost.downvotes.toString()
                 }
-                downvoteView.setColor(if (mainPost.downvoted) {
-                    ContextCompat.getColor(context, R.color.market_button_selected)
-                } else {
-                    ContextCompat.getColor(context, R.color.market_button_unselected)
-                })
+                downvoteView.setColor(
+                    if (mainPost.downvoted) {
+                        ContextCompat.getColor(context, R.color.market_button_selected)
+                    } else {
+                        ContextCompat.getColor(context, R.color.market_button_unselected)
+                    }
+                )
             }
 
         }

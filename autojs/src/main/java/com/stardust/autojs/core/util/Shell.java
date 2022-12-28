@@ -26,59 +26,22 @@ import jackpal.androidterm.util.TermSettings;
 
 public class Shell extends AbstractShell {
 
-    public interface Callback {
-
-        void onOutput(String str);
-
-        void onNewLine(String line);
-
-        void onInitialized();
-
-        void onInterrupted(InterruptedException e);
-    }
-
-    public static class SimpleCallback implements Callback {
-
-        @Override
-        public void onOutput(String str) {
-
-        }
-
-        @Override
-        public void onNewLine(String str) {
-
-        }
-
-        @Override
-        public void onInitialized() {
-
-        }
-
-        @Override
-        public void onInterrupted(InterruptedException e) {
-
-        }
-    }
-
     private static final boolean DEBUG = true;
     private static final String TAG = "Shell";
-
-    private volatile TermSession mTermSession;
     private final Object mInitLock = new Object();
     private final Object mExitLock = new Object();
     private final Object mCommandOutputLock = new Object();
+    private final boolean mShouldReadOutput;
+    private volatile TermSession mTermSession;
     private volatile RuntimeException mInitException;
     private volatile boolean mInitialized = false;
     private volatile boolean mWaitingExit = false;
     @Nullable
     private volatile String mCommandOutput = null;
-    private final boolean mShouldReadOutput;
     private Callback mCallback;
-
     public Shell(Context context) {
         this(context, false);
     }
-
     public Shell(Context context, boolean root) {
         this(context, root, true);
     }
@@ -214,6 +177,40 @@ public class Shell extends AbstractShell {
 
     public TermSession getTermSession() {
         return mTermSession;
+    }
+
+    public interface Callback {
+
+        void onOutput(String str);
+
+        void onNewLine(String line);
+
+        void onInitialized();
+
+        void onInterrupted(InterruptedException e);
+    }
+
+    public static class SimpleCallback implements Callback {
+
+        @Override
+        public void onOutput(String str) {
+
+        }
+
+        @Override
+        public void onNewLine(String str) {
+
+        }
+
+        @Override
+        public void onInitialized() {
+
+        }
+
+        @Override
+        public void onInterrupted(InterruptedException e) {
+
+        }
     }
 
     private class MyShellTermSession extends ShellTermSession {

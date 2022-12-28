@@ -8,20 +8,15 @@ import androidx.annotation.Nullable;
 public class DrawerMenuItem {
 
 
-    public interface Action {
-        void onClick(DrawerMenuItemViewHolder holder);
-    }
-
     private final int mIcon;
     private final int mTitle;
+    private final Action mAction;
     private boolean mAntiShake;
     private boolean mSwitchEnabled;
     private int mPrefKey;
-    private final Action mAction;
     private boolean mSwitchChecked;
     private boolean mOnProgress;
     private int mNotificationCount;
-
     public DrawerMenuItem(int icon, int title, Action action) {
         mIcon = icon;
         mTitle = title;
@@ -63,14 +58,13 @@ public class DrawerMenuItem {
         return mSwitchEnabled;
     }
 
-    public void setChecked(boolean checked) {
-        mSwitchChecked = checked;
-    }
-
     public boolean isChecked() {
         return mSwitchChecked;
     }
 
+    public void setChecked(boolean checked) {
+        mSwitchChecked = checked;
+    }
 
     public boolean isProgress() {
         return mOnProgress;
@@ -102,5 +96,9 @@ public class DrawerMenuItem {
     @Override
     public int hashCode() {
         return mTitle;
+    }
+
+    public interface Action {
+        void onClick(DrawerMenuItemViewHolder holder);
     }
 }

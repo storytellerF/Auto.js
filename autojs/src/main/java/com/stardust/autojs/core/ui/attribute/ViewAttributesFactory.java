@@ -4,22 +4,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 
 import java.util.HashMap;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-
 
 public class ViewAttributesFactory {
-
-    interface ViewAttributesCreator {
-        @NonNull
-        ViewAttributes create(ResourceParser resourceParser, View view);
-    }
 
     private static final HashMap<Class<? extends View>, ViewAttributesCreator> sViewAttributesCreators = new HashMap<>();
 
@@ -46,5 +41,10 @@ public class ViewAttributesFactory {
             viewClass = viewClass.getSuperclass();
         }
         return new ViewAttributes(resourceParser, view);
+    }
+
+    interface ViewAttributesCreator {
+        @NonNull
+        ViewAttributes create(ResourceParser resourceParser, View view);
     }
 }

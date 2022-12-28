@@ -36,7 +36,7 @@ public class NativeJavaObjectWithPrototype extends NativeJavaObject {
         if (name.equals("__proto__")) {
             return prototype;
         }
-        if(super.has(name, start)){
+        if (super.has(name, start)) {
             return super.get(name, start);
         }
         if (prototype == null) {

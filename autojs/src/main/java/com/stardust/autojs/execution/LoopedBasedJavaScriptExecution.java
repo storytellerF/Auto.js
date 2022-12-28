@@ -3,10 +3,10 @@ package com.stardust.autojs.execution;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.stardust.autojs.core.looper.Loopers;
 import com.stardust.autojs.engine.LoopBasedJavaScriptEngine;
 import com.stardust.autojs.engine.ScriptEngine;
 import com.stardust.autojs.engine.ScriptEngineManager;
-import com.stardust.autojs.core.looper.Loopers;
 import com.stardust.autojs.script.JavaScriptSource;
 
 /**

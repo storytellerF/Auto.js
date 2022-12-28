@@ -1,11 +1,9 @@
 package com.stardust.pio;
 
-import android.app.NativeActivity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,14 +15,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -33,10 +28,9 @@ import java.util.Locale;
 
 public class PFiles {
 
-    private static final String TAG = "PFiles";
-
     static final int DEFAULT_BUFFER_SIZE = 8192;
     static final String DEFAULT_ENCODING = Charset.defaultCharset().name();
+    private static final String TAG = "PFiles";
 
     @Nullable
     public static PFileInterface open(String path, @NonNull String mode, String encoding, int bufferSize) {

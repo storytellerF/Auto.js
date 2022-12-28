@@ -32,6 +32,7 @@ public class OptionListView extends LinearLayout {
     private final ArrayList<String> mTexts = new ArrayList<>();
     private CommunityWebView mOnItemClickTarget;
     private TextView mTitleView;
+
     public OptionListView(Context context) {
         super(context);
     }
@@ -122,9 +123,9 @@ public class OptionListView extends LinearLayout {
             holder.text.setText(mTexts.get(position));
             holder.icon.setImageResource(mIcons.get(position));
             holder.itemView.setOnClickListener(view -> {
-                if (mIds.get(position)==R.id.run){
+                if (mIds.get(position) == R.id.run) {
                     mOnItemClickTarget.run();
-                }else {
+                } else {
                     mOnItemClickTarget.save();
                 }
             });

@@ -7,10 +7,9 @@ import android.content.pm.PackageManager;
 import androidx.annotation.NonNull;
 
 import com.stardust.pio.UncheckedIOException;
+import com.stardust.util.DeveloperUtils;
 
 import org.autojs.autojs.BuildConfig;
-
-import com.stardust.util.DeveloperUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

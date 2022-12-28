@@ -4,10 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import android.util.Log;
 
 import org.autojs.autojs.timing.IntentTask;
 
@@ -40,6 +40,15 @@ public class DynamicBroadcastReceivers {
             filter.addDataScheme("package");
             mContext.registerReceiver(mPackageActionReceiver, filter);
         }
+    }
+
+    @NonNull
+    static IntentFilter createIntentFilter(@NonNull Collection<String> actions) {
+        IntentFilter filter = new IntentFilter();
+        for (String action : actions) {
+            filter.addAction(action);
+        }
+        return filter;
     }
 
     public void register(@NonNull IntentTask task) {
@@ -92,15 +101,6 @@ public class DynamicBroadcastReceivers {
             mContext.unregisterReceiver(mDefaultActionReceiver);
             mContext.unregisterReceiver(mPackageActionReceiver);
         }
-    }
-
-    @NonNull
-    static IntentFilter createIntentFilter(@NonNull Collection<String> actions) {
-        IntentFilter filter = new IntentFilter();
-        for (String action : actions) {
-            filter.addAction(action);
-        }
-        return filter;
     }
 
     private class ReceiverRegistry {

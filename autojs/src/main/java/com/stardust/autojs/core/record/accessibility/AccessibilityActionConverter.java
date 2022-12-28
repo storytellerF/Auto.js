@@ -40,12 +40,11 @@ public class AccessibilityActionConverter {
 
     private final StringBuilder mScript = new StringBuilder();
     private boolean mFirstAction = true;
+    private boolean mShouldIgnoreFirstAction = false;
 
     public AccessibilityActionConverter(boolean shouldIgnoreFirstAction) {
         mShouldIgnoreFirstAction = shouldIgnoreFirstAction;
     }
-
-    private boolean mShouldIgnoreFirstAction = false;
 
     public void record(AccessibilityService service, @NonNull AccessibilityEvent event) {
         EventToScriptConverter converter = CONVERTER_MAP.get(event.getEventType());
@@ -120,6 +119,17 @@ public class AccessibilityActionConverter {
 
     private static class SetTextEventConverter implements EventToScriptConverter {
 
+        private static int findInEditableList(@NonNull List<UiObject> editableList, @NonNull AccessibilityNodeInfo editable) {
+            int i = 0;
+            for (UiObject nodeInfo : editableList) {
+                if (AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(nodeInfo).equals(AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(editable))) {
+                    return i;
+                }
+                i++;
+            }
+            return -1;
+        }
+
         @Override
         public void onAccessibilityEvent(@NonNull AccessibilityService service, @NonNull AccessibilityEvent event, @NonNull StringBuilder sb) {
             AccessibilityNodeInfo source = event.getSource();
@@ -130,17 +140,6 @@ public class AccessibilityActionConverter {
             int i = findInEditableList(editableList, source);
             sb.append("while(!input(").append(i).append(", \"").append(source.getText()).append("\"));");
             source.recycle();
-        }
-
-        private static int findInEditableList(@NonNull List<UiObject> editableList, @NonNull AccessibilityNodeInfo editable) {
-            int i = 0;
-            for (UiObject nodeInfo : editableList) {
-                if (AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(nodeInfo).equals(AccessibilityNodeInfoHelper.INSTANCE.getBoundsInScreen(editable))) {
-                    return i;
-                }
-                i++;
-            }
-            return -1;
         }
     }
 

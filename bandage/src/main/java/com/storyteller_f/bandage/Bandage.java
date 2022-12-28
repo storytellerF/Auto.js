@@ -1,13 +1,10 @@
 package com.storyteller_f.bandage;
 
-import android.app.Activity;
-import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -142,7 +139,7 @@ public class Bandage {
                     if (viewHashMap.containsKey(tag)) {
                         viewHashMap.get(tag).add(childAt);
                     } else {
-                        List<View> views=new ArrayList<>();
+                        List<View> views = new ArrayList<>();
                         views.add(childAt);
                         viewHashMap.put((String) tag, views);
                     }

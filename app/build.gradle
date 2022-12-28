@@ -118,7 +118,7 @@ dependencies {
         exclude group: 'com.android.support'
     })
     //MultiLevelListView
-    implementation ('com.github.hyb1996:android-multi-level-listview:1.1', {
+    implementation('com.github.hyb1996:android-multi-level-listview:1.1', {
         exclude group: 'androidx.appcompat'
     })
     //Licenses Dialog

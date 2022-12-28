@@ -2,12 +2,6 @@ package com.stardust.autojs.core.console;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -20,8 +14,13 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.stardust.enhancedfloaty.ResizableExpandableFloatyWindow;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.stardust.autojs.R;
+import com.stardust.enhancedfloaty.ResizableExpandableFloatyWindow;
 import com.stardust.util.MapBuilder;
 import com.stardust.util.SparseArrayEntries;
 
@@ -35,15 +34,6 @@ import java.util.Map;
  */
 public class ConsoleView extends FrameLayout implements ConsoleImpl.LogListener {
 
-    private static final Map<Integer, Integer> ATTRS = new MapBuilder<Integer, Integer>()
-            .put(R.styleable.ConsoleView_color_verbose, Log.VERBOSE)
-            .put(R.styleable.ConsoleView_color_debug, Log.DEBUG)
-            .put(R.styleable.ConsoleView_color_info, Log.INFO)
-            .put(R.styleable.ConsoleView_color_warn, Log.WARN)
-            .put(R.styleable.ConsoleView_color_error, Log.ERROR)
-            .put(R.styleable.ConsoleView_color_assert, Log.ASSERT)
-            .build();
-
     static final SparseArray<Integer> COLORS = new SparseArrayEntries<Integer>()
             .entry(Log.VERBOSE, 0xdfc0c0c0)
             .entry(Log.DEBUG, 0xdfffffff)
@@ -52,8 +42,16 @@ public class ConsoleView extends FrameLayout implements ConsoleImpl.LogListener 
             .entry(Log.ERROR, 0xffd50000)
             .entry(Log.ASSERT, 0xffff534e)
             .sparseArray();
-
+    private static final Map<Integer, Integer> ATTRS = new MapBuilder<Integer, Integer>()
+            .put(R.styleable.ConsoleView_color_verbose, Log.VERBOSE)
+            .put(R.styleable.ConsoleView_color_debug, Log.DEBUG)
+            .put(R.styleable.ConsoleView_color_info, Log.INFO)
+            .put(R.styleable.ConsoleView_color_warn, Log.WARN)
+            .put(R.styleable.ConsoleView_color_error, Log.ERROR)
+            .put(R.styleable.ConsoleView_color_assert, Log.ASSERT)
+            .build();
     private static final int REFRESH_INTERVAL = 100;
+    private final ArrayList<ConsoleImpl.LogEntry> mLogEntries = new ArrayList<>();
     private SparseArray<Integer> mColors = COLORS.clone();
     private ConsoleImpl mConsole;
     private RecyclerView mLogListRecyclerView;
@@ -61,7 +59,6 @@ public class ConsoleView extends FrameLayout implements ConsoleImpl.LogListener 
     private ResizableExpandableFloatyWindow mWindow;
     private LinearLayout mInputContainer;
     private boolean mShouldStopRefresh = false;
-    private final ArrayList<ConsoleImpl.LogEntry> mLogEntries = new ArrayList<>();
 
     public ConsoleView(Context context) {
         super(context);

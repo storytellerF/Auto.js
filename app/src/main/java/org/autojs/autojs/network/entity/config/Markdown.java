@@ -4,37 +4,37 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Markdown{
+public class Markdown {
 
-	@SerializedName("highlight")
-	private int highlight;
+    @SerializedName("highlight")
+    private int highlight;
 
-	@SerializedName("theme")
-	private String theme;
+    @SerializedName("theme")
+    private String theme;
 
-	public void setHighlight(int highlight){
-		this.highlight = highlight;
-	}
+    public int getHighlight() {
+        return highlight;
+    }
 
-	public int getHighlight(){
-		return highlight;
-	}
+    public void setHighlight(int highlight) {
+        this.highlight = highlight;
+    }
 
-	public void setTheme(String theme){
-		this.theme = theme;
-	}
+    public String getTheme() {
+        return theme;
+    }
 
-	public String getTheme(){
-		return theme;
-	}
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
 
-	@NonNull
+    @NonNull
     @Override
- 	public String toString(){
-		return 
-			"Markdown{" + 
-			"highlight = '" + highlight + '\'' + 
-			",theme = '" + theme + '\'' + 
-			"}";
-		}
+    public String toString() {
+        return
+                "Markdown{" +
+                        "highlight = '" + highlight + '\'' +
+                        ",theme = '" + theme + '\'' +
+                        "}";
+    }
 }

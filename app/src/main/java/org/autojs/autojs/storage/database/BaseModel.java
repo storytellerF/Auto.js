@@ -6,12 +6,12 @@ import androidx.annotation.Nullable;
 public abstract class BaseModel {
     private long mId;
 
-    public void setId(long id) {
-        mId = id;
-    }
-
     public long getId() {
         return mId;
+    }
+
+    public void setId(long id) {
+        mId = id;
     }
 
     @Override
@@ -24,6 +24,6 @@ public abstract class BaseModel {
 
     @Override
     public int hashCode() {
-        return (int)(mId ^ (mId >>> 32));
+        return (int) (mId ^ (mId >>> 32));
     }
 }

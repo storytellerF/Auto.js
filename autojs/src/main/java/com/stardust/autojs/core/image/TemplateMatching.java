@@ -5,14 +5,12 @@ import android.util.TimingLogger;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.stardust.autojs.core.opencv.Mat;
 import com.stardust.autojs.core.opencv.OpenCVHelper;
 import com.stardust.util.Nath;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
-
-import com.stardust.autojs.core.opencv.Mat;
-
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -31,29 +29,9 @@ import java.util.List;
 
 public class TemplateMatching {
 
-    public static class Match {
-        public final Point point;
-        public final double similarity;
-
-        public Match(Point point, double similarity) {
-            this.point = point;
-            this.similarity = similarity;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "Match{" +
-                    "point=" + point +
-                    ", similarity=" + similarity +
-                    '}';
-        }
-    }
-
-    private static final String LOG_TAG = "TemplateMatching";
-
     public static final int MAX_LEVEL_AUTO = -1;
     public static final int MATCHING_METHOD_DEFAULT = Imgproc.TM_CCOEFF_NORMED;
+    private static final String LOG_TAG = "TemplateMatching";
 
     @Nullable
     public static Point fastTemplateMatching(@NonNull Mat img, @NonNull Mat template, int matchMethod, float weakThreshold, float strictThreshold, int maxLevel) {
@@ -144,7 +122,6 @@ public class TemplateMatching {
         return finalMatchResult;
     }
 
-
     @NonNull
     private static Mat getPyramidDownAtLevel(@NonNull Mat m, int level) {
         if (level == 0) {
@@ -206,7 +183,6 @@ public class TemplateMatching {
         return Math.min(6, maxLevel);
     }
 
-
     @NonNull
     private static Mat matchTemplate(@NonNull Mat img, @NonNull Mat temp, int match_method) {
         int result_cols = img.cols() - temp.cols() + 1;
@@ -254,6 +230,25 @@ public class TemplateMatching {
         }
         logger.addSplit("value:" + value);
         return new Match(pos, value);
+    }
+
+    public static class Match {
+        public final Point point;
+        public final double similarity;
+
+        public Match(Point point, double similarity) {
+            this.point = point;
+            this.similarity = similarity;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "Match{" +
+                    "point=" + point +
+                    ", similarity=" + similarity +
+                    '}';
+        }
     }
 
 

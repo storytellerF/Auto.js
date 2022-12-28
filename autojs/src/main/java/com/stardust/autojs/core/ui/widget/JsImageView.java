@@ -1,14 +1,11 @@
 package com.stardust.autojs.core.ui.widget;
 
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.core.widget.ImageViewCompat;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
-import com.makeramen.roundedimageview.RoundedImageView;
+import androidx.annotation.NonNull;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.stardust.autojs.core.image.ImageWrapper;
 import com.stardust.autojs.core.ui.inflater.util.Drawables;
 
@@ -34,15 +31,15 @@ public class JsImageView extends RoundedImageView {
         super(context, attrs, defStyle);
     }
 
+    public boolean isCircle() {
+        return mCircle;
+    }
+
     public void setCircle(boolean circle) {
         mCircle = circle;
         if (circle && getWidth() != 0) {
             setCornerRadius(Math.min(getWidth(), getHeight()) / 2);
         }
-    }
-
-    public boolean isCircle() {
-        return mCircle;
     }
 
     public void setSource(@NonNull String uri) {
@@ -62,11 +59,11 @@ public class JsImageView extends RoundedImageView {
         }
     }
 
-    public void setDrawables(Drawables drawables) {
-        mDrawables = drawables;
-    }
-
     public Drawables getDrawables() {
         return mDrawables;
+    }
+
+    public void setDrawables(Drawables drawables) {
+        mDrawables = drawables;
     }
 }

@@ -1,6 +1,5 @@
 package org.autojs.autojs.ui.main.drawer;
 
-import android.annotation.SuppressLint;
 import android.app.AppOpsManager;
 import android.content.Intent;
 import android.os.Build;
@@ -91,20 +90,16 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
     private final CommunityDrawerMenu mCommunityDrawerMenu = new CommunityDrawerMenu();
     @NonNull
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private final DrawerMenuItem mAccessibilityServiceItem = new DrawerMenuItem(R.drawable.ic_service_green, R.string.text_accessibility_service, 0, this::enableOrDisableAccessibilityService);
-    private DrawerMenuAdapter mDrawerMenuAdapter;
-    private final DrawerMenuItem mConnectionItem = new DrawerMenuItem(R.drawable.ic_connect_to_pc, R.string.debug, 0, this::connectOrDisconnectToRemote);
-    private final DrawerMenuItem mFloatingWindowItem = new DrawerMenuItem(R.drawable.ic_robot_64, R.string.text_floating_window, 0, this::showOrDismissFloatingWindow);
-    private final DrawerMenuItem mCheckForUpdatesItem = new DrawerMenuItem(R.drawable.ic_check_for_updates, R.string.text_check_for_updates, this::checkForUpdates);
+    private DrawerMenuAdapter mDrawerMenuAdapter;    private final DrawerMenuItem mAccessibilityServiceItem = new DrawerMenuItem(R.drawable.ic_service_green, R.string.text_accessibility_service, 0, this::enableOrDisableAccessibilityService);
     private Disposable mConnectionStateDisposable;
-    private FragmentDrawerBinding inflate;
+    private FragmentDrawerBinding inflate;    private final DrawerMenuItem mConnectionItem = new DrawerMenuItem(R.drawable.ic_connect_to_pc, R.string.debug, 0, this::connectOrDisconnectToRemote);
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         inflate = FragmentDrawerBinding.inflate(inflater, container, false);
         return inflate.getRoot();
-    }
+    }    private final DrawerMenuItem mFloatingWindowItem = new DrawerMenuItem(R.drawable.ic_robot_64, R.string.text_floating_window, 0, this::showOrDismissFloatingWindow);
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -112,7 +107,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         setUpViews();
         inflate.avatar.setTag("avatar");
         Bandage.bind(this, inflate.getRoot());
-    }
+    }    private final DrawerMenuItem mCheckForUpdatesItem = new DrawerMenuItem(R.drawable.ic_check_for_updates, R.string.text_check_for_updates, this::checkForUpdates);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -285,7 +280,6 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         }
     }
 
-
     private void toggleForegroundService(@NonNull DrawerMenuItemViewHolder holder) {
         boolean checked = holder.getSwitchCompat().isChecked();
         if (checked) {
@@ -294,7 +288,6 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
             ForegroundService.stop(GlobalAppContext.get());
         }
     }
-
 
     private void inputRemoteHost() {
         String host = Pref.getServerAddressOrDefault(WifiTool.getRouterIp(getActivity()));
@@ -348,7 +341,6 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
                     }
                 });
     }
-
 
     @Override
     public void onResume() {
@@ -431,7 +423,6 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         compositeDisposable.add(subscribe);
     }
 
-
     @Subscribe
     public void onCircularMenuStateChange(@NonNull CircularMenu.StateChangeEvent event) {
         setChecked(mFloatingWindowItem, event.getCurrentState() != CircularMenu.STATE_CLOSED);
@@ -455,7 +446,6 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         }
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDrawerOpen(MainActivity.DrawerOpenEvent event) {
         if (mCommunityDrawerMenu.isShown()) {
@@ -471,7 +461,6 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
                 .show();
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -479,13 +468,11 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-
     private void showMessage(CharSequence text) {
         if (getContext() == null)
             return;
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
-
 
     private void setProgress(@NonNull DrawerMenuItem item, boolean progress) {
         item.setProgress(progress);
@@ -500,5 +487,15 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
     private boolean isAccessibilityServiceEnabled() {
         return AccessibilityServiceTool.isAccessibilityServiceEnabled(getActivity());
     }
+
+
+
+
+
+
+
+
+
+
 
 }

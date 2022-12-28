@@ -19,7 +19,6 @@ public class MutableOkHttp extends OkHttpClient {
 
     private OkHttpClient mOkHttpClient;
     private int mMaxRetries = 3;
-    private long mTimeout = 30 * 1000;
     private final Interceptor mRetryInterceptor = chain -> {
         Request request = chain.request();
         Response response = null;
@@ -41,6 +40,7 @@ public class MutableOkHttp extends OkHttpClient {
             tryCount++;
         } while (true);
     };
+    private long mTimeout = 30 * 1000;
 
     public MutableOkHttp() {
         mOkHttpClient = newClient(new OkHttpClient.Builder());

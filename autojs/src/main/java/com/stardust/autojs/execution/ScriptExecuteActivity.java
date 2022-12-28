@@ -4,16 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.stardust.autojs.ScriptEngineService;
 import com.stardust.autojs.core.eventloop.EventEmitter;
@@ -238,8 +237,8 @@ public class ScriptExecuteActivity extends AppCompatActivity {
 
     private static class ActivityScriptExecution extends ScriptExecution.AbstractScriptExecution {
 
-        private ScriptEngine mScriptEngine;
         private final ScriptEngineManager mScriptEngineManager;
+        private ScriptEngine mScriptEngine;
 
         ActivityScriptExecution(ScriptEngineManager manager, ScriptExecutionTask task) {
             super(task);

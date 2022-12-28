@@ -4,16 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
-import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
+import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 import org.commonmark.ext.heading.anchor.HeadingAnchorExtension;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -27,19 +27,13 @@ import java.util.Collections;
 
 public class CommonMarkdownView extends WebView {
 
-    public interface OnPageFinishedListener {
-        void onPageFinished(WebView view, String url);
-    }
-
     private final Parser mParser = Parser.builder().build();
     private final HtmlRenderer mHtmlRender = HtmlRenderer.builder()
             .extensions(Collections.singleton(new HeadingAnchorExtension.Builder().build()))
             .build();
-
     private String mMarkdownHtml;
     private String mPadding = "16px";
     private OnPageFinishedListener mOnPageFinishedListener;
-
     public CommonMarkdownView(Context context) {
         super(context);
         init();
@@ -53,6 +47,11 @@ public class CommonMarkdownView extends WebView {
     public CommonMarkdownView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public CommonMarkdownView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     public void setPadding(String padding) {
@@ -83,12 +82,6 @@ public class CommonMarkdownView extends WebView {
             }
 
         });
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public CommonMarkdownView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     public void loadMarkdown(String markdown) {
@@ -122,6 +115,10 @@ public class CommonMarkdownView extends WebView {
         if (!canGoBack() && mMarkdownHtml != null) {
             loadHtml(mMarkdownHtml);
         }
+    }
+
+    public interface OnPageFinishedListener {
+        void onPageFinished(WebView view, String url);
     }
 
     public static class DialogBuilder extends ThemeColorMaterialDialogBuilder {

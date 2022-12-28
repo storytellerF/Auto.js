@@ -2,15 +2,14 @@ package org.autojs.autojs.ui.filechooser;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.stardust.pio.PFile;
 import com.stardust.pio.PFiles;
@@ -24,17 +23,14 @@ import org.autojs.autojs.databinding.FileChooseListFileBinding;
 import org.autojs.autojs.model.explorer.ExplorerItem;
 import org.autojs.autojs.model.explorer.ExplorerPage;
 import org.autojs.autojs.model.script.ScriptFile;
-import org.autojs.autojs.ui.explorer.ExplorerViewHelper;
 import org.autojs.autojs.ui.explorer.ExplorerView;
+import org.autojs.autojs.ui.explorer.ExplorerViewHelper;
 import org.autojs.autojs.ui.widget.BindableViewHolder;
-import org.autojs.autojs.ui.widget.CheckBoxCompat;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.recyclerview.widget.SimpleItemAnimator;
 
 /**
  * Created by Stardust on 2017/10/19.
@@ -42,8 +38,8 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 
 public class FileChooseListView extends ExplorerView {
 
-    private int mMaxChoice = 1;
     private final LinkedHashMap<PFile, Integer> mSelectedFiles = new LinkedHashMap<>();
+    private int mMaxChoice = 1;
     private boolean mCanChooseDir = false;
 
     public FileChooseListView(Context context) {
@@ -101,18 +97,17 @@ public class FileChooseListView extends ExplorerView {
 
 
     class ExplorerItemViewHolder extends BindableViewHolder<ExplorerItem> {
-        GradientDrawable mFirstCharBackground;
-
-        private ExplorerItem mExplorerItem;
         @NonNull
         private final FileChooseListFileBinding bind;
+        GradientDrawable mFirstCharBackground;
+        private ExplorerItem mExplorerItem;
 
         ExplorerItemViewHolder(@NonNull View itemView) {
             super(itemView);
             bind = FileChooseListFileBinding.bind(itemView);
             bind.item.setTag("item");
             bind.checkbox.setTag("checkbox");
-            Bandage.bind(this,bind.getRoot());
+            Bandage.bind(this, bind.getRoot());
             mFirstCharBackground = (GradientDrawable) bind.firstChar.getBackground();
         }
 
@@ -145,16 +140,16 @@ public class FileChooseListView extends ExplorerView {
 
     class ExplorerPageViewHolder extends BindableViewHolder<ExplorerPage> {
 
-        private ExplorerPage mExplorerPage;
         @NonNull
         private final FileChooseListDirectoryBinding bind;
+        private ExplorerPage mExplorerPage;
 
         ExplorerPageViewHolder(@NonNull View itemView) {
             super(itemView);
             bind = FileChooseListDirectoryBinding.bind(itemView);
             bind.item.setTag("item");
             bind.checkbox.setTag("checkbox");
-            Bandage.bind(this,bind.getRoot());
+            Bandage.bind(this, bind.getRoot());
             bind.checkbox.setVisibility(mCanChooseDir ? VISIBLE : GONE);
         }
 

@@ -23,7 +23,7 @@ public class LogActivity extends BaseActivity {
 
     @NonNull
     public static IntentWrapper intent(Context mainActivity) {
-        return new IntentWrapper(mainActivity,new Intent(mainActivity,LogActivity.class));
+        return new IntentWrapper(mainActivity, new Intent(mainActivity, LogActivity.class));
     }
 
     @Override

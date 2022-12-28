@@ -24,6 +24,11 @@ public class Files {
         mRuntime = runtime;
     }
 
+    @NonNull
+    public static String join(String parent, String... child) {
+        return PFiles.join(parent, child);
+    }
+
     // FIXME: 2018/10/16 is not correct in sub-directory?
     @Nullable
     public String path(@Nullable String relativePath) {
@@ -91,7 +96,6 @@ public class Files {
     public String read(String path, String encoding) {
         return PFiles.read(path(path), encoding);
     }
-
 
     @NonNull
     public String read(String path) {
@@ -205,11 +209,6 @@ public class Files {
 
     public boolean isEmptyDir(String path) {
         return PFiles.isEmptyDir(path(path));
-    }
-
-    @NonNull
-    public static String join(String parent, String... child) {
-        return PFiles.join(parent, child);
     }
 
     @NonNull

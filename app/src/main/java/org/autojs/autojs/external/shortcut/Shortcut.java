@@ -17,12 +17,12 @@ import org.autojs.autojs.tool.BitmapTool;
 public class Shortcut {
 
     private final Context mContext;
+    private final Intent mLaunchIntent = new Intent();
     private String mName;
     private String mTargetClass;
     private String mTargetPackage;
     private Intent.ShortcutIconResource mIconRes;
     private boolean mDuplicate = false;
-    private final Intent mLaunchIntent = new Intent();
     @Nullable
     private Bitmap mIcon;
 
@@ -83,7 +83,7 @@ public class Shortcut {
         }
         if (icon.getByteCount() > 1024 * 500) {
             mIcon = BitmapTool.scaleBitmap(icon, 200, 200);
-        }else {
+        } else {
             mIcon = icon;
         }
         return this;

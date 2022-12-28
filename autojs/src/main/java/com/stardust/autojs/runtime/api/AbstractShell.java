@@ -15,35 +15,15 @@ import com.stardust.util.ScreenMetrics;
 
 public abstract class AbstractShell {
 
-    public static class Result {
-        public int code = -1;
-        public String error;
-        public String result;
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "ShellResult{" +
-                    "code=" + code +
-                    ", error='" + error + '\'' +
-                    ", result='" + result + '\'' +
-                    '}';
-        }
-    }
-
     protected static final String COMMAND_SU = "su";
     protected static final String COMMAND_SH = "sh";
     protected static final String COMMAND_EXIT = "exit\n";
     protected static final String COMMAND_LINE_END = "\n";
-
-
-    private int mTouchDevice = -1;
-    private ScreenMetrics mScreenMetrics;
-
     private final boolean mRoot;
     @Nullable
     protected Context mContext;
-
+    private int mTouchDevice = -1;
+    private ScreenMetrics mScreenMetrics;
     public AbstractShell() {
         this(false);
     }
@@ -94,7 +74,6 @@ public abstract class AbstractShell {
     public void SetScreenMetrics(ScreenMetrics screenMetrics) {
         mScreenMetrics = screenMetrics;
     }
-
 
     public void Touch(int x, int y) {
         TouchX(x);
@@ -209,5 +188,21 @@ public abstract class AbstractShell {
 
     public void usleep(long l) {
         exec("usleep " + l);
+    }
+
+    public static class Result {
+        public int code = -1;
+        public String error;
+        public String result;
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "ShellResult{" +
+                    "code=" + code +
+                    ", error='" + error + '\'' +
+                    ", result='" + result + '\'' +
+                    '}';
+        }
     }
 }

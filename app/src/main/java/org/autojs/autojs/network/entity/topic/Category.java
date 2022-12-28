@@ -1,8 +1,8 @@
-
 package org.autojs.autojs.network.entity.topic;
 
-import java.util.List;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class Category {
@@ -61,6 +61,7 @@ public class Category {
     public void setDescriptionParsed(String descriptionParsed) {
         mDescriptionParsed = descriptionParsed;
     }
+
     public String getLink() {
         return mLink;
     }

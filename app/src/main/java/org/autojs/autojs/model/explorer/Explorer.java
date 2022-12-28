@@ -1,8 +1,14 @@
 package org.autojs.autojs.model.explorer;
 
+import static org.autojs.autojs.model.explorer.ExplorerChangeEvent.CHANGE;
+import static org.autojs.autojs.model.explorer.ExplorerChangeEvent.CHILDREN_CHANGE;
+import static org.autojs.autojs.model.explorer.ExplorerChangeEvent.CREATE;
+import static org.autojs.autojs.model.explorer.ExplorerChangeEvent.REMOVE;
+
+import android.util.LruCache;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.LruCache;
 
 import com.stardust.pio.PFile;
 
@@ -10,8 +16,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-
-import static org.autojs.autojs.model.explorer.ExplorerChangeEvent.*;
 
 
 public class Explorer {
@@ -51,7 +55,7 @@ public class Explorer {
 
     @Nullable
     private ExplorerPage getFromCache(@Nullable ExplorerPage parent) {
-        if(mExplorerPageLruCache == null || parent == null){
+        if (mExplorerPageLruCache == null || parent == null) {
             return null;
         }
         return mExplorerPageLruCache.get(parent.getPath());

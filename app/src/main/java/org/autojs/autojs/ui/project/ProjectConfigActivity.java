@@ -54,7 +54,8 @@ public class ProjectConfigActivity extends BaseActivity {
 
     private static final int REQUEST_CODE = 12477;
     private static final Pattern REGEX_PACKAGE_NAME = Pattern.compile("^([A-Za-z][A-Za-z\\d_]*\\.)+([A-Za-z][A-Za-z\\d_]*)$");
-
+    @NonNull
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private File mDirectory;
     private File mParentDirectory;
     private ProjectConfig mProjectConfig;
@@ -82,7 +83,7 @@ public class ProjectConfigActivity extends BaseActivity {
         setupViews();
         inflate.fab.setTag("fab");
         inflate.icon.setTag("icon");
-        Bandage.bind(this,inflate.getRoot());
+        Bandage.bind(this, inflate.getRoot());
         mNewProject = getIntent().getBooleanExtra(EXTRA_NEW_PROJECT, false);
         String parentDirectory = getIntent().getStringExtra(EXTRA_PARENT_DIRECTORY);
         if (mNewProject) {
@@ -136,7 +137,7 @@ public class ProjectConfigActivity extends BaseActivity {
     }
 
     @SuppressLint("CheckResult")
-    @Click(tag="fab")
+    @Click(tag = "fab")
     void commit() {
         if (!checkInputs()) {
             return;
@@ -154,8 +155,7 @@ public class ProjectConfigActivity extends BaseActivity {
         }
 
     }
-    @NonNull
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
+
     @SuppressLint("CheckResult")
     private void saveProjectConfig() {
         if (mNewProject) {
@@ -171,10 +171,10 @@ public class ProjectConfigActivity extends BaseActivity {
             compositeDisposable.add(subscribe);
         } else {
             Disposable subscribe = Observable.fromCallable(() -> {
-                PFiles.write(ProjectConfig.configFileOfDir(mDirectory.getPath()),
-                        mProjectConfig.toJson());
-                return Void.TYPE;
-            })
+                        PFiles.write(ProjectConfig.configFileOfDir(mDirectory.getPath()),
+                                mProjectConfig.toJson());
+                        return Void.TYPE;
+                    })
                     .observeOn(Schedulers.io())
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .subscribe(ignored -> {
@@ -220,11 +220,11 @@ public class ProjectConfigActivity extends BaseActivity {
     private boolean checkPackageNameValid(@NonNull EditText editText) {
         Editable text = editText.getText();
         String hint = ((TextInputLayout) editText.getParent().getParent()).getHint().toString();
-        if(TextUtils.isEmpty(text)){
+        if (TextUtils.isEmpty(text)) {
             editText.setError(hint + getString(R.string.text_should_not_be_empty));
             return false;
         }
-        if(!REGEX_PACKAGE_NAME.matcher(text).matches()){
+        if (!REGEX_PACKAGE_NAME.matcher(text).matches()) {
             editText.setError(getString(R.string.text_invalid_package_name));
             return false;
         }

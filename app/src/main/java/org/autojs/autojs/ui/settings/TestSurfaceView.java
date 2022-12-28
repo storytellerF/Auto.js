@@ -19,8 +19,8 @@ import java.util.concurrent.Executors;
 
 public class TestSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private volatile boolean mDrawing = true;
     private static final String LOG_TAG = "TestSurfaceView";
+    private volatile boolean mDrawing = true;
     @Nullable
     private ExecutorService mDrawingThreadPool;
 

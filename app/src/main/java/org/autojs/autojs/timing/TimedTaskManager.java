@@ -33,18 +33,18 @@ public class TimedTaskManager {
     @NonNull
     private final IntentTaskDatabase mIntentTaskDatabase;
 
-    public static TimedTaskManager getInstance() {
-        if (sInstance == null) {
-            sInstance = new TimedTaskManager(GlobalAppContext.get());
-        }
-        return sInstance;
-    }
-
     @SuppressLint("CheckResult")
     public TimedTaskManager(Context context) {
         mContext = context;
         mTimedTaskDatabase = new TimedTaskDatabase(context);
         mIntentTaskDatabase = new IntentTaskDatabase(context);
+    }
+
+    public static TimedTaskManager getInstance() {
+        if (sInstance == null) {
+            sInstance = new TimedTaskManager(GlobalAppContext.get());
+        }
+        return sInstance;
     }
 
     @SuppressLint("CheckResult")

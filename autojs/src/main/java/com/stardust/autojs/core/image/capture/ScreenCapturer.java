@@ -14,12 +14,12 @@ import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.view.OrientationEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import android.util.Log;
-import android.view.OrientationEventListener;
 
 import com.stardust.autojs.runtime.exception.ScriptException;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
@@ -35,27 +35,27 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ScreenCapturer {
 
     public static final int ORIENTATION_AUTO = Configuration.ORIENTATION_UNDEFINED;
-    public static final int ORIENTATION_LANDSCAPE = Configuration.ORIENTATION_LANDSCAPE ;
-    public static final int ORIENTATION_PORTRAIT = Configuration.ORIENTATION_PORTRAIT ;
+    public static final int ORIENTATION_LANDSCAPE = Configuration.ORIENTATION_LANDSCAPE;
+    public static final int ORIENTATION_PORTRAIT = Configuration.ORIENTATION_PORTRAIT;
 
 
     private static final String LOG_TAG = "ScreenCapturer";
     @NonNull
     private final MediaProjectionManager mProjectionManager;
+    private final AtomicReference<Image> mCachedImage = new AtomicReference<>();
+    private final int mScreenDensity;
+    private final Intent mData;
+    @NonNull
+    private final Context mContext;
     private ImageReader mImageReader;
     @Nullable
     private MediaProjection mMediaProjection;
     private VirtualDisplay mVirtualDisplay;
     private volatile Looper mImageAcquireLooper;
     private volatile Image mUnderUsingImage;
-    private final AtomicReference<Image> mCachedImage = new AtomicReference<>();
     @Nullable
     private volatile Exception mException;
-    private final int mScreenDensity;
     private Handler mHandler;
-    private final Intent mData;
-    @NonNull
-    private final Context mContext;
     private int mOrientation = -1;
     private int mDetectedOrientation;
     private OrientationEventListener mOrientationEventListener;
@@ -81,7 +81,7 @@ public class ScreenCapturer {
                     mDetectedOrientation = orientation;
                     try {
                         refreshVirtualDisplay(orientation);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                         mException = e;
                     }

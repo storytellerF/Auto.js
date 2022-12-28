@@ -23,10 +23,10 @@
   -->
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    app:cardBackgroundColor="?cardBackgroundColor">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="?cardBackgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,12 +39,12 @@
             android:layout_height="wrap_content"
             android:text="@string/air_title_login"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="?android:textColorSecondary"/>
+            android:textColor="?android:textColorSecondary" />
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/air_optionUseAccount"
@@ -56,7 +56,7 @@
                 android:paddingLeft="@dimen/air_radio_button_padding_start"
                 android:paddingEnd="0dp"
                 android:paddingRight="0dp"
-                android:text="@string/air_label_use_account"/>
+                android:text="@string/air_label_use_account" />
 
             <com.github.aakira.expandablelayout.ExpandableRelativeLayout
                 android:id="@+id/air_layoutLogin"
@@ -82,7 +82,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textNoSuggestions"
-                            android:maxLines="1"/>
+                            android:maxLines="1" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,7 +98,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:imeOptions="actionSend"
-                            android:inputType="textPassword"/>
+                            android:inputType="textPassword" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -115,7 +115,7 @@
                 android:paddingLeft="@dimen/air_radio_button_padding_start"
                 android:paddingEnd="0dp"
                 android:paddingRight="0dp"
-                android:text="@string/air_label_use_guest"/>
+                android:text="@string/air_label_use_guest" />
 
             <com.github.aakira.expandablelayout.ExpandableRelativeLayout
                 android:id="@+id/air_layoutGuest"
@@ -142,7 +142,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textEmailAddress"
-                            android:maxLines="1"/>
+                            android:maxLines="1" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

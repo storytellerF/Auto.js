@@ -24,19 +24,6 @@ public class BaseBroadcastReceiver extends BroadcastReceiver {
 
     private static final String LOG_TAG = "BaseBroadcastReceiver";
 
-    @SuppressLint("CheckResult")
-    public void onReceive(Context context, @NonNull Intent intent) {
-        Log.d(LOG_TAG, "onReceive: intent = " + intent + ", this = " + this);
-        try {
-            TimedTaskManager.getInstance().getIntentTaskOfAction(intent.getAction())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(intentTask -> runTask(context, intent, intentTask), Throwable::printStackTrace);
-        } catch (Exception e) {
-            GlobalAppContext.toast(e.getMessage());
-        }
-    }
-
     static void runTask(Context context, @NonNull Intent intent, @NonNull IntentTask task) {
         Log.d(LOG_TAG, "runTask: action = " + intent.getAction() + ", script = " + task.getScriptPath());
         ScriptFile file = new ScriptFile(task.getScriptPath());
@@ -48,6 +35,19 @@ public class BaseBroadcastReceiver extends BroadcastReceiver {
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    public void onReceive(Context context, @NonNull Intent intent) {
+        Log.d(LOG_TAG, "onReceive: intent = " + intent + ", this = " + this);
+        try {
+            TimedTaskManager.getInstance().getIntentTaskOfAction(intent.getAction())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(intentTask -> runTask(context, intent, intentTask), Throwable::printStackTrace);
+        } catch (Exception e) {
+            GlobalAppContext.toast(e.getMessage());
         }
     }
 

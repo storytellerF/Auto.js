@@ -36,7 +36,7 @@ public class AboutActivity extends BaseActivity {
         inflate.share.setTag("share");
         inflate.icon.setTag("icon");
         inflate.include.developer.setTag("developer");
-        Bandage.bind(this,inflate.getRoot());
+        Bandage.bind(this, inflate.getRoot());
         setContentView(inflate.getRoot());
         setUpViews();
     }

@@ -1,8 +1,9 @@
 package com.stardust.autojs.runtime.api;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
 
 import com.stardust.autojs.runtime.exception.ScriptException;
 

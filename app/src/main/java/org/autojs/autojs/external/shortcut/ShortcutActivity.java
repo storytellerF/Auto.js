@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import org.autojs.autojs.model.script.PathChecker;
 import org.autojs.autojs.external.ScriptIntents;
+import org.autojs.autojs.model.script.PathChecker;
 import org.autojs.autojs.model.script.ScriptFile;
 import org.autojs.autojs.model.script.Scripts;
 

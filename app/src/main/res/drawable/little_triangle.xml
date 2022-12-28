@@ -10,8 +10,8 @@
             <shape android:shape="rectangle">
                 <size
                     android:width="12dp"
-                    android:height="12dp"/>
-                <solid android:color="@color/bubble_bg"/>
+                    android:height="12dp" />
+                <solid android:color="@color/bubble_bg" />
             </shape>
         </rotate>
     </item>

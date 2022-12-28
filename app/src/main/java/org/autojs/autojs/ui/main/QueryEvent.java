@@ -11,10 +11,9 @@ public class QueryEvent {
     @Nullable
     public static final QueryEvent CLEAR = new QueryEvent(null);
     public static final QueryEvent FIND_FORWARD = new QueryEvent("", true);
-
-    private boolean mShouldCollapseSearchView = false;
     private final String mQuery;
     private final boolean mFindForward;
+    private boolean mShouldCollapseSearchView = false;
 
     public QueryEvent(String query, boolean b) {
         mQuery = query;

@@ -113,7 +113,7 @@ public class UI extends ProxyObject {
         }
     }
 
-    public void recycle(){
+    public void recycle() {
         mDynamicLayoutInflater.setContext(null);
     }
 

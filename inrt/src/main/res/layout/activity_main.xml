@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@android:color/white"
-              android:fitsSystemWindows="true"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -17,7 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -26,5 +26,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:color_debug="#cc000000"
-        app:color_verbose="#dfc0c0c0"/>
+        app:color_verbose="#dfc0c0c0" />
 </LinearLayout>

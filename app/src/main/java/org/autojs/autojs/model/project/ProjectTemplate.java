@@ -25,11 +25,11 @@ public class ProjectTemplate {
     @SuppressLint("CheckResult")
     public Observable<File> newProject() {
         return Observable.fromCallable(() -> {
-            mProjectDir.mkdirs();
-            PFiles.write(ProjectConfig.configFileOfDir(mProjectDir.getPath()), mProjectConfig.toJson());
-            new File(mProjectDir, mProjectConfig.getMainScriptFile()).createNewFile();
-            return mProjectDir;
-        })
+                    mProjectDir.mkdirs();
+                    PFiles.write(ProjectConfig.configFileOfDir(mProjectDir.getPath()), mProjectConfig.toJson());
+                    new File(mProjectDir, mProjectConfig.getMainScriptFile()).createNewFile();
+                    return mProjectDir;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

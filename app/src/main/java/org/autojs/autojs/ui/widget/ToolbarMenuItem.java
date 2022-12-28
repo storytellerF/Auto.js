@@ -7,14 +7,14 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import org.autojs.autojs.R;
 
@@ -51,6 +51,15 @@ public class ToolbarMenuItem extends LinearLayout {
         mColorDisabled = ContextCompat.getColor(context, R.color.toolbar_disabled);
         mColorEnabled = ContextCompat.getColor(context, R.color.toolbar);
         init(attrs);
+    }
+
+    @Nullable
+    public static Drawable tintDrawable(@Nullable Drawable drawable, int color) {
+        if (drawable == null || drawable.getConstantState() == null)
+            return null;
+        Drawable res = drawable.getConstantState().newDrawable().mutate();
+        res.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        return res;
     }
 
     private void init(AttributeSet attrs) {
@@ -91,14 +100,5 @@ public class ToolbarMenuItem extends LinearLayout {
         if (mEnabledDrawable == null) {
             mEnabledDrawable = mImageView.getDrawable();
         }
-    }
-
-    @Nullable
-    public static Drawable tintDrawable(@Nullable Drawable drawable, int color) {
-        if (drawable == null || drawable.getConstantState() == null)
-            return null;
-        Drawable res = drawable.getConstantState().newDrawable().mutate();
-        res.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        return res;
     }
 }

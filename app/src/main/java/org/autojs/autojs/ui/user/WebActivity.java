@@ -24,17 +24,9 @@ public class WebActivity extends BaseActivity implements OnActivityResultDelegat
     private final OnActivityResultDelegate.Mediator mMediator = new OnActivityResultDelegate.Mediator();
     private ActivityWebBinding inflate;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        inflate = ActivityWebBinding.inflate(getLayoutInflater());
-        setContentView(inflate.getRoot());
-        setupViews();
-    }
-
     @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context context) {
-        return new ActivityIntentBuilder<I>(context,WebActivity.class) {
+        return new ActivityIntentBuilder<I>(context, WebActivity.class) {
             @Nullable
             @Override
             public PostActivityStarter startForResult(int requestCode) {
@@ -43,6 +35,13 @@ public class WebActivity extends BaseActivity implements OnActivityResultDelegat
         };
     }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inflate = ActivityWebBinding.inflate(getLayoutInflater());
+        setContentView(inflate.getRoot());
+        setupViews();
+    }
 
     void setupViews() {
         setToolbarAsBack(getIntent().getStringExtra(Intent.EXTRA_TITLE));

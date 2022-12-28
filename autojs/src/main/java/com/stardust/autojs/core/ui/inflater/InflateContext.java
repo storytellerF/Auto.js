@@ -17,15 +17,15 @@ public class InflateContext {
 
     @Nullable
     public Object get(String key) {
-        if(mProperties == null)
+        if (mProperties == null)
             return null;
         return mProperties.get(key);
     }
 
 
     @Nullable
-    public Object remove(String key){
-        if(mProperties == null)
+    public Object remove(String key) {
+        if (mProperties == null)
             return null;
         return mProperties.remove(key);
     }

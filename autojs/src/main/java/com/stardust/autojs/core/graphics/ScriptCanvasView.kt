@@ -25,6 +25,7 @@ class ScriptCanvasView(context: Context, private val mScriptRuntime: ScriptRunti
     private var mDrawing = true
     private val mEventEmitter: EventEmitter = EventEmitter(mScriptRuntime.bridges)
     private var mDrawingThreadPool: ExecutorService? = null
+
     @Volatile
     private var mTimePerDraw = (1000 / 30).toLong()
 

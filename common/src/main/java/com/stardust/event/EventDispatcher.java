@@ -10,16 +10,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EventDispatcher<Listener> {
 
-    public interface Event<Listener> {
-        void notify(Listener l);
-    }
-
     private final CopyOnWriteArrayList<Listener> mListeners = new CopyOnWriteArrayList<>();
 
     public void addListener(Listener l) {
         mListeners.add(l);
     }
-
 
     public boolean removeListener(Listener l) {
         return mListeners.remove(l);
@@ -29,6 +24,10 @@ public class EventDispatcher<Listener> {
         for (Listener listener : mListeners) {
             event.notify(listener);
         }
+    }
+
+    public interface Event<Listener> {
+        void notify(Listener l);
     }
 
 }

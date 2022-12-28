@@ -1,7 +1,5 @@
 package org.autojs.autojs.ui.edit.editor;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -10,10 +8,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -21,6 +17,8 @@ import android.widget.Scroller;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import java.util.List;
 
 
 /**
@@ -30,32 +28,30 @@ public class HVScrollView extends FrameLayout {
     static final int ANIMATED_SCROLL_GAP = 250;
 
     static final float MAX_SCROLL_FACTOR = 0.5f;
-
-
-    private long mLastScroll;
-
+    /**
+     * Sentinel value for no current active pointer.
+     * Used by {@link #mActivePointerId}.
+     */
+    private static final int INVALID_POINTER = -1;
     private final Rect mTempRect = new Rect();
+    private long mLastScroll;
     private Scroller mScroller;
-
     /**
      * Flag to indicate that we are moving focus ourselves. This is so the
      * code that watches for focus changes initiated outside this ScrollView
      * knows that it does not have to do anything.
      */
     private boolean mScrollViewMovedFocus;
-
     /**
      * Position of the last motion event.
      */
     private float mLastMotionY;
     private float mLastMotionX;
-
     /**
      * True when the layout has changed but the traversal has not come through yet.
      * Ideally the view hierarchy would keep track of this for us.
      */
     private boolean mIsLayoutDirty = true;
-
     /**
      * The child to give focus to in the event that a child has requested focus while the
      * layout is dirty. This prevents the scroll from being wrong if the child has not been
@@ -63,47 +59,34 @@ public class HVScrollView extends FrameLayout {
      */
     @Nullable
     private View mChildToScrollTo = null;
-
     /**
      * True if the user is currently dragging this ScrollView around. This is
      * not the same as 'is being flinged', which can be checked by
      * mScroller.isFinished() (flinging begins when the user lifts his finger).
      */
     private boolean mIsBeingDragged = false;
-
     /**
      * Determines speed during touch scrolling
      */
     @Nullable
     private VelocityTracker mVelocityTracker;
-
     /**
      * When set to true, the scroll view measure its child to make it fill the currently
      * visible area.
      */
     private boolean mFillViewport;
-
     /**
      * Whether arrow scrolling is animated.
      */
     private boolean mSmoothScrollingEnabled = true;
-
     private int mTouchSlop;
     private int mMinimumVelocity;
     private int mMaximumVelocity;
-
     /**
      * ID of the active pointer. This is used to retain consistency during
      * drags/flings if multiple pointers are used.
      */
     private int mActivePointerId = INVALID_POINTER;
-
-    /**
-     * Sentinel value for no current active pointer.
-     * Used by {@link #mActivePointerId}.
-     */
-    private static final int INVALID_POINTER = -1;
-
     private boolean mFlingEnabled = true;
 
     public HVScrollView(Context context) {
@@ -406,15 +389,15 @@ public class HVScrollView extends FrameLayout {
     public boolean onInterceptTouchEvent(@NonNull MotionEvent ev) {
         /*
          * This method JUST determines whether we want to intercept the motion.
-		 * If we return true, onMotionEvent will be called and we do the actual
-		 * scrolling there.
-		 */
+         * If we return true, onMotionEvent will be called and we do the actual
+         * scrolling there.
+         */
 
-		/*
-		 * Shortcut the most recurring case: the user is in the dragging
-		 * state and he is moving his finger.  We want to intercept this
-		 * motion.
-		 */
+        /*
+         * Shortcut the most recurring case: the user is in the dragging
+         * state and he is moving his finger.  We want to intercept this
+         * motion.
+         */
         final int action = ev.getAction();
         if ((action == MotionEvent.ACTION_MOVE) && (mIsBeingDragged)) {
             return true;
@@ -422,15 +405,15 @@ public class HVScrollView extends FrameLayout {
 
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_MOVE: {
-			/*
-			 * mIsBeingDragged == false, otherwise the shortcut would have caught it. Check
-			 * whether the user has moved far enough from his original down touch.
-			 */
+                /*
+                 * mIsBeingDragged == false, otherwise the shortcut would have caught it. Check
+                 * whether the user has moved far enough from his original down touch.
+                 */
 
-			/*
-			 * Locally do absolute value. mLastMotionY is set to the y value
-			 * of the down event.
-			 */
+                /*
+                 * Locally do absolute value. mLastMotionY is set to the y value
+                 * of the down event.
+                 */
                 final int activePointerId = mActivePointerId;
                 if (activePointerId == INVALID_POINTER) {
                     // If we don't have a valid id, the touch down wasn't on content.
@@ -461,26 +444,26 @@ public class HVScrollView extends FrameLayout {
                     break;
                 }
 
-			/*
-			 * Remember location of down touch.
-			 * ACTION_DOWN always refers to pointer index 0.
-			 */
+                /*
+                 * Remember location of down touch.
+                 * ACTION_DOWN always refers to pointer index 0.
+                 */
                 mLastMotionY = y;
                 mLastMotionX = x;
                 mActivePointerId = ev.getPointerId(0);
 
-			/*
-			 * If being flinged and user touches the screen, initiate drag;
-			 * otherwise don't.  mScroller.isFinished should be false when
-			 * being flinged.
-			 */
+                /*
+                 * If being flinged and user touches the screen, initiate drag;
+                 * otherwise don't.  mScroller.isFinished should be false when
+                 * being flinged.
+                 */
                 mIsBeingDragged = !mScroller.isFinished();
                 break;
             }
 
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-			/* Release the drag */
+                /* Release the drag */
                 mIsBeingDragged = false;
                 mActivePointerId = INVALID_POINTER;
                 break;
@@ -489,10 +472,10 @@ public class HVScrollView extends FrameLayout {
                 break;
         }
 
-		/*
-		 * The only time we want to intercept motion events is if we are in the
-		 * drag mode.
-		 */
+        /*
+         * The only time we want to intercept motion events is if we are in the
+         * drag mode.
+         */
         return mIsBeingDragged;
     }
 
@@ -520,10 +503,10 @@ public class HVScrollView extends FrameLayout {
                     return false;
                 }
 
-			/*
-			 * If being flinged and user touches, stop the fling. isFinished
-			 * will be false if being flinged.
-			 */
+                /*
+                 * If being flinged and user touches, stop the fling. isFinished
+                 * will be false if being flinged.
+                 */
                 if (!mScroller.isFinished()) {
                     mScroller.abortAnimation();
                 }
@@ -631,13 +614,13 @@ public class HVScrollView extends FrameLayout {
         List<View> focusables = getFocusables(View.FOCUS_FORWARD);
         View focusCandidate = null;
 
-		/*
-		 * A fully contained focusable is one where its top is below the bound's
-		 * top, and its bottom is above the bound's bottom. A partially
-		 * contained focusable is one where some part of it is within the
-		 * bounds, but it also has some part that is not within bounds.  A fully contained
-		 * focusable is preferred to a partially contained focusable.
-		 */
+        /*
+         * A fully contained focusable is one where its top is below the bound's
+         * top, and its bottom is above the bound's bottom. A partially
+         * contained focusable is one where some part of it is within the
+         * bounds, but it also has some part that is not within bounds.  A fully contained
+         * focusable is preferred to a partially contained focusable.
+         */
         boolean foundFullyContainedFocusable = false;
 
         int count = focusables.size();
@@ -647,16 +630,16 @@ public class HVScrollView extends FrameLayout {
             int viewBottom = view.getBottom();
 
             if (top < viewBottom && viewTop < bottom) {
-				/*
-				 * the focusable is in the target area, it is a candidate for
-				 * focusing
-				 */
+                /*
+                 * the focusable is in the target area, it is a candidate for
+                 * focusing
+                 */
 
                 final boolean viewIsFullyContained = (top < viewTop) &&
                         (viewBottom < bottom);
 
                 if (focusCandidate == null) {
-					/* No candidate, take this one */
+                    /* No candidate, take this one */
                     focusCandidate = view;
                     foundFullyContainedFocusable = viewIsFullyContained;
                 } else {
@@ -667,23 +650,23 @@ public class HVScrollView extends FrameLayout {
 
                     if (foundFullyContainedFocusable) {
                         if (viewIsFullyContained && viewIsCloserToBoundary) {
-							/*
-							 * We're dealing with only fully contained views, so
-							 * it has to be closer to the boundary to beat our
-							 * candidate
-							 */
+                            /*
+                             * We're dealing with only fully contained views, so
+                             * it has to be closer to the boundary to beat our
+                             * candidate
+                             */
                             focusCandidate = view;
                         }
                     } else {
                         if (viewIsFullyContained) {
-							/* Any fully contained view beats a partially contained view */
+                            /* Any fully contained view beats a partially contained view */
                             focusCandidate = view;
                             foundFullyContainedFocusable = true;
                         } else if (viewIsCloserToBoundary) {
-							/*
-							 * Partially contained view beats another partially
-							 * contained view if it's closer
-							 */
+                            /*
+                             * Partially contained view beats another partially
+                             * contained view if it's closer
+                             */
                             focusCandidate = view;
                         }
                     }
@@ -700,13 +683,13 @@ public class HVScrollView extends FrameLayout {
         List<View> focusables = getFocusables(View.FOCUS_FORWARD);
         View focusCandidate = null;
 
-		/*
-		 * A fully contained focusable is one where its left is below the bound's
-		 * left, and its right is above the bound's right. A partially
-		 * contained focusable is one where some part of it is within the
-		 * bounds, but it also has some part that is not within bounds.  A fully contained
-		 * focusable is preferred to a partially contained focusable.
-		 */
+        /*
+         * A fully contained focusable is one where its left is below the bound's
+         * left, and its right is above the bound's right. A partially
+         * contained focusable is one where some part of it is within the
+         * bounds, but it also has some part that is not within bounds.  A fully contained
+         * focusable is preferred to a partially contained focusable.
+         */
         boolean foundFullyContainedFocusable = false;
 
         int count = focusables.size();
@@ -716,16 +699,16 @@ public class HVScrollView extends FrameLayout {
             int viewRight = view.getRight();
 
             if (left < viewRight && viewLeft < right) {
-				/*
-				 * the focusable is in the target area, it is a candidate for
-				 * focusing
-				 */
+                /*
+                 * the focusable is in the target area, it is a candidate for
+                 * focusing
+                 */
 
                 final boolean viewIsFullyContained = (left < viewLeft) &&
                         (viewRight < right);
 
                 if (focusCandidate == null) {
-					/* No candidate, take this one */
+                    /* No candidate, take this one */
                     focusCandidate = view;
                     foundFullyContainedFocusable = viewIsFullyContained;
                 } else {
@@ -735,23 +718,23 @@ public class HVScrollView extends FrameLayout {
 
                     if (foundFullyContainedFocusable) {
                         if (viewIsFullyContained && viewIsCloserToBoundary) {
-							/*
-							 * We're dealing with only fully contained views, so
-							 * it has to be closer to the boundary to beat our
-							 * candidate
-							 */
+                            /*
+                             * We're dealing with only fully contained views, so
+                             * it has to be closer to the boundary to beat our
+                             * candidate
+                             */
                             focusCandidate = view;
                         }
                     } else {
                         if (viewIsFullyContained) {
-							/* Any fully contained view beats a partially contained view */
+                            /* Any fully contained view beats a partially contained view */
                             focusCandidate = view;
                             foundFullyContainedFocusable = true;
                         } else if (viewIsCloserToBoundary) {
-							/*
-							 * Partially contained view beats another partially
-							 * contained view if it's closer
-							 */
+                            /*
+                             * Partially contained view beats another partially
+                             * contained view if it's closer
+                             */
                             focusCandidate = view;
                         }
                     }
@@ -1200,7 +1183,7 @@ public class HVScrollView extends FrameLayout {
     private void scrollToChild(@NonNull View child) {
         child.getDrawingRect(mTempRect);
 
-		/* Offset from child's local coordinates to ScrollView coordinates */
+        /* Offset from child's local coordinates to ScrollView coordinates */
         offsetDescendantRectToMyCoords(child, mTempRect);
 
         int scrollDeltaV = computeScrollDeltaToGetChildRectOnScreenV(mTempRect);
@@ -1533,29 +1516,29 @@ public class HVScrollView extends FrameLayout {
 
     private int clamp(int n, int my, int child) {
         if (my >= child || n < 0) {
-			/* my >= child is this case:
-			 *                    |--------------- me ---------------|
-			 *     |------ child ------|
-			 * or
-			 *     |--------------- me ---------------|
-			 *            |------ child ------|
-			 * or
-			 *     |--------------- me ---------------|
-			 *                                  |------ child ------|
-			 *
-			 * n < 0 is this case:
-			 *     |------ me ------|
-			 *                    |-------- child --------|
-			 *     |-- mScrollX --|
-			 */
+            /* my >= child is this case:
+             *                    |--------------- me ---------------|
+             *     |------ child ------|
+             * or
+             *     |--------------- me ---------------|
+             *            |------ child ------|
+             * or
+             *     |--------------- me ---------------|
+             *                                  |------ child ------|
+             *
+             * n < 0 is this case:
+             *     |------ me ------|
+             *                    |-------- child --------|
+             *     |-- mScrollX --|
+             */
             return 0;
         }
         if ((my + n) > child) {
-			/* this case:
-			 *                    |------ me ------|
-			 *     |------ child ------|
-			 *     |-- mScrollX --|
-			 */
+            /* this case:
+             *                    |------ me ------|
+             *     |------ child ------|
+             *     |-- mScrollX --|
+             */
             return child - my;
         }
         return n;

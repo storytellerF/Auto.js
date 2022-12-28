@@ -2,10 +2,10 @@ package org.autojs.autojs.theme.widget;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
-import android.util.AttributeSet;
 
 import com.stardust.theme.ThemeColor;
 import com.stardust.theme.ThemeColorManager;

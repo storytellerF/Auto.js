@@ -1,10 +1,6 @@
 package com.stardust.autojs.util;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-
-import com.stardust.autojs.core.util.ProcessShell;
 
 import java.lang.reflect.Field;
 

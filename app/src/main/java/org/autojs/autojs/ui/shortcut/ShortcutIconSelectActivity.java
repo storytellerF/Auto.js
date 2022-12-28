@@ -44,18 +44,11 @@ import io.reactivex.schedulers.Schedulers;
 public class ShortcutIconSelectActivity extends BaseActivity {
 
     public static final String EXTRA_PACKAGE_NAME = "extra_package_name";
-    private ActivityShortcutIconSelectBinding inflate;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        inflate = ActivityShortcutIconSelectBinding.inflate(getLayoutInflater());
-        setContentView(inflate.getRoot());
-        setupViews();
-    }
-
-    private PackageManager mPackageManager;
     private final List<AppItem> mAppList = new ArrayList<>();
+    @NonNull
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private ActivityShortcutIconSelectBinding inflate;
+    private PackageManager mPackageManager;
 
     @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context mContext) {
@@ -67,6 +60,32 @@ public class ShortcutIconSelectActivity extends BaseActivity {
                 return null;
             }
         };
+    }
+
+    @NonNull
+    public static Observable<Bitmap> getBitmapFromIntent(@NonNull Context context, @NonNull Intent data) {
+        String packageName = data.getStringExtra(EXTRA_PACKAGE_NAME);
+        if (packageName != null) {
+            return Observable.fromCallable(() -> {
+                Drawable drawable = context.getPackageManager().getApplicationIcon(packageName);
+                return BitmapTool.drawableToBitmap(drawable);
+            });
+        }
+        Uri uri = data.getData();
+        if (uri == null) {
+            return Observable.error(new IllegalArgumentException("invalid intent"));
+        }
+        return Observable.fromCallable(() ->
+                BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri))
+        );
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inflate = ActivityShortcutIconSelectBinding.inflate(getLayoutInflater());
+        setContentView(inflate.getRoot());
+        setupViews();
     }
 
     void setupViews() {
@@ -97,8 +116,7 @@ public class ShortcutIconSelectActivity extends BaseActivity {
                 });
         compositeDisposable.add(subscribe);
     }
-    @NonNull
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
+
     private void selectApp(@NonNull AppItem appItem) {
         setResult(RESULT_OK, new Intent()
                 .putExtra(EXTRA_PACKAGE_NAME, appItem.info.packageName));
@@ -131,24 +149,6 @@ public class ShortcutIconSelectActivity extends BaseActivity {
             setResult(RESULT_OK, data);
             finish();
         }
-    }
-
-    @NonNull
-    public static Observable<Bitmap> getBitmapFromIntent(@NonNull Context context, @NonNull Intent data) {
-        String packageName = data.getStringExtra(EXTRA_PACKAGE_NAME);
-        if (packageName != null) {
-            return Observable.fromCallable(() -> {
-                Drawable drawable = context.getPackageManager().getApplicationIcon(packageName);
-                return BitmapTool.drawableToBitmap(drawable);
-            });
-        }
-        Uri uri = data.getData();
-        if (uri == null) {
-            return Observable.error(new IllegalArgumentException("invalid intent"));
-        }
-        return Observable.fromCallable(() ->
-                BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri))
-        );
     }
 
     private class AppItem {

@@ -24,7 +24,7 @@ public class Colors {
         return Color.parseColor(color);
     }
 
-    public static int parse(@NonNull View view, @NonNull String color){
+    public static int parse(@NonNull View view, @NonNull String color) {
         return parse(view.getContext(), color);
     }
 }

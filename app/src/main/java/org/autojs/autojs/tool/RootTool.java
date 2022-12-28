@@ -9,6 +9,14 @@ import com.stericson.RootShell.RootShell;
 
 public class RootTool {
 
+    private static final String cmd = "enabled=$(settings get system pointer_location)\n" +
+            "if [[ $enabled == 1 ]]\n" +
+            "then\n" +
+            "settings put system pointer_location 0\n" +
+            "else\n" +
+            "settings put system pointer_location 1\n" +
+            "fi\n";
+
     public static boolean isRootAvailable() {
         try {
             return RootShell.isRootAvailable();
@@ -17,14 +25,6 @@ public class RootTool {
             return false;
         }
     }
-
-    private static final String cmd = "enabled=$(settings get system pointer_location)\n" +
-            "if [[ $enabled == 1 ]]\n" +
-            "then\n" +
-            "settings put system pointer_location 0\n" +
-            "else\n" +
-            "settings put system pointer_location 1\n" +
-            "fi\n";
 
     public static void togglePointerLocation() {
         try {

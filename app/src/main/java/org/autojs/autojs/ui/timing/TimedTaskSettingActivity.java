@@ -129,7 +129,7 @@ public class TimedTaskSettingActivity extends BaseActivity {
         setContentView(inflate.getRoot());
         setupViews();
         inflate.disposableTaskTimeContainer.setTag("disposable_task_time_container");
-        Bandage.bind(this,inflate.getRoot());
+        Bandage.bind(this, inflate.getRoot());
         long taskId = getIntent().getLongExtra(EXTRA_TASK_ID, -1);
         if (taskId != -1) {
             mTimedTask = TimedTaskManager.getInstance().getTimedTask(taskId);
@@ -227,7 +227,7 @@ public class TimedTaskSettingActivity extends BaseActivity {
     }
 
 
-//    @CheckedChange({R.id.daily_task_radio, R.id.weekly_task_radio, R.id.disposable_task_radio, R.id.run_on_broadcast})
+    //    @CheckedChange({R.id.daily_task_radio, R.id.weekly_task_radio, R.id.disposable_task_radio, R.id.run_on_broadcast})
     void onCheckedChanged(@NonNull CompoundButton button) {
         ExpandableRelativeLayout relativeLayout = findExpandableLayoutOf(button);
         if (button.isChecked()) {

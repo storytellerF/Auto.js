@@ -1,19 +1,13 @@
 package org.autojs.autojs.ui.error;
 
+import static android.util.Patterns.EMAIL_ADDRESS;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringDef;
-import androidx.annotation.StringRes;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,8 +19,17 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringDef;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.heinrichreimersoftware.androidissuereporter.R;
 import com.heinrichreimersoftware.androidissuereporter.model.DeviceInfo;
 import com.heinrichreimersoftware.androidissuereporter.model.Report;
@@ -49,8 +52,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 
-import static android.util.Patterns.EMAIL_ADDRESS;
-
 /**
  * Created by Stardust on 2017/4/3.
  */
@@ -61,20 +62,13 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
 
     private static final int STATUS_BAD_CREDENTIALS = 401;
     private static final int STATUS_ISSUES_NOT_ENABLED = 410;
-    private boolean mCrash = false;
-    private boolean mReportFailed = true;
-
-    @StringDef({RESULT_OK, RESULT_BAD_CREDENTIALS, RESULT_INVALID_TOKEN, RESULT_ISSUES_NOT_ENABLED,
-            RESULT_UNKNOWN})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface Result {
-    }
-
     private static final String RESULT_OK = "RESULT_OK";
     private static final String RESULT_BAD_CREDENTIALS = "RESULT_BAD_CREDENTIALS";
     private static final String RESULT_INVALID_TOKEN = "RESULT_INVALID_TOKEN";
     private static final String RESULT_ISSUES_NOT_ENABLED = "RESULT_ISSUES_NOT_ENABLED";
     private static final String RESULT_UNKNOWN = "RESULT_UNKNOWN";
+    private boolean mCrash = false;
+    private boolean mReportFailed = true;
     private boolean emailRequired = false;
     private int bodyMinChar = 0;
     private Toolbar toolbar;
@@ -91,7 +85,6 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
     private RadioButton optionAnonymous;
     private ExpandableRelativeLayout layoutLogin;
     private FloatingActionButton buttonSend;
-
     @Nullable
     private String token;
 
@@ -412,6 +405,86 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
         new ReportIssueTask(activity, report, target, login).execute();
     }
 
+    @StringDef({RESULT_OK, RESULT_BAD_CREDENTIALS, RESULT_INVALID_TOKEN, RESULT_ISSUES_NOT_ENABLED,
+            RESULT_UNKNOWN})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface Result {
+    }
+
+    private static abstract class DialogAsyncTask<Pa, Pr, Re> extends AsyncTask<Pa, Pr, Re> {
+        @NonNull
+        private final WeakReference<Context> contextWeakReference;
+        @Nullable
+        private WeakReference<Dialog> dialogWeakReference;
+
+        private boolean supposedToBeDismissed;
+
+        private DialogAsyncTask(Context context) {
+            contextWeakReference = new WeakReference<>(context);
+            dialogWeakReference = new WeakReference<>(null);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Context context = getContext();
+            if (!supposedToBeDismissed && context != null) {
+                Dialog dialog = createDialog(context);
+                dialogWeakReference = new WeakReference<>(dialog);
+                dialog.show();
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected final void onProgressUpdate(Pr... values) {
+            super.onProgressUpdate(values);
+            Dialog dialog = getDialog();
+            if (dialog != null) {
+                onProgressUpdate(dialog, values);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        private void onProgressUpdate(@NonNull Dialog dialog, Pr... values) {
+        }
+
+        @Nullable
+        Context getContext() {
+            return contextWeakReference.get();
+        }
+
+        @Nullable
+        Dialog getDialog() {
+            return dialogWeakReference.get();
+        }
+
+        @Override
+        protected void onCancelled(Re result) {
+            super.onCancelled(result);
+            tryToDismiss();
+        }
+
+        @Override
+        protected void onPostExecute(Re result) {
+            super.onPostExecute(result);
+            tryToDismiss();
+        }
+
+        private void tryToDismiss() {
+            supposedToBeDismissed = true;
+            try {
+                Dialog dialog = getDialog();
+                if (dialog != null)
+                    dialog.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        protected abstract Dialog createDialog(@NonNull Context context);
+    }
+
     private class ReportIssueTask extends DialogAsyncTask<Void, Void, String> {
         private final Report report;
         private final GithubTarget target;
@@ -519,79 +592,5 @@ public abstract class AbstractIssueReporterActivity extends BaseActivity {
                 ((Activity) context).finish();
             }
         }
-    }
-
-    private static abstract class DialogAsyncTask<Pa, Pr, Re> extends AsyncTask<Pa, Pr, Re> {
-        @NonNull
-        private final WeakReference<Context> contextWeakReference;
-        @Nullable
-        private WeakReference<Dialog> dialogWeakReference;
-
-        private boolean supposedToBeDismissed;
-
-        private DialogAsyncTask(Context context) {
-            contextWeakReference = new WeakReference<>(context);
-            dialogWeakReference = new WeakReference<>(null);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Context context = getContext();
-            if (!supposedToBeDismissed && context != null) {
-                Dialog dialog = createDialog(context);
-                dialogWeakReference = new WeakReference<>(dialog);
-                dialog.show();
-            }
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        protected final void onProgressUpdate(Pr... values) {
-            super.onProgressUpdate(values);
-            Dialog dialog = getDialog();
-            if (dialog != null) {
-                onProgressUpdate(dialog, values);
-            }
-        }
-
-        @SuppressWarnings("unchecked")
-        private void onProgressUpdate(@NonNull Dialog dialog, Pr... values) {
-        }
-
-        @Nullable
-        Context getContext() {
-            return contextWeakReference.get();
-        }
-
-        @Nullable
-        Dialog getDialog() {
-            return dialogWeakReference.get();
-        }
-
-        @Override
-        protected void onCancelled(Re result) {
-            super.onCancelled(result);
-            tryToDismiss();
-        }
-
-        @Override
-        protected void onPostExecute(Re result) {
-            super.onPostExecute(result);
-            tryToDismiss();
-        }
-
-        private void tryToDismiss() {
-            supposedToBeDismissed = true;
-            try {
-                Dialog dialog = getDialog();
-                if (dialog != null)
-                    dialog.dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        protected abstract Dialog createDialog(@NonNull Context context);
     }
 }

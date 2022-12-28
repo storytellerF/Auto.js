@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.NativeJavaClass;
-import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Scriptable;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +20,10 @@ public class NativeJavaClassWithPrototype extends NativeJavaClass {
 
     public NativeJavaClassWithPrototype(Scriptable scope, Class<?> javaClass) {
         super(scope, javaClass);
+    }
+
+    private static boolean memberNotFound(@NonNull EvaluatorException e) {
+        return e.getMessage() != null && e.getMessage().startsWith("Java class \"com.stardust.autojs.rhino.NativeJavaObjectWithPrototype\"");
     }
 
     @Override
@@ -87,10 +90,6 @@ public class NativeJavaClassWithPrototype extends NativeJavaClass {
         if (value == null)
             return NULL;
         return value;
-    }
-
-    private static boolean memberNotFound(@NonNull EvaluatorException e) {
-        return e.getMessage() != null && e.getMessage().startsWith("Java class \"com.stardust.autojs.rhino.NativeJavaObjectWithPrototype\"");
     }
 
 }

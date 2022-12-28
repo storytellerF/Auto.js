@@ -1,9 +1,10 @@
 package com.stardust.autojs.core.ui;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.stardust.autojs.core.ui.inflater.util.Ids;
 

@@ -1,6 +1,13 @@
 package org.autojs.autojs.ui.explorer;
 
+import static androidx.core.content.ContextCompat.getColor;
+import static org.autojs.autojs.model.explorer.ExplorerItem.TYPE_AUTO_FILE;
+import static org.autojs.autojs.model.explorer.ExplorerItem.TYPE_JAVASCRIPT;
+import static org.autojs.autojs.model.explorer.ExplorerItem.TYPE_UNKNOWN;
+
 import android.graphics.Color;
+
+import androidx.annotation.NonNull;
 
 import com.stardust.app.GlobalAppContext;
 import com.stardust.pio.PFiles;
@@ -11,13 +18,6 @@ import org.autojs.autojs.model.explorer.ExplorerItem;
 import org.autojs.autojs.model.explorer.ExplorerPage;
 import org.autojs.autojs.model.explorer.ExplorerProjectPage;
 import org.autojs.autojs.model.explorer.ExplorerSamplePage;
-
-import static androidx.core.content.ContextCompat.getColor;
-import static org.autojs.autojs.model.explorer.ExplorerItem.TYPE_AUTO_FILE;
-import static org.autojs.autojs.model.explorer.ExplorerItem.TYPE_JAVASCRIPT;
-import static org.autojs.autojs.model.explorer.ExplorerItem.TYPE_UNKNOWN;
-
-import androidx.annotation.NonNull;
 
 public class ExplorerViewHelper {
 
@@ -65,7 +65,7 @@ public class ExplorerViewHelper {
         if (page instanceof ExplorerSamplePage) {
             return R.drawable.ic_sample_dir;
         }
-        if(page instanceof ExplorerProjectPage){
+        if (page instanceof ExplorerProjectPage) {
             return R.drawable.ic_project;
         }
         return R.drawable.ic_folder_yellow_100px;

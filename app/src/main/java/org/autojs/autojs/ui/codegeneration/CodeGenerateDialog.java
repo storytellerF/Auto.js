@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
@@ -176,31 +175,11 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
 
     }
 
-    class OptionViewHolder extends ChildViewHolder<Option> {
-
-        @NonNull
-        private final DialogCodeGenerateOptionBinding bind;
-
-        OptionViewHolder(@NonNull View itemView) {
-            super(itemView);
-            bind = DialogCodeGenerateOptionBinding.bind(itemView);
-            bind.checkbox.setOnCheckedChangeListener((compoundButton, b) -> OptionViewHolder.this.onCheckedChanged());
-            itemView.setOnClickListener(view -> bind.checkbox.toggle());
-        }
-
-        void onCheckedChanged() {
-            getChild().checked = bind.checkbox.isChecked();
-            if (bind.checkbox.isChecked() && getChild().group.titleRes != R.string.text_options)
-                uncheckOthers(getParentAdapterPosition(), getChild());
-        }
-
-    }
-
     private static class OptionGroup implements Parent<Option> {
+        private final boolean mInitialExpanded;
         int titleRes;
         @NonNull
         List<Option> options = new ArrayList<>();
-        private final boolean mInitialExpanded;
 
 
         OptionGroup(int titleRes, boolean initialExpanded) {
@@ -247,7 +226,6 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
         }
     }
 
-
     private static class OptionGroupViewHolder extends ParentViewHolder<OptionGroup, Option> {
 
         TextView title;
@@ -270,6 +248,26 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
         public void onExpansionToggled(boolean expanded) {
             icon.setRotation(expanded ? -90 : 0);
         }
+    }
+
+    class OptionViewHolder extends ChildViewHolder<Option> {
+
+        @NonNull
+        private final DialogCodeGenerateOptionBinding bind;
+
+        OptionViewHolder(@NonNull View itemView) {
+            super(itemView);
+            bind = DialogCodeGenerateOptionBinding.bind(itemView);
+            bind.checkbox.setOnCheckedChangeListener((compoundButton, b) -> OptionViewHolder.this.onCheckedChanged());
+            itemView.setOnClickListener(view -> bind.checkbox.toggle());
+        }
+
+        void onCheckedChanged() {
+            getChild().checked = bind.checkbox.isChecked();
+            if (bind.checkbox.isChecked() && getChild().group.titleRes != R.string.text_options)
+                uncheckOthers(getParentAdapterPosition(), getChild());
+        }
+
     }
 
     private class Adapter extends ExpandableRecyclerAdapter<OptionGroup, Option, OptionGroupViewHolder, OptionViewHolder> {

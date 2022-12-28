@@ -33,9 +33,22 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class LoginActivity extends BaseActivity {
 
-    private ActivityLoginBinding inflate;
     @NonNull
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private ActivityLoginBinding inflate;
+
+    @NonNull
+    public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context context) {
+        return new ActivityIntentBuilder<I>(context, LoginActivity.class) {
+            @Nullable
+            @Override
+            public PostActivityStarter startForResult(int requestCode) {
+                context.startActivity(intent);
+                return null;
+            }
+        };
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,18 +57,6 @@ public class LoginActivity extends BaseActivity {
         setUpViews();
         inflate.login.setOnClickListener(view -> login());
         inflate.forgotPassword.setOnClickListener(view -> forgotPassword());
-    }
-
-    @NonNull
-    public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context context) {
-        return new ActivityIntentBuilder<I>(context,LoginActivity.class) {
-            @Nullable
-            @Override
-            public PostActivityStarter startForResult(int requestCode) {
-                context.startActivity(intent);
-                return null;
-            }
-        };
     }
 
     void setUpViews() {

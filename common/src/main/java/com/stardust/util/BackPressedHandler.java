@@ -1,9 +1,7 @@
 package com.stardust.util;
 
 import android.app.Activity;
-import android.os.Handler;
 import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 
@@ -54,9 +52,9 @@ public interface BackPressedHandler {
     class DoublePressExit implements BackPressedHandler {
 
         private final Activity mActivity;
+        private final String mToast;
         private long mLastPressedMillis;
         private long mDoublePressInterval = 1000;
-        private final String mToast;
 
         public DoublePressExit(@NonNull Activity activity, int noticeResId) {
             this(activity, activity.getString(noticeResId));

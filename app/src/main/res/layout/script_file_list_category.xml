@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/title_container"
@@ -13,8 +13,8 @@
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:orientation="horizontal"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <ImageView
             android:id="@+id/collapse"
@@ -33,7 +33,7 @@
             android:layout_gravity="center_vertical"
             android:text="@string/text_directory"
             android:textColor="#828384"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
     </LinearLayout>
 
 
@@ -46,7 +46,7 @@
         android:clickable="true"
         android:padding="9dp"
         android:src="@drawable/ic_dir_up"
-        android:tint="#828384"/>
+        android:tint="#828384" />
 
     <ImageView
         android:id="@+id/order"
@@ -57,7 +57,7 @@
         android:clickable="true"
         android:padding="9dp"
         android:src="@drawable/ic_descending_order"
-        android:tint="#828384"/>
+        android:tint="#828384" />
 
     <ImageView
         android:id="@+id/sort"
@@ -68,5 +68,5 @@
         android:clickable="true"
         android:padding="9dp"
         android:src="@drawable/ic_sort"
-        android:tint="#828384"/>
+        android:tint="#828384" />
 </LinearLayout>

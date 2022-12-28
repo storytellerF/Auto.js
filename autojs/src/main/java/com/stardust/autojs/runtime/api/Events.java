@@ -7,26 +7,25 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import android.view.KeyEvent;
-
 import com.stardust.autojs.R;
 import com.stardust.autojs.core.accessibility.AccessibilityBridge;
 import com.stardust.autojs.core.boardcast.BroadcastEmitter;
 import com.stardust.autojs.core.eventloop.EventEmitter;
+import com.stardust.autojs.core.inputevent.InputEventObserver;
+import com.stardust.autojs.core.inputevent.TouchObserver;
 import com.stardust.autojs.core.looper.Loopers;
 import com.stardust.autojs.core.looper.MainThreadProxy;
 import com.stardust.autojs.core.looper.Timer;
 import com.stardust.autojs.runtime.ScriptRuntime;
+import com.stardust.autojs.runtime.exception.ScriptException;
 import com.stardust.notification.Notification;
 import com.stardust.notification.NotificationListenerService;
-import com.stardust.autojs.runtime.exception.ScriptException;
-import com.stardust.autojs.core.inputevent.InputEventObserver;
-import com.stardust.autojs.core.inputevent.TouchObserver;
 import com.stardust.util.MapBuilder;
 import com.stardust.view.accessibility.AccessibilityNotificationObserver;
 import com.stardust.view.accessibility.AccessibilityService;
@@ -64,27 +63,25 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
             .put(AccessibilityService.GESTURE_SWIPE_DOWN_AND_LEFT, "down_left")
             .put(AccessibilityService.GESTURE_SWIPE_DOWN_AND_RIGHT, "down_right")
             .build();
-
+    @NonNull
+    public final BroadcastEmitter broadcast;
     private final AccessibilityBridge mAccessibilityBridge;
     private final Context mContext;
+    private final Loopers mLoopers;
+    @NonNull
+    private final ScriptRuntime mScriptRuntime;
+    private final Set<String> mInterceptedKeys = new HashSet<>();
     private TouchObserver mTouchObserver;
     private long mLastTouchEventMillis;
     private long mTouchEventTimeout = 10;
     private boolean mListeningKey = false;
-    private final Loopers mLoopers;
     private Handler mHandler;
     private boolean mListeningNotification = false;
     private boolean mListeningGesture = false;
     private boolean mListeningToast = false;
-    @NonNull
-    private final ScriptRuntime mScriptRuntime;
     private volatile boolean mInterceptsAllKey = false;
     @Nullable
     private KeyInterceptor mKeyInterceptor;
-    private final Set<String> mInterceptedKeys = new HashSet<>();
-
-    @NonNull
-    public final BroadcastEmitter broadcast;
 
     public Events(Context context, AccessibilityBridge accessibilityBridge, @NonNull ScriptRuntime runtime) {
         super(runtime.bridges);

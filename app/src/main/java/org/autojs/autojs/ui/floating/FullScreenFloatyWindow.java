@@ -1,12 +1,10 @@
 package org.autojs.autojs.ui.floating;
 
 import android.graphics.PixelFormat;
-import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
-import com.stardust.enhancedfloaty.FloatyService;
 import com.stardust.enhancedfloaty.FloatyWindow;
 
 /**

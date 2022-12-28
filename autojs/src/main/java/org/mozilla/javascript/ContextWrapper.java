@@ -48,11 +48,6 @@ public class ContextWrapper extends Context {
         Context.removeContextListener(listener);
     }
 
-    @Override
-    public void setLanguageVersion(int version) {
-        mContext.setLanguageVersion(version);
-    }
-
     public static boolean isValidLanguageVersion(int version) {
         return Context.isValidLanguageVersion(version);
     }
@@ -89,63 +84,8 @@ public class ContextWrapper extends Context {
         return Context.reportRuntimeError(message);
     }
 
-    @Override
-    public ScriptableObject initStandardObjects(ScriptableObject scope, boolean sealed) {
-        return mContext.initStandardObjects(scope, sealed);
-    }
-
-    @Override
-    public ScriptableObject initSafeStandardObjects(ScriptableObject scope, boolean sealed) {
-        return mContext.initSafeStandardObjects(scope, sealed);
-    }
-
     public static Object getUndefinedValue() {
         return Context.getUndefinedValue();
-    }
-
-    @Override
-    public Object executeScriptWithContinuations(Script script, Scriptable scope) throws ContinuationPending {
-        return mContext.executeScriptWithContinuations(script, scope);
-    }
-
-    @Override
-    public Object callFunctionWithContinuations(Callable function, Scriptable scope, Object[] args) throws ContinuationPending {
-        return mContext.callFunctionWithContinuations(function, scope, args);
-    }
-
-    @Override
-    public ContinuationPending captureContinuation() {
-        return mContext.captureContinuation();
-    }
-
-    @Override
-    public Object resumeContinuation(Object continuation, Scriptable scope, Object functionResult) throws ContinuationPending {
-        return mContext.resumeContinuation(continuation, scope, functionResult);
-    }
-
-    @Override
-    public Scriptable newObject(Scriptable scope) {
-        return mContext.newObject(scope);
-    }
-
-    @Override
-    public Scriptable newObject(Scriptable scope, String constructorName) {
-        return mContext.newObject(scope, constructorName);
-    }
-
-    @Override
-    public Scriptable newObject(Scriptable scope, String constructorName, Object[] args) {
-        return mContext.newObject(scope, constructorName, args);
-    }
-
-    @Override
-    public Scriptable newArray(Scriptable scope, int length) {
-        return mContext.newArray(scope, length);
-    }
-
-    @Override
-    public Scriptable newArray(Scriptable scope, Object[] elements) {
-        return mContext.newArray(scope, elements);
     }
 
     public static boolean toBoolean(Object value) {
@@ -201,6 +141,66 @@ public class ContextWrapper extends Context {
 
     public static DebuggableScript getDebuggableView(Script script) {
         return Context.getDebuggableView(script);
+    }
+
+    @Override
+    public void setLanguageVersion(int version) {
+        mContext.setLanguageVersion(version);
+    }
+
+    @Override
+    public ScriptableObject initStandardObjects(ScriptableObject scope, boolean sealed) {
+        return mContext.initStandardObjects(scope, sealed);
+    }
+
+    @Override
+    public ScriptableObject initSafeStandardObjects(ScriptableObject scope, boolean sealed) {
+        return mContext.initSafeStandardObjects(scope, sealed);
+    }
+
+    @Override
+    public Object executeScriptWithContinuations(Script script, Scriptable scope) throws ContinuationPending {
+        return mContext.executeScriptWithContinuations(script, scope);
+    }
+
+    @Override
+    public Object callFunctionWithContinuations(Callable function, Scriptable scope, Object[] args) throws ContinuationPending {
+        return mContext.callFunctionWithContinuations(function, scope, args);
+    }
+
+    @Override
+    public ContinuationPending captureContinuation() {
+        return mContext.captureContinuation();
+    }
+
+    @Override
+    public Object resumeContinuation(Object continuation, Scriptable scope, Object functionResult) throws ContinuationPending {
+        return mContext.resumeContinuation(continuation, scope, functionResult);
+    }
+
+    @Override
+    public Scriptable newObject(Scriptable scope) {
+        return mContext.newObject(scope);
+    }
+
+    @Override
+    public Scriptable newObject(Scriptable scope, String constructorName) {
+        return mContext.newObject(scope, constructorName);
+    }
+
+    @Override
+    public Scriptable newObject(Scriptable scope, String constructorName, Object[] args) {
+        return mContext.newObject(scope, constructorName, args);
+    }
+
+    @Override
+    public Scriptable newArray(Scriptable scope, int length) {
+        return mContext.newArray(scope, length);
+    }
+
+    @Override
+    public Scriptable newArray(Scriptable scope, Object[] elements) {
+        return mContext.newArray(scope, elements);
     }
 
     @Override

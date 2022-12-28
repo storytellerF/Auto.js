@@ -4,13 +4,14 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.util.Pair;
+
 import androidx.annotation.AnyThread;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
-import android.util.Log;
-import android.util.Pair;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -43,34 +44,6 @@ public class DevPluginService {
     private static final String TYPE_HELLO = "hello";
     private static final String TYPE_BYTES_COMMAND = "bytes_command";
     private static final long HANDSHAKE_TIMEOUT = 10 * 1000;
-
-    public static class State {
-
-        public static final int DISCONNECTED = 0;
-        public static final int CONNECTING = 1;
-        public static final int CONNECTED = 2;
-
-        private final int mState;
-        private final Throwable mException;
-
-        public State(int state, Throwable exception) {
-            mState = state;
-            mException = exception;
-        }
-
-        public State(int state) {
-            this(state, null);
-        }
-
-        public int getState() {
-            return mState;
-        }
-
-        public Throwable getException() {
-            return mException;
-        }
-    }
-
     private static final int PORT = 9317;
     private static final DevPluginService sInstance = new DevPluginService();
     private final PublishSubject<State> mConnectionState = PublishSubject.create();
@@ -81,15 +54,51 @@ public class DevPluginService {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @Nullable
     private volatile JsonWebSocket mSocket;
+    public DevPluginService() {
+        File cache = new File(GlobalAppContext.get().getCacheDir(), "remote_project");
+        mResponseHandler = new DevPluginResponseHandler(cache);
+    }
 
     @NonNull
     public static DevPluginService getInstance() {
         return sInstance;
     }
 
-    public DevPluginService() {
-        File cache = new File(GlobalAppContext.get().getCacheDir(), "remote_project");
-        mResponseHandler = new DevPluginResponseHandler(cache);
+    @AnyThread
+    private static boolean write(@NonNull JsonWebSocket socket, String type, JsonObject data) {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", type);
+        json.add("data", data);
+        return socket.write(json);
+    }
+
+    @AnyThread
+    private static boolean writePair(@NonNull JsonWebSocket socket, String type, @NonNull Pair<String, String> pair) {
+        JsonObject data = new JsonObject();
+        data.addProperty(pair.first, pair.second);
+        return write(socket, type, data);
+    }
+
+    @AnyThread
+    private static boolean writeMap(@NonNull JsonWebSocket socket, String type, @NonNull Map<String, ?> map) {
+        JsonObject data = new JsonObject();
+        for (Map.Entry<String, ?> entry : map.entrySet()) {
+            Object value = entry.getValue();
+            if (value instanceof String) {
+                data.addProperty(entry.getKey(), (String) value);
+            } else if (value instanceof Character) {
+                data.addProperty(entry.getKey(), (Character) value);
+            } else if (value instanceof Number) {
+                data.addProperty(entry.getKey(), (Number) value);
+            } else if (value instanceof Boolean) {
+                data.addProperty(entry.getKey(), (Boolean) value);
+            } else if (value instanceof JsonElement) {
+                data.add(entry.getKey(), (JsonElement) value);
+            } else {
+                throw new IllegalArgumentException("cannot put value " + value + " into json");
+            }
+        }
+        return write(socket, type, data);
     }
 
     @AnyThread
@@ -146,8 +155,8 @@ public class DevPluginService {
             url = "ws://" + url;
         }
         return Observable.just(new JsonWebSocket(client, new Request.Builder()
-                .url(url)
-                .build()))
+                        .url(url)
+                        .build()))
                 .doOnNext(socket -> {
                     mSocket = socket;
                     subscribeMessage(socket);
@@ -260,49 +269,38 @@ public class DevPluginService {
         mConnectionState.onNext(new State(State.CONNECTED));
     }
 
-    @AnyThread
-    private static boolean write(@NonNull JsonWebSocket socket, String type, JsonObject data) {
-        JsonObject json = new JsonObject();
-        json.addProperty("type", type);
-        json.add("data", data);
-        return socket.write(json);
-    }
-
-    @AnyThread
-    private static boolean writePair(@NonNull JsonWebSocket socket, String type, @NonNull Pair<String, String> pair) {
-        JsonObject data = new JsonObject();
-        data.addProperty(pair.first, pair.second);
-        return write(socket, type, data);
-    }
-
-    @AnyThread
-    private static boolean writeMap(@NonNull JsonWebSocket socket, String type, @NonNull Map<String, ?> map) {
-        JsonObject data = new JsonObject();
-        for (Map.Entry<String, ?> entry : map.entrySet()) {
-            Object value = entry.getValue();
-            if (value instanceof String) {
-                data.addProperty(entry.getKey(), (String) value);
-            } else if (value instanceof Character) {
-                data.addProperty(entry.getKey(), (Character) value);
-            } else if (value instanceof Number) {
-                data.addProperty(entry.getKey(), (Number) value);
-            } else if (value instanceof Boolean) {
-                data.addProperty(entry.getKey(), (Boolean) value);
-            } else if (value instanceof JsonElement) {
-                data.add(entry.getKey(), (JsonElement) value);
-            } else {
-                throw new IllegalArgumentException("cannot put value " + value + " into json");
-            }
-        }
-        return write(socket, type, data);
-    }
-
-
     @SuppressLint("CheckResult")
     @AnyThread
     public void log(String log) {
         if (!isConnected())
             return;
         writePair(mSocket, "log", new Pair<>("log", log));
+    }
+
+    public static class State {
+
+        public static final int DISCONNECTED = 0;
+        public static final int CONNECTING = 1;
+        public static final int CONNECTED = 2;
+
+        private final int mState;
+        private final Throwable mException;
+
+        public State(int state, Throwable exception) {
+            mState = state;
+            mException = exception;
+        }
+
+        public State(int state) {
+            this(state, null);
+        }
+
+        public int getState() {
+            return mState;
+        }
+
+        public Throwable getException() {
+            return mException;
+        }
     }
 }

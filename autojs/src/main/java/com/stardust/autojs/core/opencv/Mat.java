@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.stardust.util.ResourceMonitor;
 
-import org.mozilla.javascript.ScriptRuntime;
 import org.opencv.core.Range;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -15,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Mat extends org.opencv.core.Mat implements ResourceMonitor.Resource {
 
+    private static final AtomicInteger sResourceId = new AtomicInteger();
     private static Method nClone;
 
     static {
@@ -26,9 +26,8 @@ public class Mat extends org.opencv.core.Mat implements ResourceMonitor.Resource
         }
     }
 
-    private static final AtomicInteger sResourceId = new AtomicInteger();
-    private volatile boolean mReleased = false;
     private final int mResourceId = sResourceId.incrementAndGet();
+    private volatile boolean mReleased = false;
 
     public Mat(long addr) {
         super(addr);

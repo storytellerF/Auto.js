@@ -11,13 +11,12 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Base64;
+import android.view.Gravity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
-import android.util.Base64;
-import android.view.Gravity;
 
 import com.stardust.autojs.annotation.ScriptVariable;
 import com.stardust.autojs.core.image.ColorFinder;
@@ -46,8 +45,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -56,20 +53,19 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class Images {
 
+    @NonNull
+    @ScriptVariable
+    public final ColorFinder colorFinder;
     private final ScriptRuntime mScriptRuntime;
     private final ScreenCaptureRequester mScreenCaptureRequester;
-    private ScreenCapturer mScreenCapturer;
     private final Context mContext;
+    private final ScreenMetrics mScreenMetrics;
+    private ScreenCapturer mScreenCapturer;
     @Nullable
     private Image mPreCapture;
     @Nullable
     private ImageWrapper mPreCaptureImage;
-    private final ScreenMetrics mScreenMetrics;
     private volatile boolean mOpenCvInitialized = false;
-
-    @NonNull
-    @ScriptVariable
-    public final ColorFinder colorFinder;
 
     public Images(Context context, ScriptRuntime scriptRuntime, ScreenCaptureRequester screenCaptureRequester) {
         mScriptRuntime = scriptRuntime;
@@ -77,6 +73,67 @@ public class Images {
         mContext = context;
         mScreenMetrics = mScriptRuntime.getScreenMetrics();
         colorFinder = new ColorFinder(mScreenMetrics);
+    }
+
+    public static int pixel(@Nullable ImageWrapper image, int x, int y) {
+        if (image == null) {
+            throw new NullPointerException("image = null");
+        }
+        return image.pixel(x, y);
+    }
+
+    @Nullable
+    public static ImageWrapper concat(ImageWrapper img1, ImageWrapper img2, int direction) {
+        if (!Arrays.asList(Gravity.LEFT, Gravity.RIGHT, Gravity.TOP, Gravity.BOTTOM).contains(direction)) {
+            throw new IllegalArgumentException("unknown direction " + direction);
+        }
+        int width;
+        int height;
+        if (direction == Gravity.LEFT || direction == Gravity.TOP) {
+            ImageWrapper tmp = img1;
+            img1 = img2;
+            img2 = tmp;
+        }
+        if (direction == Gravity.LEFT || direction == Gravity.RIGHT) {
+            width = img1.getWidth() + img2.getWidth();
+            height = Math.max(img1.getHeight(), img2.getHeight());
+        } else {
+            width = Math.max(img1.getWidth(), img2.getHeight());
+            height = img1.getHeight() + img2.getHeight();
+        }
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        if (direction == Gravity.LEFT || direction == Gravity.RIGHT) {
+            canvas.drawBitmap(img1.getBitmap(), 0, (height - img1.getHeight()) / 2, paint);
+            canvas.drawBitmap(img2.getBitmap(), img1.getWidth(), (height - img2.getHeight()) / 2, paint);
+        } else {
+            canvas.drawBitmap(img1.getBitmap(), (width - img1.getWidth()) / 2, 0, paint);
+            canvas.drawBitmap(img2.getBitmap(), (width - img2.getWidth()) / 2, img1.getHeight(), paint);
+        }
+        return ImageWrapper.ofBitmap(bitmap);
+    }
+
+    public static void saveBitmap(@NonNull Bitmap bitmap, String path) {
+        try {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(path));
+        } catch (FileNotFoundException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    @Nullable
+    public static Bitmap scaleBitmap(@Nullable Bitmap origin, int newWidth, int newHeight) {
+        if (origin == null) {
+            return null;
+        }
+        int height = origin.getHeight();
+        int width = origin.getWidth();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        return Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);
     }
 
     @NonNull
@@ -145,45 +202,6 @@ public class Images {
         Bitmap bitmap = image.getBitmap();
         FileOutputStream outputStream = new FileOutputStream(mScriptRuntime.files.path(path));
         return bitmap.compress(compressFormat, quality, outputStream);
-    }
-
-    public static int pixel(@Nullable ImageWrapper image, int x, int y) {
-        if (image == null) {
-            throw new NullPointerException("image = null");
-        }
-        return image.pixel(x, y);
-    }
-
-    @Nullable
-    public static ImageWrapper concat(ImageWrapper img1, ImageWrapper img2, int direction) {
-        if (!Arrays.asList(Gravity.LEFT, Gravity.RIGHT, Gravity.TOP, Gravity.BOTTOM).contains(direction)) {
-            throw new IllegalArgumentException("unknown direction " + direction);
-        }
-        int width;
-        int height;
-        if (direction == Gravity.LEFT || direction == Gravity.TOP) {
-            ImageWrapper tmp = img1;
-            img1 = img2;
-            img2 = tmp;
-        }
-        if (direction == Gravity.LEFT || direction == Gravity.RIGHT) {
-            width = img1.getWidth() + img2.getWidth();
-            height = Math.max(img1.getHeight(), img2.getHeight());
-        } else {
-            width = Math.max(img1.getWidth(), img2.getHeight());
-            height = img1.getHeight() + img2.getHeight();
-        }
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        Paint paint = new Paint();
-        if (direction == Gravity.LEFT || direction == Gravity.RIGHT) {
-            canvas.drawBitmap(img1.getBitmap(), 0, (height - img1.getHeight()) / 2, paint);
-            canvas.drawBitmap(img2.getBitmap(), img1.getWidth(), (height - img2.getHeight()) / 2, paint);
-        } else {
-            canvas.drawBitmap(img1.getBitmap(), (width - img1.getWidth()) / 2, 0, paint);
-            canvas.drawBitmap(img2.getBitmap(), (width - img2.getWidth()) / 2, img1.getHeight(), paint);
-        }
-        return ImageWrapper.ofBitmap(bitmap);
     }
 
     @Nullable
@@ -257,28 +275,6 @@ public class Images {
         } catch (IOException e) {
             return null;
         }
-    }
-
-    public static void saveBitmap(@NonNull Bitmap bitmap, String path) {
-        try {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(path));
-        } catch (FileNotFoundException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    @Nullable
-    public static Bitmap scaleBitmap(@Nullable Bitmap origin, int newWidth, int newHeight) {
-        if (origin == null) {
-            return null;
-        }
-        int height = origin.getHeight();
-        int width = origin.getWidth();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        return Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);
     }
 
     public void releaseScreenCapturer() {

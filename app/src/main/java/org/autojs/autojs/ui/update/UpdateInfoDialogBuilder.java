@@ -4,9 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +12,9 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.stardust.util.IntentUtil;
@@ -39,8 +39,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
 
     private static final String KEY_DO_NOT_ASK_AGAIN_FOR_VERSION = "I cannot forget you...cannot help missing you...";
-    private View mView;
     private final SharedPreferences mSharedPreferences;
+    private View mView;
     private VersionInfo mVersionInfo;
 
     public UpdateInfoDialogBuilder(@NonNull Context context, @NonNull VersionInfo info) {

@@ -2,9 +2,7 @@ package com.stardust.lang;
 
 import androidx.annotation.NonNull;
 
-import java.lang.ref.WeakReference;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -48,11 +46,6 @@ public class ThreadCompat extends Thread {
         super(group, target, name, stackSize);
     }
 
-    @Override
-    public boolean isInterrupted() {
-        return super.isInterrupted() || interruptedThreads.contains(this);
-    }
-
     public static boolean interrupted() {
         boolean interrupted = Thread.currentThread().isInterrupted();
         interruptedThreads.remove(Thread.currentThread());
@@ -60,6 +53,10 @@ public class ThreadCompat extends Thread {
         return interrupted;
     }
 
+    @Override
+    public boolean isInterrupted() {
+        return super.isInterrupted() || interruptedThreads.contains(this);
+    }
 
     @Override
     public void interrupt() {

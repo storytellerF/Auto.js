@@ -1,31 +1,24 @@
 package org.autojs.autojs.ui.floating;
 
+import static com.stardust.autojs.util.FloatingPermission.manageDrawOverlays;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.util.FloatingPermission;
 import com.stardust.enhancedfloaty.FloatyService;
 import com.stardust.enhancedfloaty.FloatyWindow;
-import com.stardust.enhancedfloaty.util.FloatingWindowPermissionUtil;
 
-import org.autojs.autojs.App;
 import org.autojs.autojs.R;
-import org.autojs.autojs.ui.floating.CircularMenu;
-
-import com.stardust.util.IntentUtil;
 
 import java.lang.ref.WeakReference;
-
-import ezy.assist.compat.SettingsCompat;
-
-import static com.stardust.autojs.util.FloatingPermission.manageDrawOverlays;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/9/30.
@@ -45,7 +38,7 @@ public class FloatyWindowManger {
             // SecurityException: https://github.com/hyb1996-guest/AutoJsIssueReport/issues/4781
         } catch (Exception e) {
             e.printStackTrace();
-            if(hasPermission){
+            if (hasPermission) {
                 manageDrawOverlays(context);
                 GlobalAppContext.toast(R.string.text_no_floating_window_permission);
             }

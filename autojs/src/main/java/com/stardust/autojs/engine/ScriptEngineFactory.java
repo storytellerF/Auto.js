@@ -15,17 +15,9 @@ import java.util.Map;
 
 public class ScriptEngineFactory {
 
-    public static class EngineNotFoundException extends RuntimeException {
-
-        public EngineNotFoundException(String s) {
-            super(s);
-        }
-    }
-
     private static final ScriptEngineFactory sInstance = new ScriptEngineFactory();
     private final Map<String, Supplier<ScriptEngine>> mEngines = new HashMap<>();
     private final Map<String, Object> mGlobalVariableMap = new HashMap<>();
-
     ScriptEngineFactory() {
 
     }
@@ -45,7 +37,6 @@ public class ScriptEngineFactory {
         }
     }
 
-
     @Nullable
     public ScriptEngine createEngine(String name) {
         Supplier<ScriptEngine> s = mEngines.get(name);
@@ -61,7 +52,6 @@ public class ScriptEngineFactory {
     public ScriptEngine createEngineOfSource(@NonNull ScriptSource source) {
         return createEngine(source.getEngineName());
     }
-
 
     @NonNull
     public ScriptEngine createEngineByNameOrThrow(String name) {
@@ -85,6 +75,13 @@ public class ScriptEngineFactory {
 
     public void unregisterEngine(String name) {
         mEngines.remove(name);
+    }
+
+    public static class EngineNotFoundException extends RuntimeException {
+
+        public EngineNotFoundException(String s) {
+            super(s);
+        }
     }
 
 }

@@ -33,26 +33,16 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AndroidClassIndices {
 
-    static class LoadException extends RuntimeException {
-
-        LoadException(Throwable cause) {
-            super(cause);
-        }
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private static AndroidClassIndices sInstance;
-
     private static final Type ANDROID_CLASS_LIST_TYPE = new TypeToken<List<AndroidClass>>() {
     }.getType();
+    @SuppressLint("StaticFieldLeak")
+    private static AndroidClassIndices sInstance;
     //packageName -> package classes
     private final LinkedHashMap<String, ArrayList<ClassSearchingItem>> mPackages = new LinkedHashMap<>();
     private final Context mContext;
     private final ExecutorService mSingleThreadExecutor = new ThreadPoolExecutor(1, 1,
             2, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
     private Throwable mLoadThrowable;
-
-
     protected AndroidClassIndices(@NonNull Context context) {
         mContext = context.getApplicationContext();
         load("indices/all_android_classes.json");
@@ -68,11 +58,11 @@ public class AndroidClassIndices {
     @NonNull
     public Single<List<ClassSearchingItem>> search(String keywords) {
         return Single.fromCallable(() -> {
-            if (mPackages.isEmpty() && mLoadThrowable != null) {
-                throw new LoadException(mLoadThrowable);
-            }
-            return mPackages.values();
-        })
+                    if (mPackages.isEmpty() && mLoadThrowable != null) {
+                        throw new LoadException(mLoadThrowable);
+                    }
+                    return mPackages.values();
+                })
                 .map(packages -> search(packages, keywords))
                 .subscribeOn(Schedulers.from(mSingleThreadExecutor));
     }
@@ -111,7 +101,6 @@ public class AndroidClassIndices {
                 });
     }
 
-
     private void load(@NonNull Reader reader) throws IOException {
         try {
             Gson gson = new Gson();
@@ -135,6 +124,13 @@ public class AndroidClassIndices {
                 packageClasses.add(new ClassSearchingItem.PackageItem(packageName));
             }
             packageClasses.add(new ClassSearchingItem.ClassItem(clazz));
+        }
+    }
+
+    static class LoadException extends RuntimeException {
+
+        LoadException(Throwable cause) {
+            super(cause);
         }
     }
 

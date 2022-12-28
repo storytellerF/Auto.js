@@ -8,14 +8,13 @@ public class NotificationResponse {
 
     private List<Notification> notifications;
 
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
-    }
-
     public List<Notification> getNotifications() {
         return notifications;
     }
 
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
 
     @NonNull
     @Override

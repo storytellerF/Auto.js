@@ -1,8 +1,9 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.view.ViewGroup;
 
 import com.stardust.autojs.core.ui.inflater.DynamicLayoutInflater;
 import com.stardust.autojs.core.ui.inflater.ResourceParser;

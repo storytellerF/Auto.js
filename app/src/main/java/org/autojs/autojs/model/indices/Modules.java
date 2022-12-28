@@ -11,11 +11,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -32,6 +30,11 @@ public class Modules {
 
     private List<Module> mModules;
 
+    @NonNull
+    public static Modules getInstance() {
+        return sInstance;
+    }
+
     private List<Module> loadModulesFrom(InputStream inputStream) {
         Gson gson = new Gson();
         return gson.fromJson(new InputStreamReader(inputStream), MODULE_LIST_TYPE);
@@ -44,10 +47,5 @@ public class Modules {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(modules -> mModules = modules);
-    }
-
-    @NonNull
-    public static Modules getInstance() {
-        return sInstance;
     }
 }

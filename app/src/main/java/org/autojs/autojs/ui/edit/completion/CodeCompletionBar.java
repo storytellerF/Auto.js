@@ -2,15 +2,16 @@ package org.autojs.autojs.ui.edit.completion;
 
 import android.content.Context;
 import android.os.Looper;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.stardust.autojs.workground.WrapContentLinearLayoutManager;
 
 import org.autojs.autojs.R;
@@ -21,12 +22,6 @@ import org.autojs.autojs.model.autocomplete.CodeCompletions;
  */
 
 public class CodeCompletionBar extends RecyclerView {
-
-    public interface OnHintClickListener {
-        void onHintClick(CodeCompletions completions, int pos);
-
-        void onHintLongClick(CodeCompletions completions, int pos);
-    }
 
     private int mTextColor;
     private CodeCompletions mCodeCompletions;
@@ -43,7 +38,6 @@ public class CodeCompletionBar extends RecyclerView {
 
         }
     };
-
     private final OnLongClickListener mOnCodeCompletionItemLongClickListener = new OnLongClickListener() {
         @Override
         public boolean onLongClick(@NonNull View v) {
@@ -76,6 +70,10 @@ public class CodeCompletionBar extends RecyclerView {
         mOnHintClickListener = onHintClickListener;
     }
 
+    public CodeCompletions getCodeCompletions() {
+        return mCodeCompletions;
+    }
+
     public void setCodeCompletions(CodeCompletions codeCompletions) {
         if (Looper.getMainLooper() != Looper.myLooper()) {
             post(() -> setCodeCompletions(codeCompletions));
@@ -85,19 +83,21 @@ public class CodeCompletionBar extends RecyclerView {
         getAdapter().notifyDataSetChanged();
     }
 
-    public CodeCompletions getCodeCompletions() {
-        return mCodeCompletions;
-    }
-
     public void setTextColor(int textColor) {
         mTextColor = textColor;
         getAdapter().notifyDataSetChanged();
     }
 
-
     private void init() {
         setAdapter(new CodeCompletionAdapter());
         setLayoutManager(new WrapContentLinearLayoutManager(getContext(), HORIZONTAL, false));
+    }
+
+
+    public interface OnHintClickListener {
+        void onHintClick(CodeCompletions completions, int pos);
+
+        void onHintLongClick(CodeCompletions completions, int pos);
     }
 
     private class CodeCompletionAdapter extends RecyclerView.Adapter<ViewHolder> {

@@ -5,30 +5,28 @@ import android.database.sqlite.SQLiteDatabase;
 
 import androidx.annotation.NonNull;
 
-import java.sql.ResultSet;
-
 public class Transaction {
 
     private final SQLiteDatabase mDatabase;
-
-    public SQLiteDatabase getDatabase() {
-        return mDatabase;
-    }
 
     public Transaction(SQLiteDatabase database) {
         mDatabase = database;
     }
 
-    public void executeSql(String sqlStatement, String[] arguments, @NonNull StatementCallback callback, StatementErrorCallback errorCallback){
-        Cursor cursor = mDatabase.rawQuery(sqlStatement,  arguments);
+    public SQLiteDatabase getDatabase() {
+        return mDatabase;
+    }
+
+    public void executeSql(String sqlStatement, String[] arguments, @NonNull StatementCallback callback, StatementErrorCallback errorCallback) {
+        Cursor cursor = mDatabase.rawQuery(sqlStatement, arguments);
         callback.handleEvent(this, DatabaseResultSet.fromCursor(cursor));
     }
 
-     void succeed() {
+    void succeed() {
         mDatabase.setTransactionSuccessful();
     }
 
-     void end() {
+    void end() {
         mDatabase.endTransaction();
     }
 }

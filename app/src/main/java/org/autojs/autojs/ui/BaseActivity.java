@@ -1,19 +1,23 @@
 package org.autojs.autojs.ui;
 
+import static android.content.pm.PackageManager.PERMISSION_DENIED;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
-import android.view.Menu;
-import android.view.View;
+import androidx.core.content.ContextCompat;
 
 import com.stardust.app.GlobalAppContext;
 import com.stardust.theme.ThemeColorManager;
@@ -25,9 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.content.pm.PackageManager.PERMISSION_DENIED;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-
 /**
  * Created by Stardust on 2017/1/23.
  */
@@ -36,6 +37,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected static final int PERMISSION_REQUEST_CODE = 11186;
     private boolean mShouldApplyDayNightModeForOptionsMenu = true;
+
+    public static void setToolbarAsBack(@NonNull final AppCompatActivity activity, int id, String title) {
+        Toolbar toolbar = activity.findViewById(id);
+        toolbar.setTitle(title);
+        activity.setSupportActionBar(toolbar);
+        if (activity.getSupportActionBar() != null) {
+            toolbar.setNavigationOnClickListener(v -> activity.finish());
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +102,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-
     @NonNull
     @RequiresApi(api = Build.VERSION_CODES.M)
     private String[] getRequestPermissions(@NonNull String[] permissions) {
@@ -106,16 +116,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void setToolbarAsBack(String title) {
         setToolbarAsBack(this, R.id.toolbar, title);
-    }
-
-    public static void setToolbarAsBack(@NonNull final AppCompatActivity activity, int id, String title) {
-        Toolbar toolbar = activity.findViewById(id);
-        toolbar.setTitle(title);
-        activity.setSupportActionBar(toolbar);
-        if (activity.getSupportActionBar() != null) {
-            toolbar.setNavigationOnClickListener(v -> activity.finish());
-            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     @CallSuper

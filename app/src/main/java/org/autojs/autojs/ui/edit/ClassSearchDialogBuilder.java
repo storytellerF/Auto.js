@@ -3,14 +3,15 @@ package org.autojs.autojs.ui.edit;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -27,20 +28,14 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class ClassSearchDialogBuilder extends ThemeColorMaterialDialogBuilder {
 
-    public interface OnItemClickListener {
-        void onItemClick(MaterialDialog dialog, ClassSearchingItem item, int position);
-    }
-
+    @NonNull
+    private final Handler mHandler;
     private AutoAdapter<ClassSearchingItem> mResultListAdapter;
     private MaterialProgressBar mProgressBar;
     private EditText mKeywords;
     private OnItemClickListener mOnItemClickListener;
     private int mSearchId = 0;
-    @NonNull
-    private final Handler mHandler;
     private MaterialDialog mDialog;
-
-
     public ClassSearchDialogBuilder(@NonNull Context context) {
         super(new ContextThemeWrapper(context, R.style.AppTheme));
         mHandler = new Handler();
@@ -109,6 +104,10 @@ public class ClassSearchDialogBuilder extends ThemeColorMaterialDialogBuilder {
                     mProgressBar.setVisibility(View.GONE);
                     Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
                 });
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(MaterialDialog dialog, ClassSearchingItem item, int position);
     }
 
     private class ClassSearchingItemViewHolder extends BindableViewHolder<ClassSearchingItem> {

@@ -5,6 +5,9 @@ import android.os.Looper;
 import android.os.MessageQueue;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.stardust.autojs.rhino.AutoJsContext;
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.autojs.runtime.api.Threads;
@@ -17,9 +20,6 @@ import org.mozilla.javascript.Context;
 import java.util.HashSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 /**
  * Created by Stardust on 2017/7/29.
  */
@@ -28,14 +28,8 @@ import androidx.annotation.Nullable;
 public class Loopers implements MessageQueue.IdleHandler {
 
     private static final String LOG_TAG = "Loopers";
-
-    public interface LooperQuitHandler {
-        boolean shouldQuit();
-    }
-
     private static final Runnable EMPTY_RUNNABLE = () -> {
     };
-
     private final ThreadLocal<Boolean> waitWhenIdle = new ThreadLocal<Boolean>() {
         @Nullable
         @Override
@@ -58,17 +52,16 @@ public class Loopers implements MessageQueue.IdleHandler {
         }
     };
     private final ThreadLocal<CopyOnWriteArrayList<LooperQuitHandler>> looperQuitHandlers = new ThreadLocal<>();
-    private volatile Looper mServantLooper;
     private final Timers mTimers;
     @NonNull
     private final ScriptRuntime mScriptRuntime;
-    private LooperQuitHandler mMainLooperQuitHandler;
     @NonNull
     private final Handler mMainHandler;
     private final Looper mMainLooper;
     private final Threads mThreads;
     private final MessageQueue mMainMessageQueue;
-
+    private volatile Looper mServantLooper;
+    private LooperQuitHandler mMainLooperQuitHandler;
     public Loopers(@NonNull ScriptRuntime runtime) {
         mTimers = runtime.timers;
         mThreads = runtime.threads;
@@ -78,7 +71,6 @@ public class Loopers implements MessageQueue.IdleHandler {
         mMainHandler = new Handler();
         mMainMessageQueue = Looper.myQueue();
     }
-
 
     public Looper getMainLooper() {
         return mMainLooper;
@@ -122,7 +114,6 @@ public class Loopers implements MessageQueue.IdleHandler {
         }
         return true;
     }
-
 
     private void initServantThread() {
         new ThreadCompat(() -> {
@@ -214,5 +205,9 @@ public class Loopers implements MessageQueue.IdleHandler {
         //当子线程退成时，主线程需要检查自身是否退出（主线程在所有子线程执行完成后才能退出，如果主线程已经执行完任务仍然要等待所有子线程），
         //此时通过向主线程发送一个空的Runnable，主线程执行完这个Runnable后会触发IdleHandler，从而检查自身是否退出
         mMainHandler.post(EMPTY_RUNNABLE);
+    }
+
+    public interface LooperQuitHandler {
+        boolean shouldQuit();
     }
 }

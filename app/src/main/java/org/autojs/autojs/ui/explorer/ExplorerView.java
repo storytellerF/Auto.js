@@ -65,38 +65,28 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeRefreshLayout.OnRefreshListener, PopupMenu.OnMenuItemClickListener {
 
-    private static final String LOG_TAG = "ExplorerView";
-
-    public interface OnItemClickListener {
-        void onItemClick(View view, ExplorerItem item);
-    }
-
-    public interface OnItemOperatedListener {
-        void OnItemOperated(ExplorerItem item);
-    }
-
     protected static final int VIEW_TYPE_ITEM = 0;
     protected static final int VIEW_TYPE_PAGE = 1;
     //category是类别，也即"文件", "文件夹"那两个
     protected static final int VIEW_TYPE_CATEGORY = 2;
-
+    private static final String LOG_TAG = "ExplorerView";
     private static final int positionOfCategoryDir = 0;
-
+    private final ExplorerAdapter mExplorerAdapter = new ExplorerAdapter();
+    private final Stack<ExplorerPageState> mPageStateHistory = new Stack<>();
+    protected OnItemClickListener mOnItemClickListener;
+    protected ExplorerItem mSelectedItem;
+    @NonNull
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ExplorerItemList mExplorerItemList = new ExplorerItemList();
     private RecyclerView mExplorerItemListView;
     private ExplorerProjectToolbar mProjectToolbar;
-    private final ExplorerAdapter mExplorerAdapter = new ExplorerAdapter();
-    protected OnItemClickListener mOnItemClickListener;
     private Function<ExplorerItem, Boolean> mFilter;
     private OnItemOperatedListener mOnItemOperatedListener;
-    protected ExplorerItem mSelectedItem;
     private Explorer mExplorer;
-    private final Stack<ExplorerPageState> mPageStateHistory = new Stack<>();
     @NonNull
     private ExplorerPageState mCurrentPageState = new ExplorerPageState();
     private boolean mDirSortMenuShowing = false;
     private int mDirectorySpanSize = 2;
-
     public ExplorerView(Context context) {
         super(context);
         init();
@@ -138,12 +128,12 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
         mOnItemClickListener = onItemClickListener;
     }
 
-    public void setSortConfig(ExplorerItemList.SortConfig sortConfig) {
-        mExplorerItemList.setSortConfig(sortConfig);
-    }
-
     public ExplorerItemList.SortConfig getSortConfig() {
         return mExplorerItemList.getSortConfig();
+    }
+
+    public void setSortConfig(ExplorerItemList.SortConfig sortConfig) {
+        mExplorerItemList.setSortConfig(sortConfig);
     }
 
     public void setExplorer(Explorer explorer, ExplorerPage rootPage) {
@@ -315,7 +305,6 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
         mProjectToolbar.refresh();
     }
 
-
     public ScriptFile getCurrentDirectory() {
         return getCurrentPage().toScriptFile();
     }
@@ -371,9 +360,6 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
         return true;
     }
 
-    @NonNull
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-
     protected void notifyOperated() {
         if (mOnItemOperatedListener != null) {
             mOnItemOperatedListener.OnItemOperated(mSelectedItem);
@@ -383,13 +369,13 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
     private void sort(final int sortType, final boolean isDir) {
         setRefreshing(true);
         Disposable subscribe = Observable.fromCallable(() -> {
-            if (isDir) {
-                mExplorerItemList.sortItemGroup(sortType);
-            } else {
-                mExplorerItemList.sortFile(sortType);
-            }
-            return mExplorerItemList;
-        }).subscribeOn(Schedulers.computation())
+                    if (isDir) {
+                        mExplorerItemList.sortItemGroup(sortType);
+                    } else {
+                        mExplorerItemList.sortFile(sortType);
+                    }
+                    return mExplorerItemList;
+                }).subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     mExplorerAdapter.notifyDataSetChanged();
@@ -397,7 +383,6 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
                 });
         compositeDisposable.add(subscribe);
     }
-
 
     @Override
     protected void onAttachedToWindow() {
@@ -413,7 +398,6 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
         mExplorer.unregisterChangeListener(this);
     }
 
-
     protected BindableViewHolder<?> onCreateViewHolder(@NonNull LayoutInflater inflater, ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_ITEM) {
             return new ExplorerItemViewHolder(inflater.inflate(R.layout.script_file_list_file, parent, false));
@@ -426,6 +410,33 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
 
     protected RecyclerView getExplorerItemListView() {
         return mExplorerItemListView;
+    }
+
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, ExplorerItem item);
+    }
+
+    public interface OnItemOperatedListener {
+        void OnItemOperated(ExplorerItem item);
+    }
+
+    private static class ExplorerPageState {
+
+        ExplorerPage page;
+
+        boolean dirsCollapsed;
+
+        boolean filesCollapsed;
+
+        int scrollY;
+
+        ExplorerPageState() {
+        }
+
+        ExplorerPageState(ExplorerPage page) {
+            this.page = page;
+        }
     }
 
     private class ExplorerAdapter extends RecyclerView.Adapter<BindableViewHolder<?>> {
@@ -499,10 +510,10 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
 
     protected class ExplorerItemViewHolder extends BindableViewHolder<ExplorerItem> {
 
-        GradientDrawable mFirstCharBackground;
-        private ExplorerItem mExplorerItem;
         @NonNull
         private final ScriptFileListFileBinding bind;
+        GradientDrawable mFirstCharBackground;
+        private ExplorerItem mExplorerItem;
 
         ExplorerItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -566,9 +577,9 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
     }
 
     protected class ExplorerPageViewHolder extends BindableViewHolder<ExplorerPage> {
-        private ExplorerPage mExplorerPage;
         @NonNull
         private final ScriptFileListDirectoryBinding bind;
+        private ExplorerPage mExplorerPage;
 
         ExplorerPageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -602,9 +613,9 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
 
     class CategoryViewHolder extends BindableViewHolder<Boolean> {
 
-        private boolean mIsDir;
         @NonNull
         private final ScriptFileListCategoryBinding bind;
+        private boolean mIsDir;
 
         CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -671,24 +682,6 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
                 mCurrentPageState.filesCollapsed = !mCurrentPageState.filesCollapsed;
             }
             mExplorerAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private static class ExplorerPageState {
-
-        ExplorerPage page;
-
-        boolean dirsCollapsed;
-
-        boolean filesCollapsed;
-
-        int scrollY;
-
-        ExplorerPageState() {
-        }
-
-        ExplorerPageState(ExplorerPage page) {
-            this.page = page;
         }
     }
 }

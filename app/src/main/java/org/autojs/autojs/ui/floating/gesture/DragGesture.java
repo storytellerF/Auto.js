@@ -1,11 +1,12 @@
 package org.autojs.autojs.ui.floating.gesture;
 
-import androidx.annotation.NonNull;
-import androidx.core.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.GestureDetectorCompat;
 
 import com.stardust.enhancedfloaty.WindowBridge;
 
@@ -82,20 +83,20 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
         mUnpressedAlpha = unpressedAlpha;
     }
 
-    public void setAutoKeepToEdge(boolean autoKeepToEdge) {
-        mAutoKeepToEdge = autoKeepToEdge;
-    }
-
     public boolean isAutoKeepToEdge() {
         return mAutoKeepToEdge;
     }
 
-    public void setKeepToSideHiddenWidthRadio(float keepToSideHiddenWidthRadio) {
-        mKeepToSideHiddenWidthRadio = keepToSideHiddenWidthRadio;
+    public void setAutoKeepToEdge(boolean autoKeepToEdge) {
+        mAutoKeepToEdge = autoKeepToEdge;
     }
 
     public float getKeepToSideHiddenWidthRadio() {
         return mKeepToSideHiddenWidthRadio;
+    }
+
+    public void setKeepToSideHiddenWidthRadio(float keepToSideHiddenWidthRadio) {
+        mKeepToSideHiddenWidthRadio = keepToSideHiddenWidthRadio;
     }
 
     @Override

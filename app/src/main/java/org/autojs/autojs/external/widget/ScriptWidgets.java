@@ -7,9 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.stardust.app.GlobalAppContext;
-import org.autojs.autojs.App;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;

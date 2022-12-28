@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.autojs.autojs.R;
 
 /**

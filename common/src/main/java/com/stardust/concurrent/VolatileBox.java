@@ -3,8 +3,6 @@ package com.stardust.concurrent;
 
 import androidx.annotation.NonNull;
 
-import java.lang.reflect.Constructor;
-
 /**
  * Created by Stardust on 2017/5/8.
  */

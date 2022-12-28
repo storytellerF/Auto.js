@@ -1,6 +1,7 @@
 package org.autojs.autojs.model.sample;
 
 import android.content.res.AssetManager;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -8,6 +9,7 @@ import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.autojs.script.ScriptSource;
 import com.stardust.pio.PFiles;
 import com.stardust.pio.UncheckedIOException;
+
 import org.autojs.autojs.model.script.ScriptFile;
 
 import java.io.File;
@@ -22,11 +24,23 @@ import java.io.Reader;
 
 public class SampleFile extends ScriptFile {
 
-    private long mLength;
     private final AssetManager mAssetManager;
+    private long mLength;
 
     public SampleFile(@NonNull String pathname, AssetManager assetManager) {
         super(pathname);
+        mAssetManager = assetManager;
+        init();
+    }
+
+    public SampleFile(String parent, @NonNull String child, AssetManager assetManager) {
+        super(parent, child);
+        mAssetManager = assetManager;
+        init();
+    }
+
+    public SampleFile(File parent, @NonNull String child, AssetManager assetManager) {
+        super(parent, child);
         mAssetManager = assetManager;
         init();
     }
@@ -43,18 +57,6 @@ public class SampleFile extends ScriptFile {
         } catch (IOException e) {
             mLength = 0;
         }
-    }
-
-    public SampleFile(String parent, @NonNull String child, AssetManager assetManager) {
-        super(parent, child);
-        mAssetManager = assetManager;
-        init();
-    }
-
-    public SampleFile(File parent, @NonNull String child, AssetManager assetManager) {
-        super(parent, child);
-        mAssetManager = assetManager;
-        init();
     }
 
     @Override

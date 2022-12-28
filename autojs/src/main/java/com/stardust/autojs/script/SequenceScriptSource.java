@@ -14,9 +14,9 @@ import java.io.StringReader;
 
 public class SequenceScriptSource extends JavaScriptSource {
 
-    private String mScript;
     private final JavaScriptSource mSecondScriptSource;
     private final JavaScriptSource mFirstScriptSource;
+    private String mScript;
 
 
     public SequenceScriptSource(String name, JavaScriptSource firstScriptSource, JavaScriptSource secondScriptSource) {

@@ -22,6 +22,57 @@ public class MainThreadProxy {
         mRuntime = runtime;
     }
 
+    @NonNull
+    public static Thread currentThread() {
+        return Thread.currentThread();
+    }
+
+    public static void yield() {
+        Thread.yield();
+    }
+
+    public static void sleep(long millis) throws InterruptedException {
+        Thread.sleep(millis);
+    }
+
+    public static void sleep(long millis, int nanos) throws InterruptedException {
+        Thread.sleep(millis, nanos);
+    }
+
+    public static boolean interrupted() {
+        return ThreadCompat.interrupted();
+    }
+
+    public static int activeCount() {
+        return Thread.activeCount();
+    }
+
+    public static int enumerate(Thread[] tarray) {
+        return Thread.enumerate(tarray);
+    }
+
+    public static void dumpStack() {
+        Thread.dumpStack();
+    }
+
+    public static boolean holdsLock(@NonNull Object obj) {
+        return Thread.holdsLock(obj);
+    }
+
+    @NonNull
+    public static Map<Thread, StackTraceElement[]> getAllStackTraces() {
+        return Thread.getAllStackTraces();
+    }
+
+    @Nullable
+    public static Thread.UncaughtExceptionHandler getDefaultUncaughtExceptionHandler() {
+        return Thread.getDefaultUncaughtExceptionHandler();
+    }
+
+    public static void setDefaultUncaughtExceptionHandler(Thread.UncaughtExceptionHandler eh) {
+        Thread.setDefaultUncaughtExceptionHandler(eh);
+    }
+
     public int setTimeout(Object callback, long delay, Object... args) {
         return getMainTimer().setTimeout(callback, delay, args);
     }
@@ -50,23 +101,6 @@ public class MainThreadProxy {
         return getMainTimer().clearImmediate(id);
     }
 
-    @NonNull
-    public static Thread currentThread() {
-        return Thread.currentThread();
-    }
-
-    public static void yield() {
-        Thread.yield();
-    }
-
-    public static void sleep(long millis) throws InterruptedException {
-        Thread.sleep(millis);
-    }
-
-    public static void sleep(long millis, int nanos) throws InterruptedException {
-        Thread.sleep(millis, nanos);
-    }
-
     public void start() {
         mThread.start();
     }
@@ -87,10 +121,6 @@ public class MainThreadProxy {
 
     public void interrupt() {
         mThread.interrupt();
-    }
-
-    public static boolean interrupted() {
-        return ThreadCompat.interrupted();
     }
 
     public boolean isInterrupted() {
@@ -116,16 +146,12 @@ public class MainThreadProxy {
         mThread.resume();
     }
 
-    public void setPriority(int newPriority) {
-        mThread.setPriority(newPriority);
-    }
-
     public int getPriority() {
         return mThread.getPriority();
     }
 
-    public void setName(@NonNull String name) {
-        mThread.setName(name);
+    public void setPriority(int newPriority) {
+        mThread.setPriority(newPriority);
     }
 
     @NonNull
@@ -133,17 +159,13 @@ public class MainThreadProxy {
         return mThread.getName();
     }
 
+    public void setName(@NonNull String name) {
+        mThread.setName(name);
+    }
+
     @Nullable
     public ThreadGroup getThreadGroup() {
         return mThread.getThreadGroup();
-    }
-
-    public static int activeCount() {
-        return Thread.activeCount();
-    }
-
-    public static int enumerate(Thread[] tarray) {
-        return Thread.enumerate(tarray);
     }
 
     @Deprecated
@@ -163,16 +185,12 @@ public class MainThreadProxy {
         mThread.join();
     }
 
-    public static void dumpStack() {
-        Thread.dumpStack();
+    public boolean isDaemon() {
+        return mThread.isDaemon();
     }
 
     public void setDaemon(boolean on) {
         mThread.setDaemon(on);
-    }
-
-    public boolean isDaemon() {
-        return mThread.isDaemon();
     }
 
     public void checkAccess() {
@@ -188,18 +206,9 @@ public class MainThreadProxy {
         mThread.setContextClassLoader(cl);
     }
 
-    public static boolean holdsLock(@NonNull Object obj) {
-        return Thread.holdsLock(obj);
-    }
-
     @NonNull
     public StackTraceElement[] getStackTrace() {
         return mThread.getStackTrace();
-    }
-
-    @NonNull
-    public static Map<Thread, StackTraceElement[]> getAllStackTraces() {
-        return Thread.getAllStackTraces();
     }
 
     public long getId() {
@@ -215,15 +224,6 @@ public class MainThreadProxy {
     @Override
     public String toString() {
         return mThread.toString();
-    }
-
-    public static void setDefaultUncaughtExceptionHandler(Thread.UncaughtExceptionHandler eh) {
-        Thread.setDefaultUncaughtExceptionHandler(eh);
-    }
-
-    @Nullable
-    public static Thread.UncaughtExceptionHandler getDefaultUncaughtExceptionHandler() {
-        return Thread.getDefaultUncaughtExceptionHandler();
     }
 
     @Nullable

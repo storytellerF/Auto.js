@@ -4,6 +4,9 @@ import android.util.Base64;
 
 import androidx.annotation.NonNull;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilterOutputStream;
@@ -27,8 +30,6 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 public class TinySign {
     public TinySign() {
@@ -44,7 +45,7 @@ public class TinySign {
         File[] arr$ = dir.listFiles();
         int len$ = arr$.length;
 
-        for(int i$ = 0; i$ < len$; ++i$) {
+        for (int i$ = 0; i$ < len$; ++i$) {
             File f = arr$[i$];
             if (f.isFile()) {
                 doFile(prefix + f.getName(), f, zos, dos, m);
@@ -88,12 +89,12 @@ public class TinySign {
         Map<String, Attributes> entries = manifest.getEntries();
         Iterator<Entry<String, Attributes>> iterator = entries.entrySet().iterator();
 
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             Entry<String, Attributes> entry = iterator.next();
             print.print("Name: " + entry.getKey() + "\r\n");
             Iterator<Entry<Object, Object>> iter = entry.getValue().entrySet().iterator();
 
-            while(iter.hasNext()) {
+            while (iter.hasNext()) {
                 Entry<Object, Object> att = iter.next();
                 print.print(att.getKey() + ": " + att.getValue() + "\r\n");
             }
@@ -168,7 +169,7 @@ public class TinySign {
         File[] arr$ = dir.listFiles();
         int len$ = arr$.length;
 
-        for(int i$ = 0; i$ < len$; ++i$) {
+        for (int i$ = 0; i$ < len$; ++i$) {
             File f = arr$[i$];
             if (!f.getName().startsWith("META-INF")) {
                 if (f.isFile()) {
@@ -211,7 +212,7 @@ public class TinySign {
 
         public void write(int b) throws IOException {
             try {
-                this.mSignature.update((byte)b);
+                this.mSignature.update((byte) b);
             } catch (SignatureException var3) {
                 throw new IOException("SignatureException: " + var3);
             }

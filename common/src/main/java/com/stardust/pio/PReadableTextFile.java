@@ -2,7 +2,13 @@ package com.stardust.pio;
 
 import androidx.annotation.NonNull;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +18,12 @@ import java.util.List;
 
 public class PReadableTextFile implements Closeable, PFileInterface {
 
-    private BufferedReader mBufferedReader;
     @NonNull
     private final FileInputStream mFileInputStream;
     private final int mBufferingSize;
     private final String mEncoding;
     private final String mPath;
+    private BufferedReader mBufferedReader;
 
     public PReadableTextFile(String path) {
         this(path, PFiles.DEFAULT_ENCODING);

@@ -57,7 +57,8 @@
         "url": "globals.html#globals_waitforpackage_package_period_200",
         "summary": "等待包名",
         "global": true
-      },{
+      },
+      {
         "key": "exit",
         "url": "globals.html#globals_exit",
         "summary": "退出",
@@ -429,13 +430,13 @@
       },
       {
         "key": "findImage",
-        "url":"images.html#images_images_findimage_img_template_options",
+        "url": "images.html#images_images_findimage_img_template_options",
         "summary": "找图",
         "global": true
       },
       {
         "key": "findImageInRegion",
-        "url":"images.html#images_images_findimageinregion_img_template_x_y_width_height_threshold",
+        "url": "images.html#images_images_findimageinregion_img_template_x_y_width_height_threshold",
         "summary": "区域找图",
         "global": true
       }

@@ -6,9 +6,7 @@ import androidx.annotation.NonNull;
 
 import org.autojs.autojs.R;
 import org.autojs.autojs.network.UserService;
-import org.autojs.autojs.network.entity.notification.Notification;
 import org.autojs.autojs.ui.main.community.CommunityFragment;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -16,9 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -29,9 +25,8 @@ public class CommunityDrawerMenu {
 
     private final DrawerMenuItem mUnreadItem = new DrawerMenuItem(R.drawable.community_inbox, R.string.text_community_unread, this::showUnread);
     private final DrawerMenuItem mLogoutItem = new DrawerMenuItem(R.drawable.ic_exit_to_app_black_24dp, R.string.text_logout, this::logout);
-    private final DrawerMenuItem mNotificationItem = new DrawerMenuItem(R.drawable.ic_ali_notification, R.string.text_notification, this::showNotifications);
-
-    private final List<DrawerMenuItem> mDrawerMenuItems = new ArrayList<>(Arrays.asList(
+    private boolean mShown = false;    private final DrawerMenuItem mNotificationItem = new DrawerMenuItem(R.drawable.ic_ali_notification, R.string.text_notification, this::showNotifications);
+    private DrawerMenuAdapter mMenuAdapter;    private final List<DrawerMenuItem> mDrawerMenuItems = new ArrayList<>(Arrays.asList(
             new DrawerMenuGroup(R.string.text_community),
             mNotificationItem,
             new DrawerMenuItem(R.drawable.community_list, R.string.text_community_category, this::showCategories),
@@ -41,10 +36,6 @@ public class CommunityDrawerMenu {
             new DrawerMenuItem(R.drawable.community_tags, R.string.text_community_tags, this::showTags),
             mLogoutItem
     ));
-
-    private boolean mShown = false;
-    private DrawerMenuAdapter mMenuAdapter;
-
 
     public void showCommunityMenu(@NonNull DrawerMenuAdapter adapter) {
         mMenuAdapter = adapter;
@@ -59,7 +50,6 @@ public class CommunityDrawerMenu {
         adapter.notifyItemChanged(mDrawerMenuItems.size());
         refreshUserStatus(adapter);
     }
-
 
     private void refreshUserStatus(@NonNull DrawerMenuAdapter adapter) {
         UserService.getInstance().refreshOnlineStatus()
@@ -130,7 +120,6 @@ public class CommunityDrawerMenu {
         }
     }
 
-
     public void hideCommunityMenu(@NonNull DrawerMenuAdapter adapter) {
         List<DrawerMenuItem> items = adapter.getDrawerMenuItems();
         mShown = false;
@@ -177,7 +166,6 @@ public class CommunityDrawerMenu {
 
     }
 
-
     private void logout(DrawerMenuItemViewHolder holder) {
         UserService.getInstance().logout()
                 .subscribeOn(Schedulers.io())
@@ -188,4 +176,9 @@ public class CommunityDrawerMenu {
     public boolean isShown() {
         return mShown;
     }
+
+
+
+
+
 }

@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,15 +42,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class FunctionsKeyboardView extends FrameLayout {
 
     private static final int SPAN_COUNT = 4;
+    private final Map<Module, List<Integer>> mSpanSizes = new HashMap<>();
     RecyclerView mModulesView;
     RecyclerView mPropertiesView;
     private List<Module> mModules;
-    private final Map<Module, List<Integer>> mSpanSizes = new HashMap<>();
     private Module mSelectedModule;
     @Nullable
     private View mSelectedModuleView;
     private Paint mPaint;
     private ClickCallback mClickCallback;
+
     public FunctionsKeyboardView(@NonNull Context context) {
         super(context);
         init();

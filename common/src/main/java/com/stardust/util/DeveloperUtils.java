@@ -9,10 +9,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.content.pm.Signature;
+import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Base64;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;

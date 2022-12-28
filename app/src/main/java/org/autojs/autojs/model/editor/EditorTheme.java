@@ -1,4 +1,3 @@
-
 package org.autojs.autojs.model.editor;
 
 import androidx.annotation.NonNull;

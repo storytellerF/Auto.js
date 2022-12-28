@@ -21,7 +21,18 @@ import org.autojs.autojs.ui.widget.SimpleAdapterDataObserver;
  * Created by Stardust on 2017/3/24.
  */
 public class TaskManagerFragment extends ViewPagerFragment {
+    @Nullable
+    TaskListRecyclerView mTaskListRecyclerView;
+    @Nullable
+    View mNoRunningScriptNotice;
+    @Nullable
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private FragmentTaskManagerBinding binding;
+
+    public TaskManagerFragment() {
+        super(45);
+        setArguments(new Bundle());
+    }
 
     @Nullable
     @Override
@@ -34,15 +45,6 @@ public class TaskManagerFragment extends ViewPagerFragment {
         return inflate.getRoot();
     }
 
-    @Nullable
-    TaskListRecyclerView mTaskListRecyclerView;
-
-    @Nullable
-    View mNoRunningScriptNotice;
-
-    @Nullable
-    SwipeRefreshLayout mSwipeRefreshLayout;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -53,11 +55,6 @@ public class TaskManagerFragment extends ViewPagerFragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    public TaskManagerFragment() {
-        super(45);
-        setArguments(new Bundle());
     }
 
     void setUpViews() {

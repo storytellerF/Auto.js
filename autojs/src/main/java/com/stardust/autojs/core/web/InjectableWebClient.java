@@ -9,7 +9,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -36,10 +35,10 @@ public class InjectableWebClient extends WebViewClient {
             Log.i(TAG, "onReceiveValue: " + value);
         }
     };
-    private WebView mWebView;
     private final Context mContext;
     private final Scriptable mScriptable;
     private final ScriptBridge mScriptBridge = new ScriptBridge();
+    private WebView mWebView;
 
     public InjectableWebClient(Context context, Scriptable scriptable) {
         mContext = context;
@@ -87,6 +86,29 @@ public class InjectableWebClient extends WebViewClient {
         return callback.waitResult();
     }
 
+    private static class InjectReturnCallback implements ValueCallback<String> {
+
+        private String result;
+
+        @Override
+        public void onReceiveValue(String value) {
+            result = value;
+            synchronized (this) {
+                this.notify();
+            }
+        }
+
+        String waitResult() {
+            synchronized (this) {
+                try {
+                    this.wait();
+                } catch (InterruptedException e) {
+                    throw new ScriptInterruptedException();
+                }
+            }
+            return result;
+        }
+    }
 
     private class ScriptBridge {
 
@@ -113,30 +135,6 @@ public class InjectableWebClient extends WebViewClient {
                 }
             }
             return result.toString();
-        }
-    }
-
-    private static class InjectReturnCallback implements ValueCallback<String> {
-
-        private String result;
-
-        @Override
-        public void onReceiveValue(String value) {
-            result = value;
-            synchronized (this) {
-                this.notify();
-            }
-        }
-
-        String waitResult() {
-            synchronized (this) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    throw new ScriptInterruptedException();
-                }
-            }
-            return result;
         }
     }
 

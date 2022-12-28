@@ -121,13 +121,15 @@ open class RhinoJavaScriptEngine(private val mAndroidContext: android.content.Co
     }
 
     internal fun initRequireBuilder(context: Context, scope: Scriptable) {
-        val provider = AssetAndUrlModuleSourceProvider(mAndroidContext, MODULES_PATH,
-                listOf<URI>(File("/").toURI()))
+        val provider = AssetAndUrlModuleSourceProvider(
+            mAndroidContext, MODULES_PATH,
+            listOf<URI>(File("/").toURI())
+        )
         RequireBuilder()
-                .setModuleScriptProvider(SoftCachingModuleScriptProvider(provider))
-                .setSandboxed(true)
-                .createRequire(context, scope)
-                .install(scope)
+            .setModuleScriptProvider(SoftCachingModuleScriptProvider(provider))
+            .setSandboxed(true)
+            .createRequire(context, scope)
+            .install(scope)
 
     }
 

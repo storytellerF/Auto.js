@@ -1,11 +1,8 @@
 package org.autojs.autojs.ui.edit.editor;
 
-import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.os.Parcelable;
 import android.text.Layout;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,7 +73,7 @@ public class LayoutHelper {
     }
 
     public static int getVisibleLineAt(@Nullable Layout layout, float x, float y) {
-        if(layout == null) {
+        if (layout == null) {
             return -1;
         }
         return 0;

@@ -28,12 +28,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
-import java.util.regex.Pattern;
 
 import pxb.android.StringItem;
 import pxb.android.axml.AxmlWriter;
 import zhao.arsceditor.ResDecoder.ARSCDecoder;
-import zhao.arsceditor.ResDecoder.data.ResTable;
 
 
 /**
@@ -43,127 +41,17 @@ import zhao.arsceditor.ResDecoder.data.ResTable;
 public class ApkBuilder {
 
 
-    public interface ProgressCallback {
-        void onPrepare(ApkBuilder builder);
-
-        void onBuild(ApkBuilder builder);
-
-        void onSign(ApkBuilder builder);
-
-        void onClean(ApkBuilder builder);
-
-    }
-
-    public static class AppConfig {
-        String appName;
-        String versionName;
-        int versionCode;
-        String sourcePath;
-        String packageName;
-        @NonNull
-        ArrayList<File> ignoredDirs = new ArrayList<>();
-        Callable<Bitmap> icon;
-
-        @NonNull
-        public static AppConfig fromProjectConfig(String projectDir, @NonNull ProjectConfig projectConfig) {
-            String icon = projectConfig.getIcon();
-            AppConfig appConfig = new AppConfig()
-                    .setAppName(projectConfig.getName())
-                    .setPackageName(projectConfig.getPackageName())
-                    .ignoreDir(new File(projectDir, projectConfig.getBuildDir()))
-                    .setVersionCode(projectConfig.getVersionCode())
-                    .setVersionName(projectConfig.getVersionName())
-                    .setSourcePath(projectDir);
-            if (icon != null) {
-                appConfig.setIcon(new File(projectDir, icon).getPath());
-            }
-            return appConfig;
-        }
-
-
-        @NonNull
-        public AppConfig ignoreDir(File dir) {
-            ignoredDirs.add(dir);
-            return this;
-        }
-
-        @NonNull
-        public AppConfig setAppName(String appName) {
-            this.appName = appName;
-            return this;
-        }
-
-        @NonNull
-        public AppConfig setVersionName(String versionName) {
-            this.versionName = versionName;
-            return this;
-        }
-
-        @NonNull
-        public AppConfig setVersionCode(int versionCode) {
-            this.versionCode = versionCode;
-            return this;
-        }
-
-        @NonNull
-        public AppConfig setSourcePath(String sourcePath) {
-            this.sourcePath = sourcePath;
-            return this;
-        }
-
-        @NonNull
-        public AppConfig setPackageName(String packageName) {
-            this.packageName = packageName;
-            return this;
-        }
-
-
-        @NonNull
-        public AppConfig setIcon(Callable<Bitmap> icon) {
-            this.icon = icon;
-            return this;
-        }
-
-        @NonNull
-        public AppConfig setIcon(String iconPath) {
-            icon = () -> BitmapFactory.decodeFile(iconPath);
-            return this;
-        }
-
-        public String getAppName() {
-            return appName;
-        }
-
-        public String getVersionName() {
-            return versionName;
-        }
-
-        public int getVersionCode() {
-            return versionCode;
-        }
-
-        public String getSourcePath() {
-            return sourcePath;
-        }
-
-        public String getPackageName() {
-            return packageName;
-        }
-    }
-
-    private ProgressCallback mProgressCallback;
     @NonNull
     private final ApkPackager mApkPackager;
-    private String mArscPackageName;
-    private ManifestEditor mManifestEditor;
     private final String mWorkspacePath;
-    private AppConfig mAppConfig;
     @NonNull
     private final File mOutApkFile;
+    private ProgressCallback mProgressCallback;
+    private String mArscPackageName;
+    private ManifestEditor mManifestEditor;
+    private AppConfig mAppConfig;
     private String mInitVector;
     private String mKey;
-
-
     public ApkBuilder(InputStream apkInputStream, @NonNull File outApkFile, String workspacePath) {
         mWorkspacePath = workspacePath;
         mOutApkFile = outApkFile;
@@ -232,7 +120,6 @@ public class ApkBuilder {
             throw new IOException(e);
         }
     }
-
 
     @NonNull
     public ApkBuilder replaceFile(@NonNull String relativePath, @NonNull String newFilePath) throws IOException {
@@ -361,6 +248,113 @@ public class ApkBuilder {
                 delete(child);
             }
             file.delete();
+        }
+    }
+
+    public interface ProgressCallback {
+        void onPrepare(ApkBuilder builder);
+
+        void onBuild(ApkBuilder builder);
+
+        void onSign(ApkBuilder builder);
+
+        void onClean(ApkBuilder builder);
+
+    }
+
+    public static class AppConfig {
+        String appName;
+        String versionName;
+        int versionCode;
+        String sourcePath;
+        String packageName;
+        @NonNull
+        ArrayList<File> ignoredDirs = new ArrayList<>();
+        Callable<Bitmap> icon;
+
+        @NonNull
+        public static AppConfig fromProjectConfig(String projectDir, @NonNull ProjectConfig projectConfig) {
+            String icon = projectConfig.getIcon();
+            AppConfig appConfig = new AppConfig()
+                    .setAppName(projectConfig.getName())
+                    .setPackageName(projectConfig.getPackageName())
+                    .ignoreDir(new File(projectDir, projectConfig.getBuildDir()))
+                    .setVersionCode(projectConfig.getVersionCode())
+                    .setVersionName(projectConfig.getVersionName())
+                    .setSourcePath(projectDir);
+            if (icon != null) {
+                appConfig.setIcon(new File(projectDir, icon).getPath());
+            }
+            return appConfig;
+        }
+
+
+        @NonNull
+        public AppConfig ignoreDir(File dir) {
+            ignoredDirs.add(dir);
+            return this;
+        }
+
+        @NonNull
+        public AppConfig setIcon(Callable<Bitmap> icon) {
+            this.icon = icon;
+            return this;
+        }
+
+        @NonNull
+        public AppConfig setIcon(String iconPath) {
+            icon = () -> BitmapFactory.decodeFile(iconPath);
+            return this;
+        }
+
+        public String getAppName() {
+            return appName;
+        }
+
+        @NonNull
+        public AppConfig setAppName(String appName) {
+            this.appName = appName;
+            return this;
+        }
+
+        public String getVersionName() {
+            return versionName;
+        }
+
+        @NonNull
+        public AppConfig setVersionName(String versionName) {
+            this.versionName = versionName;
+            return this;
+        }
+
+        public int getVersionCode() {
+            return versionCode;
+        }
+
+        @NonNull
+        public AppConfig setVersionCode(int versionCode) {
+            this.versionCode = versionCode;
+            return this;
+        }
+
+        public String getSourcePath() {
+            return sourcePath;
+        }
+
+        @NonNull
+        public AppConfig setSourcePath(String sourcePath) {
+            this.sourcePath = sourcePath;
+            return this;
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        @NonNull
+        public AppConfig setPackageName(String packageName) {
+            this.packageName = packageName;
+            return this;
         }
     }
 

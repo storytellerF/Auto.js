@@ -97,23 +97,10 @@ public final class ResourceMonitor {
         ResourceMonitor.sEnabled = mEnabled;
     }
 
-    public static final class UnclosedResourceException extends RuntimeException {
-        public UnclosedResourceException(@NonNull Resource resource) {
-            super("id = " + resource.getResourceId() + ", resource = " + resource);
-        }
-
-    }
-
-
-    public static final class UnclosedResourceDetectedException extends RuntimeException {
-        public UnclosedResourceDetectedException(Throwable cause) {
-            super(cause);
-        }
-    }
-
     public interface Resource {
         int getResourceId();
     }
+
 
     public interface ExceptionCreator {
         @NonNull
@@ -123,5 +110,18 @@ public final class ResourceMonitor {
     public interface UnclosedResourceDetectedHandler {
 
         void onUnclosedResourceDetected(UnclosedResourceDetectedException detectedException);
+    }
+
+    public static final class UnclosedResourceException extends RuntimeException {
+        public UnclosedResourceException(@NonNull Resource resource) {
+            super("id = " + resource.getResourceId() + ", resource = " + resource);
+        }
+
+    }
+
+    public static final class UnclosedResourceDetectedException extends RuntimeException {
+        public UnclosedResourceDetectedException(Throwable cause) {
+            super(cause);
+        }
     }
 }

@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="?android:divider"/>
+        android:background="?android:divider" />
 
     <LinearLayout
         android:id="@+id/item"
@@ -31,7 +31,7 @@
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="24sp"
-            tools:text="J"/>
+            tools:text="J" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -50,7 +50,7 @@
                 android:maxLines="1"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="14sp"
-                tools:text="正在运行的服务"/>
+                tools:text="正在运行的服务" />
 
             <TextView
                 android:id="@+id/desc"
@@ -63,7 +63,7 @@
                 android:maxLines="1"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="11sp"
-                tools:text="18 KB"/>
+                tools:text="18 KB" />
 
         </LinearLayout>
 
@@ -79,8 +79,8 @@
                 android:layout_height="match_parent"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
-                android:paddingBottom="8dp"
                 android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:src="@drawable/ic_run_gray"
                 app:tint="#A9AAAB" />
 
@@ -90,10 +90,10 @@
                 android:layout_height="match_parent"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
-                android:paddingBottom="8dp"
                 android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:src="@drawable/ic_mode_edit_black_24dp"
-                android:tint="#A9AAAB"/>
+                android:tint="#A9AAAB" />
 
             <ImageView
                 android:id="@+id/more"
@@ -101,10 +101,10 @@
                 android:layout_height="match_parent"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
-                android:paddingBottom="8dp"
                 android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:src="@drawable/ic_more_vert_black_24dp"
-                android:tint="#A9AAAB"/>
+                android:tint="#A9AAAB" />
 
 
         </LinearLayout>
@@ -113,7 +113,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="?android:divider"/>
+        android:background="?android:divider" />
 
 </LinearLayout>
 

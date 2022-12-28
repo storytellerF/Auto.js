@@ -16,6 +16,7 @@ import java.util.List;
 
 public class NormalToolbarFragment extends ToolbarFragment {
     private FragmentNormalToolbarBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

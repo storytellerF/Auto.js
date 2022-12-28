@@ -5,15 +5,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 
 import com.stardust.app.GlobalAppContext;
-
-import org.autojs.autojs.R;
-
 import com.stardust.theme.ThemeColor;
 import com.stardust.theme.ThemeColorManager;
+
+import org.autojs.autojs.R;
 
 /**
  * Created by Stardust on 2017/3/12.

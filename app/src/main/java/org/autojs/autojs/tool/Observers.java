@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.stardust.app.GlobalAppContext;
 
-import org.autojs.autojs.model.explorer.ExplorerFileItem;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -34,7 +32,7 @@ public class Observers {
     }
 
     @NonNull
-    public  static <T> Observer<T> emptyObserver() {
+    public static <T> Observer<T> emptyObserver() {
         return new Observer<T>() {
             @Override
             public void onSubscribe(Disposable d) {

@@ -1,8 +1,6 @@
 package com.stardust.autojs.core.ui.nativeview;
 
-import android.graphics.PorterDuff;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,43 +10,16 @@ import com.stardust.autojs.core.ui.ViewExtras;
 import com.stardust.autojs.core.ui.attribute.ViewAttributes;
 import com.stardust.autojs.rhino.NativeJavaObjectWithPrototype;
 
-import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeObject;
-import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 
 public class NativeView extends NativeJavaObjectWithPrototype {
 
     private static final String LOG_TAG = "NativeView";
-
-    public static class ScrollEvent {
-        public int scrollX;
-        public int scrollY;
-        public int oldScrollX;
-        public int oldScrollY;
-
-        public ScrollEvent(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-            this.scrollX = scrollX;
-            this.scrollY = scrollY;
-            this.oldScrollX = oldScrollX;
-            this.oldScrollY = oldScrollY;
-        }
-    }
-
-    public static class LongClickEvent {
-        public final View view;
-
-        public LongClickEvent(View view) {
-            this.view = view;
-        }
-    }
-
-
     private final ViewAttributes mViewAttributes;
     private final View mView;
     @NonNull
     private final ViewPrototype mViewPrototype;
-
     public NativeView(Scriptable scope, View view, Class<?> staticType, @NonNull com.stardust.autojs.runtime.ScriptRuntime runtime) {
         super(scope, view, staticType);
         mViewAttributes = ViewExtras.getViewAttributes(view, runtime.ui.getResourceParser());
@@ -88,6 +59,28 @@ public class NativeView extends NativeJavaObjectWithPrototype {
     @Override
     public View unwrap() {
         return mView;
+    }
+
+    public static class ScrollEvent {
+        public int scrollX;
+        public int scrollY;
+        public int oldScrollX;
+        public int oldScrollY;
+
+        public ScrollEvent(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+            this.scrollX = scrollX;
+            this.scrollY = scrollY;
+            this.oldScrollX = oldScrollX;
+            this.oldScrollY = oldScrollY;
+        }
+    }
+
+    public static class LongClickEvent {
+        public final View view;
+
+        public LongClickEvent(View view) {
+            this.view = view;
+        }
     }
 
 }

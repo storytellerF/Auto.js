@@ -1,5 +1,10 @@
 package org.autojs.autojs.ui.edit;
 
+import static org.autojs.autojs.ui.edit.EditorView.EXTRA_CONTENT;
+import static org.autojs.autojs.ui.edit.EditorView.EXTRA_NAME;
+import static org.autojs.autojs.ui.edit.EditorView.EXTRA_PATH;
+import static org.autojs.autojs.ui.edit.EditorView.EXTRA_READ_ONLY;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -37,11 +42,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static org.autojs.autojs.ui.edit.EditorView.EXTRA_CONTENT;
-import static org.autojs.autojs.ui.edit.EditorView.EXTRA_NAME;
-import static org.autojs.autojs.ui.edit.EditorView.EXTRA_PATH;
-import static org.autojs.autojs.ui.edit.EditorView.EXTRA_READ_ONLY;
 
 /**
  * Created by Stardust on 2017/1/29.

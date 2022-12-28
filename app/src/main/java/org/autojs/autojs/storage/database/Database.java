@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.autojs.autojs.timing.IntentTask;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

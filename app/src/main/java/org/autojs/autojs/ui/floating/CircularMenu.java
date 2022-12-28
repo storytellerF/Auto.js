@@ -16,6 +16,11 @@ import com.stardust.app.DialogUtils;
 import com.stardust.autojs.core.record.Recorder;
 import com.stardust.enhancedfloaty.FloatyService;
 import com.stardust.enhancedfloaty.FloatyWindow;
+import com.stardust.util.ClipboardUtil;
+import com.stardust.util.Func1;
+import com.stardust.view.accessibility.AccessibilityService;
+import com.stardust.view.accessibility.LayoutInspector;
+import com.stardust.view.accessibility.NodeInfo;
 
 import org.autojs.autojs.Pref;
 import org.autojs.autojs.R;
@@ -25,22 +30,15 @@ import org.autojs.autojs.databinding.CircularActionMenuBinding;
 import org.autojs.autojs.model.explorer.ExplorerDirPage;
 import org.autojs.autojs.model.explorer.Explorers;
 import org.autojs.autojs.model.script.Scripts;
+import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 import org.autojs.autojs.tool.AccessibilityServiceTool;
 import org.autojs.autojs.tool.RootTool;
 import org.autojs.autojs.ui.common.NotAskAgainDialog;
 import org.autojs.autojs.ui.common.OperationDialogBuilder;
+import org.autojs.autojs.ui.explorer.ExplorerView;
 import org.autojs.autojs.ui.floating.layoutinspector.LayoutBoundsFloatyWindow;
 import org.autojs.autojs.ui.floating.layoutinspector.LayoutHierarchyFloatyWindow;
 import org.autojs.autojs.ui.main.MainActivity;
-import org.autojs.autojs.ui.explorer.ExplorerView;
-import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
-
-import com.stardust.util.ClipboardUtil;
-import com.stardust.util.Func1;
-import com.stardust.view.accessibility.AccessibilityService;
-import com.stardust.view.accessibility.LayoutInspector;
-import com.stardust.view.accessibility.NodeInfo;
-
 import org.greenrobot.eventbus.EventBus;
 import org.jdeferred.Deferred;
 import org.jdeferred.impl.DeferredObject;
@@ -52,43 +50,22 @@ import org.jdeferred.impl.DeferredObject;
 public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInspector.CaptureAvailableListener {
 
 
-    public static class StateChangeEvent {
-        private final int currentState;
-        private final int previousState;
-
-        public StateChangeEvent(int currentState, int previousState) {
-            this.currentState = currentState;
-            this.previousState = previousState;
-        }
-
-        public int getCurrentState() {
-            return currentState;
-        }
-
-        public int getPreviousState() {
-            return previousState;
-        }
-    }
-
     public static final int STATE_CLOSED = -1;
     public static final int STATE_NORMAL = 0;
     public static final int STATE_RECORDING = 1;
-
     private static final int IC_ACTION_VIEW = R.drawable.ic_android_eat_js;
-
-    CircularMenuWindow mWindow;
-    private int mState;
-    private RoundedImageView mActionViewIcon;
     @NonNull
     private final Context mContext;
     private final GlobalActionRecorder mRecorder;
+    CircularMenuWindow mWindow;
+    private int mState;
+    private RoundedImageView mActionViewIcon;
     @Nullable
     private MaterialDialog mSettingsDialog;
     @Nullable
     private MaterialDialog mLayoutInspectDialog;
     private String mRunningPackage, mRunningActivity;
     private Deferred<NodeInfo, Void, Void> mCaptureDeferred;
-
     public CircularMenu(Context context) {
         mContext = new ContextThemeWrapper(context, R.style.AppTheme);
         initFloaty();
@@ -138,7 +115,6 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
         mWindow.setKeepToSideHiddenWidthRadio(0.25f);
         FloatyService.addWindow(mWindow);
     }
-
 
     public void showScriptList() {
         mWindow.collapse();
@@ -208,7 +184,6 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
         inspectLayout(LayoutBoundsFloatyWindow::new);
     }
 
-
     public void showLayoutHierarchy() {
         inspectLayout(LayoutHierarchyFloatyWindow::new);
     }
@@ -240,18 +215,17 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
                 }, err -> mActionViewIcon.post(progress::dismiss));
     }
 
-
     public void stopAllScripts() {
         mWindow.collapse();
         AutoJs.getInstance().getScriptEngineService().stopAllAndToast();
     }
-
 
     @Override
     public void onCaptureAvailable(NodeInfo capture) {
         if (mCaptureDeferred != null && mCaptureDeferred.isPending())
             mCaptureDeferred.resolve(capture);
     }
+
     void settings() {
         mWindow.collapse();
         mRunningPackage = AutoJs.getInstance().getInfoProvider().getLatestPackageByUsageStatsIfGranted();
@@ -271,12 +245,10 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
         DialogUtils.showDialog(mSettingsDialog);
     }
 
-
     public void enableAccessibilityService() {
         dismissSettingsDialog();
         AccessibilityServiceTool.enableAccessibilityService();
     }
-
 
     private void dismissSettingsDialog() {
         if (mSettingsDialog == null)
@@ -293,7 +265,7 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
         Toast.makeText(mContext, R.string.text_already_copy_to_clip, Toast.LENGTH_SHORT).show();
     }
 
-   public void copyActivityName() {
+    public void copyActivityName() {
         dismissSettingsDialog();
         if (TextUtils.isEmpty(mRunningActivity))
             return;
@@ -307,7 +279,7 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
-   public void togglePointerLocation() {
+    public void togglePointerLocation() {
         dismissSettingsDialog();
         RootTool.togglePointerLocation();
     }
@@ -326,7 +298,6 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
         AutoJs.getInstance().getLayoutInspector().removeCaptureAvailableListener(this);
     }
 
-
     @Override
     public void onStart() {
         setState(STATE_RECORDING);
@@ -344,5 +315,23 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
     @Override
     public void onResume() {
 
+    }
+
+    public static class StateChangeEvent {
+        private final int currentState;
+        private final int previousState;
+
+        public StateChangeEvent(int currentState, int previousState) {
+            this.currentState = currentState;
+            this.previousState = previousState;
+        }
+
+        public int getCurrentState() {
+            return currentState;
+        }
+
+        public int getPreviousState() {
+            return previousState;
+        }
     }
 }

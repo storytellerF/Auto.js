@@ -9,10 +9,8 @@ import androidx.annotation.NonNull;
 
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.runtime.accessibility.AccessibilityConfig;
-import com.stardust.theme.ThemeColorManager;
 
 import org.autojs.autojs.autojs.key.GlobalKeyObserver;
-import org.autojs.autojs.theme.ThemeColorManagerCompat;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +41,10 @@ public class Pref {
 
     static {
         AccessibilityConfig.setIsUnintendedGuardEnabled(def().getBoolean(getString(R.string.key_guard_mode), false));
+    }
+
+    static {
+        def().registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
     }
 
     private static SharedPreferences def() {
@@ -83,10 +85,6 @@ public class Pref {
 
     public static boolean isFirstUsing() {
         return getDisposableBoolean("isFirstUsing", true);
-    }
-
-    static {
-        def().registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
     }
 
     public static boolean isEditActivityFirstUsing() {

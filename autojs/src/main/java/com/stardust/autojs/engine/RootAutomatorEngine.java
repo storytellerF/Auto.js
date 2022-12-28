@@ -7,8 +7,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.autojs.core.inputevent.InputDevices;
+import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.autojs.runtime.exception.ScriptException;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 import com.stardust.autojs.script.AutoFileSource;
@@ -33,10 +33,8 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
     private static final String KEY_TOUCH_DEVICE = RootAutomatorEngine.class.getName() + ".touch_device";
     private static final String LOG_TAG = "RootAutomatorEngine";
     private static final Pattern PID_PATTERN = Pattern.compile("[0-9]{2,}");
-
-    private static int sTouchDevice = -1;
     private static final String ROOT_AUTOMATOR_EXECUTABLE_ASSET = "binary/root_automator";
-
+    private static int sTouchDevice = -1;
     private final Context mContext;
     private final String mDeviceNameOrPath;
     private Thread mThread;
@@ -54,6 +52,37 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
 
     public RootAutomatorEngine(Context context) {
         this(context, InputDevices.getTouchDeviceName());
+    }
+
+    public static String getDeviceNameOrPath(Context context, String deviceNameOrPath) {
+        if (sTouchDevice < 0) {
+            sTouchDevice = PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_TOUCH_DEVICE, -1);
+        }
+        if (sTouchDevice >= 0) {
+            deviceNameOrPath = "/dev/input/event" + sTouchDevice;
+            PreferenceManager.getDefaultSharedPreferences(context)
+                    .edit()
+                    .putInt(KEY_TOUCH_DEVICE, sTouchDevice)
+                    .apply();
+        }
+        return deviceNameOrPath;
+    }
+
+    @NonNull
+    public static String getExecutablePath(@NonNull Context context) {
+        File tmp = new File(context.getCacheDir(), "root_automator");
+        PFiles.copyAsset(context, ROOT_AUTOMATOR_EXECUTABLE_ASSET, tmp.getAbsolutePath());
+        return tmp.getAbsolutePath();
+    }
+
+    public static void setTouchDevice(int device) {
+        sTouchDevice = device;
+    }
+
+    public static int getTouchDevice(Context context) {
+        if (sTouchDevice >= 0)
+            return sTouchDevice;
+        return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_TOUCH_DEVICE, -1);
     }
 
     public void execute(String autoFile) {
@@ -103,38 +132,6 @@ public class RootAutomatorEngine extends ScriptEngine.AbstractScriptEngine<AutoF
             }
         }
         os.flush();
-    }
-
-
-    public static String getDeviceNameOrPath(Context context, String deviceNameOrPath) {
-        if (sTouchDevice < 0) {
-            sTouchDevice = PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_TOUCH_DEVICE, -1);
-        }
-        if (sTouchDevice >= 0) {
-            deviceNameOrPath = "/dev/input/event" + sTouchDevice;
-            PreferenceManager.getDefaultSharedPreferences(context)
-                    .edit()
-                    .putInt(KEY_TOUCH_DEVICE, sTouchDevice)
-                    .apply();
-        }
-        return deviceNameOrPath;
-    }
-
-    @NonNull
-    public static String getExecutablePath(@NonNull Context context) {
-        File tmp = new File(context.getCacheDir(), "root_automator");
-        PFiles.copyAsset(context, ROOT_AUTOMATOR_EXECUTABLE_ASSET, tmp.getAbsolutePath());
-        return tmp.getAbsolutePath();
-    }
-
-    public static void setTouchDevice(int device) {
-        sTouchDevice = device;
-    }
-
-    public static int getTouchDevice(Context context) {
-        if (sTouchDevice >= 0)
-            return sTouchDevice;
-        return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_TOUCH_DEVICE, -1);
     }
 
     @Override

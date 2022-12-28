@@ -12,7 +12,7 @@ public class DebuggerSingleton {
     private static final Debugger sDebugger = new Debugger(AutoJs.getInstance().getScriptEngineService(), ContextFactory.getGlobal());
 
     @NonNull
-    public static Debugger get(){
+    public static Debugger get() {
         return sDebugger;
     }
 }

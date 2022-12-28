@@ -4,14 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-import android.util.AttributeSet;
-import android.view.View;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * Created by Stardust on 2017/8/20.

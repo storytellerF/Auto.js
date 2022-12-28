@@ -53,10 +53,12 @@ class NodeInfoView : RecyclerView {
         initData()
         adapter = Adapter()
         layoutManager = LinearLayoutManager(context)
-        addItemDecoration(HorizontalDividerItemDecoration.Builder(context)
+        addItemDecoration(
+            HorizontalDividerItemDecoration.Builder(context)
                 .color(0x1e000000)
                 .size(2)
-                .build())
+                .build()
+        )
     }
 
     private fun initData() {
@@ -114,34 +116,35 @@ class NodeInfoView : RecyclerView {
     companion object {
 
         private val FIELD_NAMES = sortedArrayOf(
-                "id",
-                "idHex",
-                "fullId",
-                "bounds",
-                "depth",
-                "desc",
-                "className",
-                "packageName",
-                "text",
-                "drawingOrder",
-                "accessibilityFocused",
-                "checked",
-                "clickable",
-                "contextClickable",
-                "dismissable",
-                "editable",
-                "enabled",
-                "focusable",
-                "indexInParent",
-                "longClickable",
-                "row",
-                "rowCount",
-                "rowSpan",
-                "column",
-                "columnCount",
-                "columnSpan",
-                "selected",
-                "scrollable")
+            "id",
+            "idHex",
+            "fullId",
+            "bounds",
+            "depth",
+            "desc",
+            "className",
+            "packageName",
+            "text",
+            "drawingOrder",
+            "accessibilityFocused",
+            "checked",
+            "clickable",
+            "contextClickable",
+            "dismissable",
+            "editable",
+            "enabled",
+            "focusable",
+            "indexInParent",
+            "longClickable",
+            "row",
+            "rowCount",
+            "rowSpan",
+            "column",
+            "columnCount",
+            "columnSpan",
+            "selected",
+            "scrollable"
+        )
         private val FIELDS = Array<Field>(FIELD_NAMES.size) {
             val field = NodeInfo::class.java.getDeclaredField(FIELD_NAMES[it])
             field.isAccessible = true

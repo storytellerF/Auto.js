@@ -11,8 +11,6 @@ import androidx.annotation.Nullable;
 import org.autojs.autojs.model.indices.Module;
 import org.autojs.autojs.model.indices.Modules;
 import org.autojs.autojs.model.indices.Property;
-import org.autojs.autojs.ui.widget.SimpleTextWatcher;
-import org.mozilla.javascript.ast.Loop;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,20 +30,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AutoCompletion {
 
-    public interface AutoCompleteCallback {
-
-        void updateCodeCompletion(CodeCompletions codeCompletions);
-    }
-
     private static final Pattern STATEMENT = Pattern.compile("([A-Za-z]+\\.)?([a-zA-Z][a-zA-Z0-9_]*)?$");
-
-    @Nullable
-    private String mModuleName;
-    @Nullable
-    private String mPropertyPrefill;
-    private List<Module> mModules;
     private final DictionaryTree<Property> mGlobalPropertyTree = new DictionaryTree<>();
-    private AutoCompleteCallback mAutoCompleteCallback;
     private final ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
     @NonNull
     private final AnyWordsCompletion mAnyWordsCompletion;
@@ -53,7 +39,12 @@ public class AutoCompletion {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @NonNull
     private final EditText mEditText;
-
+    @Nullable
+    private String mModuleName;
+    @Nullable
+    private String mPropertyPrefill;
+    private List<Module> mModules;
+    private AutoCompleteCallback mAutoCompleteCallback;
     public AutoCompletion(@NonNull Context context, @NonNull EditText editText) {
         buildDictionaryTree(context);
         mEditText = editText;
@@ -173,9 +164,14 @@ public class AutoCompletion {
         return completions;
     }
 
-
-    public void shutdown(){
+    public void shutdown() {
         mEditText.removeTextChangedListener(mAnyWordsCompletion);
         mExecutorService.shutdownNow();
+    }
+
+
+    public interface AutoCompleteCallback {
+
+        void updateCodeCompletion(CodeCompletions codeCompletions);
     }
 }

@@ -9,11 +9,6 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-
 import android.util.AttributeSet;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -24,7 +19,11 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.stardust.app.OnActivityResultDelegate;
 
 import org.autojs.autojs.R;
@@ -34,7 +33,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -114,6 +112,29 @@ public class EWebView extends FrameLayout implements SwipeRefreshLayout.OnRefres
 
     }
 
+    private void chooseImage(@NonNull ValueCallback<Uri> valueCallback) {
+        DelegateHost delegateHost = ((OnActivityResultDelegate.DelegateHost) getContext());
+        Mediator mediator = delegateHost.getOnActivityResultDelegateMediator();
+        Activity activity = (Activity) getContext();
+        new ImageSelector(activity, mediator, (selector, uri) -> valueCallback.onReceiveValue(uri))
+                .disposable()
+                .select();
+    }
+
+    private boolean isImageType(@Nullable String[] acceptTypes) {
+        if (acceptTypes == null) {
+            return false;
+        }
+        for (String acceptType : acceptTypes) {
+            for (String imageType : IMAGE_TYPES) {
+                if (acceptType.contains(imageType)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     protected class MyWebChromeClient extends WebChromeClient {
 
         @Override
@@ -159,29 +180,6 @@ public class EWebView extends FrameLayout implements SwipeRefreshLayout.OnRefres
         }
 
 
-    }
-
-    private void chooseImage(@NonNull ValueCallback<Uri> valueCallback) {
-        DelegateHost delegateHost = ((OnActivityResultDelegate.DelegateHost) getContext());
-        Mediator mediator = delegateHost.getOnActivityResultDelegateMediator();
-        Activity activity = (Activity) getContext();
-        new ImageSelector(activity, mediator, (selector, uri) -> valueCallback.onReceiveValue(uri))
-                .disposable()
-                .select();
-    }
-
-    private boolean isImageType(@Nullable String[] acceptTypes) {
-        if (acceptTypes == null) {
-            return false;
-        }
-        for (String acceptType : acceptTypes) {
-            for (String imageType : IMAGE_TYPES) {
-                if (acceptType.contains(imageType)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     protected class MyWebViewClient extends WebViewClient {

@@ -36,14 +36,27 @@ public class Drawables {
     @Nullable
     private ImageLoader mImageLoader = sDefaultImageLoader;
 
+    @Nullable
+    public static ImageLoader getDefaultImageLoader() {
+        return sDefaultImageLoader;
+    }
+
     public static void setDefaultImageLoader(@Nullable ImageLoader defaultImageLoader) {
         if (defaultImageLoader == null) throw new NullPointerException();
         sDefaultImageLoader = defaultImageLoader;
     }
 
-    @Nullable
-    public static ImageLoader getDefaultImageLoader() {
-        return sDefaultImageLoader;
+    public static Bitmap loadBase64Data(@NonNull String data) {
+        Matcher matcher = DATA_PATTERN.matcher(data);
+        String base64;
+        if (!matcher.matches() || matcher.groupCount() != 2) {
+            base64 = data;
+        } else {
+            String mimeType = matcher.group(1);
+            base64 = matcher.group(2);
+        }
+        byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
     public Drawable parse(@NonNull Context context, @NonNull String value) {
@@ -105,19 +118,6 @@ public class Drawables {
         view.setImageBitmap(bitmap);
     }
 
-    public static Bitmap loadBase64Data(@NonNull String data) {
-        Matcher matcher = DATA_PATTERN.matcher(data);
-        String base64;
-        if (!matcher.matches() || matcher.groupCount() != 2) {
-            base64 = data;
-        } else {
-            String mimeType = matcher.group(1);
-            base64 = matcher.group(2);
-        }
-        byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
-
     public void setupWithViewBackground(@NonNull View view, @NonNull String value) {
         if (value.startsWith("http://") || value.startsWith("https://")) {
             loadIntoBackground(view, Uri.parse(value));
@@ -130,13 +130,13 @@ public class Drawables {
         }
     }
 
-    public void setImageLoader(ImageLoader imageLoader) {
-        mImageLoader = imageLoader;
-    }
-
     @Nullable
     public ImageLoader getImageLoader() {
         return mImageLoader;
+    }
+
+    public void setImageLoader(ImageLoader imageLoader) {
+        mImageLoader = imageLoader;
     }
 
     private static class DefaultImageLoader implements ImageLoader {

@@ -7,16 +7,16 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.os.Build;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.stardust.view.accessibility.NodeInfo;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 import com.stardust.util.ViewUtil;
+import com.stardust.view.accessibility.NodeInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +29,7 @@ import java.util.List;
 public class LayoutBoundsView extends View {
 
     private static final int COLOR_SHADOW = 0x6a000000;
+    protected int mStatusBarHeight;
     private NodeInfo mRootNode;
     @Nullable
     private NodeInfo mTouchedNode;
@@ -39,9 +40,7 @@ public class LayoutBoundsView extends View {
     private int mNormalNodeBoundsColor = Color.GREEN;
     @Nullable
     private Rect mTouchedNodeBounds;
-
     private int[] mBoundsInScreen;
-    protected int mStatusBarHeight;
 
     public LayoutBoundsView(Context context) {
         super(context);
@@ -64,6 +63,11 @@ public class LayoutBoundsView extends View {
         init();
     }
 
+    static void drawRect(@NonNull Canvas canvas, Rect rect, int statusBarHeight, Paint paint) {
+        Rect offsetRect = new Rect(rect);
+        offsetRect.offset(0, -statusBarHeight);
+        canvas.drawRect(offsetRect, paint);
+    }
 
     public void setOnNodeInfoSelectListener(OnNodeInfoSelectListener onNodeInfoSelectListener) {
         mOnNodeInfoSelectListener = onNodeInfoSelectListener;
@@ -74,7 +78,6 @@ public class LayoutBoundsView extends View {
         mTouchedNode = null;
     }
 
-
     private void init() {
         mBoundsPaint = new Paint();
         mBoundsPaint.setStyle(Paint.Style.STROKE);
@@ -84,7 +87,6 @@ public class LayoutBoundsView extends View {
         setWillNotDraw(false);
         mStatusBarHeight = ViewUtil.getStatusBarHeight(getContext());
     }
-
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
@@ -137,12 +139,6 @@ public class LayoutBoundsView extends View {
         for (NodeInfo child : node.getChildren()) {
             draw(canvas, child);
         }
-    }
-
-    static void drawRect(@NonNull Canvas canvas, Rect rect, int statusBarHeight, Paint paint) {
-        Rect offsetRect = new Rect(rect);
-        offsetRect.offset(0, -statusBarHeight);
-        canvas.drawRect(offsetRect, paint);
     }
 
     @Override

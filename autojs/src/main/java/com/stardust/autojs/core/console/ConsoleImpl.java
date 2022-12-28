@@ -2,9 +2,10 @@ package com.stardust.autojs.core.console;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.WindowManager;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.view.WindowManager;
 
 import com.stardust.autojs.R;
 import com.stardust.autojs.annotation.ScriptInterface;
@@ -30,38 +31,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConsoleImpl extends AbstractConsole {
 
-    public static class LogEntry implements Comparable<LogEntry> {
-
-        public int id;
-        public int level;
-        public CharSequence content;
-        public boolean newLine = false;
-
-        public LogEntry(int id, int level, CharSequence content) {
-            this.id = id;
-            this.level = level;
-            this.content = content;
-        }
-
-        public LogEntry(int id, int level, CharSequence content, boolean newLine) {
-            this.id = id;
-            this.level = level;
-            this.content = content;
-            this.newLine = newLine;
-        }
-
-        @Override
-        public int compareTo(@NonNull LogEntry o) {
-            return 0;
-        }
-    }
-
-    public interface LogListener {
-        void onNewLog(LogEntry logEntry);
-
-        void onLogClear();
-    }
-
     private final Object WINDOW_SHOW_LOCK = new Object();
     private final Console mGlobalConsole;
     private final ArrayList<LogEntry> mLogEntries = new ArrayList<>();
@@ -70,17 +39,15 @@ public class ConsoleImpl extends AbstractConsole {
     private final ResizableExpandableFloatyWindow mFloatyWindow;
     @NonNull
     private final ConsoleFloaty mConsoleFloaty;
-    private WeakReference<LogListener> mLogListener;
     private final UiHandler mUiHandler;
     private final BlockingQueue<String> mInput = new ArrayBlockingQueue<>(1);
+    private WeakReference<LogListener> mLogListener;
     private WeakReference<ConsoleView> mConsoleView;
     private volatile boolean mShown = false;
     private int mX, mY;
-
     public ConsoleImpl(UiHandler uiHandler) {
         this(uiHandler, null);
     }
-
     public ConsoleImpl(UiHandler uiHandler, Console globalConsole) {
         mUiHandler = uiHandler;
         mConsoleFloaty = new ConsoleFloaty(this);
@@ -106,7 +73,6 @@ public class ConsoleImpl extends AbstractConsole {
             this.notify();
         }
     }
-
 
     public void setLogListener(LogListener logListener) {
         mLogListener = new WeakReference<>(logListener);
@@ -141,12 +107,10 @@ public class ConsoleImpl extends AbstractConsole {
         return null;
     }
 
-
     @Override
     public void write(int level, CharSequence charSequence) {
         println(level, charSequence);
     }
-
 
     @Override
     public void clear() {
@@ -210,7 +174,6 @@ public class ConsoleImpl extends AbstractConsole {
             }
         });
     }
-
 
     public void setSize(int w, int h) {
         if (mShown) {
@@ -297,6 +260,38 @@ public class ConsoleImpl extends AbstractConsole {
             }
         } else {
             super.error(data, options);
+        }
+    }
+
+    public interface LogListener {
+        void onNewLog(LogEntry logEntry);
+
+        void onLogClear();
+    }
+
+    public static class LogEntry implements Comparable<LogEntry> {
+
+        public int id;
+        public int level;
+        public CharSequence content;
+        public boolean newLine = false;
+
+        public LogEntry(int id, int level, CharSequence content) {
+            this.id = id;
+            this.level = level;
+            this.content = content;
+        }
+
+        public LogEntry(int id, int level, CharSequence content, boolean newLine) {
+            this.id = id;
+            this.level = level;
+            this.content = content;
+            this.newLine = newLine;
+        }
+
+        @Override
+        public int compareTo(@NonNull LogEntry o) {
+            return 0;
         }
     }
 }

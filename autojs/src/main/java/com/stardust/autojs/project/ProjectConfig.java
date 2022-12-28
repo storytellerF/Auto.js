@@ -27,37 +27,26 @@ public class ProjectConfig {
     public static final String CONFIG_FILE_NAME = "project.json";
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-
-    @SerializedName("name")
-    private String mName;
-
-    @SerializedName("versionName")
-    private String mVersionName;
-
-    @SerializedName("versionCode")
-    private int mVersionCode = -1;
-
-    @SerializedName("packageName")
-    private String mPackageName;
-
-    @SerializedName("main")
-    private String mMainScriptFile;
-
-    @SerializedName("assets")
-    private List<String> mAssets = new ArrayList<>();
-
-    @SerializedName("launchConfig")
-    private LaunchConfig mLaunchConfig;
-
-    @SerializedName("build")
-    private BuildInfo mBuildInfo = new BuildInfo();
-
-    @SerializedName("icon")
-    private String mIcon;
-
     @SerializedName("scripts")
     private final Map<String, ScriptConfig> mScriptConfigs = new HashMap<>();
-
+    @SerializedName("name")
+    private String mName;
+    @SerializedName("versionName")
+    private String mVersionName;
+    @SerializedName("versionCode")
+    private int mVersionCode = -1;
+    @SerializedName("packageName")
+    private String mPackageName;
+    @SerializedName("main")
+    private String mMainScriptFile;
+    @SerializedName("assets")
+    private List<String> mAssets = new ArrayList<>();
+    @SerializedName("launchConfig")
+    private LaunchConfig mLaunchConfig;
+    @SerializedName("build")
+    private BuildInfo mBuildInfo = new BuildInfo();
+    @SerializedName("icon")
+    private String mIcon;
     @SerializedName("useFeatures")
     private List<String> mFeatures = new ArrayList<>();
 
@@ -190,6 +179,10 @@ public class ProjectConfig {
         return mAssets;
     }
 
+    public void setAssets(List<String> assets) {
+        mAssets = assets;
+    }
+
     public boolean addAsset(@NonNull String assetRelativePath) {
         if (mAssets == null) {
             mAssets = new ArrayList<>();
@@ -201,10 +194,6 @@ public class ProjectConfig {
         }
         mAssets.add(assetRelativePath);
         return true;
-    }
-
-    public void setAssets(List<String> assets) {
-        mAssets = assets;
     }
 
     public LaunchConfig getLaunchConfig() {
@@ -249,7 +238,7 @@ public class ProjectConfig {
         if (config == null) {
             config = new ScriptConfig();
         }
-        if(mFeatures.isEmpty()){
+        if (mFeatures.isEmpty()) {
             return config;
         }
         ArrayList<String> features = new ArrayList<>(config.getFeatures());

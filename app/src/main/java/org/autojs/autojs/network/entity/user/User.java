@@ -2,10 +2,10 @@ package org.autojs.autojs.network.entity.user;
 
 import androidx.annotation.NonNull;
 
-import java.util.List;
-
 import com.google.gson.annotations.SerializedName;
 import com.stardust.util.Objects;
+
+import java.util.List;
 
 public class User {
 
@@ -192,492 +192,492 @@ public class User {
     @SerializedName("username")
     private String username;
 
-    public void setWebsiteLink(String websiteLink) {
-        this.websiteLink = websiteLink;
-    }
-
     public String getWebsiteLink() {
         return websiteLink;
     }
 
-    public void setReputation(String reputation) {
-        this.reputation = reputation;
+    public void setWebsiteLink(String websiteLink) {
+        this.websiteLink = websiteLink;
     }
 
     public String getReputation() {
         return reputation;
     }
 
-    public void setSso(List<Object> sso) {
-        this.sso = sso;
+    public void setReputation(String reputation) {
+        this.reputation = reputation;
     }
 
     public List<Object> getSso() {
         return sso;
     }
 
-    public void setIconText(String iconText) {
-        this.iconText = iconText;
+    public void setSso(List<Object> sso) {
+        this.sso = sso;
     }
 
     public String getIconText() {
         return iconText;
     }
 
-    public void setIsGlobalModerator(boolean isGlobalModerator) {
-        this.isGlobalModerator = isGlobalModerator;
+    public void setIconText(String iconText) {
+        this.iconText = iconText;
     }
 
     public boolean isIsGlobalModerator() {
         return isGlobalModerator;
     }
 
-    public void setJoindate(String joindate) {
-        this.joindate = joindate;
+    public void setIsGlobalModerator(boolean isGlobalModerator) {
+        this.isGlobalModerator = isGlobalModerator;
     }
 
     public String getJoindate() {
         return joindate;
     }
 
-    public void setProfileLinks(List<Object> profileLinks) {
-        this.profileLinks = profileLinks;
+    public void setJoindate(String joindate) {
+        this.joindate = joindate;
     }
 
     public List<Object> getProfileLinks() {
         return profileLinks;
     }
 
-    public void setReputationDisabled(boolean reputationDisabled) {
-        this.reputationDisabled = reputationDisabled;
+    public void setProfileLinks(List<Object> profileLinks) {
+        this.profileLinks = profileLinks;
     }
 
     public boolean isReputationDisabled() {
         return reputationDisabled;
     }
 
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setReputationDisabled(boolean reputationDisabled) {
+        this.reputationDisabled = reputationDisabled;
     }
 
     public boolean isIsAdmin() {
         return isAdmin;
     }
 
-    public void setModerationNote(String moderationNote) {
-        this.moderationNote = moderationNote;
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     public String getModerationNote() {
         return moderationNote;
     }
 
-    public void setIps(List<String> ips) {
-        this.ips = ips;
+    public void setModerationNote(String moderationNote) {
+        this.moderationNote = moderationNote;
     }
 
     public List<String> getIps() {
         return ips;
     }
 
-    public void setAboutme(String aboutme) {
-        this.aboutme = aboutme;
+    public void setIps(List<String> ips) {
+        this.ips = ips;
     }
 
     public String getAboutme() {
         return aboutme;
     }
 
-    public void setIsTargetAdmin(boolean isTargetAdmin) {
-        this.isTargetAdmin = isTargetAdmin;
+    public void setAboutme(String aboutme) {
+        this.aboutme = aboutme;
     }
 
     public boolean isIsTargetAdmin() {
         return isTargetAdmin;
     }
 
-    public void setEmailConfirmed(boolean emailConfirmed) {
-        this.emailConfirmed = emailConfirmed;
+    public void setIsTargetAdmin(boolean isTargetAdmin) {
+        this.isTargetAdmin = isTargetAdmin;
     }
 
     public boolean isEmailConfirmed() {
         return emailConfirmed;
     }
 
-    public void setIsAdminOrGlobalModerator(boolean isAdminOrGlobalModerator) {
-        this.isAdminOrGlobalModerator = isAdminOrGlobalModerator;
+    public void setEmailConfirmed(boolean emailConfirmed) {
+        this.emailConfirmed = emailConfirmed;
     }
 
     public boolean isIsAdminOrGlobalModerator() {
         return isAdminOrGlobalModerator;
     }
 
-    public void setEmailClass(String emailClass) {
-        this.emailClass = emailClass;
+    public void setIsAdminOrGlobalModerator(boolean isAdminOrGlobalModerator) {
+        this.isAdminOrGlobalModerator = isAdminOrGlobalModerator;
     }
 
     public String getEmailClass() {
         return emailClass;
     }
 
-    public void setDownvoteDisabled(boolean downvoteDisabled) {
-        this.downvoteDisabled = downvoteDisabled;
+    public void setEmailClass(String emailClass) {
+        this.emailClass = emailClass;
     }
 
     public boolean isDownvoteDisabled() {
         return downvoteDisabled;
     }
 
-    public void setTopiccount(String topiccount) {
-        this.topiccount = topiccount;
+    public void setDownvoteDisabled(boolean downvoteDisabled) {
+        this.downvoteDisabled = downvoteDisabled;
     }
 
     public String getTopiccount() {
         return topiccount;
     }
 
-    public void setIsSelf(boolean isSelf) {
-        this.isSelf = isSelf;
+    public void setTopiccount(String topiccount) {
+        this.topiccount = topiccount;
     }
 
     public boolean isIsSelf() {
         return isSelf;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setIsSelf(boolean isSelf) {
+        this.isSelf = isSelf;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getBirthday() {
         return birthday;
     }
 
-    public void setShowHidden(boolean showHidden) {
-        this.showHidden = showHidden;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public boolean isShowHidden() {
         return showHidden;
     }
 
-    public void setYourid(int yourid) {
-        this.yourid = yourid;
+    public void setShowHidden(boolean showHidden) {
+        this.showHidden = showHidden;
     }
 
     public int getYourid() {
         return yourid;
     }
 
-    public void setLastposttime(String lastposttime) {
-        this.lastposttime = lastposttime;
+    public void setYourid(int yourid) {
+        this.yourid = yourid;
     }
 
     public String getLastposttime() {
         return lastposttime;
     }
 
-    public void setIsModerator(boolean isModerator) {
-        this.isModerator = isModerator;
+    public void setLastposttime(String lastposttime) {
+        this.lastposttime = lastposttime;
     }
 
     public boolean isIsModerator() {
         return isModerator;
     }
 
-    public void setSignature(String signature) {
-        this.signature = signature;
+    public void setIsModerator(boolean isModerator) {
+        this.isModerator = isModerator;
     }
 
     public String getSignature() {
         return signature;
     }
 
-    public void setIconBgColor(String iconBgColor) {
-        this.iconBgColor = iconBgColor;
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
     public String getIconBgColor() {
         return iconBgColor;
     }
 
-    public void setCanEdit(boolean canEdit) {
-        this.canEdit = canEdit;
+    public void setIconBgColor(String iconBgColor) {
+        this.iconBgColor = iconBgColor;
     }
 
     public boolean isCanEdit() {
         return canEdit;
     }
 
-    public void setGroupTitle(String groupTitle) {
-        this.groupTitle = groupTitle;
+    public void setCanEdit(boolean canEdit) {
+        this.canEdit = canEdit;
     }
 
     public String getGroupTitle() {
         return groupTitle;
     }
 
-    public void setFollowingCount(int followingCount) {
-        this.followingCount = followingCount;
+    public void setGroupTitle(String groupTitle) {
+        this.groupTitle = groupTitle;
     }
 
     public int getFollowingCount() {
         return followingCount;
     }
 
-    public void setLastonlineISO(String lastonlineISO) {
-        this.lastonlineISO = lastonlineISO;
+    public void setFollowingCount(int followingCount) {
+        this.followingCount = followingCount;
     }
 
     public String getLastonlineISO() {
         return lastonlineISO;
     }
 
-    public void setEmailDisableEdit(boolean emailDisableEdit) {
-        this.emailDisableEdit = emailDisableEdit;
+    public void setLastonlineISO(String lastonlineISO) {
+        this.lastonlineISO = lastonlineISO;
     }
 
     public boolean isEmailDisableEdit() {
         return emailDisableEdit;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setEmailDisableEdit(boolean emailDisableEdit) {
+        this.emailDisableEdit = emailDisableEdit;
     }
 
     public String getUid() {
         return uid;
     }
 
-    public void setCanChangePassword(boolean canChangePassword) {
-        this.canChangePassword = canChangePassword;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public boolean isCanChangePassword() {
         return canChangePassword;
     }
 
-    public void setProfileviews(String profileviews) {
-        this.profileviews = profileviews;
+    public void setCanChangePassword(boolean canChangePassword) {
+        this.canChangePassword = canChangePassword;
     }
 
     public String getProfileviews() {
         return profileviews;
     }
 
-    public void setCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl;
+    public void setProfileviews(String profileviews) {
+        this.profileviews = profileviews;
     }
 
     public String getCoverUrl() {
         return coverUrl;
     }
 
-    public void setBanned(boolean banned) {
-        this.banned = banned;
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public boolean isBanned() {
         return banned;
     }
 
-    public void setUserslug(String userslug) {
-        this.userslug = userslug;
+    public void setBanned(boolean banned) {
+        this.banned = banned;
     }
 
     public String getUserslug() {
         return userslug;
     }
 
-    public void setFollowerCount(int followerCount) {
-        this.followerCount = followerCount;
+    public void setUserslug(String userslug) {
+        this.userslug = userslug;
     }
 
     public int getFollowerCount() {
         return followerCount;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFollowerCount(int followerCount) {
+        this.followerCount = followerCount;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getWebsite() {
         return website;
     }
 
-    public void setIsFollowing(boolean isFollowing) {
-        this.isFollowing = isFollowing;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     public boolean isIsFollowing() {
         return isFollowing;
     }
 
-    public void setUploadedpicture(String uploadedpicture) {
-        this.uploadedpicture = uploadedpicture;
+    public void setIsFollowing(boolean isFollowing) {
+        this.isFollowing = isFollowing;
     }
 
     public String getUploadedpicture() {
         return uploadedpicture;
     }
 
-    public void setPasswordExpiry(String passwordExpiry) {
-        this.passwordExpiry = passwordExpiry;
+    public void setUploadedpicture(String uploadedpicture) {
+        this.uploadedpicture = uploadedpicture;
     }
 
     public String getPasswordExpiry() {
         return passwordExpiry;
     }
 
-    public void setCanBan(boolean canBan) {
-        this.canBan = canBan;
+    public void setPasswordExpiry(String passwordExpiry) {
+        this.passwordExpiry = passwordExpiry;
     }
 
     public boolean isCanBan() {
         return canBan;
     }
 
-    public void setLastonline(String lastonline) {
-        this.lastonline = lastonline;
+    public void setCanBan(boolean canBan) {
+        this.canBan = canBan;
     }
 
     public String getLastonline() {
         return lastonline;
     }
 
-    public void setDisableSignatures(boolean disableSignatures) {
-        this.disableSignatures = disableSignatures;
+    public void setLastonline(String lastonline) {
+        this.lastonline = lastonline;
     }
 
     public boolean isDisableSignatures() {
         return disableSignatures;
     }
 
-    public void setGroups(List<GroupsItem> groups) {
-        this.groups = groups;
+    public void setDisableSignatures(boolean disableSignatures) {
+        this.disableSignatures = disableSignatures;
     }
 
     public List<GroupsItem> getGroups() {
         return groups;
     }
 
-    public void setUsernameDisableEdit(boolean usernameDisableEdit) {
-        this.usernameDisableEdit = usernameDisableEdit;
+    public void setGroups(List<GroupsItem> groups) {
+        this.groups = groups;
     }
 
     public boolean isUsernameDisableEdit() {
         return usernameDisableEdit;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setUsernameDisableEdit(boolean usernameDisableEdit) {
+        this.usernameDisableEdit = usernameDisableEdit;
     }
 
     public String getPicture() {
         return picture;
     }
 
-    public void setJoindateISO(String joindateISO) {
-        this.joindateISO = joindateISO;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public String getJoindateISO() {
         return joindateISO;
     }
 
-    public void setIsSelfOrAdminOrGlobalModerator(boolean isSelfOrAdminOrGlobalModerator) {
-        this.isSelfOrAdminOrGlobalModerator = isSelfOrAdminOrGlobalModerator;
+    public void setJoindateISO(String joindateISO) {
+        this.joindateISO = joindateISO;
     }
 
     public boolean isIsSelfOrAdminOrGlobalModerator() {
         return isSelfOrAdminOrGlobalModerator;
     }
 
-    public void setWebsiteName(String websiteName) {
-        this.websiteName = websiteName;
+    public void setIsSelfOrAdminOrGlobalModerator(boolean isSelfOrAdminOrGlobalModerator) {
+        this.isSelfOrAdminOrGlobalModerator = isSelfOrAdminOrGlobalModerator;
     }
 
     public String getWebsiteName() {
         return websiteName;
     }
 
-    public void setIsAdminOrGlobalModeratorOrModerator(boolean isAdminOrGlobalModeratorOrModerator) {
-        this.isAdminOrGlobalModeratorOrModerator = isAdminOrGlobalModeratorOrModerator;
+    public void setWebsiteName(String websiteName) {
+        this.websiteName = websiteName;
     }
 
     public boolean isIsAdminOrGlobalModeratorOrModerator() {
         return isAdminOrGlobalModeratorOrModerator;
     }
 
-    public void setCoverPosition(String coverPosition) {
-        this.coverPosition = coverPosition;
+    public void setIsAdminOrGlobalModeratorOrModerator(boolean isAdminOrGlobalModeratorOrModerator) {
+        this.isAdminOrGlobalModeratorOrModerator = isAdminOrGlobalModeratorOrModerator;
     }
 
     public String getCoverPosition() {
         return coverPosition;
     }
 
-    public void setPostcount(String postcount) {
-        this.postcount = postcount;
+    public void setCoverPosition(String coverPosition) {
+        this.coverPosition = coverPosition;
     }
 
     public String getPostcount() {
         return postcount;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setPostcount(String postcount) {
+        this.postcount = postcount;
     }
 
     public String getLocation() {
         return location;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getFullname() {
         return fullname;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public int getAge() {
         return age;
     }
 
-    public void setTheirid(String theirid) {
-        this.theirid = theirid;
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getTheirid() {
         return theirid;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setTheirid(String theirid) {
+        this.theirid = theirid;
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @NonNull

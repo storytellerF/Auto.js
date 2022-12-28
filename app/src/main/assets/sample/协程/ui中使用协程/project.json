@@ -7,5 +7,7 @@
   "packageName": "com.example.cont.ui",
   "versionName": "1.0.0",
   "versionCode": 1,
-  "useFeatures": ["continuation"]
+  "useFeatures": [
+    "continuation"
+  ]
 }

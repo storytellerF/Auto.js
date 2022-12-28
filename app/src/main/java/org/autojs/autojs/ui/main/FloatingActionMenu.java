@@ -3,17 +3,19 @@ package org.autojs.autojs.ui.main;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import androidx.annotation.AttrRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.autojs.autojs.R;
 
@@ -25,26 +27,21 @@ import io.reactivex.subjects.PublishSubject;
 
 public class FloatingActionMenu extends FrameLayout implements View.OnClickListener {
 
-    public interface OnFloatingActionButtonClickListener {
-        void onClick(FloatingActionButton button, int pos);
-    }
-
     private static final int[] ICONS = {
             R.drawable.ic_floating_action_menu_dir,
             R.drawable.ic_floating_action_menu_file,
             R.drawable.ic_floating_action_menu_open,
             R.drawable.ic_project};
     private static final int[] LABELS = {R.string.text_directory, R.string.text_file, R.string.text_import, R.string.text_project};
-    private TextView[] mLabels;
-    private FloatingActionButton[] mFabs;
-    private View[] mFabContainers;
-    private boolean mExpanded = false;
     private final int mInterval = 30;
     private final int mDuration = 250;
     private final Interpolator mInterpolator = new FastOutSlowInInterpolator();
     private final PublishSubject<Boolean> mState = PublishSubject.create();
+    private TextView[] mLabels;
+    private FloatingActionButton[] mFabs;
+    private View[] mFabContainers;
+    private boolean mExpanded = false;
     private OnFloatingActionButtonClickListener mOnFloatingActionButtonClickListener;
-
     public FloatingActionMenu(@NonNull Context context) {
         super(context);
         init();
@@ -87,7 +84,6 @@ public class FloatingActionMenu extends FrameLayout implements View.OnClickListe
                 .setInterpolator(mInterpolator)
                 .start();
     }
-
 
     private void animateY(@NonNull View view, float y, Animator.AnimatorListener l) {
         view.animate()
@@ -160,5 +156,9 @@ public class FloatingActionMenu extends FrameLayout implements View.OnClickListe
 
     public void setOnFloatingActionButtonClickListener(OnFloatingActionButtonClickListener onFloatingActionButtonClickListener) {
         mOnFloatingActionButtonClickListener = onFloatingActionButtonClickListener;
+    }
+
+    public interface OnFloatingActionButtonClickListener {
+        void onClick(FloatingActionButton button, int pos);
     }
 }

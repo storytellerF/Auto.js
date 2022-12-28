@@ -1,21 +1,32 @@
 package com.stardust.autojs.core.ui.attribute;
 
+import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.DRAWABLE_CACHE_QUALITIES;
+import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.IMPORTANT_FOR_ACCESSIBILITY;
+import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.LAYOUT_DIRECTIONS;
+import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.SCROLLBARS_STYLES;
+import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.SCROLL_INDICATORS;
+import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.TEXT_ALIGNMENTS;
+import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.TEXT_DIRECTIONS;
+import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.TINT_MODES;
+import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.VISIBILITY;
+
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 
 import com.stardust.autojs.core.internal.Functions;
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
@@ -31,83 +42,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.DRAWABLE_CACHE_QUALITIES;
-import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.IMPORTANT_FOR_ACCESSIBILITY;
-import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.LAYOUT_DIRECTIONS;
-import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.SCROLLBARS_STYLES;
-import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.SCROLL_INDICATORS;
-import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.TEXT_ALIGNMENTS;
-import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.TEXT_DIRECTIONS;
-import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.TINT_MODES;
-import static com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater.VISIBILITY;
-
 public class ViewAttributes {
-
-    public interface Getter<T> {
-        @NonNull
-        T get();
-    }
-
-    public interface Setter<T> {
-        void set(T value);
-    }
-
-    public interface Attribute {
-        String get();
-
-        void set(String value);
-    }
-
-
-    protected class BaseAttribute implements Attribute {
-
-        private String mValue;
-        private final AttributeSetter mAttributeSetter;
-
-        public BaseAttribute(AttributeSetter attributeSetter) {
-            mAttributeSetter = attributeSetter;
-        }
-
-        @Override
-        public String get() {
-            return mValue;
-        }
-
-        @Override
-        public void set(String value) {
-            mValue = value;
-            mAttributeSetter.set(value);
-        }
-    }
-
-    protected interface AttributeGetter extends Getter<String> {
-    }
-
-
-    protected interface AttributeSetter extends Setter<String> {
-    }
-
-    protected interface ValueConverter<T> {
-        @NonNull
-        T convert(String value);
-    }
-
-    protected static class MappingAttributeSetter<T> implements AttributeSetter {
-
-        private final ValueConverter<T> mValueConverter;
-        private final Setter<T> mSetter;
-
-        public MappingAttributeSetter(ValueConverter<T> valueConverter, Setter<T> Setter) {
-            mValueConverter = valueConverter;
-            mSetter = Setter;
-        }
-
-        @Override
-        public void set(String value) {
-            mSetter.set(mValueConverter.convert(value));
-        }
-    }
-
 
     private final Map<String, Attribute> mAttributes = new HashMap<>();
     private final Drawables mDrawables;
@@ -118,6 +53,11 @@ public class ViewAttributes {
         mDrawables = resourceParser.getDrawables();
         mView = view;
         init();
+    }
+
+    @NonNull
+    protected static <T1, T2> Setter<T2> bind(@NonNull Functions.VoidFunc2<T1, T2> func2, T1 t1) {
+        return value -> func2.call(t1, value);
     }
 
     public void setViewAttributeDelegate(ViewAttributeDelegate viewAttributeDelegate) {
@@ -176,7 +116,6 @@ public class ViewAttributes {
         onRegisterAttrs();
     }
 
-
     @CallSuper
     protected void onRegisterAttrs() {
         registerAttr("id", Ids::parse, mView::setId);
@@ -193,7 +132,7 @@ public class ViewAttributes {
         registerAttr("layout_marginBottom", this::parseDimension, this::setMarginBottom);
         registerAttr("layout_marginStart", this::parseDimension, this::setMarginStart);
         registerAttr("layout_marginEnd", this::parseDimension, this::setMarginEnd);
-        registerAttr("padding",this::setPadding);
+        registerAttr("padding", this::setPadding);
         registerAttr("paddingLeft", this::parseDimension, this::setPaddingLeft);
         registerAttr("paddingRight", this::parseDimension, this::setPaddingRight);
         registerAttr("paddingTop", this::parseDimension, this::setPaddingTop);
@@ -294,7 +233,6 @@ public class ViewAttributes {
         }
     }
 
-
     protected float parseDimensionToPixel(@NonNull String value) {
         return Dimensions.parseToPixel(mView, value);
     }
@@ -302,7 +240,6 @@ public class ViewAttributes {
     protected int parseDimensionToIntPixel(@NonNull String value) {
         return Dimensions.parseToIntPixel(value, mView);
     }
-
 
     protected int parseDimension(@NonNull String dim) {
         switch (dim) {
@@ -377,7 +314,6 @@ public class ViewAttributes {
                 this::parseDrawable, applier)));
     }
 
-
     protected void registerDrawableAttrs(@NonNull String[] names, Setter<Drawable> applier) {
         registerAttrs(names, new BaseAttribute(new MappingAttributeSetter<>(
                 this::parseDrawable, applier)));
@@ -399,7 +335,6 @@ public class ViewAttributes {
         registerAttr(name, Boolean::parseBoolean, applier);
     }
 
-
     protected Drawable parseDrawable(@NonNull String value) {
         return mDrawables.parse(mView, value);
     }
@@ -415,7 +350,7 @@ public class ViewAttributes {
         }
     }
 
-    protected void setMargin(@NonNull String  margin) {
+    protected void setMargin(@NonNull String margin) {
         if (mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
             int[] pixels = Dimensions.parseToIntPixelArray(getView(), margin);
@@ -481,26 +416,21 @@ public class ViewAttributes {
         mView.setPadding(padding, mView.getPaddingTop(), mView.getPaddingRight(), mView.getPaddingBottom());
     }
 
-
     protected void setPaddingRight(int padding) {
         mView.setPadding(mView.getPaddingLeft(), mView.getPaddingTop(), padding, mView.getPaddingBottom());
     }
-
 
     protected void setPaddingTop(int padding) {
         mView.setPadding(mView.getPaddingLeft(), padding, mView.getPaddingRight(), mView.getPaddingBottom());
     }
 
-
     protected void setPaddingStart(int padding) {
         mView.setPaddingRelative(padding, mView.getPaddingTop(), mView.getPaddingEnd(), mView.getPaddingBottom());
     }
 
-
     protected void setPaddingEnd(int padding) {
         mView.setPaddingRelative(mView.getPaddingStart(), mView.getPaddingTop(), padding, mView.getPaddingBottom());
     }
-
 
     protected void setPaddingBottom(int padding) {
         mView.setPadding(mView.getPaddingLeft(), mView.getPaddingTop(), mView.getPaddingRight(), padding);
@@ -553,13 +483,11 @@ public class ViewAttributes {
         }
     }
 
-
     protected void setWidth(int width) {
         ViewGroup.LayoutParams layoutParams = mView.getLayoutParams();
         layoutParams.width = width;
         mView.setLayoutParams(layoutParams);
     }
-
 
     protected void setHeight(int height) {
         ViewGroup.LayoutParams layoutParams = mView.getLayoutParams();
@@ -571,9 +499,69 @@ public class ViewAttributes {
         return Strings.parse(mView, value);
     }
 
-    @NonNull
-    protected static <T1, T2> Setter<T2> bind(@NonNull Functions.VoidFunc2<T1, T2> func2, T1 t1) {
-        return value -> func2.call(t1, value);
+    public interface Getter<T> {
+        @NonNull
+        T get();
+    }
+
+    public interface Setter<T> {
+        void set(T value);
+    }
+
+    public interface Attribute {
+        String get();
+
+        void set(String value);
+    }
+
+    protected interface AttributeGetter extends Getter<String> {
+    }
+
+
+    protected interface AttributeSetter extends Setter<String> {
+    }
+
+
+    protected interface ValueConverter<T> {
+        @NonNull
+        T convert(String value);
+    }
+
+    protected static class MappingAttributeSetter<T> implements AttributeSetter {
+
+        private final ValueConverter<T> mValueConverter;
+        private final Setter<T> mSetter;
+
+        public MappingAttributeSetter(ValueConverter<T> valueConverter, Setter<T> Setter) {
+            mValueConverter = valueConverter;
+            mSetter = Setter;
+        }
+
+        @Override
+        public void set(String value) {
+            mSetter.set(mValueConverter.convert(value));
+        }
+    }
+
+    protected class BaseAttribute implements Attribute {
+
+        private final AttributeSetter mAttributeSetter;
+        private String mValue;
+
+        public BaseAttribute(AttributeSetter attributeSetter) {
+            mAttributeSetter = attributeSetter;
+        }
+
+        @Override
+        public String get() {
+            return mValue;
+        }
+
+        @Override
+        public void set(String value) {
+            mValue = value;
+            mAttributeSetter.set(value);
+        }
     }
 
 }

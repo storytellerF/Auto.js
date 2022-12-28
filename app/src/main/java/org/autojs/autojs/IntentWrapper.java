@@ -9,9 +9,10 @@ import android.content.Intent;
 public class IntentWrapper {
     public Intent intent;
     private Context context;
-    public IntentWrapper(Context context,Intent intent) {
+
+    public IntentWrapper(Context context, Intent intent) {
         this.intent = intent;
-        this.context=context;
+        this.context = context;
     }
 
     public IntentWrapper(Context mainActivity) {

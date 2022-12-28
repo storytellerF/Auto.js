@@ -2,7 +2,6 @@ package org.autojs.autojs.pluginclient;
 
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +40,7 @@ import io.reactivex.schedulers.Schedulers;
 public class DevPluginResponseHandler implements Handler {
 
 
+    private final HashMap<String, ScriptExecution> mScriptExecutions = new HashMap<>();
     private final Router mRouter = new Router.RootRouter("type")
             .handler("command", new Router("command")
                     .handler("run", data -> {
@@ -82,9 +82,6 @@ public class DevPluginResponseHandler implements Handler {
                         saveProject(data.get("name").getAsString(), data.get("dir").getAsString());
                         return true;
                     }));
-
-
-    private final HashMap<String, ScriptExecution> mScriptExecutions = new HashMap<>();
     @NonNull
     private final File mCacheDir;
 
@@ -109,10 +106,10 @@ public class DevPluginResponseHandler implements Handler {
         String id = data.get("data").getAsJsonObject().get("id").getAsString();
         String idMd5 = MD5.md5(id);
         return Observable.fromCallable(() -> {
-            File dir = new File(mCacheDir, idMd5);
-            Zip.unzip(new ByteArrayInputStream(bytes.byteString.toByteArray()), dir);
-            return dir;
-        })
+                    File dir = new File(mCacheDir, idMd5);
+                    Zip.unzip(new ByteArrayInputStream(bytes.byteString.toByteArray()), dir);
+                    return dir;
+                })
                 .subscribeOn(Schedulers.io());
     }
 
@@ -177,15 +174,15 @@ public class DevPluginResponseHandler implements Handler {
         name = PFiles.getNameWithoutExtension(name);
         File toDir = new File(Pref.getScriptDirPath(), name);
         Observable.fromCallable(() -> {
-            copyDir(new File(dir), toDir);
-            return toDir.getPath();
-        }).subscribeOn(Schedulers.io())
+                    copyDir(new File(dir), toDir);
+                    return toDir.getPath();
+                }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dest ->
                                 GlobalAppContext.toast(R.string.text_project_save_success, dest),
                         err ->
                                 GlobalAppContext.toast(R.string.text_project_save_error, err.getMessage())
-                        );
+                );
 
     }
 

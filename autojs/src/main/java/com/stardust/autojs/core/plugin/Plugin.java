@@ -14,17 +14,16 @@ import java.lang.reflect.Method;
 
 public class Plugin {
 
-    public static class PluginLoadException extends RuntimeException {
-        public PluginLoadException(Throwable cause) {
-            super(cause);
-        }
-
-        public PluginLoadException(String message) {
-            super(message);
-        }
-    }
-
     private static final String KEY_REGISTRY = "org.autojs.plugin.sdk.registry";
+    @NonNull
+    private final Object mPluginInstance;
+    private Method mGetVersion;
+    private Method mGetScriptDir;
+    private String mMainScriptPath;
+    public Plugin(@NonNull Object pluginInstance) {
+        mPluginInstance = pluginInstance;
+        findMethods(pluginInstance.getClass());
+    }
 
     @Nullable
     public static Plugin load(Context context, @NonNull Context packageContext, ScriptRuntime runtime, TopLevelScope scope) {
@@ -50,17 +49,6 @@ public class Plugin {
         if (pluginInstance == null)
             return null;
         return new Plugin(pluginInstance);
-    }
-
-    @NonNull
-    private final Object mPluginInstance;
-    private Method mGetVersion;
-    private Method mGetScriptDir;
-    private String mMainScriptPath;
-
-    public Plugin(@NonNull Object pluginInstance) {
-        mPluginInstance = pluginInstance;
-        findMethods(pluginInstance.getClass());
     }
 
     @SuppressWarnings("unchecked")
@@ -96,6 +84,16 @@ public class Plugin {
             return (String) mGetScriptDir.invoke(mPluginInstance);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static class PluginLoadException extends RuntimeException {
+        public PluginLoadException(Throwable cause) {
+            super(cause);
+        }
+
+        public PluginLoadException(String message) {
+            super(message);
         }
     }
 }

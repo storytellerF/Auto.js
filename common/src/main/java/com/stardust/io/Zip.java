@@ -1,6 +1,7 @@
 package com.stardust.io;
 
-import com.stardust.pio.PFile;
+import static com.stardust.pio.PFiles.closeSilently;
+
 import com.stardust.pio.PFiles;
 
 import java.io.File;
@@ -10,8 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import static com.stardust.pio.PFiles.closeSilently;
 
 public class Zip {
 

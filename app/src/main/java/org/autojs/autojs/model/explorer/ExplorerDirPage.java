@@ -1,6 +1,7 @@
 package org.autojs.autojs.model.explorer;
 
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -32,6 +33,16 @@ public class ExplorerDirPage extends ExplorerFileItem implements ExplorerPage {
         super(file, parent);
     }
 
+    @Nullable
+    public static ExplorerDirPage createRoot(String path) {
+        return new ExplorerDirPage(path, null);
+    }
+
+    @Nullable
+    public static ExplorerPage createRoot(@NonNull File directory) {
+        return new ExplorerDirPage(directory, null);
+    }
+
     public void copyChildren(@NonNull ExplorerPage g) {
         ensureChildListWritable();
         mChildren.clear();
@@ -49,10 +60,10 @@ public class ExplorerDirPage extends ExplorerFileItem implements ExplorerPage {
         return new ExplorerDirPage(getFile().renameTo(newName), getParent());
     }
 
-    protected int indexOf(@NonNull ExplorerItem child){
+    protected int indexOf(@NonNull ExplorerItem child) {
         int i = 0;
-        for(ExplorerItem item : mChildren){
-            if(item.getPath().equals(child.getPath())){
+        for (ExplorerItem item : mChildren) {
+            if (item.getPath().equals(child.getPath())) {
                 return i;
             }
             i++;
@@ -71,7 +82,7 @@ public class ExplorerDirPage extends ExplorerFileItem implements ExplorerPage {
 
     public boolean removeChild(@NonNull ExplorerItem item) {
         int i = indexOf(item);
-        if(i < 0){
+        if (i < 0) {
             return false;
         }
         mChildren.remove(i);
@@ -100,15 +111,5 @@ public class ExplorerDirPage extends ExplorerFileItem implements ExplorerPage {
     @Override
     public Spliterator<ExplorerItem> spliterator() {
         return mChildren.spliterator();
-    }
-
-    @Nullable
-    public static ExplorerDirPage createRoot(String path){
-        return new ExplorerDirPage(path, null);
-    }
-
-    @Nullable
-    public static ExplorerPage createRoot(@NonNull File directory) {
-        return new ExplorerDirPage(directory, null);
     }
 }

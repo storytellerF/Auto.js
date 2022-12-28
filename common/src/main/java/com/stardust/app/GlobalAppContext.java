@@ -6,10 +6,10 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import android.widget.Toast;
 
 /**
  * Created by Stardust on 2018/3/22.

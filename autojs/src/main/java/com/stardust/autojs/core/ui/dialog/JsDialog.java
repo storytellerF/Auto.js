@@ -11,12 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.annotation.UiThread;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -35,6 +29,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.UiThread;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -66,6 +66,10 @@ public class JsDialog {
         mUiHandler = uiHandler;
     }
 
+    public static int defaultMaxListeners() {
+        return EventEmitter.defaultMaxListeners();
+    }
+
     @NonNull
     public JsDialog show() {
         checkWindowType();
@@ -82,7 +86,7 @@ public class JsDialog {
         Context context = mDialog.getContext();
         if (!DialogUtils.isActivityContext(context)) {
             Window window = mDialog.getWindow();
-            if (window != null){
+            if (window != null) {
                 int type;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -112,6 +116,14 @@ public class JsDialog {
         return getCurrentProgress();
     }
 
+    public void setProgress(int progress) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            mDialog.setProgress(progress);
+        } else {
+            mUiHandler.post(() -> mDialog.setProgress(progress));
+        }
+    }
+
     @NonNull
     public String getActionButton(@NonNull String action) {
         return getActionButton(getDialogAction(action)).getText().toString();
@@ -124,7 +136,6 @@ public class JsDialog {
             mUiHandler.post(() -> setActionButton(getDialogAction(action), text));
         }
     }
-
 
     public MaterialDialog.Builder getBuilder() {
         return mDialog.getBuilder();
@@ -183,6 +194,16 @@ public class JsDialog {
     @Nullable
     public TextView getContentView() {
         return mDialog.getContentView();
+    }
+
+    @Deprecated
+    public void setContentView(int layoutResID) throws IllegalAccessError {
+        mDialog.setContentView(layoutResID);
+    }
+
+    @Deprecated
+    public void setContentView(@NonNull View view) throws IllegalAccessError {
+        mDialog.setContentView(view);
     }
 
     @Nullable
@@ -338,24 +359,16 @@ public class JsDialog {
         }
     }
 
-    public void setProgress(int progress) {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            mDialog.setProgress(progress);
-        } else {
-            mUiHandler.post(() -> mDialog.setProgress(progress));
-        }
-    }
-
-    public void setMaxProgress(int max) {
-        mDialog.setMaxProgress(max);
-    }
-
     public boolean isIndeterminateProgress() {
         return mDialog.isIndeterminateProgress();
     }
 
     public int getMaxProgress() {
         return mDialog.getMaxProgress();
+    }
+
+    public void setMaxProgress(int max) {
+        mDialog.setMaxProgress(max);
     }
 
     public void setProgressPercentFormat(NumberFormat format) {
@@ -374,14 +387,14 @@ public class JsDialog {
         return mDialog.getSelectedIndex();
     }
 
-    @Nullable
-    public Integer[] getSelectedIndices() {
-        return mDialog.getSelectedIndices();
-    }
-
     @UiThread
     public void setSelectedIndex(int index) {
         mDialog.setSelectedIndex(index);
+    }
+
+    @Nullable
+    public Integer[] getSelectedIndices() {
+        return mDialog.getSelectedIndices();
     }
 
     @UiThread
@@ -422,16 +435,6 @@ public class JsDialog {
     }
 
     @Deprecated
-    public void setContentView(int layoutResID) throws IllegalAccessError {
-        mDialog.setContentView(layoutResID);
-    }
-
-    @Deprecated
-    public void setContentView(@NonNull View view) throws IllegalAccessError {
-        mDialog.setContentView(view);
-    }
-
-    @Deprecated
     public void setContentView(@NonNull View view, ViewGroup.LayoutParams params) throws IllegalAccessError {
         mDialog.setContentView(view, params);
     }
@@ -444,12 +447,12 @@ public class JsDialog {
         return mDialog.getActionBar();
     }
 
-    public void setOwnerActivity(@NonNull Activity activity) {
-        mDialog.setOwnerActivity(activity);
-    }
-
     public Activity getOwnerActivity() {
         return mDialog.getOwnerActivity();
+    }
+
+    public void setOwnerActivity(@NonNull Activity activity) {
+        mDialog.setOwnerActivity(activity);
     }
 
     public boolean isShowing() {
@@ -725,12 +728,12 @@ public class JsDialog {
         mDialog.setDismissMessage(msg);
     }
 
-    public void setVolumeControlStream(int streamType) {
-        mDialog.setVolumeControlStream(streamType);
-    }
-
     public int getVolumeControlStream() {
         return mDialog.getVolumeControlStream();
+    }
+
+    public void setVolumeControlStream(int streamType) {
+        mDialog.setVolumeControlStream(streamType);
     }
 
     public void setOnKeyListener(@Nullable DialogInterface.OnKeyListener onKeyListener) {
@@ -805,18 +808,14 @@ public class JsDialog {
         return this;
     }
 
-    @NonNull
-    public JsDialog setMaxListeners(int n) {
-        mEmitter.setMaxListeners(n);
-        return this;
-    }
-
     public int getMaxListeners() {
         return mEmitter.getMaxListeners();
     }
 
-    public static int defaultMaxListeners() {
-        return EventEmitter.defaultMaxListeners();
+    @NonNull
+    public JsDialog setMaxListeners(int n) {
+        mEmitter.setMaxListeners(n);
+        return this;
     }
 
 

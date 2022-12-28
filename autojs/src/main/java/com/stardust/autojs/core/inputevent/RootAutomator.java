@@ -1,13 +1,28 @@
 package com.stardust.autojs.core.inputevent;
 
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_POSITION_X;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_POSITION_Y;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_SLOT;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_TOUCH_MAJOR;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_TRACKING_ID;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_WIDTH_MAJOR;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.BTN_TOUCH;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.DOWN;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.EV_ABS;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.EV_KEY;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.EV_SYN;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.SYN_MT_REPORT;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.SYN_REPORT;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.UP;
+
 import android.content.Context;
 import android.os.SystemClock;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.ViewConfiguration;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.stardust.autojs.core.util.Shell;
 import com.stardust.autojs.engine.RootAutomatorEngine;
@@ -18,34 +33,30 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.stardust.autojs.core.inputevent.InputEventCodes.*;
-
 /**
  * Created by Stardust on 2017/7/16.
  */
 
 public class RootAutomator implements Shell.Callback {
 
-    private static final String LOG_TAG = "RootAutomator";
-
     public static final byte DATA_TYPE_SLEEP = 0;
     public static final byte DATA_TYPE_EVENT = 1;
     public static final byte DATA_TYPE_EVENT_SYNC_REPORT = 2;
     public static final byte DATA_TYPE_EVENT_TOUCH_X = 3;
     public static final byte DATA_TYPE_EVENT_TOUCH_Y = 4;
-
-    @Nullable
-    private ScreenMetrics mScreenMetrics;
+    private static final String LOG_TAG = "RootAutomator";
     @NonNull
     private final Shell mShell;
-    private int mDefaultId = 0;
     private final AtomicInteger mTracingId = new AtomicInteger(1);
     private final SparseIntArray mSlotIdMap = new SparseIntArray();
     private final Object mReadyLock = new Object();
-    private volatile boolean mReady = false;
     private final Context mContext;
     @Nullable
     private final String mInputDevice;
+    @Nullable
+    private ScreenMetrics mScreenMetrics;
+    private int mDefaultId = 0;
+    private volatile boolean mReady = false;
 
     public RootAutomator(Context context, @Nullable String inputDevice, boolean waitForReady) throws IOException {
         mContext = context;
@@ -61,6 +72,9 @@ public class RootAutomator implements Shell.Callback {
         }
     }
 
+    private static float lerp(float a, float b, float alpha) {
+        return (b - a) * alpha + a;
+    }
 
     public void sendEvent(int type, int code, int value) throws IOException {
         waitForReady();
@@ -261,10 +275,6 @@ public class RootAutomator implements Shell.Callback {
             exit();
             throw new ScriptInterruptedException();
         }
-    }
-
-    private static float lerp(float a, float b, float alpha) {
-        return (b - a) * alpha + a;
     }
 
     public void exit() throws IOException {

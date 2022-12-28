@@ -1,4 +1,3 @@
-
 package org.autojs.autojs.network.entity.topic;
 
 import com.google.gson.annotations.SerializedName;

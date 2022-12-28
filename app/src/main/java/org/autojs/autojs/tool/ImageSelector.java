@@ -17,19 +17,13 @@ import org.autojs.autojs.R;
 
 public class ImageSelector implements OnActivityResultDelegate {
 
-    public interface ImageSelectorCallback {
-        void onImageSelected(ImageSelector selector, Uri uri);
-    }
-
     private static final String TAG = ImageSelector.class.getSimpleName();
-
     private static final int REQUEST_CODE = "LOVE HONMUA".hashCode() >> 16;
     private final Activity mActivity;
     private final ImageSelectorCallback mCallback;
-    private boolean mDisposable;
     @NonNull
     private final Mediator mMediator;
-
+    private boolean mDisposable;
     public ImageSelector(Activity activity, @NonNull OnActivityResultDelegate.Mediator mediator, ImageSelectorCallback callback) {
         mediator.addDelegate(REQUEST_CODE, this);
         mActivity = activity;
@@ -39,7 +33,7 @@ public class ImageSelector implements OnActivityResultDelegate {
 
     public void select() {
         mActivity.startActivityForResult(Intent.createChooser(
-                new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), mActivity.getString(R.string.text_select_image)),
+                        new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), mActivity.getString(R.string.text_select_image)),
                 REQUEST_CODE);
     }
 
@@ -60,6 +54,10 @@ public class ImageSelector implements OnActivityResultDelegate {
         }
         mCallback.onImageSelected(this, data.getData());
 
+    }
+
+    public interface ImageSelectorCallback {
+        void onImageSelected(ImageSelector selector, Uri uri);
     }
 
 

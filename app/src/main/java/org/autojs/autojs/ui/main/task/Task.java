@@ -1,6 +1,9 @@
 package org.autojs.autojs.ui.main.task;
 
-import android.content.Intent;
+import static org.autojs.autojs.ui.timing.TimedTaskSettingActivity.ACTION_DESC_MAP;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.engine.ScriptEngine;
@@ -8,21 +11,12 @@ import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.autojs.script.AutoFileSource;
 import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.pio.PFiles;
-import com.stardust.util.MapBuilder;
 
 import org.autojs.autojs.R;
 import org.autojs.autojs.timing.IntentTask;
 import org.autojs.autojs.timing.TimedTask;
 import org.autojs.autojs.timing.TimedTaskManager;
-
 import org.joda.time.format.DateTimeFormat;
-
-import java.util.Map;
-
-import static org.autojs.autojs.ui.timing.TimedTaskSettingActivity.ACTION_DESC_MAP;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2017/11/28.
@@ -70,6 +64,10 @@ public abstract class Task {
             return mTimedTask;
         }
 
+        public void setTimedTask(TimedTask timedTask) {
+            mTimedTask = timedTask;
+        }
+
         @NonNull
         @Override
         public String getName() {
@@ -85,7 +83,7 @@ public abstract class Task {
             } else {
                 assert mIntentTask != null;
                 Integer desc = ACTION_DESC_MAP.get(mIntentTask.getAction());
-                if(desc != null){
+                if (desc != null) {
                     return GlobalAppContext.getString(desc);
                 }
                 return mIntentTask.getAction();
@@ -120,16 +118,12 @@ public abstract class Task {
             }
         }
 
-        public void setTimedTask(TimedTask timedTask) {
-            mTimedTask = timedTask;
-        }
-
         public void setIntentTask(IntentTask intentTask) {
             mIntentTask = intentTask;
         }
 
         public long getId() {
-            if(mTimedTask != null)
+            if (mTimedTask != null)
                 return mTimedTask.getId();
             return mIntentTask.getId();
         }

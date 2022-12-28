@@ -9,12 +9,11 @@ import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.core.inputevent.InputEventObserver;
 import com.stardust.autojs.core.inputevent.ShellKeyObserver;
 import com.stardust.event.EventDispatcher;
-import org.autojs.autojs.Pref;
-import org.autojs.autojs.autojs.AutoJs;
 import com.stardust.view.accessibility.AccessibilityService;
 import com.stardust.view.accessibility.OnKeyListener;
 
-import javax.microedition.khronos.opengles.GL;
+import org.autojs.autojs.Pref;
+import org.autojs.autojs.autojs.AutoJs;
 
 /**
  * Created by Stardust on 2017/8/14.
@@ -23,10 +22,6 @@ import javax.microedition.khronos.opengles.GL;
 public class GlobalKeyObserver implements OnKeyListener, ShellKeyObserver.KeyListener {
 
 
-    public interface OnVolumeDownListener {
-        void onVolumeDown();
-    }
-
     private static final EventDispatcher.Event<OnVolumeDownListener> VOLUME_DOWN_EVENT = OnVolumeDownListener::onVolumeDown;
     private static final String LOG_TAG = "GlobalKeyObserver";
     private static final long EVENT_TIMEOUT = 200;
@@ -34,7 +29,6 @@ public class GlobalKeyObserver implements OnKeyListener, ShellKeyObserver.KeyLis
     private final EventDispatcher<OnVolumeDownListener> mVolumeDownEventDispatcher = new EventDispatcher<>();
     private boolean mVolumeDownFromShell, mVolumeDownFromAccessibility;
     private boolean mVolumeUpFromShell, mVolumeUpFromAccessibility;
-
     GlobalKeyObserver() {
         AccessibilityService.Companion.getStickOnKeyObserver()
                 .addListener(this);
@@ -95,7 +89,6 @@ public class GlobalKeyObserver implements OnKeyListener, ShellKeyObserver.KeyLis
         }
     }
 
-
     @Override
     public void onKeyDown(String keyName) {
 
@@ -118,5 +111,9 @@ public class GlobalKeyObserver implements OnKeyListener, ShellKeyObserver.KeyLis
             mVolumeDownFromShell = true;
             onVolumeDown();
         }
+    }
+
+    public interface OnVolumeDownListener {
+        void onVolumeDown();
     }
 }

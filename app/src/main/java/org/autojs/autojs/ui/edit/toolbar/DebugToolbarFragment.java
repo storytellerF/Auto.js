@@ -2,16 +2,16 @@ package org.autojs.autojs.ui.edit.toolbar;
 
 import android.os.Bundle;
 import android.os.Handler;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.autojs.rhino.debug.DebugCallback;
@@ -31,7 +31,6 @@ import org.autojs.autojs.ui.edit.debug.DebugBar;
 import org.autojs.autojs.ui.edit.debug.DebuggerSingleton;
 import org.autojs.autojs.ui.edit.debug.WatchingVariable;
 import org.autojs.autojs.ui.edit.editor.CodeEditor;
-import org.autojs.autojs.ui.edit.keyboard.FunctionsKeyboardHelper;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -43,11 +42,6 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
     private EditorView mEditorView;
     private boolean mCursorChangeFromUser = true;
     private Debugger mDebugger;
-    private Handler mHandler;
-    private String mCurrentEditorSourceUrl;
-    private String mInitialEditorSourceUrl;
-    private String mInitialEditorSource;
-
     private final RecyclerView.AdapterDataObserver mVariableChangeObserver = new RecyclerView.AdapterDataObserver() {
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -67,6 +61,10 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
             mDebugger.clearAllBreakpoints();
         }
     };
+    private Handler mHandler;
+    private String mCurrentEditorSourceUrl;
+    private String mInitialEditorSourceUrl;
+    private String mInitialEditorSource;
     private FragmentDebugToolbarBinding inflate;
 
     @NonNull
@@ -76,7 +74,7 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
             @NonNull
             @Override
             public DebugToolbarFragment build() {
-                DebugToolbarFragment searchToolbarFragment=new DebugToolbarFragment();
+                DebugToolbarFragment searchToolbarFragment = new DebugToolbarFragment();
                 searchToolbarFragment.setArguments(args);
                 return searchToolbarFragment;
             }
@@ -114,7 +112,7 @@ public class DebugToolbarFragment extends ToolbarFragment implements DebugCallba
             mEditorView.exitDebugging();
         }
         Log.d(LOG_TAG, "onViewCreated");
-        Bandage.bind(this,view);
+        Bandage.bind(this, view);
 
     }
 

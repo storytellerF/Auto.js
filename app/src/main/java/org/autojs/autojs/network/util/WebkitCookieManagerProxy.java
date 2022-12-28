@@ -25,9 +25,8 @@ import okhttp3.HttpUrl;
  */
 
 public class WebkitCookieManagerProxy extends CookieManager implements CookieJar {
-    private final android.webkit.CookieManager webkitCookieManager;
-
     private static final String TAG = WebkitCookieManagerProxy.class.getSimpleName();
+    private final android.webkit.CookieManager webkitCookieManager;
 
     public WebkitCookieManagerProxy() {
         this(null, null);

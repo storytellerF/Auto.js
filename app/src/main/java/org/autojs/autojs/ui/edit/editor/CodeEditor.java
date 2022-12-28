@@ -2,7 +2,6 @@ package org.autojs.autojs.ui.edit.editor;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import com.google.android.material.snackbar.Snackbar;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.widget.Toast;
@@ -11,13 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.stardust.autojs.script.JsBeautifier;
+import com.stardust.util.ClipboardUtil;
+import com.stardust.util.TextUtils;
 
 import org.autojs.autojs.R;
 import org.autojs.autojs.ui.edit.theme.Theme;
-
-import com.stardust.util.ClipboardUtil;
-import com.stardust.util.TextUtils;
 
 import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
@@ -45,19 +44,6 @@ import io.reactivex.Observable;
  */
 public class CodeEditor extends HVScrollView {
 
-    public static class CheckedPatternSyntaxException extends Exception {
-        public CheckedPatternSyntaxException(PatternSyntaxException cause) {
-            super(cause);
-        }
-    }
-
-    public interface CursorChangeCallback {
-
-        void onCursorChange(String line, int ch);
-
-    }
-
-
     private CodeEditText mCodeEditText;
     private TextViewUndoRedo mTextViewRedoUndo;
     private JavaScriptHighlighter mJavaScriptHighlighter;
@@ -65,7 +51,6 @@ public class CodeEditor extends HVScrollView {
     private JsBeautifier mJsBeautifier;
     @Nullable
     private MaterialDialog mProcessDialog;
-
     @NonNull
     private CharSequence mReplacement = "";
     @Nullable
@@ -73,17 +58,14 @@ public class CodeEditor extends HVScrollView {
     @Nullable
     private Matcher mMatcher;
     private int mFoundIndex = -1;
-
     public CodeEditor(Context context) {
         super(context);
         init();
     }
-
     public CodeEditor(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
-
 
     private void init() {
         //setFillViewport(true);
@@ -110,7 +92,6 @@ public class CodeEditor extends HVScrollView {
         ClipboardUtil.setClip(getContext(), lineText);
         Snackbar.make(this, R.string.text_already_copy_to_clip, Snackbar.LENGTH_SHORT).show();
     }
-
 
     public void deleteLine() {
         int line = LayoutHelper.getLineOfChar(mCodeEditText.getLayout(), mCodeEditText.getSelectionStart());
@@ -214,10 +195,6 @@ public class CodeEditor extends HVScrollView {
 
     }
 
-    public void setText(String text) {
-        mCodeEditText.setText(text);
-    }
-
     public void addCursorChangeCallback(CursorChangeCallback callback) {
         mCodeEditText.addCursorChangeCallback(callback);
     }
@@ -225,7 +202,6 @@ public class CodeEditor extends HVScrollView {
     public boolean removeCursorChangeCallback(CursorChangeCallback callback) {
         return mCodeEditText.removeCursorChangeCallback(callback);
     }
-
 
     public void undo() {
         mTextViewRedoUndo.undo();
@@ -239,7 +215,7 @@ public class CodeEditor extends HVScrollView {
         if (usingRegex) {
             try {
                 mMatcher = Pattern.compile(keywords).matcher(mCodeEditText.getText());
-            }catch (PatternSyntaxException e){
+            } catch (PatternSyntaxException e) {
                 throw new CheckedPatternSyntaxException(e);
             }
             mKeywords = null;
@@ -262,7 +238,7 @@ public class CodeEditor extends HVScrollView {
         String text = mCodeEditText.getText().toString();
         try {
             text = text.replaceAll(keywords, replacement);
-        }catch (PatternSyntaxException e){
+        } catch (PatternSyntaxException e) {
             throw new CheckedPatternSyntaxException(e);
         }
         setText(text);
@@ -332,7 +308,6 @@ public class CodeEditor extends HVScrollView {
         });
     }
 
-
     public void insert(String insertText) {
         int selection = Math.max(mCodeEditText.getSelectionStart(), 0);
         mCodeEditText.getText().insert(selection, insertText);
@@ -352,6 +327,10 @@ public class CodeEditor extends HVScrollView {
         return mCodeEditText.getText().toString();
     }
 
+    public void setText(String text) {
+        mCodeEditText.setText(text);
+    }
+
     @NonNull
     public Observable<String> getSelection() {
         int s = mCodeEditText.getSelectionStart();
@@ -361,7 +340,6 @@ public class CodeEditor extends HVScrollView {
         }
         return Observable.just(mCodeEditText.getText().toString().substring(s, e));
     }
-
 
     public void markTextAsSaved() {
         mTextViewRedoUndo.markTextAsUnchanged();
@@ -396,7 +374,7 @@ public class CodeEditor extends HVScrollView {
         mCodeEditText.removeAllBreakpoints();
     }
 
-    public void destroy(){
+    public void destroy() {
         mJavaScriptHighlighter.shutdown();
         mJsBeautifier.shutdown();
     }
@@ -413,6 +391,24 @@ public class CodeEditor extends HVScrollView {
         super.onDraw(canvas);
     }
 
+    public interface CursorChangeCallback {
+
+        void onCursorChange(String line, int ch);
+
+    }
+
+    public interface BreakpointChangeListener {
+        void onBreakpointChange(int line, boolean enabled);
+
+        void onAllBreakpointRemoved(int count);
+    }
+
+    public static class CheckedPatternSyntaxException extends Exception {
+        public CheckedPatternSyntaxException(PatternSyntaxException cause) {
+            super(cause);
+        }
+    }
+
     public static class Breakpoint {
 
         public int line;
@@ -421,11 +417,5 @@ public class CodeEditor extends HVScrollView {
         public Breakpoint(int line) {
             this.line = line;
         }
-    }
-
-    public interface BreakpointChangeListener {
-        void onBreakpointChange(int line, boolean enabled);
-
-        void onAllBreakpointRemoved(int count);
     }
 }

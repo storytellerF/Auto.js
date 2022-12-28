@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:paddingLeft="16dp"
-              android:paddingRight="16dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:text="0"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -30,7 +30,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/hint_loop_times"
         android:textColor="#77000000"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:text="1.0"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:text="0.0"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,5 +69,5 @@
         android:layout_marginBottom="8dp"
         android:text="@string/hint_loop_delay"
         android:textColor="#77000000"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 </LinearLayout>

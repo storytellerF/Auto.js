@@ -1,7 +1,6 @@
 package org.autojs.autojs.model.script;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.stardust.autojs.script.AutoFileSource;
 import com.stardust.autojs.script.JavaScriptFileSource;

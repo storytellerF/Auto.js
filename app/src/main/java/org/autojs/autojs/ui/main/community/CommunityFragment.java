@@ -28,29 +28,9 @@ import java.net.URLEncoder;
  */
 public class CommunityFragment extends ViewPagerFragment implements BackPressedHandler {
     private static final String TAG = "CommunityFragment";
-
-    private FragmentCommunityBinding inflate;
-
-    public static class LoadUrl {
-        public final String url;
-
-        public LoadUrl(String url) {
-            this.url = url;
-        }
-
-    }
-
-    public static class VisibilityChange {
-        public final boolean visible;
-
-        public VisibilityChange(boolean visible) {
-            this.visible = visible;
-        }
-    }
-
     private static final String POSTS_PAGE_PATTERN = "[\\S\\s]+/topic/[0-9]+/[\\S\\s]+";
-
     WebView mWebView;
+    private FragmentCommunityBinding inflate;
 
     public CommunityFragment() {
         super(0);
@@ -59,7 +39,7 @@ public class CommunityFragment extends ViewPagerFragment implements BackPressedH
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         inflate = FragmentCommunityBinding.inflate(getLayoutInflater());
         return inflate.getRoot();
     }
@@ -76,6 +56,7 @@ public class CommunityFragment extends ViewPagerFragment implements BackPressedH
 
         EventBus.getDefault().register(this);
     }
+
     void setUpViews() {
         Log.d(TAG, "setUpViews() called");
         mWebView = inflate.ewebView.getWebView();
@@ -105,7 +86,6 @@ public class CommunityFragment extends ViewPagerFragment implements BackPressedH
         return false;
     }
 
-
     @Override
     protected void onFabClick(FloatingActionButton fab) {
         if (isInPostsPage()) {
@@ -133,7 +113,7 @@ public class CommunityFragment extends ViewPagerFragment implements BackPressedH
 
     private boolean isInPostsPage() {
         String url = mWebView.getUrl();
-        return url != null &&  url.matches(POSTS_PAGE_PATTERN);
+        return url != null && url.matches(POSTS_PAGE_PATTERN);
     }
 
     @Override
@@ -152,5 +132,22 @@ public class CommunityFragment extends ViewPagerFragment implements BackPressedH
     public void onPageHide() {
         super.onPageHide();
         EventBus.getDefault().post(new VisibilityChange(false));
+    }
+
+    public static class LoadUrl {
+        public final String url;
+
+        public LoadUrl(String url) {
+            this.url = url;
+        }
+
+    }
+
+    public static class VisibilityChange {
+        public final boolean visible;
+
+        public VisibilityChange(boolean visible) {
+            this.visible = visible;
+        }
     }
 }

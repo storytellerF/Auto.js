@@ -2,6 +2,7 @@ package com.stardust.autojs.core.looper;
 
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,20 +22,29 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TimerThread extends ThreadCompat {
 
     private static final ConcurrentHashMap<Thread, Timer> sTimerMap = new ConcurrentHashMap<>();
-
-    @Nullable
-    private Timer mTimer;
     private final VolatileBox<Long> mMaxCallbackUptimeMillisForAllThreads;
     private final ScriptRuntime mRuntime;
     private final Runnable mTarget;
-    private boolean mRunning = false;
     private final Object mRunningLock = new Object();
+    @Nullable
+    private Timer mTimer;
+    private boolean mRunning = false;
 
     public TimerThread(ScriptRuntime runtime, VolatileBox<Long> maxCallbackUptimeMillisForAllThreads, Runnable target) {
         super(target);
         mRuntime = runtime;
         mTarget = target;
         mMaxCallbackUptimeMillisForAllThreads = maxCallbackUptimeMillisForAllThreads;
+    }
+
+    @Nullable
+    public static Timer getTimerForThread(@NonNull Thread thread) {
+        return sTimerMap.get(thread);
+    }
+
+    @Nullable
+    public static Timer getTimerForCurrentThread() {
+        return getTimerForThread(Thread.currentThread());
     }
 
     @Override
@@ -75,16 +85,6 @@ public class TimerThread extends ThreadCompat {
     @CallSuper
     protected void onExit() {
         mRuntime.loopers.notifyThreadExit(this);
-    }
-
-    @Nullable
-    public static Timer getTimerForThread(@NonNull Thread thread) {
-        return sTimerMap.get(thread);
-    }
-
-    @Nullable
-    public static Timer getTimerForCurrentThread() {
-        return getTimerForThread(Thread.currentThread());
     }
 
     public int setTimeout(Object callback, long delay, Object... args) {

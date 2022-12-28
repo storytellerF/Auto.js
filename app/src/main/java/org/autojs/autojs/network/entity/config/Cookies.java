@@ -19,36 +19,36 @@ public class Cookies {
     @SerializedName("enabled")
     private boolean enabled;
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
     public String getLink() {
         return link;
     }
 
-    public void setDismiss(String dismiss) {
-        this.dismiss = dismiss;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getDismiss() {
         return dismiss;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setDismiss(String dismiss) {
+        this.dismiss = dismiss;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @NonNull

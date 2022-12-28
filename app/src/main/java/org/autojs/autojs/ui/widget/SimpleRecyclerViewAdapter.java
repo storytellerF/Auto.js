@@ -1,10 +1,11 @@
 package org.autojs.autojs.ui.widget;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,15 +17,9 @@ import java.util.List;
 
 public class SimpleRecyclerViewAdapter<M, VH extends BindableViewHolder<M>> extends RecyclerView.Adapter<VH> {
 
-    public interface ViewHolderFactory<VH> {
-        @NonNull
-        VH create(View itemView);
-    }
-
     private final List<M> mDataList = new ArrayList<>();
     private final int mLayoutResource;
     private final ViewHolderFactory<VH> mVHViewHolderFactory;
-
     public SimpleRecyclerViewAdapter(int layoutResource, @NonNull List<M> dataList, ViewHolderFactory<VH> VHViewHolderFactory) {
         mLayoutResource = layoutResource;
         mVHViewHolderFactory = VHViewHolderFactory;
@@ -55,5 +50,10 @@ public class SimpleRecyclerViewAdapter<M, VH extends BindableViewHolder<M>> exte
     public void add(M m) {
         mDataList.add(m);
         notifyItemInserted(mDataList.size() - 1);
+    }
+
+    public interface ViewHolderFactory<VH> {
+        @NonNull
+        VH create(View itemView);
     }
 }

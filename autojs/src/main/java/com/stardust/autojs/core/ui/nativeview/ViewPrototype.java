@@ -3,12 +3,11 @@ package com.stardust.autojs.core.ui.nativeview;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Looper;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
+
+import androidx.annotation.NonNull;
 
 import com.stardust.autojs.core.eventloop.EventEmitter;
 import com.stardust.autojs.core.ui.BaseEvent;
@@ -39,6 +38,10 @@ public class ViewPrototype {
         mScope = scope;
     }
 
+    public static int defaultMaxListeners() {
+        return EventEmitter.defaultMaxListeners();
+    }
+
     public ViewAttributes getViewAttributes() {
         return mViewAttributes;
     }
@@ -58,12 +61,12 @@ public class ViewPrototype {
         }
     }
 
-    public void setWidget(Object widget) {
-        mWidget = widget;
-    }
-
     public Object getWidget() {
         return mWidget;
+    }
+
+    public void setWidget(Object widget) {
+        mWidget = widget;
     }
 
     public void click() {
@@ -246,10 +249,6 @@ public class ViewPrototype {
 
     public int getMaxListeners() {
         return mEventEmitter.getMaxListeners();
-    }
-
-    public static int defaultMaxListeners() {
-        return EventEmitter.defaultMaxListeners();
     }
 
 }

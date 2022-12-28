@@ -1,17 +1,17 @@
 package org.autojs.autojs.ui.main.drawer;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import org.autojs.autojs.R;
 import org.autojs.autojs.databinding.DrawerMenuItemBinding;
 import org.autojs.autojs.ui.widget.BindableViewHolder;
 import org.autojs.autojs.ui.widget.SwitchCompat;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by Stardust on 2017/12/10.
@@ -20,12 +20,11 @@ import androidx.annotation.NonNull;
 public class DrawerMenuItemViewHolder extends BindableViewHolder<DrawerMenuItem> {
 
     private static final long CLICK_TIMEOUT = 1000;
-
+    @NonNull
+    private final DrawerMenuItemBinding bind;
     private boolean mAntiShake;
     private long mLastClickMillis;
     private DrawerMenuItem mDrawerMenuItem;
-    @NonNull
-    private final DrawerMenuItemBinding bind;
 
     public DrawerMenuItemViewHolder(@NonNull View itemView) {
         super(itemView);

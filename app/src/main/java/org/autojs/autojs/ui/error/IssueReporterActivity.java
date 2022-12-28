@@ -13,6 +13,11 @@ import com.heinrichreimersoftware.androidissuereporter.model.github.GithubTarget
 
 public class IssueReporterActivity extends AbstractIssueReporterActivity {
 
+    @NonNull
+    public static String decode(@NonNull String str) {
+        return new String(Base64.decode(str.getBytes(), Base64.DEFAULT));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +30,6 @@ public class IssueReporterActivity extends AbstractIssueReporterActivity {
     @Override
     protected GithubTarget getTarget() {
         return new GithubTarget("hyb1996-guest", "auto.js-feedbacks");
-    }
-
-
-    @NonNull
-    public static String decode(@NonNull String str) {
-        return new String(Base64.decode(str.getBytes(), Base64.DEFAULT));
     }
 
 

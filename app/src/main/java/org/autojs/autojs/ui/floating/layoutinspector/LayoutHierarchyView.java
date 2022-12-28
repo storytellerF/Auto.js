@@ -16,9 +16,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.autojs.autojs.R;
-import com.stardust.view.accessibility.NodeInfo;
 import com.stardust.util.ViewUtil;
+import com.stardust.view.accessibility.NodeInfo;
+
+import org.autojs.autojs.R;
 import org.autojs.autojs.ui.widget.LevelBeamView;
 
 import java.util.Collections;
@@ -40,10 +41,7 @@ import pl.openrnd.multilevellistview.OnItemClickListener;
 
 public class LayoutHierarchyView extends MultiLevelListView {
 
-    public interface OnItemLongClickListener {
-        void onItemLongClick(View view, NodeInfo nodeInfo);
-    }
-
+    private final Set<NodeInfo> mInitiallyExpandedNodes = new HashSet<>();
     private Adapter mAdapter;
     private OnItemLongClickListener mOnItemLongClickListener;
     private final AdapterView.OnItemLongClickListener mOnItemLongClickListenerProxy = new AdapterView.OnItemLongClickListener() {
@@ -69,8 +67,6 @@ public class LayoutHierarchyView extends MultiLevelListView {
     private boolean mShowClickedNodeBounds;
     private int mClickedColor = 0x99b2b3b7;
     private NodeInfo mRootNode;
-    private final Set<NodeInfo> mInitiallyExpandedNodes = new HashSet<>();
-
     public LayoutHierarchyView(Context context) {
         super(context);
         init();
@@ -188,6 +184,10 @@ public class LayoutHierarchyView extends MultiLevelListView {
             stack.pop();
         }
         return found;
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, NodeInfo nodeInfo);
     }
 
     private class ViewHolder {

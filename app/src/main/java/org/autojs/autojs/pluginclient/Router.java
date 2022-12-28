@@ -18,9 +18,9 @@ import java.util.Map;
 public class Router implements Handler {
 
     private static final String LOG_TAG = "Router";
+    private final String mKey;
     @NonNull
     protected Map<String, Handler> mHandlerMap = new HashMap<>();
-    private final String mKey;
 
     public Router(String key) {
         mKey = key;

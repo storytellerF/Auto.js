@@ -1,10 +1,10 @@
 package com.stardust.autojs.core.inputevent;
 
 import android.content.Context;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import android.text.TextUtils;
 
 import com.stardust.autojs.core.record.inputevent.EventFormatException;
 import com.stardust.autojs.core.util.Shell;
@@ -19,62 +19,10 @@ import java.util.regex.Pattern;
 
 public class InputEventObserver {
 
-    public static class InputEvent {
-        static final Pattern PATTERN = Pattern.compile("^\\[([^\\]]*)\\]\\s+([^:]*):\\s+([^\\s]*)\\s+([^\\s]*)\\s+([^\\s]*)\\s*$");
-
-        @Nullable
-        static InputEvent parse(@NonNull String eventStr) {
-            Matcher matcher = PATTERN.matcher(eventStr);
-            if (!matcher.matches()) {
-                throw new EventFormatException(eventStr);
-            }
-            double time;
-            try {
-                time = Double.parseDouble(matcher.group(1));
-            } catch (NumberFormatException e) {
-                throw new EventFormatException(eventStr, e);
-            }
-            return new InputEvent(time, matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5));
-        }
-
-
-        public double time;
-        public String device;
-        public String type;
-        public String code;
-        public String value;
-
-        public InputEvent(double time, String device, String type, String code, String value) {
-            this.time = time;
-            this.device = device;
-            this.type = type;
-            this.code = code;
-            this.value = value;
-        }
-
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "Event{" +
-                    "time=" + time +
-                    ", device='" + device + '\'' +
-                    ", type='" + type + '\'' +
-                    ", code='" + code + '\'' +
-                    ", value='" + value + '\'' +
-                    '}';
-        }
-    }
-
-    public interface InputEventListener {
-        void onInputEvent(@NonNull InputEvent e);
-    }
-
     private static InputEventObserver sGlobal;
     private final CopyOnWriteArrayList<InputEventListener> mInputEventListeners = new CopyOnWriteArrayList<>();
     private final Context mContext;
     private Shell mShell;
-
     public InputEventObserver(Context context) {
         mContext = context;
     }
@@ -138,9 +86,55 @@ public class InputEventObserver {
         return mInputEventListeners.remove(listener);
     }
 
-
     public void recycle() {
         mShell.exit();
+    }
+
+    public interface InputEventListener {
+        void onInputEvent(@NonNull InputEvent e);
+    }
+
+    public static class InputEvent {
+        static final Pattern PATTERN = Pattern.compile("^\\[([^\\]]*)\\]\\s+([^:]*):\\s+([^\\s]*)\\s+([^\\s]*)\\s+([^\\s]*)\\s*$");
+        public double time;
+        public String device;
+        public String type;
+        public String code;
+        public String value;
+        public InputEvent(double time, String device, String type, String code, String value) {
+            this.time = time;
+            this.device = device;
+            this.type = type;
+            this.code = code;
+            this.value = value;
+        }
+
+        @Nullable
+        static InputEvent parse(@NonNull String eventStr) {
+            Matcher matcher = PATTERN.matcher(eventStr);
+            if (!matcher.matches()) {
+                throw new EventFormatException(eventStr);
+            }
+            double time;
+            try {
+                time = Double.parseDouble(matcher.group(1));
+            } catch (NumberFormatException e) {
+                throw new EventFormatException(eventStr, e);
+            }
+            return new InputEvent(time, matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5));
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "Event{" +
+                    "time=" + time +
+                    ", device='" + device + '\'' +
+                    ", type='" + type + '\'' +
+                    ", code='" + code + '\'' +
+                    ", value='" + value + '\'' +
+                    '}';
+        }
     }
 
 

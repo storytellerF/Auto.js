@@ -10,15 +10,11 @@ import java.util.List;
 
 public class ExplorerSorter {
 
-    private static final Collator collator = Collator.getInstance();
-
-    public static final Comparator<ExplorerItem> NAME = (o1, o2) -> collator.compare(o2.getName(), o1.getName());
-
     public static final Comparator<ExplorerItem> DATE = (o1, o2) -> Long.compare(o1.lastModified(), o2.lastModified());
-
     public static final Comparator<ExplorerItem> TYPE = (o1, o2) -> o2.getType().compareTo(o1.getType());
-
     public static final Comparator<ExplorerItem> SIZE = (o1, o2) -> Long.compare(o2.getSize(), o1.getSize());
+    private static final Collator collator = Collator.getInstance();
+    public static final Comparator<ExplorerItem> NAME = (o1, o2) -> collator.compare(o2.getName(), o1.getName());
 
     public static void sort(@NonNull ExplorerItem[] items, @NonNull final Comparator<ExplorerItem> comparator, boolean ascending) {
         if (ascending) {

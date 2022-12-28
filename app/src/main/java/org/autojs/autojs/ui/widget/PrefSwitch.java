@@ -82,7 +82,7 @@ public class PrefSwitch extends SwitchCompat implements SharedPreferences.OnShar
             mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         }
-        if(mPrefKey != null){
+        if (mPrefKey != null) {
             setChecked(mSharedPreferences.getBoolean(mPrefKey, mDefaultChecked), false);
         }
     }

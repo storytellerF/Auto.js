@@ -5,8 +5,6 @@ package org.autojs.autojs.ui.edit.editor;
  * RESTRICTIONS OR ANY WARRANTY.
  */
 
-import java.util.LinkedList;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Handler;
@@ -19,42 +17,38 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.LinkedList;
+
 /**
  * A generic undo/redo implementation for TextViews.
  */
 public class TextViewUndoRedo {
 
     /**
-     * Is undo/redo being performed? This member signals if an undo/redo
-     * operation is currently being performed. Changes in the text during
-     * undo/redo are not recorded because it would mess up the undo history.
-     */
-    private boolean mIsUndoOrRedo = false;
-
-    /**
      * The edit history.
      */
     @NonNull
     private final EditHistory mEditHistory;
-
     /**
      * The change listener.
      */
     @NonNull
     private final EditTextChangeListener mChangeListener;
-
     /**
      * The edit text.
      */
     private final TextView mTextView;
-
-    private boolean mEnabled = true;
-
-    private int mInitialHistoryStackSize;
-
     private final Handler mHandler = new Handler();
-    private int mTextChangeId = 0;
     private final boolean mTextChanging = false;
+    /**
+     * Is undo/redo being performed? This member signals if an undo/redo
+     * operation is currently being performed. Changes in the text during
+     * undo/redo are not recorded because it would mess up the undo history.
+     */
+    private boolean mIsUndoOrRedo = false;
+    private boolean mEnabled = true;
+    private int mInitialHistoryStackSize;
+    private int mTextChangeId = 0;
 
     // =================================================================== //
 
@@ -85,7 +79,7 @@ public class TextViewUndoRedo {
         mIsUndoOrRedo = false;
     }
 
-    public boolean isTextChanged(){
+    public boolean isTextChanged() {
         return mInitialHistoryStackSize != mEditHistory.size();
     }
 
@@ -274,21 +268,19 @@ public class TextViewUndoRedo {
     private final class EditHistory {
 
         /**
+         * The list of edits in chronological order.
+         */
+        private final LinkedList<EditItem> mmHistory = new LinkedList<EditItem>();
+        /**
          * The position from which an EditItem will be retrieved when getNext()
          * is called. If getPrevious() has not been called, this has the same
          * value as mmHistory.size().
          */
         private int mmPosition = 0;
-
         /**
          * Maximum undo history size.
          */
         private int mmMaxHistorySize = -1;
-
-        /**
-         * The list of edits in chronological order.
-         */
-        private final LinkedList<EditItem> mmHistory = new LinkedList<EditItem>();
 
         /**
          * Clear history.
@@ -315,7 +307,7 @@ public class TextViewUndoRedo {
             }
         }
 
-        public int size(){
+        public int size() {
             return mmHistory.size();
         }
 

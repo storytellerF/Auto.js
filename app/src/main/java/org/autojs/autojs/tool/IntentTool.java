@@ -5,8 +5,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import org.autojs.autojs.R;
 import com.stardust.util.IntentUtil;
+
+import org.autojs.autojs.R;
 
 /**
  * Created by Stardust on 2017/4/12.
@@ -14,7 +15,7 @@ import com.stardust.util.IntentUtil;
 
 public class IntentTool {
 
-    public static void browse(@NonNull Context context, String url){
+    public static void browse(@NonNull Context context, String url) {
         if (!IntentUtil.browse(context, url)) {
             Toast.makeText(context, R.string.text_no_brower, Toast.LENGTH_SHORT).show();
         }

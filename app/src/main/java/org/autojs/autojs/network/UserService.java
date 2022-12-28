@@ -4,12 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+import com.stardust.util.Objects;
+
 import org.autojs.autojs.network.api.UserApi;
 import org.autojs.autojs.network.entity.notification.Notification;
 import org.autojs.autojs.network.entity.notification.NotificationResponse;
 import org.autojs.autojs.network.entity.user.User;
-import com.stardust.util.Objects;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
@@ -28,23 +28,13 @@ import retrofit2.Retrofit;
 
 public class UserService {
 
-    public static class LoginStateChange {
-        private final boolean mOnline;
-
-        public LoginStateChange(boolean online) {
-            mOnline = online;
-        }
-
-        public boolean isOnline() {
-            return mOnline;
-        }
-    }
-
     private static final UserService sInstance = new UserService();
     @NonNull
     private final Retrofit mRetrofit;
     @NonNull
     private final UserApi mUserApi;
+    @NonNull
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     @Nullable
     private volatile User mUser;
 
@@ -86,7 +76,7 @@ public class UserService {
     private void setUser(@Nullable User user) {
         User old = mUser;
         mUser = user;
-        if(mUser != null){
+        if (mUser != null) {
 //            CrashReport.setUserId(mUser.getUid());
         }
         if (!Objects.equals(old, mUser)) {
@@ -115,8 +105,7 @@ public class UserService {
         compositeDisposable.add(subscribe);
         return online;
     }
-    @NonNull
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
+
     public Observable<ResponseBody> logout() {
         return NodeBB.getInstance()
                 .getXCsrfToken()
@@ -133,12 +122,23 @@ public class UserService {
                 .doOnError(error -> setUser(null));
     }
 
-
     public Observable<List<Notification>> getNotifications() {
         return NodeBB.getInstance().getRetrofit()
                 .create(UserApi.class)
                 .getNotifitions()
                 .map(NotificationResponse::getNotifications);
+    }
+
+    public static class LoginStateChange {
+        private final boolean mOnline;
+
+        public LoginStateChange(boolean online) {
+            mOnline = online;
+        }
+
+        public boolean isOnline() {
+            return mOnline;
+        }
     }
 
 }

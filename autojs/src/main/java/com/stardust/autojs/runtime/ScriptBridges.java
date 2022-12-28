@@ -9,31 +9,14 @@ import androidx.annotation.NonNull;
 public class ScriptBridges {
 
 
-    public interface Bridges {
-
-        Object[] NO_ARGUMENTS = new Object[0];
-
-        @NonNull
-        Object call(Object func, Object target, Object arg);
-
-        @NonNull
-        Object toArray(Iterable o);
-
-        @NonNull
-        Object toString(Object obj);
-
-        @NonNull
-        Object asArray(Object obj);
-    }
-
     private Bridges mBridges;
-
-    public void setBridges(Bridges bridges) {
-        mBridges = bridges;
-    }
 
     public Bridges getBridges() {
         return mBridges;
+    }
+
+    public void setBridges(Bridges bridges) {
+        mBridges = bridges;
     }
 
     @NonNull
@@ -46,7 +29,6 @@ public class ScriptBridges {
         if (mBridges == null)
             throw new IllegalStateException("no bridges set");
     }
-
 
     @NonNull
     public Object toArray(Iterable c) {
@@ -64,5 +46,22 @@ public class ScriptBridges {
     public Object asArray(Object obj) {
         checkBridges();
         return mBridges.asArray(obj);
+    }
+
+    public interface Bridges {
+
+        Object[] NO_ARGUMENTS = new Object[0];
+
+        @NonNull
+        Object call(Object func, Object target, Object arg);
+
+        @NonNull
+        Object toArray(Iterable o);
+
+        @NonNull
+        Object toString(Object obj);
+
+        @NonNull
+        Object asArray(Object obj);
     }
 }

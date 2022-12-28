@@ -1,18 +1,11 @@
 package com.stardust.autojs.core.opencv;
 
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.os.Looper;
-import android.util.Log;
-
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.stardust.app.DialogUtils;
-
-import org.opencv.android.InstallCallbackInterface;
-import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
 
@@ -21,10 +14,6 @@ import org.opencv.android.OpenCVLoader;
  */
 
 public class OpenCVHelper {
-
-    public interface InitializeCallback {
-        void onInitFinish();
-    }
 
     private static final String LOG_TAG = "OpenCVHelper";
     private static boolean sInitialized = false;
@@ -65,5 +54,9 @@ public class OpenCVHelper {
             OpenCVLoader.initDebug();
             callback.onInitFinish();
         }
+    }
+
+    public interface InitializeCallback {
+        void onInitFinish();
     }
 }

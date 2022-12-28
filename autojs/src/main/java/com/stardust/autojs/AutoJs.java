@@ -13,8 +13,9 @@ import androidx.annotation.RequiresApi;
 import com.stardust.app.OnActivityResultDelegate;
 import com.stardust.app.SimpleActivityLifecycleCallbacks;
 import com.stardust.autojs.core.accessibility.AccessibilityBridge;
-import com.stardust.autojs.core.console.GlobalConsole;
+import com.stardust.autojs.core.activity.ActivityInfoProvider;
 import com.stardust.autojs.core.console.ConsoleImpl;
+import com.stardust.autojs.core.console.GlobalConsole;
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequestActivity;
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequester;
 import com.stardust.autojs.core.record.accessibility.AccessibilityActionRecorder;
@@ -31,7 +32,6 @@ import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.util.ResourceMonitor;
 import com.stardust.util.ScreenMetrics;
 import com.stardust.util.UiHandler;
-import com.stardust.autojs.core.activity.ActivityInfoProvider;
 import com.stardust.view.accessibility.AccessibilityNotificationObserver;
 import com.stardust.view.accessibility.AccessibilityService;
 import com.stardust.view.accessibility.LayoutInspector;
@@ -50,7 +50,6 @@ public abstract class AutoJs {
     private final AccessibilityActionRecorder mAccessibilityActionRecorder = new AccessibilityActionRecorder();
     @NonNull
     private final AccessibilityNotificationObserver mNotificationObserver;
-    private ScriptEngineManager mScriptEngineManager;
     @NonNull
     private final LayoutInspector mLayoutInspector;
     private final Context mContext;
@@ -66,6 +65,7 @@ public abstract class AutoJs {
     private final ScriptEngineService mScriptEngineService;
     @NonNull
     private final GlobalConsole mGlobalConsole;
+    private ScriptEngineManager mScriptEngineManager;
 
 
     protected AutoJs(@NonNull final Application application) {

@@ -285,12 +285,12 @@ public class Floaty {
             runWithWindow(() -> mWindow.getWindowBridge().updatePosition(x, y));
         }
 
-        public void setAdjustEnabled(boolean enabled) {
-            runWithWindow(() -> mWindow.setAdjustEnabled(enabled));
-        }
-
         public boolean isAdjustEnabled() {
             return mWindow.isAdjustEnabled();
+        }
+
+        public void setAdjustEnabled(boolean enabled) {
+            runWithWindow(() -> mWindow.setAdjustEnabled(enabled));
         }
 
         public void exitOnClose() {

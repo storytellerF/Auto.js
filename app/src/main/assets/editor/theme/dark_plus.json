@@ -24,7 +24,8 @@
         "foreground": "#f44336"
       }
     },
-    { "scope": [
+    {
+      "scope": [
         "meta.embedded",
         "source.groovy.embedded"
       ],

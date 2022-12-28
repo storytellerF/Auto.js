@@ -2,7 +2,8 @@
     <string name="_app_name">NoRootScriptDroid</string>
     <string name="action_settings">Settings</string>
     <string name="action_disable_service">Disable Service</string>
-    <string name="text_accessibility_service_description">使脚本自动操作(点击、长按、滑动等)所需，若关闭则只能执行不涉及自动操作的脚本。</string>
+    <string name="text_accessibility_service_description">使脚本自动操作(点击、长按、滑动等)所需，若关闭则只能执行不涉及自动操作的脚本。
+    </string>
     <string name="text_new_file">New file</string>
     <string name="text_import_from_file">Import from file</string>
     <string name="action_exit">Exit</string>
@@ -12,7 +13,9 @@
     <string name="text_please_input_name">Please input name</string>
     <string name="text_name">Name</string>
     <string name="text_go_to_setting">Go to setting</string>
-    <string name="explain_accessibility_permission">软件需要打开\"自动操作服务\"才能运行，请在随后的设置中选择\"免Root脚本精灵\"并开启服务。\n您也可以稍后在侧拉菜单中设置。</string>
+    <string name="explain_accessibility_permission">
+        软件需要打开\"自动操作服务\"才能运行，请在随后的设置中选择\"免Root脚本精灵\"并开启服务。\n您也可以稍后在侧拉菜单中设置。
+    </string>
     <string name="text_cancel">取消</string>
     <string name="text_path_is_empty">Path is empty</string>
     <string name="text_file_not_exists">File not exists</string>
@@ -38,7 +41,8 @@
     <string name="text_licenses">License</string>
     <string name="text_do_not_remind_again">不再提示</string>
     <string name="text_sample_alipay_scan">Alipay QR Scan</string>
-    <string name="text_sample_open_running_services">Sample: Show runnings services (Android 6.0+)</string>
+    <string name="text_sample_open_running_services">Sample: Show runnings services (Android 6.0+)
+    </string>
     <string name="text_sample_simple_calculator">Sample: Simple Calculator</string>
     <string name="copyright">Copyright©2016 All right reserves.</string>
     <string name="developer">Aring (星尘幻影)</string>
@@ -49,7 +53,8 @@
     <string name="donate_developer">Donate</string>
     <string name="text_email">邮箱</string>
     <string name="my_github">https://github.com/hyb1996/NoRootScriptDroid</string>
-    <string name="share_app">[免Root脚本精灵]下载地址：https://github.com/hyb1996/NoRootScriptDroid/releases</string>
+    <string name="share_app">[免Root脚本精灵]下载地址：https://github.com/hyb1996/NoRootScriptDroid/releases
+    </string>
     <string name="text_assist_service">点击区域辅助服务</string>
     <string name="text_assist_service_notification">通知栏点击区域辅助开关</string>
     <string name="text_others">Others</string>
@@ -83,7 +88,9 @@
     <string name="text_choose_email_app">请选择邮件应用</string>
     <string name="text_assist_clip">点击定位剪贴板</string>
     <string name="text_script_stopped">Script stopped</string>
-    <string name="assist_mode_notice">(不会翻译)\"点击区域辅助服务\"是在要点击的区域不是文本时使用的，参见\"语法与API\"。\"点击区域辅助服务\"只有在\"自动操作服务\"开启时才有效。</string>
+    <string name="assist_mode_notice">
+        (不会翻译)\"点击区域辅助服务\"是在要点击的区域不是文本时使用的，参见\"语法与API\"。\"点击区域辅助服务\"只有在\"自动操作服务\"开启时才有效。
+    </string>
     <string name="text_please_choose">Please choose</string>
     <string name="text_crash">崩溃了o(≧口≦)o</string>
     <string name="crash_feedback">(不会翻译)点击\"退出\"退出程序(ಥ _ ಥ)或者提交错误报告或者复制调试信息反馈给开发者(≧∇≦)ﾉ</string>

@@ -7,7 +7,6 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
-import org.autojs.autojs.App;
 import org.autojs.autojs.external.ScriptIntents;
 
 /**

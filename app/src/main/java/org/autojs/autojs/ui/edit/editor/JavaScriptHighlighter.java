@@ -12,7 +12,6 @@ import com.stardust.pio.UncheckedIOException;
 
 import org.autojs.autojs.ui.edit.theme.Theme;
 import org.autojs.autojs.ui.widget.SimpleTextWatcher;
-
 import org.mozilla.javascript.Token;
 
 import java.io.IOException;
@@ -24,55 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChangedListener {
 
 
-    public static class HighlightTokens {
-
-        @NonNull
-        public final int[] colors;
-        @NonNull
-        private final String mText;
-        private int mCount;
-        private final int mId;
-
-        public HighlightTokens(@NonNull String text, int id) {
-            colors = new int[text.length()];
-            mText = text;
-            mId = id;
-        }
-
-        public int getId() {
-            return mId;
-        }
-
-        public void addToken(int tokenStart, int tokenEnd, int color) {
-            if (mCount < tokenStart) {
-                int c = mCount > 0 ? colors[mCount - 1] : color;
-                for (int i = mCount; i < tokenStart; i++) {
-                    colors[i] = c;
-                }
-            }
-            for (int i = tokenStart; i < tokenEnd; i++) {
-                colors[i] = color;
-            }
-            mCount = tokenEnd;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return super.toString() + "{count = " + mCount + ", length = " + mText.length() + "}";
-        }
-
-        public int getCharCount() {
-            return mCount;
-        }
-
-        @NonNull
-        public String getText() {
-            return mText;
-        }
-    }
-
-    private Theme mTheme;
     @NonNull
     private final CodeEditText mCodeEditText;
     private final ThreadPoolExecutor mExecutorService = new ThreadPoolExecutor(3, 6,
@@ -81,7 +31,7 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
     private final TimingLogger mLogger = new TimingLogger(CodeEditText.LOG_TAG, "highlight");
     @NonNull
     private final TextWatcher mTextWatcher;
-
+    private Theme mTheme;
     public JavaScriptHighlighter(Theme theme, @NonNull CodeEditText codeEditText) {
         mExecutorService.allowCoreThreadTimeOut(true);
         mTheme = theme;
@@ -94,7 +44,6 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
     public void afterTextChanged(@NonNull Editable s) {
         updateTokens(s.toString());
     }
-
 
     public void setTheme(Theme theme) {
         mTheme = theme;
@@ -139,6 +88,54 @@ public class JavaScriptHighlighter implements SimpleTextWatcher.AfterTextChanged
     public void shutdown() {
         mCodeEditText.removeTextChangedListener(mTextWatcher);
         mExecutorService.shutdownNow();
+    }
+
+    public static class HighlightTokens {
+
+        @NonNull
+        public final int[] colors;
+        @NonNull
+        private final String mText;
+        private final int mId;
+        private int mCount;
+
+        public HighlightTokens(@NonNull String text, int id) {
+            colors = new int[text.length()];
+            mText = text;
+            mId = id;
+        }
+
+        public int getId() {
+            return mId;
+        }
+
+        public void addToken(int tokenStart, int tokenEnd, int color) {
+            if (mCount < tokenStart) {
+                int c = mCount > 0 ? colors[mCount - 1] : color;
+                for (int i = mCount; i < tokenStart; i++) {
+                    colors[i] = c;
+                }
+            }
+            for (int i = tokenStart; i < tokenEnd; i++) {
+                colors[i] = color;
+            }
+            mCount = tokenEnd;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return super.toString() + "{count = " + mCount + ", length = " + mText.length() + "}";
+        }
+
+        public int getCharCount() {
+            return mCount;
+        }
+
+        @NonNull
+        public String getText() {
+            return mText;
+        }
     }
 
 }

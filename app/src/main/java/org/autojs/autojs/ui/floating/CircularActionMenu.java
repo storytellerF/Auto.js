@@ -5,10 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PointF;
-import androidx.annotation.AttrRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -16,6 +12,11 @@ import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 import org.autojs.autojs.R;
 
@@ -27,68 +28,26 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CircularActionMenu extends FrameLayout {
 
-    public interface OnStateChangeListener {
-        void onExpanding(CircularActionMenu menu);
-
-        void onExpanded(CircularActionMenu menu);
-
-        void onCollapsing(CircularActionMenu menu);
-
-        void onCollapsed(CircularActionMenu menu);
-
-        void onMeasured(CircularActionMenu menu);
-    }
-
-    public static class OnStateChangeListenerAdapter implements OnStateChangeListener {
-
-        @Override
-        public void onExpanding(CircularActionMenu menu) {
-
-        }
-
-        @Override
-        public void onExpanded(CircularActionMenu menu) {
-
-        }
-
-        @Override
-        public void onCollapsing(CircularActionMenu menu) {
-
-        }
-
-        @Override
-        public void onCollapsed(CircularActionMenu menu) {
-
-        }
-
-        @Override
-        public void onMeasured(CircularActionMenu menu) {
-
-        }
-    }
-
-    private PointF[] mItemExpandedPositionOffsets;
     private final CopyOnWriteArrayList<OnStateChangeListener> mOnStateChangeListeners = new CopyOnWriteArrayList<>();
+    private final long mDuration = 200;
+    private final Interpolator mInterpolator = new FastOutSlowInInterpolator();
+    private PointF[] mItemExpandedPositionOffsets;
     private boolean mExpanded;
     private boolean mExpanding = false;
     private boolean mCollapsing = false;
     private float mRadius = 200;
     private float mAngle = (float) Math.toRadians(90);
-    private final long mDuration = 200;
     private int mExpandedHeight = -1;
     private int mExpandedWidth = -1;
-    private final Interpolator mInterpolator = new FastOutSlowInInterpolator();
-
-
     public CircularActionMenu(@NonNull Context context) {
         super(context);
         init(null);
     }
-
     public CircularActionMenu(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
+
 
     public CircularActionMenu(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -223,7 +182,6 @@ public class CircularActionMenu extends FrameLayout {
         return mCollapsing;
     }
 
-
     public int getItemCount() {
         return getChildCount();
     }
@@ -282,6 +240,46 @@ public class CircularActionMenu extends FrameLayout {
 
     public int getExpandedWidth() {
         return mExpandedWidth;
+    }
+
+    public interface OnStateChangeListener {
+        void onExpanding(CircularActionMenu menu);
+
+        void onExpanded(CircularActionMenu menu);
+
+        void onCollapsing(CircularActionMenu menu);
+
+        void onCollapsed(CircularActionMenu menu);
+
+        void onMeasured(CircularActionMenu menu);
+    }
+
+    public static class OnStateChangeListenerAdapter implements OnStateChangeListener {
+
+        @Override
+        public void onExpanding(CircularActionMenu menu) {
+
+        }
+
+        @Override
+        public void onExpanded(CircularActionMenu menu) {
+
+        }
+
+        @Override
+        public void onCollapsing(CircularActionMenu menu) {
+
+        }
+
+        @Override
+        public void onCollapsed(CircularActionMenu menu) {
+
+        }
+
+        @Override
+        public void onMeasured(CircularActionMenu menu) {
+
+        }
     }
 
 }

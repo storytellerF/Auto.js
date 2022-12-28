@@ -4,9 +4,9 @@ import androidx.annotation.Nullable;
 
 public class WatchingVariable {
 
+    private final boolean mPinned;
     private String mDisplayName;
     private String mName;
-    private final boolean mPinned;
     @Nullable
     private String mValue;
     @Nullable
@@ -41,19 +41,19 @@ public class WatchingVariable {
         return mSingleLineValue;
     }
 
-    public void setDisplayName(String displayName) {
-        mDisplayName = displayName;
-    }
-
-    public void setName(String name) {
-        mName = name;
-    }
-
     public String getDisplayName() {
         return mDisplayName;
     }
 
+    public void setDisplayName(String displayName) {
+        mDisplayName = displayName;
+    }
+
     public String getName() {
         return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
     }
 }

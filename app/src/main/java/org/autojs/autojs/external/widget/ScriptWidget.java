@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 import androidx.annotation.NonNull;
 
 import com.stardust.pio.PFiles;
+
 import org.autojs.autojs.R;
 import org.autojs.autojs.external.ScriptIntents;
 import org.autojs.autojs.external.open.RunIntentActivity;
@@ -26,18 +27,6 @@ import java.util.Set;
 public class ScriptWidget extends AppWidgetProvider {
 
     private static final String LOG_TAG = "ScriptWidget";
-
-    @Override
-    public void onUpdate(@NonNull Context context, AppWidgetManager appWidgetManager, @NonNull int[] appWidgetIds) {
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
-        Set<Integer> appWidgetIdSet = new HashSet<>();
-        for (int appWidgetId : appWidgetIds) {
-            updateWidget(context, appWidgetId, ScriptWidgets.getPathForAppWidgetId(appWidgetId));
-            appWidgetIdSet.add(appWidgetId);
-        }
-        if (appWidgetIdSet.size() > 1)
-            ScriptWidgets.removeAllNotIn(appWidgetIdSet);
-    }
 
     static boolean updateWidget(@NonNull Context context, int widgetId, String path) {
         if (TextUtils.isEmpty(path) || widgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
@@ -60,5 +49,17 @@ public class ScriptWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(widgetId, views);
         ScriptWidgets.setPathForAppWidgetId(widgetId, path);
         return true;
+    }
+
+    @Override
+    public void onUpdate(@NonNull Context context, AppWidgetManager appWidgetManager, @NonNull int[] appWidgetIds) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
+        Set<Integer> appWidgetIdSet = new HashSet<>();
+        for (int appWidgetId : appWidgetIds) {
+            updateWidget(context, appWidgetId, ScriptWidgets.getPathForAppWidgetId(appWidgetId));
+            appWidgetIdSet.add(appWidgetId);
+        }
+        if (appWidgetIdSet.size() > 1)
+            ScriptWidgets.removeAllNotIn(appWidgetIdSet);
     }
 }

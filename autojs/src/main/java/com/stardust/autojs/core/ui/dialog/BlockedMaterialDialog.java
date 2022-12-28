@@ -5,16 +5,14 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
 import android.os.Looper;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.view.WindowManager;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.stardust.autojs.rhino.continuation.Continuation;
 import com.stardust.autojs.runtime.ScriptBridges;
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
@@ -61,10 +59,10 @@ public class BlockedMaterialDialog extends MaterialDialog {
 
     public static class Builder extends MaterialDialog.Builder {
 
-        private VolatileDispose<Object> mResultBox;
         private final UiHandler mUiHandler;
         private final Object mCallback;
         private final ScriptBridges mScriptBridges;
+        private VolatileDispose<Object> mResultBox;
         private boolean mNotified = false;
 
         public Builder(@NonNull Context context, @NonNull ScriptRuntime runtime, Object callback) {

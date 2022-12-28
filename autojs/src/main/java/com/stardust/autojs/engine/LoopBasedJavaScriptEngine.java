@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.MessageQueue;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +11,6 @@ import androidx.annotation.Nullable;
 import com.stardust.autojs.core.looper.LooperHelper;
 import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.autojs.script.ScriptSource;
-import com.stardust.util.Callback;
 
 import org.mozilla.javascript.ContinuationPending;
 
@@ -23,15 +20,8 @@ import org.mozilla.javascript.ContinuationPending;
 
 public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
 
-    public interface ExecuteCallback {
-        void onResult(Object r);
-
-        void onException(Exception e);
-    }
-
     private Handler mHandler;
     private boolean mLooping = false;
-
     public LoopBasedJavaScriptEngine(@NonNull Context context) {
         super(context);
     }
@@ -42,7 +32,6 @@ public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
         execute(source, null);
         return null;
     }
-
 
     public void execute(final ScriptSource source, @Nullable final ExecuteCallback callback) {
         Runnable r = () -> {
@@ -100,6 +89,12 @@ public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
         LooperHelper.prepare();
         mHandler = new Handler();
         super.init();
+    }
+
+    public interface ExecuteCallback {
+        void onResult(Object r);
+
+        void onException(Exception e);
     }
 
 

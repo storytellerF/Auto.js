@@ -44,6 +44,8 @@ public class EditorMenu {
     private final EditorView mEditorView;
     private final Context mContext;
     private final CodeEditor mEditor;
+    @NonNull
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public EditorMenu(@NonNull EditorView editorView) {
         mEditorView = editorView;
@@ -114,7 +116,6 @@ public class EditorMenu {
         return false;
     }
 
-
     private boolean onMoreOptionsSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_console) {
@@ -154,8 +155,6 @@ public class EditorMenu {
                 );
         compositeDisposable.add(subscribe);
     }
-    @NonNull
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
 
     private void showClassSearchingItem(@NonNull MaterialDialog dialog, ClassSearchingItem item) {
         String title;
@@ -249,10 +248,10 @@ public class EditorMenu {
 
     private void showInfo() {
         Disposable subscribe = Observable.zip(Observable.just(mEditor.getText()), mEditor.getLineCount(), (text, lineCount) -> {
-            String size = PFiles.getHumanReadableSize(text.length());
-            return String.format(Locale.getDefault(), mContext.getString(R.string.format_editor_info),
-                    text.length(), lineCount, size);
-        })
+                    String size = PFiles.getHumanReadableSize(text.length());
+                    return String.format(Locale.getDefault(), mContext.getString(R.string.format_editor_info),
+                            text.length(), lineCount, size);
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::showInfo);
         compositeDisposable.add(subscribe);

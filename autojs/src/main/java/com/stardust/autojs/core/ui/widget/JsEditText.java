@@ -3,11 +3,11 @@ package com.stardust.autojs.core.ui.widget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.util.AttributeSet;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import android.util.AttributeSet;
-import android.widget.EditText;
 
 /**
  * Created by Stardust on 2017/5/15.

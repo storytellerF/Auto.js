@@ -2,9 +2,6 @@ package org.autojs.autojs.ui.main.task;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ThemeColorRecyclerView;
 
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
@@ -35,7 +37,6 @@ import org.autojs.autojs.ui.timing.TimedTaskSettingActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.recyclerview.widget.ThemeColorRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
@@ -52,8 +53,6 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
     private TaskGroup.RunningTaskGroup mRunningTaskGroup;
     private TaskGroup.PendingTaskGroup mPendingTaskGroup;
     private Adapter mAdapter;
-    private Disposable mTimedTaskChangeDisposable;
-    private Disposable mIntentTaskChangeDisposable;
     private final ScriptExecutionListener mScriptExecutionListener = new SimpleScriptExecutionListener() {
         @Override
         public void onStart(final ScriptExecution execution) {
@@ -81,6 +80,8 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
             });
         }
     };
+    private Disposable mTimedTaskChangeDisposable;
+    private Disposable mIntentTaskChangeDisposable;
 
     public TaskListRecyclerView(@NonNull Context context) {
         super(context);
@@ -171,6 +172,30 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
         }
     }
 
+    private static class TaskGroupViewHolder extends ParentViewHolder<TaskGroup, Task> {
+
+        TextView title;
+        ImageView icon;
+
+        TaskGroupViewHolder(@NonNull View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.title);
+            icon = itemView.findViewById(R.id.icon);
+            itemView.setOnClickListener(view -> {
+                if (isExpanded()) {
+                    collapseView();
+                } else {
+                    expandView();
+                }
+            });
+        }
+
+        @Override
+        public void onExpansionToggled(boolean expanded) {
+            icon.setRotation(expanded ? -90 : 0);
+        }
+    }
+
     private class Adapter extends ExpandableRecyclerAdapter<TaskGroup, Task, TaskGroupViewHolder, TaskViewHolder> {
 
         public Adapter(@NonNull List<TaskGroup> parentList) {
@@ -201,20 +226,19 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
         }
     }
 
-
     class TaskViewHolder extends ChildViewHolder<Task> {
 
-        private Task mTask;
         @NonNull
         private final GradientDrawable mFirstCharBackground;
         @NonNull
         private final TaskListRecyclerViewItemBinding bind;
+        private Task mTask;
 
         TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             bind = TaskListRecyclerViewItemBinding.bind(itemView);
             bind.stop.setTag("stop");
-            Bandage.bind(this,itemView);
+            Bandage.bind(this, itemView);
             itemView.setOnClickListener(this::onItemClick);
             mFirstCharBackground = (GradientDrawable) bind.firstChar.getBackground();
         }
@@ -249,30 +273,6 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
                         .extra(extra, task.getId())
                         .start();
             }
-        }
-    }
-
-    private static class TaskGroupViewHolder extends ParentViewHolder<TaskGroup, Task> {
-
-        TextView title;
-        ImageView icon;
-
-        TaskGroupViewHolder(@NonNull View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.title);
-            icon = itemView.findViewById(R.id.icon);
-            itemView.setOnClickListener(view -> {
-                if (isExpanded()) {
-                    collapseView();
-                } else {
-                    expandView();
-                }
-            });
-        }
-
-        @Override
-        public void onExpansionToggled(boolean expanded) {
-            icon.setRotation(expanded ? -90 : 0);
         }
     }
 

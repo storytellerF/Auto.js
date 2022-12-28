@@ -62,12 +62,12 @@ public class AvatarView extends FrameLayout {
             inflate.icon.setVisibility(View.GONE);
             inflate.iconText.setVisibility(View.VISIBLE);
             mIconTextBackground.setColor(Color.parseColor(user.getIconBgColor()));
-            mIconTextBackground.setCornerRadius((float) (getWidth()*1.0 / 2));
+            mIconTextBackground.setCornerRadius((float) (getWidth() * 1.0 / 2));
             inflate.iconText.setText(user.getIconText());
         } else {
             inflate.icon.setVisibility(View.VISIBLE);
             inflate.iconText.setVisibility(View.GONE);
-            inflate.icon.setCornerRadius((float) (getWidth()*1.0 / 2));
+            inflate.icon.setCornerRadius((float) (getWidth() * 1.0 / 2));
             Glide.with(getContext())
                     .load(NodeBB.BASE_URL + user.getPicture())
                     .apply(new RequestOptions()

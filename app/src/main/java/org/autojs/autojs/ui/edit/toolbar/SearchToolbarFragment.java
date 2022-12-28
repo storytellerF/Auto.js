@@ -26,7 +26,7 @@ public class SearchToolbarFragment extends ToolbarFragment {
             @NonNull
             @Override
             public SearchToolbarFragment build() {
-                SearchToolbarFragment searchToolbarFragment=new SearchToolbarFragment();
+                SearchToolbarFragment searchToolbarFragment = new SearchToolbarFragment();
                 searchToolbarFragment.setArguments(args);
                 return searchToolbarFragment;
             }

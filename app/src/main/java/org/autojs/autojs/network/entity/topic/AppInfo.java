@@ -1,11 +1,10 @@
-
 package org.autojs.autojs.network.entity.topic;
 
 import androidx.annotation.NonNull;
 
-import java.util.List;
-
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class AppInfo {

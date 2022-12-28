@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
-
 import com.stardust.auojs.inrt.BuildConfig
 import com.stardust.auojs.inrt.LogActivity
 import com.stardust.auojs.inrt.Pref
@@ -17,14 +16,11 @@ import com.stardust.autojs.execution.ScriptExecution
 import com.stardust.autojs.project.ProjectConfig
 import com.stardust.autojs.script.JavaScriptFileSource
 import com.stardust.autojs.script.JavaScriptSource
-import com.stardust.autojs.script.ScriptSource
 import com.stardust.pio.PFiles
 import com.stardust.pio.UncheckedIOException
 import com.stardust.util.MD5
-
 import java.io.File
 import java.io.IOException
-import java.lang.reflect.Field
 
 /**
  * Created by Stardust on 2018/1/24.
@@ -53,8 +49,10 @@ open class AssetsProjectLauncher(private val mAssetsProjectDir: String, private 
             } else {
                 //否则显示日志界面并在日志界面中运行脚本
                 mHandler.post {
-                    activity.startActivity(Intent(mActivity, LogActivity::class.java)
-                            .putExtra(LogActivity.EXTRA_LAUNCH_SCRIPT, true))
+                    activity.startActivity(
+                        Intent(mActivity, LogActivity::class.java)
+                            .putExtra(LogActivity.EXTRA_LAUNCH_SCRIPT, true)
+                    )
                     activity.finish()
                 }
             }
@@ -63,7 +61,8 @@ open class AssetsProjectLauncher(private val mAssetsProjectDir: String, private 
 
     private fun runScript(activity: Activity?) {
         if (mScriptExecution != null && mScriptExecution!!.engine != null &&
-                !mScriptExecution!!.engine.isDestroyed) {
+            !mScriptExecution!!.engine.isDestroyed
+        ) {
             return
         }
         try {
@@ -85,7 +84,8 @@ open class AssetsProjectLauncher(private val mAssetsProjectDir: String, private 
         val projectConfigPath = PFiles.join(mProjectDir, ProjectConfig.CONFIG_FILE_NAME)
         val projectConfig = ProjectConfig.fromFile(projectConfigPath)
         if (!BuildConfig.DEBUG && projectConfig != null &&
-                TextUtils.equals(projectConfig.buildInfo.buildId, mProjectConfig.buildInfo.buildId)) {
+            TextUtils.equals(projectConfig.buildInfo.buildId, mProjectConfig.buildInfo.buildId)
+        ) {
             initKey(projectConfig)
             return
         }

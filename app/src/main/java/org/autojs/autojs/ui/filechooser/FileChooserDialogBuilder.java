@@ -1,6 +1,7 @@
 package org.autojs.autojs.ui.filechooser;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
@@ -29,21 +30,12 @@ import io.reactivex.subjects.PublishSubject;
 
 public class FileChooserDialogBuilder extends ThemeColorMaterialDialogBuilder {
 
-    public interface SingleChoiceCallback {
-        void onSelected(PFile file);
-    }
-
-    public interface MultiChoiceCallback {
-        void onSelected(List<PFile> files);
-    }
-
     @NonNull
     private final FileChooseListView mFileChooseListView;
     private MultiChoiceCallback mCallback;
     private FileFilter mFileFilter;
     private String mRootDir;
     private String mInitialDir;
-
     public FileChooserDialogBuilder(@NonNull Context context) {
         super(context);
         mFileChooseListView = new FileChooseListView(context);
@@ -83,7 +75,6 @@ public class FileChooserDialogBuilder extends ThemeColorMaterialDialogBuilder {
         return this;
     }
 
-
     @NonNull
     public FileChooserDialogBuilder chooseDir() {
         mFileFilter = File::isDirectory;
@@ -97,7 +88,6 @@ public class FileChooserDialogBuilder extends ThemeColorMaterialDialogBuilder {
         mCallback = files -> callback.onSelected(files.get(0));
         return this;
     }
-
 
     @NonNull
     public FileChooserDialogBuilder multiChoice(MultiChoiceCallback callback) {
@@ -141,12 +131,20 @@ public class FileChooserDialogBuilder extends ThemeColorMaterialDialogBuilder {
         ExplorerDirPage root = ExplorerDirPage.createRoot(mRootDir);
         Explorer explorer = mFileFilter == null ? Explorers.external() :
                 new Explorer(new ExplorerFileProvider(mFileFilter), 0);
-        if(mInitialDir == null){
+        if (mInitialDir == null) {
             mFileChooseListView.setExplorer(explorer, root);
-        }else {
+        } else {
             mFileChooseListView.setExplorer(explorer, root,
                     new ExplorerDirPage(mInitialDir, root));
         }
         return super.build();
+    }
+
+    public interface SingleChoiceCallback {
+        void onSelected(PFile file);
+    }
+
+    public interface MultiChoiceCallback {
+        void onSelected(List<PFile> files);
     }
 }

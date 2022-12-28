@@ -1,5 +1,7 @@
 package com.stardust.autojs.core.permission;
 
+import static android.content.pm.PackageManager.PERMISSION_DENIED;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -10,13 +12,10 @@ import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
-import static android.content.pm.PackageManager.PERMISSION_DENIED;
-
 public class Permissions {
 
+    static final int REQUEST_CODE = 18777;
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
-
-     static final int REQUEST_CODE = 18777;
 
     @NonNull
     public static String[] getPermissionsNeedToRequest(@NonNull Context context, @NonNull String[] permissions) {

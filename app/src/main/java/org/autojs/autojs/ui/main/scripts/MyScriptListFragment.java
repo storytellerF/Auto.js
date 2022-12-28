@@ -41,12 +41,11 @@ public class MyScriptListFragment extends ViewPagerFragment implements FloatingA
 
     private static final String TAG = "MyScriptListFragment";
     private FragmentMyScriptListBinding inflate;
+    private FloatingActionMenu mFloatingActionMenu;
 
     public MyScriptListFragment() {
         super(0);
     }
-
-    private FloatingActionMenu mFloatingActionMenu;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

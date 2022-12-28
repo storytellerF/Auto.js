@@ -11,8 +11,8 @@ import java.io.Serializable;
 public class ScriptExecutionTask implements Serializable {
 
     private final ScriptSource mScriptSource;
-    private ScriptExecutionListener mExecutionListener;
     private final ExecutionConfig mExecutionConfig;
+    private ScriptExecutionListener mExecutionListener;
 
     public ScriptExecutionTask(ScriptSource source, ScriptExecutionListener listener, ExecutionConfig config) {
         mScriptSource = source;

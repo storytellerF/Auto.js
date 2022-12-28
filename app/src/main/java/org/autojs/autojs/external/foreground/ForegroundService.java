@@ -32,7 +32,7 @@ public class ForegroundService extends Service {
         }
     }
 
-    public static void stop(@NonNull Context context){
+    public static void stop(@NonNull Context context) {
         context.stopService(new Intent(context, ForegroundService.class));
     }
 
@@ -60,7 +60,7 @@ public class ForegroundService extends Service {
         int flagImmutable;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             flagImmutable = PendingIntent.FLAG_IMMUTABLE;
-        } else  flagImmutable = 0;
+        } else flagImmutable = 0;
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, MainActivity.intent(this).get(), flagImmutable);
         return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getString(R.string.foreground_notification_title))

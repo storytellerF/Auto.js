@@ -1,18 +1,17 @@
 package org.autojs.autojs.ui.widget;
 
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ThemeColorRecyclerView;
-
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ThemeColorRecyclerView;
 
 import org.autojs.autojs.R;
 
@@ -22,16 +21,7 @@ import org.autojs.autojs.R;
 
 public class ExpandableRecyclerView extends ThemeColorRecyclerView {
 
-    public void setOnChildClickListener(OnChildClickListener onChildClickListener) {
-        mOnChildClickListener = onChildClickListener;
-    }
-
-    public interface OnChildClickListener {
-
-        void onClick(View view, int position);
-    }
-
-
+    private boolean mExpanded;
     private final OnClickListener mOnTitleClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -39,6 +29,7 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
         }
 
     };
+    private OnChildClickListener mOnChildClickListener;
     private final OnClickListener mOnChildClickListenerWrapper = new OnClickListener() {
 
         @Override
@@ -48,14 +39,10 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
             }
         }
     };
-    private boolean mExpanded;
-    private OnChildClickListener mOnChildClickListener;
-
     public ExpandableRecyclerView(@NonNull Context context) {
         super(context);
         init();
     }
-
     public ExpandableRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
@@ -64,6 +51,10 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
     public ExpandableRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
+    }
+
+    public void setOnChildClickListener(OnChildClickListener onChildClickListener) {
+        mOnChildClickListener = onChildClickListener;
     }
 
     private void init() {
@@ -77,7 +68,6 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
             expand();
         }
     }
-
 
     public boolean isExpanded() {
         return mExpanded;
@@ -95,6 +85,11 @@ public class ExpandableRecyclerView extends ThemeColorRecyclerView {
             return;
         mExpanded = false;
         ((Adapter) getAdapter()).notifyCollapsed();
+    }
+
+    public interface OnChildClickListener {
+
+        void onClick(View view, int position);
     }
 
     public abstract class Adapter extends RecyclerView.Adapter<ViewHolder> {

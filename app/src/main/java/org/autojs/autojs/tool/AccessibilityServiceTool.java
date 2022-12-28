@@ -7,12 +7,12 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.stardust.app.GlobalAppContext;
-import org.autojs.autojs.Pref;
-import org.autojs.autojs.R;
-
 import com.stardust.autojs.core.accessibility.AccessibilityService;
 import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.view.accessibility.AccessibilityServiceUtils;
+
+import org.autojs.autojs.Pref;
+import org.autojs.autojs.R;
 
 import java.util.Locale;
 
@@ -23,6 +23,16 @@ import java.util.Locale;
 public class AccessibilityServiceTool {
 
     private static final Class<AccessibilityService> sAccessibilityServiceClass = AccessibilityService.class;
+    private static final String cmd = "enabled=$(settings get secure enabled_accessibility_services)\n" +
+            "pkg=%s\n" +
+            "if [[ $enabled == *$pkg* ]]\n" +
+            "then\n" +
+            "echo already_enabled\n" +
+            "else\n" +
+            "enabled=$pkg:$enabled\n" +
+            "settings put secure enabled_accessibility_services $enabled\n" +
+            "fi\n" +
+            "settings put secure accessibility_enabled 1";
 
     public static void enableAccessibilityService() {
         if (Pref.shouldEnableAccessibilityServiceByRoot()) {
@@ -45,17 +55,6 @@ public class AccessibilityServiceTool {
             GlobalAppContext.toast(context.getString(R.string.go_to_accessibility_settings) + context.getString(R.string.app_name));
         }
     }
-
-    private static final String cmd = "enabled=$(settings get secure enabled_accessibility_services)\n" +
-            "pkg=%s\n" +
-            "if [[ $enabled == *$pkg* ]]\n" +
-            "then\n" +
-            "echo already_enabled\n" +
-            "else\n" +
-            "enabled=$pkg:$enabled\n" +
-            "settings put secure enabled_accessibility_services $enabled\n" +
-            "fi\n" +
-            "settings put secure accessibility_enabled 1";
 
     public static boolean enableAccessibilityServiceByRoot(@NonNull Class<? extends android.accessibilityservice.AccessibilityService> accessibilityService) {
         String serviceName = GlobalAppContext.get().getPackageName() + "/" + accessibilityService.getName();

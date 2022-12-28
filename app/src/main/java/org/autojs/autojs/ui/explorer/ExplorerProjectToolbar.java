@@ -49,13 +49,13 @@ public class ExplorerProjectToolbar extends CardView {
     private void init() {
         inflate = ExplorerProjectToolbarBinding.inflate(LayoutInflater.from(getContext()), this, true);
         inflate(getContext(), R.layout.explorer_project_toolbar, this);
-        Bandage.bind(this,inflate.getRoot());
+        Bandage.bind(this, inflate.getRoot());
         setOnClickListener(view -> edit());
     }
 
     public void setProject(@NonNull PFile dir) {
         ProjectConfig mProjectConfig = ProjectConfig.fromProjectDir(dir.getPath());
-        if(mProjectConfig == null){
+        if (mProjectConfig == null) {
             setVisibility(GONE);
             return;
         }

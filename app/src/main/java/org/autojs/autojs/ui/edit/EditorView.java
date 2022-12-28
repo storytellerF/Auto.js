@@ -1,5 +1,10 @@
 package org.autojs.autojs.ui.edit;
 
+import static org.autojs.autojs.model.script.Scripts.ACTION_ON_EXECUTION_FINISHED;
+import static org.autojs.autojs.model.script.Scripts.EXTRA_EXCEPTION_COLUMN_NUMBER;
+import static org.autojs.autojs.model.script.Scripts.EXTRA_EXCEPTION_LINE_NUMBER;
+import static org.autojs.autojs.model.script.Scripts.EXTRA_EXCEPTION_MESSAGE;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -71,11 +76,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static org.autojs.autojs.model.script.Scripts.ACTION_ON_EXECUTION_FINISHED;
-import static org.autojs.autojs.model.script.Scripts.EXTRA_EXCEPTION_COLUMN_NUMBER;
-import static org.autojs.autojs.model.script.Scripts.EXTRA_EXCEPTION_LINE_NUMBER;
-import static org.autojs.autojs.model.script.Scripts.EXTRA_EXCEPTION_MESSAGE;
-
 /**
  * Created by Stardust on 2017/9/28.
  */
@@ -87,7 +87,10 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
     public static final String EXTRA_READ_ONLY = "readOnly";
     public static final String EXTRA_SAVE_ENABLED = "saveEnabled";
     public static final String EXTRA_RUN_ENABLED = "runEnabled";
-
+    private final SparseBooleanArray mMenuItemStatus = new SparseBooleanArray();
+    private final NormalToolbarFragment mNormalToolbar = new NormalToolbarFragment();
+    @NonNull
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String mName;
     private Uri mUri;
     private boolean mReadOnly = false;
@@ -95,6 +98,10 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
     private AutoCompletion mAutoCompletion;
     private Theme mEditorTheme;
     private FunctionsKeyboardHelper mFunctionsKeyboardHelper;
+    @Nullable
+    private String mRestoredText;
+    private boolean mDebugging = false;
+    private EditorViewBinding inflate;
     private final BroadcastReceiver mOnRunFinishedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, @NonNull Intent intent) {
@@ -117,21 +124,9 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         }
     };
 
-    private final SparseBooleanArray mMenuItemStatus = new SparseBooleanArray();
-    @Nullable
-    private String mRestoredText;
-    private final NormalToolbarFragment mNormalToolbar = new NormalToolbarFragment();
-    private boolean mDebugging = false;
-    private EditorViewBinding inflate;
-
     public EditorView(Context context) {
         super(context);
         ad();
-    }
-
-    private void ad() {
-        inflate = EditorViewBinding.inflate(LayoutInflater.from(getContext()), this, true);
-        init();
     }
 
     public EditorView(Context context, @Nullable AttributeSet attrs) {
@@ -142,6 +137,11 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
     public EditorView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         ad();
+    }
+
+    private void ad() {
+        inflate = EditorViewBinding.inflate(LayoutInflater.from(getContext()), this, true);
+        init();
     }
 
     @Override
@@ -214,7 +214,6 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         }
     }
 
-
     private Observable<String> loadUri(final Uri uri) {
         inflate.editor.setProgress(true);
         return Observable.fromCallable(() -> PFiles.read(getContext().getContentResolver().openInputStream(uri)))
@@ -234,7 +233,6 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         }
         inflate.editor.setInitialText(text);
     }
-
 
     private void setMenuItemStatus(int id, boolean enabled) {
         mMenuItemStatus.put(id, enabled);
@@ -298,7 +296,6 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         mAutoCompletion = new AutoCompletion(getContext(), inflate.editor.getCodeEditText());
         mAutoCompletion.setAutoCompleteCallback(inflate.codeCompletionBar::setCodeCompletions);
     }
-
 
     private void setUpEditor() {
         inflate.editor.getCodeEditText().addTextChangedListener(new SimpleTextWatcher(s -> {
@@ -370,8 +367,6 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
         compositeDisposable.add(subscribe);
     }
 
-    @NonNull
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
     @NonNull
     public ScriptExecution run(boolean showMessage) {
         if (showMessage) {

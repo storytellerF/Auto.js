@@ -1,5 +1,9 @@
 package com.stardust.pio;
 
+import static com.stardust.pio.PFiles.DEFAULT_BUFFER_SIZE;
+
+import androidx.annotation.NonNull;
+
 import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.FileNotFoundException;
@@ -10,35 +14,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.stardust.pio.PFiles.DEFAULT_BUFFER_SIZE;
-
-import androidx.annotation.NonNull;
-
 /**
  * Created by Stardust on 2017/4/1.
  */
 
 public class PWritableTextFile implements Closeable, PFileInterface {
-
-    @NonNull
-    public static PWritableTextFile open(String path, String encoding, int bufferSize) {
-        return new PWritableTextFile(path, encoding, bufferSize, false);
-    }
-
-    @NonNull
-    public static PWritableTextFile open(String path, String encoding) {
-        return new PWritableTextFile(path, encoding);
-    }
-
-    @NonNull
-    public static PWritableTextFile open(String path, boolean append) {
-        return new PWritableTextFile(path, append);
-    }
-
-    @NonNull
-    public static PWritableTextFile open(String path) {
-        return new PWritableTextFile(path);
-    }
 
     @NonNull
     private final BufferedWriter mBufferedWriter;
@@ -63,7 +43,6 @@ public class PWritableTextFile implements Closeable, PFileInterface {
     public PWritableTextFile(String path, boolean append) {
         this(path, PFiles.DEFAULT_ENCODING, DEFAULT_BUFFER_SIZE, append);
     }
-
     public PWritableTextFile(String path, int bufferSize) {
         this(path, PFiles.DEFAULT_ENCODING, bufferSize, false);
     }
@@ -80,6 +59,25 @@ public class PWritableTextFile implements Closeable, PFileInterface {
         this(path, encoding, bufferSize, false);
     }
 
+    @NonNull
+    public static PWritableTextFile open(String path, String encoding, int bufferSize) {
+        return new PWritableTextFile(path, encoding, bufferSize, false);
+    }
+
+    @NonNull
+    public static PWritableTextFile open(String path, String encoding) {
+        return new PWritableTextFile(path, encoding);
+    }
+
+    @NonNull
+    public static PWritableTextFile open(String path, boolean append) {
+        return new PWritableTextFile(path, append);
+    }
+
+    @NonNull
+    public static PWritableTextFile open(String path) {
+        return new PWritableTextFile(path);
+    }
 
     public void write(String str) {
         try {

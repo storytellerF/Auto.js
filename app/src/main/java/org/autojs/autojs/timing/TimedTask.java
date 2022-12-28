@@ -21,8 +21,6 @@ import java.util.concurrent.TimeUnit;
 public class TimedTask extends BaseModel {
 
     public static final String TABLE = "TimedTask";
-
-    private static final int FLAG_DISPOSABLE = 0;
     public final static int FLAG_SUNDAY = 0x1;
     public final static int FLAG_MONDAY = 0x2;
     public final static int FLAG_TUESDAY = 0x4;
@@ -30,6 +28,7 @@ public class TimedTask extends BaseModel {
     public final static int FLAG_THURSDAY = 0x10;
     public final static int FLAG_FRIDAY = 0x20;
     public final static int FLAG_SATURDAY = 0x40;
+    private static final int FLAG_DISPOSABLE = 0;
     private static final int FLAG_EVERYDAY = 0x7F;
     private static final int REQUEST_CODE = 2000;
 
@@ -58,6 +57,48 @@ public class TimedTask extends BaseModel {
         mDelay = config.getDelay();
         mLoopTimes = config.getLoopTimes();
         mInterval = config.getInterval();
+    }
+
+    public static long getDayOfWeekTimeFlag(int dayOfWeek) {
+        dayOfWeek = (dayOfWeek - 1) % 7 + 1;
+        switch (dayOfWeek) {
+            case DateTimeConstants.SUNDAY:
+                return FLAG_SUNDAY;
+
+            case DateTimeConstants.MONDAY:
+                return FLAG_MONDAY;
+
+            case DateTimeConstants.SATURDAY:
+                return FLAG_SATURDAY;
+
+            case DateTimeConstants.WEDNESDAY:
+                return FLAG_WEDNESDAY;
+
+            case DateTimeConstants.TUESDAY:
+                return FLAG_TUESDAY;
+
+            case DateTimeConstants.THURSDAY:
+                return FLAG_THURSDAY;
+            case DateTimeConstants.FRIDAY:
+                return FLAG_FRIDAY;
+
+        }
+        throw new IllegalArgumentException("dayOfWeek = " + dayOfWeek);
+    }
+
+    @NonNull
+    public static TimedTask dailyTask(@NonNull LocalTime time, String scriptPath, @NonNull ExecutionConfig config) {
+        return new TimedTask(time.getMillisOfDay(), FLAG_EVERYDAY, scriptPath, config);
+    }
+
+    @NonNull
+    public static TimedTask disposableTask(@NonNull LocalDateTime dateTime, String scriptPath, @NonNull ExecutionConfig config) {
+        return new TimedTask(dateTime.toDateTime().getMillis(), FLAG_DISPOSABLE, scriptPath, config);
+    }
+
+    @NonNull
+    public static TimedTask weeklyTask(@NonNull LocalTime time, long timeFlag, String scriptPath, @NonNull ExecutionConfig config) {
+        return new TimedTask(time.getMillisOfDay(), timeFlag, scriptPath, config);
     }
 
     public boolean isDisposable() {
@@ -103,39 +144,20 @@ public class TimedTask extends BaseModel {
         throw new IllegalStateException("Should not happen! timeFlag = " + mTimeFlag + ", dayOfWeek = " + DateTime.now().getDayOfWeek());
     }
 
-    public static long getDayOfWeekTimeFlag(int dayOfWeek) {
-        dayOfWeek = (dayOfWeek - 1) % 7 + 1;
-        switch (dayOfWeek) {
-            case DateTimeConstants.SUNDAY:
-                return FLAG_SUNDAY;
-
-            case DateTimeConstants.MONDAY:
-                return FLAG_MONDAY;
-
-            case DateTimeConstants.SATURDAY:
-                return FLAG_SATURDAY;
-
-            case DateTimeConstants.WEDNESDAY:
-                return FLAG_WEDNESDAY;
-
-            case DateTimeConstants.TUESDAY:
-                return FLAG_TUESDAY;
-
-            case DateTimeConstants.THURSDAY:
-                return FLAG_THURSDAY;
-            case DateTimeConstants.FRIDAY:
-                return FLAG_FRIDAY;
-
-        }
-        throw new IllegalArgumentException("dayOfWeek = " + dayOfWeek);
-    }
-
     public long getMillis() {
         return mMillis;
     }
 
+    public void setMillis(long millis) {
+        mMillis = millis;
+    }
+
     public String getScriptPath() {
         return mScriptPath;
+    }
+
+    public void setScriptPath(String scriptPath) {
+        mScriptPath = scriptPath;
     }
 
     public long getTimeFlag() {
@@ -170,14 +192,6 @@ public class TimedTask extends BaseModel {
         mLoopTimes = loopTimes;
     }
 
-    public void setMillis(long millis) {
-        mMillis = millis;
-    }
-
-    public void setScriptPath(String scriptPath) {
-        mScriptPath = scriptPath;
-    }
-
     public boolean isDaily() {
         return mTimeFlag == FLAG_EVERYDAY;
     }
@@ -190,7 +204,6 @@ public class TimedTask extends BaseModel {
                 .putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, mLoopTimes)
                 .putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, mInterval);
     }
-
 
     public PendingIntent createPendingIntent(Context context) {
         int flagImmutable;
@@ -214,22 +227,6 @@ public class TimedTask extends BaseModel {
                 ", mMillis=" + mMillis +
                 ", mScriptPath='" + mScriptPath + '\'' +
                 '}';
-    }
-
-
-    @NonNull
-    public static TimedTask dailyTask(@NonNull LocalTime time, String scriptPath, @NonNull ExecutionConfig config) {
-        return new TimedTask(time.getMillisOfDay(), FLAG_EVERYDAY, scriptPath, config);
-    }
-
-    @NonNull
-    public static TimedTask disposableTask(@NonNull LocalDateTime dateTime, String scriptPath, @NonNull ExecutionConfig config) {
-        return new TimedTask(dateTime.toDateTime().getMillis(), FLAG_DISPOSABLE, scriptPath, config);
-    }
-
-    @NonNull
-    public static TimedTask weeklyTask(@NonNull LocalTime time, long timeFlag, String scriptPath, @NonNull ExecutionConfig config) {
-        return new TimedTask(time.getMillisOfDay(), timeFlag, scriptPath, config);
     }
 
     public boolean hasDayOfWeek(int dayOfWeek) {

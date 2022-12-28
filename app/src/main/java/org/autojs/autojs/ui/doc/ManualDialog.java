@@ -5,14 +5,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.autojs.autojs.R;
 import org.autojs.autojs.databinding.FloatingManualDialogBinding;
-import org.autojs.autojs.ui.widget.EWebView;
 
 /**
  * Created by Stardust on 2017/10/24.
@@ -20,11 +19,11 @@ import org.autojs.autojs.ui.widget.EWebView;
 
 public class ManualDialog {
 
-    Dialog mDialog;
     @NonNull
     private final Context mContext;
     @NonNull
     private final FloatingManualDialogBinding bind;
+    Dialog mDialog;
 
     public ManualDialog(@NonNull Context context) {
         mContext = context;

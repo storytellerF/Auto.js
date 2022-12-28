@@ -58,9 +58,9 @@ public class ValueMapper<V> {
         return v;
     }
 
-    public int split(@NonNull String str){
+    public int split(@NonNull String str) {
         int r = 0;
-        for(String s : str.split("\\|")){
+        for (String s : str.split("\\|")) {
             r |= (Integer) get(s);
         }
         return r;

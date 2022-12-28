@@ -1,5 +1,10 @@
 package org.autojs.autojs.external.tasker;
 
+import static org.autojs.autojs.ui.edit.EditorView.EXTRA_CONTENT;
+import static org.autojs.autojs.ui.edit.EditorView.EXTRA_NAME;
+import static org.autojs.autojs.ui.edit.EditorView.EXTRA_RUN_ENABLED;
+import static org.autojs.autojs.ui.edit.EditorView.EXTRA_SAVE_ENABLED;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,11 +23,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-import static org.autojs.autojs.ui.edit.EditorView.EXTRA_CONTENT;
-import static org.autojs.autojs.ui.edit.EditorView.EXTRA_NAME;
-import static org.autojs.autojs.ui.edit.EditorView.EXTRA_RUN_ENABLED;
-import static org.autojs.autojs.ui.edit.EditorView.EXTRA_SAVE_ENABLED;
-
 /**
  * Created by Stardust on 2017/4/5.
  */
@@ -30,6 +30,8 @@ public class TaskerScriptEditActivity extends BaseActivity {
 
     public static final int REQUEST_CODE = 10016;
     public static final String EXTRA_TASK_ID = TaskReceiver.EXTRA_TASK_ID;
+    @NonNull
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ActivityTaskerScriptEditBinding inflate;
 
     public static void edit(@NonNull Activity activity, String title, String summary, String content) {
@@ -49,8 +51,8 @@ public class TaskerScriptEditActivity extends BaseActivity {
 
     void setUpViews() {
         Disposable subscribe = inflate.editorView.handleIntent(getIntent()
-                .putExtra(EXTRA_RUN_ENABLED, false)
-                .putExtra(EXTRA_SAVE_ENABLED, false))
+                        .putExtra(EXTRA_RUN_ENABLED, false)
+                        .putExtra(EXTRA_SAVE_ENABLED, false))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Observers.emptyConsumer(),
                         ex -> {
@@ -60,9 +62,6 @@ public class TaskerScriptEditActivity extends BaseActivity {
         compositeDisposable.add(subscribe);
         BaseActivity.setToolbarAsBack(this, R.id.toolbar, inflate.editorView.getName());
     }
-
-    @NonNull
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     public void finish() {

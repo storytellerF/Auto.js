@@ -80,7 +80,7 @@ public class CommunityWebView extends EWebView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(file ->
                                 Snackbar.make(CommunityWebView.this, getResources().getString(R.string.format_file_downloaded, file.getPath())
-                                        , Snackbar.LENGTH_LONG)
+                                                , Snackbar.LENGTH_LONG)
                                         .setAction(R.string.text_open, v -> Scripts.INSTANCE.edit(getContext(), file))
                                         .show(),
                         error -> {

@@ -86,7 +86,7 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
         inflate = ActivityBuildBinding.inflate(getLayoutInflater());
         setContentView(inflate.getRoot());
         setupViews();
-        Bandage.bind(this,inflate.getRoot());
+        Bandage.bind(this, inflate.getRoot());
     }
 
     void setupViews() {
@@ -148,7 +148,7 @@ public class BuildActivity extends BaseActivity implements ApkBuilder.ProgressCa
 
     }
 
-    @Click(tag="select_source")
+    @Click(tag = "select_source")
     void selectSourceFilePath() {
         String initialDir = new File(Objects.requireNonNull(inflate.sourcePath.getText()).toString()).getParent();
         new FileChooserDialogBuilder(this)

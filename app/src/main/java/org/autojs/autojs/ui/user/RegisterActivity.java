@@ -30,12 +30,12 @@ import io.reactivex.schedulers.Schedulers;
 public class RegisterActivity extends BaseActivity {
 
     @NonNull
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ActivityRegisterBinding inflate;
 
     @NonNull
     public static <I extends ActivityIntentBuilder<I>> ActivityIntentBuilder<I> intent(Context context) {
-        return new ActivityIntentBuilder<I>(context,RegisterActivity.class) {
+        return new ActivityIntentBuilder<I>(context, RegisterActivity.class) {
             @Nullable
             @Override
             public PostActivityStarter startForResult(int requestCode) {
@@ -46,7 +46,7 @@ public class RegisterActivity extends BaseActivity {
     }
 
     @Override
-    protected void onCreate(@Nullable  Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         inflate = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(inflate.getRoot());

@@ -19,7 +19,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
@@ -114,10 +113,10 @@ public class WorkspaceFileProvider extends ExplorerFileProvider {
         String pathOfSample = file.getPath().substring(mSampleDir.getPath().length());
         String pathOfAsset = SAMPLE_PATH + pathOfSample;
         return Observable.fromCallable(() -> {
-            InputStream stream = mAssetManager.open(pathOfAsset);
-            PFiles.copyStream(stream, file.getPath());
-            return file;
-        })
+                    InputStream stream = mAssetManager.open(pathOfAsset);
+                    PFiles.copyStream(stream, file.getPath());
+                    return file;
+                })
                 .subscribeOn(Schedulers.io());
     }
 

@@ -72,12 +72,12 @@ class App : MultiDexApplication() {
             ThemeColorManagerCompat.init(
                 this,
                 ThemeColor(
-                    resources.getColor(R.color.colorPrimary,theme),
-                    resources.getColor(R.color.colorPrimaryDark,theme),
-                    resources.getColor(R.color.colorAccent,theme)
+                    resources.getColor(R.color.colorPrimary, theme),
+                    resources.getColor(R.color.colorPrimaryDark, theme),
+                    resources.getColor(R.color.colorAccent, theme)
                 )
             )
-        }else{
+        } else {
             ThemeColorManagerCompat.init(
                 this,
                 ThemeColor(

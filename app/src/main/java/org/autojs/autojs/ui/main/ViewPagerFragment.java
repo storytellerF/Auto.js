@@ -1,11 +1,12 @@
 package org.autojs.autojs.ui.main;
 
-import androidx.annotation.CallSuper;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.Fragment;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import android.view.View;
 
+import androidx.annotation.CallSuper;
+import androidx.fragment.app.Fragment;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stardust.util.BackPressedHandler;
 
 /**
@@ -17,9 +18,9 @@ public abstract class ViewPagerFragment extends Fragment implements BackPressedH
     protected static final int ROTATION_GONE = -1;
 
     private final int mFabRotation;
+    private final View.OnClickListener mOnFabClickListener = v -> onFabClick((FloatingActionButton) v);
     private FloatingActionButton mFab;
     private boolean mShown;
-    private final View.OnClickListener mOnFabClickListener = v -> onFabClick((FloatingActionButton) v);
 
     public ViewPagerFragment(int fabRotation) {
         mFabRotation = fabRotation;

@@ -9,18 +9,6 @@ import android.text.TextWatcher;
 
 public class SimpleTextWatcher implements TextWatcher {
 
-    public interface AfterTextChangedListener {
-        void afterTextChanged(Editable s);
-    }
-
-    public interface BeforeTextChangedListener {
-        void beforeTextChanged(CharSequence s, int start, int count, int after);
-    }
-
-    public interface OnTextChangedListener {
-        void onTextChanged(CharSequence s, int start, int before, int count);
-    }
-
     private BeforeTextChangedListener mBeforeTextChangedListener;
     private OnTextChangedListener mOnTextChangedListener;
     private AfterTextChangedListener mAfterTextChangedListener;
@@ -30,11 +18,9 @@ public class SimpleTextWatcher implements TextWatcher {
         mOnTextChangedListener = onTextChangedListener;
         mAfterTextChangedListener = afterTextChangedListener;
     }
-
     public SimpleTextWatcher(AfterTextChangedListener afterTextChangedListener) {
         mAfterTextChangedListener = afterTextChangedListener;
     }
-
     public SimpleTextWatcher(BeforeTextChangedListener beforeTextChangedListener) {
         mBeforeTextChangedListener = beforeTextChangedListener;
     }
@@ -65,5 +51,17 @@ public class SimpleTextWatcher implements TextWatcher {
         if (mAfterTextChangedListener != null) {
             mAfterTextChangedListener.afterTextChanged(s);
         }
+    }
+
+    public interface AfterTextChangedListener {
+        void afterTextChanged(Editable s);
+    }
+
+    public interface BeforeTextChangedListener {
+        void beforeTextChanged(CharSequence s, int start, int count, int after);
+    }
+
+    public interface OnTextChangedListener {
+        void onTextChanged(CharSequence s, int start, int before, int count);
     }
 }

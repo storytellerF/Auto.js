@@ -1,9 +1,9 @@
 package org.autojs.autojs.model.indices;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import android.util.Log;
 
 public abstract class ClassSearchingItem implements Comparable<ClassSearchingItem> {
 
@@ -92,7 +92,7 @@ public abstract class ClassSearchingItem implements Comparable<ClassSearchingIte
         @Override
         public String getUrl() {
             return BASE_URL + mAndroidClass.getPackageName().replace('.', '/')
-                     + "/" + mAndroidClass.getClassName() + ".html";
+                    + "/" + mAndroidClass.getClassName() + ".html";
         }
 
         @NonNull

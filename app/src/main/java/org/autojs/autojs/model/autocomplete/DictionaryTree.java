@@ -15,29 +15,6 @@ import java.util.TreeMap;
 
 public class DictionaryTree<T> {
 
-    private static class Node<T> {
-
-        char ch;
-        @NonNull
-        Map<Character, Node<T>> children = new TreeMap<>();
-        String wordEndHere;
-        T tag;
-
-        Node(char ch) {
-            this.ch = ch;
-        }
-    }
-
-    public static class Entry<T> {
-        public String word;
-        public T tag;
-
-        public Entry(String word, T tag) {
-            this.word = word;
-            this.tag = tag;
-        }
-    }
-
     private final Node<T> mRoot = new Node<>('@');
 
     public void putWord(@NonNull String word, T tag) {
@@ -81,5 +58,28 @@ public class DictionaryTree<T> {
             parent.children.put(ch, child);
         }
         return child;
+    }
+
+    private static class Node<T> {
+
+        char ch;
+        @NonNull
+        Map<Character, Node<T>> children = new TreeMap<>();
+        String wordEndHere;
+        T tag;
+
+        Node(char ch) {
+            this.ch = ch;
+        }
+    }
+
+    public static class Entry<T> {
+        public String word;
+        public T tag;
+
+        public Entry(String word, T tag) {
+            this.word = word;
+            this.tag = tag;
+        }
     }
 }

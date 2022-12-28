@@ -19,10 +19,10 @@ import java.io.IOException;
 
 public class Media implements MediaScannerConnection.MediaScannerConnectionClient {
 
+    private final ScriptRuntime mRuntime;
     @Nullable
     private MediaScannerConnection mScannerConnection;
     private MediaPlayerWrapper mMediaPlayer;
-    private final ScriptRuntime mRuntime;
 
     public Media(Context context, ScriptRuntime runtime) {
         mScannerConnection = new MediaScannerConnection(context, this);

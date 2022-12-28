@@ -19,19 +19,11 @@ import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 public class TextSizeSettingDialogBuilder extends ThemeColorMaterialDialogBuilder implements SeekBar.OnSeekBarChangeListener {
 
 
+    private static final int MIN = 8;
     @NonNull
     private final DialogTextSizeSettingBinding bind;
-
-    public interface PositiveCallback {
-
-        void onPositive(int value);
-    }
-
-    private static final int MIN = 8;
-
     private int mTextSize;
     private MaterialDialog mMaterialDialog;
-
     public TextSizeSettingDialogBuilder(@NonNull Context context) {
         super(context);
         View view = View.inflate(context, R.layout.dialog_text_size_setting, null);
@@ -72,7 +64,6 @@ public class TextSizeSettingDialogBuilder extends ThemeColorMaterialDialogBuilde
         return mMaterialDialog;
     }
 
-
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         setTextSize(progress + MIN);
@@ -86,5 +77,10 @@ public class TextSizeSettingDialogBuilder extends ThemeColorMaterialDialogBuilde
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    public interface PositiveCallback {
+
+        void onPositive(int value);
     }
 }

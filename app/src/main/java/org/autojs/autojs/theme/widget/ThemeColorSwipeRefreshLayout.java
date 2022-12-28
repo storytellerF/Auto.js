@@ -1,10 +1,10 @@
 package org.autojs.autojs.theme.widget;
 
 import android.content.Context;
+import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import android.util.AttributeSet;
 
 import com.stardust.theme.ThemeColor;
 import com.stardust.theme.ThemeColorManager;
@@ -20,13 +20,13 @@ public class ThemeColorSwipeRefreshLayout extends SwipeRefreshLayout implements 
         init();
     }
 
-    private void init() {
-        ThemeColorManager.add(this);
-    }
-
     public ThemeColorSwipeRefreshLayout(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+    }
+
+    private void init() {
+        ThemeColorManager.add(this);
     }
 
     @Override

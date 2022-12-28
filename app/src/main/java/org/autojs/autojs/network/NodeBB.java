@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import org.autojs.autojs.R;
 import org.autojs.autojs.network.api.ConfigApi;
 import org.autojs.autojs.network.util.WebkitCookieManagerProxy;
@@ -33,11 +34,10 @@ public class NodeBB {
     public static final String BASE_URL = "https://www.autojs.org/";
     private static final NodeBB sInstance = new NodeBB();
     private static final String LOG_TAG = "NodeBB";
-    @Nullable
-    private Map<String, String> mXCsrfToken;
-
     @NonNull
     private final Retrofit mRetrofit;
+    @Nullable
+    private Map<String, String> mXCsrfToken;
 
     NodeBB() {
         mRetrofit = new Retrofit.Builder()
@@ -56,24 +56,6 @@ public class NodeBB {
     @NonNull
     public static NodeBB getInstance() {
         return sInstance;
-    }
-
-    @NonNull
-    public Retrofit getRetrofit() {
-        return mRetrofit;
-    }
-
-
-    public Observable<Map<String, String>> getXCsrfToken() {
-        if (mXCsrfToken != null)
-            return Observable.just(mXCsrfToken);
-        return mRetrofit.create(ConfigApi.class)
-                .getConfig()
-                .map(config -> mXCsrfToken = Collections.singletonMap("x-csrf-token", config.getCsrfToken()));
-    }
-
-    public void invalidateXCsrfToken() {
-        mXCsrfToken = null;
     }
 
     public static String getErrorMessage(Throwable e, @NonNull Context context, String defaultMsg) {
@@ -124,5 +106,22 @@ public class NodeBB {
 
     public static CharSequence getErrorMessage(Throwable error, @NonNull Context context, int defaultMsg) {
         return getErrorMessage(error, context, context.getString(defaultMsg));
+    }
+
+    @NonNull
+    public Retrofit getRetrofit() {
+        return mRetrofit;
+    }
+
+    public Observable<Map<String, String>> getXCsrfToken() {
+        if (mXCsrfToken != null)
+            return Observable.just(mXCsrfToken);
+        return mRetrofit.create(ConfigApi.class)
+                .getConfig()
+                .map(config -> mXCsrfToken = Collections.singletonMap("x-csrf-token", config.getCsrfToken()));
+    }
+
+    public void invalidateXCsrfToken() {
+        mXCsrfToken = null;
     }
 }

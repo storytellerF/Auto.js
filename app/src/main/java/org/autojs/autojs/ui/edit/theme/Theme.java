@@ -20,16 +20,16 @@ import java.io.Reader;
 public class Theme {
 
 
+    private final SparseIntArray mTokenColors = new SparseIntArray();
+    @NonNull
+    private final EditorTheme mEditorTheme;
+    private final int mBreakpointColor;
     private int mBackgroundColor = Color.WHITE;
     private int mForegroundColor = Color.BLACK;
     private int mLineNumberColor = Color.GRAY;
-    private final SparseIntArray mTokenColors = new SparseIntArray();
     private int mImeBarBackgroundColor = 0xDDFFFFFF;
     private int mImeBarForegroundColor = Color.WHITE;
-    @NonNull
-    private final EditorTheme mEditorTheme;
     private int mLineHighlightBackground;
-    private final int mBreakpointColor;
     private int mDebuggingLineBackground;
 
     public Theme(@NonNull EditorTheme theme) {
@@ -51,6 +51,37 @@ public class Theme {
             for (String scope : tokenColor.getScope()) {
                 setTokenColor(scope, foreground);
             }
+        }
+    }
+
+    @Nullable
+    public static Theme getDefault(@NonNull android.content.Context context) {
+        return fromAssetsJson(context, "editor/theme/light_plus.json");
+    }
+
+    @Nullable
+    public static Theme fromJson(String json) {
+        EditorTheme theme = EditorTheme.fromJson(json);
+        if (theme == null)
+            return null;
+        return new Theme(theme);
+    }
+
+    @Nullable
+    public static Theme fromJson(Reader reader) {
+        EditorTheme theme = EditorTheme.fromJson(reader);
+        if (theme == null)
+            return null;
+        return new Theme(theme);
+    }
+
+    @Nullable
+    public static Theme fromAssetsJson(@NonNull android.content.Context context, String assetsPath) {
+        try {
+            return fromJson(new InputStreamReader(context.getAssets().open(assetsPath)));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -80,38 +111,6 @@ public class Theme {
 
     public int getLineNumberColor() {
         return mLineNumberColor;
-    }
-
-    @Nullable
-    public static Theme getDefault(@NonNull android.content.Context context) {
-        return fromAssetsJson(context, "editor/theme/light_plus.json");
-    }
-
-    @Nullable
-    public static Theme fromJson(String json) {
-        EditorTheme theme = EditorTheme.fromJson(json);
-        if (theme == null)
-            return null;
-        return new Theme(theme);
-    }
-
-
-    @Nullable
-    public static Theme fromJson(Reader reader) {
-        EditorTheme theme = EditorTheme.fromJson(reader);
-        if (theme == null)
-            return null;
-        return new Theme(theme);
-    }
-
-    @Nullable
-    public static Theme fromAssetsJson(@NonNull android.content.Context context, String assetsPath) {
-        try {
-            return fromJson(new InputStreamReader(context.getAssets().open(assetsPath)));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public int getBackgroundColor() {

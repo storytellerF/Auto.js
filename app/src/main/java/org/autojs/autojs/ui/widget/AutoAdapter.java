@@ -1,8 +1,9 @@
 package org.autojs.autojs.ui.widget;
 
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,14 +61,8 @@ public class AutoAdapter<DT> extends RecyclerView.Adapter<BindableViewHolder<DT>
         notifyItemRangeInserted(mData.size() - c.size() - 1, mData.size() - 1);
     }
 
-    public DT get(int index){
+    public DT get(int index) {
         return mData.get(index);
-    }
-
-    public void setData(@NonNull Collection<? extends DT> c) {
-        mData.clear();
-        mData.addAll(c);
-        notifyDataSetChanged();
     }
 
     public void add(DT item) {
@@ -78,6 +73,12 @@ public class AutoAdapter<DT> extends RecyclerView.Adapter<BindableViewHolder<DT>
     @NonNull
     public List<DT> getData() {
         return mData;
+    }
+
+    public void setData(@NonNull Collection<? extends DT> c) {
+        mData.clear();
+        mData.addAll(c);
+        notifyDataSetChanged();
     }
 
     public void removeAll() {

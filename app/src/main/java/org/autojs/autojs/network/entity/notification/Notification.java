@@ -19,100 +19,100 @@ public class Notification {
     private String datetimeISO;
     private User user;
 
-    public void setRead(boolean read) {
-        this.read = read;
-    }
-
     public boolean isRead() {
         return read;
     }
 
-    public void setMergeId(String mergeId) {
-        this.mergeId = mergeId;
+    public void setRead(boolean read) {
+        this.read = read;
     }
 
     public String getMergeId() {
         return mergeId;
     }
 
-    public void setImportance(String importance) {
-        this.importance = importance;
+    public void setMergeId(String mergeId) {
+        this.mergeId = mergeId;
     }
 
     public String getImportance() {
         return importance;
     }
 
-    public void setNid(String nid) {
-        this.nid = nid;
+    public void setImportance(String importance) {
+        this.importance = importance;
     }
 
     public String getNid() {
         return nid;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setNid(String nid) {
+        this.nid = nid;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getPath() {
         return path;
     }
 
-    public void setReadClass(String readClass) {
-        this.readClass = readClass;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getReadClass() {
         return readClass;
     }
 
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
+    public void setReadClass(String readClass) {
+        this.readClass = readClass;
     }
 
     public String getDatetime() {
         return datetime;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
     }
 
     public String getFrom() {
         return from;
     }
 
-    public void setBodyShort(String bodyShort) {
-        this.bodyShort = bodyShort;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
     public String getBodyShort() {
         return bodyShort;
     }
 
-    public void setDatetimeISO(String datetimeISO) {
-        this.datetimeISO = datetimeISO;
+    public void setBodyShort(String bodyShort) {
+        this.bodyShort = bodyShort;
     }
 
     public String getDatetimeISO() {
         return datetimeISO;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setDatetimeISO(String datetimeISO) {
+        this.datetimeISO = datetimeISO;
     }
 
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @NonNull

@@ -11,12 +11,6 @@ import androidx.annotation.NonNull;
 public class Exceptions {
 
     public static final RuntimeException NO_EXCEPTION = new RuntimeException();
-
-
-    public interface ExceptionHandler {
-        boolean handleUnsupportedException(UnsupportedOperationException e, View v, String attrName, String value);
-    }
-
     private static ExceptionHandler sExceptionHandler;
 
     public static void unsupports(@NonNull View v, String name, String value) {
@@ -34,5 +28,9 @@ public class Exceptions {
 
     public static void setExceptionHandler(ExceptionHandler exceptionHandler) {
         sExceptionHandler = exceptionHandler;
+    }
+
+    public interface ExceptionHandler {
+        boolean handleUnsupportedException(UnsupportedOperationException e, View v, String attrName, String value);
     }
 }

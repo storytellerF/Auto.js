@@ -16,8 +16,8 @@ import com.stardust.autojs.script.StringScriptSource;
 public class Engines {
 
     private final ScriptEngineService mEngineService;
-    private JavaScriptEngine mScriptEngine;
     private final ScriptRuntime mScriptRuntime;
+    private JavaScriptEngine mScriptEngine;
 
     public Engines(ScriptEngineService engineService, ScriptRuntime scriptRuntime) {
         mEngineService = engineService;

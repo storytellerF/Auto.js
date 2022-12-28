@@ -11,6 +11,29 @@ import java.util.Arrays;
 
 public interface Recorder {
 
+    int STATE_NOT_START = 0;
+    int STATE_RECORDING = 1;
+    int STATE_PAUSED = 2;
+    int STATE_STOPPED = 3;
+
+    void start();
+
+    void stop();
+
+    void pause();
+
+    void resume();
+
+    @Nullable
+    String getCode();
+
+    @Nullable
+    String getPath();
+
+    int getState();
+
+    void setOnStateChangedListener(OnStateChangedListener onStateChangedListener);
+
     interface OnStateChangedListener {
 
         void onStart();
@@ -42,30 +65,6 @@ public interface Recorder {
         }
     }
 
-
-    int STATE_NOT_START = 0;
-    int STATE_RECORDING = 1;
-    int STATE_PAUSED = 2;
-    int STATE_STOPPED = 3;
-
-    void start();
-
-    void stop();
-
-    void pause();
-
-    void resume();
-
-    @Nullable
-    String getCode();
-
-    @Nullable
-    String getPath();
-
-    int getState();
-
-    void setOnStateChangedListener(OnStateChangedListener onStateChangedListener);
-
     abstract class AbstractRecorder implements Recorder {
 
         private static final OnStateChangedListener NO_OPERATION_LISTENER = new OnStateChangedListener() {
@@ -89,12 +88,9 @@ public interface Recorder {
 
             }
         };
-
-
+        private final boolean mSync;
         @NonNull
         private OnStateChangedListener mOnStateChangedListener = NO_OPERATION_LISTENER;
-
-        private final boolean mSync;
         private int mState = STATE_NOT_START;
 
         public AbstractRecorder(boolean syncOfState) {
@@ -140,16 +136,6 @@ public interface Recorder {
             mOnStateChangedListener.onPause();
         }
 
-        protected synchronized void setState(int state) {
-            if (mSync) {
-                synchronized (this) {
-                    mState = state;
-                }
-            } else {
-                mState = state;
-            }
-        }
-
         public synchronized int getState() {
             if (mSync) {
                 synchronized (this) {
@@ -157,6 +143,16 @@ public interface Recorder {
                 }
             } else {
                 return mState;
+            }
+        }
+
+        protected synchronized void setState(int state) {
+            if (mSync) {
+                synchronized (this) {
+                    mState = state;
+                }
+            } else {
+                mState = state;
             }
         }
 

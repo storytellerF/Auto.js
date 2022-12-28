@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,30 +16,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StateObserver {
 
-    public interface OnStateChangedListener {
-
-        void onStateChanged(boolean newState);
-
-        void initState(boolean state);
-    }
-
-
-    public static abstract class SimpleOnStateChangedListener<T> implements OnStateChangedListener {
-
-        @Override
-        public void initState(boolean state) {
-            onStateChanged(state);
-        }
-    }
-
-
     private final Map<String, List<OnStateChangedListener>> mKeyStateListenersMap = new HashMap<>();
     private final SharedPreferences mSharedPreferences;
+
 
     public StateObserver(SharedPreferences sharedPreferences) {
         mSharedPreferences = sharedPreferences;
     }
-
 
     public void register(String key, @NonNull OnStateChangedListener listener) {
         initState(key, listener);
@@ -49,7 +31,6 @@ public class StateObserver {
             listeners.add(listener);
         }
     }
-
 
     private void unregister(String key, OnStateChangedListener stateChangedListener) {
         synchronized (mKeyStateListenersMap) {
@@ -91,6 +72,21 @@ public class StateObserver {
             mKeyStateListenersMap.put(key, listeners);
         }
         return listeners;
+    }
+
+    public interface OnStateChangedListener {
+
+        void onStateChanged(boolean newState);
+
+        void initState(boolean state);
+    }
+
+    public static abstract class SimpleOnStateChangedListener<T> implements OnStateChangedListener {
+
+        @Override
+        public void initState(boolean state) {
+            onStateChanged(state);
+        }
     }
 
 

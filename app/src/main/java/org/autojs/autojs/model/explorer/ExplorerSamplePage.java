@@ -23,15 +23,15 @@ public class ExplorerSamplePage extends ExplorerDirPage {
         super(file, parent);
     }
 
-    public boolean isRoot() {
-        return mRoot;
-    }
-
     @Nullable
     public static ExplorerSamplePage createRoot(PFile dir) {
         ExplorerSamplePage page = new ExplorerSamplePage(dir, null);
         page.mRoot = true;
         return page;
+    }
+
+    public boolean isRoot() {
+        return mRoot;
     }
 
 }

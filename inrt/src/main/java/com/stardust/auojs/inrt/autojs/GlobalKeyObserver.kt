@@ -22,7 +22,7 @@ class GlobalKeyObserver internal constructor() : OnKeyListener, ShellKeyObserver
 
     init {
         AccessibilityService.stickOnKeyObserver
-                .addListener(this)
+            .addListener(this)
         val observer = ShellKeyObserver()
         observer.setKeyListener(this)
         InputEventObserver.getGlobal(GlobalAppContext.get()).addListener(observer)

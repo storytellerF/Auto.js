@@ -1,7 +1,5 @@
 package com.stardust.autojs.core.ui.xml;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -111,13 +109,6 @@ public interface AttributeHandler {
             mAttrName = attrName;
         }
 
-        @Override
-        public boolean handle(String nodeName, @NonNull Node attr, @NonNull StringBuilder layoutXml) {
-            String dimen = convertToAndroidDimen(attr.getNodeValue());
-            layoutXml.append("android:").append(mAttrName).append("=\"").append(dimen).append("\"\n");
-            return true;
-        }
-
         @NonNull
         static String convertToAndroidDimen(@NonNull String dimen) {
             if (dimen.equals("*")) {
@@ -130,6 +121,13 @@ public interface AttributeHandler {
                 return dimen + "dp";
             }
             return dimen;
+        }
+
+        @Override
+        public boolean handle(String nodeName, @NonNull Node attr, @NonNull StringBuilder layoutXml) {
+            String dimen = convertToAndroidDimen(attr.getNodeValue());
+            layoutXml.append("android:").append(mAttrName).append("=\"").append(dimen).append("\"\n");
+            return true;
         }
     }
 

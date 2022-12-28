@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.autojs.autojs.BuildConfig;
 import org.autojs.autojs.R;
 import org.autojs.autojs.network.VersionService;
@@ -22,9 +23,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class VersionGuard {
 
     private final Activity mActivity;
+    private final VersionService mVersionService = VersionService.getInstance();
     @Nullable
     private MaterialDialog mDeprecatedDialog;
-    private final VersionService mVersionService = VersionService.getInstance();
 
     public VersionGuard(Activity activity) {
         mActivity = activity;

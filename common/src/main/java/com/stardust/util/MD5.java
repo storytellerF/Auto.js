@@ -3,7 +3,6 @@ package com.stardust.util;
 import androidx.annotation.NonNull;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class MD5 {
 

@@ -2,8 +2,6 @@ package org.autojs.autojs.model.explorer;
 
 import androidx.annotation.NonNull;
 
-import com.stardust.util.ObjectHelper;
-
 public class ExplorerChangeEvent {
 
 
@@ -35,6 +33,23 @@ public class ExplorerChangeEvent {
         this(null, action, null, null);
     }
 
+    @NonNull
+    private static String nameOfAction(int action) {
+        switch (action) {
+            case ALL:
+                return "ALL";
+            case CHANGE:
+                return "CHANGE";
+            case CREATE:
+                return "CREATE";
+            case REMOVE:
+                return "REMOVE";
+            case CHILDREN_CHANGE:
+                return "CHILDREN_CHANGE";
+        }
+        throw new IllegalArgumentException("action = " + action);
+    }
+
     public int getAction() {
         return mAction;
     }
@@ -60,22 +75,5 @@ public class ExplorerChangeEvent {
                 ", mItem=" + mItem +
                 ", mNewItem=" + mNewItem +
                 '}';
-    }
-
-    @NonNull
-    private static String nameOfAction(int action) {
-        switch (action) {
-            case ALL:
-                return "ALL";
-            case CHANGE:
-                return "CHANGE";
-            case CREATE:
-                return "CREATE";
-            case REMOVE:
-                return "REMOVE";
-            case CHILDREN_CHANGE:
-                return "CHILDREN_CHANGE";
-        }
-        throw new IllegalArgumentException("action = " + action);
     }
 }

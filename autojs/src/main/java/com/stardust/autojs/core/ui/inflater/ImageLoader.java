@@ -14,14 +14,6 @@ import androidx.annotation.Nullable;
 
 public interface ImageLoader {
 
-    interface BitmapCallback {
-        void onLoaded(Bitmap bitmap);
-    }
-
-    interface DrawableCallback {
-        void onLoaded(Drawable drawable);
-    }
-
     void loadInto(ImageView view, Uri uri);
 
     void loadIntoBackground(View view, Uri uri);
@@ -32,5 +24,13 @@ public interface ImageLoader {
     void load(View view, Uri uri, DrawableCallback callback);
 
     void load(View view, Uri uri, BitmapCallback callback);
+
+    interface BitmapCallback {
+        void onLoaded(Bitmap bitmap);
+    }
+
+    interface DrawableCallback {
+        void onLoaded(Drawable drawable);
+    }
 
 }
