@@ -36,14 +36,14 @@ public class JsonWebSocket extends WebSocketListener {
     }
 
     @Override
-    public void onMessage(WebSocket webSocket, String text) {
+    public void onMessage(@NonNull WebSocket webSocket, String text) {
         Log.d(LOG_TAG, "onMessage: text = " + text);
         dispatchJson(text);
     }
 
     @Override
-    public void onMessage(WebSocket webSocket, @NonNull ByteString bytes) {
-        Log.d(LOG_TAG, "onMessage: ByteString = " + bytes.toString());
+    public void onMessage(@NonNull WebSocket webSocket, @NonNull ByteString bytes) {
+        Log.d(LOG_TAG, "onMessage: ByteString = " + bytes);
         mBytesPublishSubject.onNext(new Bytes(bytes.md5().hex(), bytes));
     }
 
@@ -70,19 +70,19 @@ public class JsonWebSocket extends WebSocketListener {
     }
 
     @Override
-    public void onClosed(WebSocket webSocket, int code, String reason) {
+    public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
         Log.d(LOG_TAG, "onFailure: code = " + code + ", reason = " + reason);
         close();
     }
 
     @Override
-    public void onFailure(WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
+    public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
         Log.d(LOG_TAG, "onFailure: response = " + response, t);
         close(t);
     }
 
     @Override
-    public void onOpen(WebSocket webSocket, Response response) {
+    public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {
         Log.d(LOG_TAG, "onOpen: response = " + response);
     }
 

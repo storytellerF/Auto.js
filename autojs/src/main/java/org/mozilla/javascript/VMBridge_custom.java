@@ -43,7 +43,7 @@ public class VMBridge_custom extends VMBridge_jdk15 {
                 }
 
                 if (methodName.equals("toString")) {
-                    return "Proxy[" + target.toString() + "]";
+                    return "Proxy[" + target + "]";
                 }
             }
             // Add thread check
@@ -122,7 +122,7 @@ public class VMBridge_custom extends VMBridge_jdk15 {
         return null;
     }
 
-    private class InterfaceAdapterWrapper {
+    private static class InterfaceAdapterWrapper {
 
         private final InterfaceAdapter mInterfaceAdapter;
         private final Context mCallerContext;

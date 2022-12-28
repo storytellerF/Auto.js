@@ -266,7 +266,7 @@ public class Shell extends AbstractShell {
             while (true) {
                 i = str.indexOf("\n", start);
                 if (i > 0) {
-                    onNewLine((mStringBuffer.toString() + str.substring(0, i - 1)).trim());
+                    onNewLine((mStringBuffer + str.substring(0, i - 1)).trim());
                     mStringBuffer.delete(0, mStringBuffer.length());
                 } else {
                     if (start <= str.length() - 1) {
