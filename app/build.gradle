@@ -121,7 +121,7 @@ dependencies {
     //Licenses Dialog
     implementation 'de.psdev.licensesdialog:licensesdialog:2.2.0'
     //Expandable RecyclerView
-    implementation 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
+    implementation 'com.github.leoforney:expandable-recycler-view:3.0.0'
     //FlexibleDivider
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
     //???
