@@ -102,13 +102,11 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     // Personal libraries
     implementation 'com.github.hyb1996:MutableTheme:1.0.0'
+//    implementation 'com.github.storytellerF:MutableTheme:-SNAPSHOT'
     // Material Dialogs
     implementation('com.afollestad.material-dialogs:core:0.9.2.3', {
         exclude group: 'com.android.support'
     })
-//    implementation('com.afollestad.material-dialogs:commons:0.9.2.3', {
-//        exclude group: 'com.android.support'
-//    })
 
     // Common Markdown
     implementation 'com.github.atlassian:commonmark-java:commonmark-parent-0.9.0'
@@ -165,9 +163,6 @@ dependencies {
     // Android job
     implementation 'com.evernote:android-job:1.4.3'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
-    // Optional, if you use support library fragments:
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 //    implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
 
     implementation project(':common')
