@@ -85,20 +85,19 @@ repositories {
 }
 
 dependencies {
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.5.0', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1')
+
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    testImplementation 'junit:junit:4.13.2'
     // Kotlin
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
     // Android Annotations
     implementation "org.androidannotations:androidannotations-api:$AAVersion"
     // Android supports
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     // Personal libraries
     implementation 'com.github.hyb1996:MutableTheme:1.0.0'
