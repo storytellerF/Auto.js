@@ -16,6 +16,7 @@ import com.stardust.theme.ThemeColorMutable;
 
 import org.autojs.autojs.R;
 
+
 /**
  * Created by Stardust on 2017/8/6.
  */
@@ -44,9 +45,10 @@ public class PrefSwitch extends SwitchCompat implements SharedPreferences.OnShar
     private void init(@Nullable AttributeSet attrs) {
         if (attrs == null)
             return;
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.PrefSwitch);
-        mPrefKey = a.getString(R.styleable.PrefSwitch_key);
-        mDefaultChecked = a.getBoolean(R.styleable.PrefSwitch_defaultValue, false);
+
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.PrefSwitchCustom);
+        mPrefKey = a.getString(R.styleable.PrefSwitchCustom_keyCustom);
+        mDefaultChecked = a.getBoolean(R.styleable.PrefSwitchCustom_defaultValueCustom, false);
         if (mPrefKey != null) {
             mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             mSharedPreferences.registerOnSharedPreferenceChangeListener(this);

@@ -22,6 +22,7 @@ import org.autojs.autojs.model.explorer.ExplorerDirPage;
 import org.autojs.autojs.model.explorer.Explorers;
 import org.autojs.autojs.ui.BaseActivity;
 import org.autojs.autojs.ui.explorer.ExplorerView;
+import org.json.JSONObject;
 
 
 /**
@@ -85,38 +86,38 @@ public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
     }
 
 
-    @Override
-    public boolean isBundleValid(@NonNull Bundle bundle) {
-        return ScriptIntents.isTaskerBundleValid(bundle);
-    }
+//    @Override
+//    public boolean isBundleValid(@NonNull Bundle bundle) {
+//        return ScriptIntents.isTaskerBundleValid(bundle);
+//    }
 
-    @Override
-    public void onPostCreateWithPreviousResult(@NonNull Bundle bundle, @NonNull String s) {
-        mSelectedScriptFilePath = bundle.getString(ScriptIntents.EXTRA_KEY_PATH);
-        mPreExecuteScript = bundle.getString(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT);
-    }
+//    @Override
+//    public void onPostCreateWithPreviousResult(@NonNull Bundle bundle, @NonNull String s) {
+//        mSelectedScriptFilePath = bundle.getString(ScriptIntents.EXTRA_KEY_PATH);
+//        mPreExecuteScript = bundle.getString(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT);
+//    }
 
-    @Nullable
-    @Override
-    public Bundle getResultBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putString(ScriptIntents.EXTRA_KEY_PATH, mSelectedScriptFilePath);
-        bundle.putString(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, mPreExecuteScript);
-        return bundle;
-    }
+//    @Nullable
+//    @Override
+//    public Bundle getResultBundle() {
+//        Bundle bundle = new Bundle();
+//        bundle.putString(ScriptIntents.EXTRA_KEY_PATH, mSelectedScriptFilePath);
+//        bundle.putString(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, mPreExecuteScript);
+//        return bundle;
+//    }
 
-    @NonNull
-    @Override
-    public String getResultBlurb(@NonNull Bundle bundle) {
-        String blurb = bundle.getString(ScriptIntents.EXTRA_KEY_PATH);
-        if (TextUtils.isEmpty(blurb)) {
-            blurb = bundle.getString(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT);
-        }
-        if (TextUtils.isEmpty(blurb)) {
-            blurb = getString(R.string.text_path_is_empty);
-        }
-        return blurb;
-    }
+//    @NonNull
+//    @Override
+//    public String getResultBlurb(@NonNull Bundle bundle) {
+//        String blurb = bundle.getString(ScriptIntents.EXTRA_KEY_PATH);
+//        if (TextUtils.isEmpty(blurb)) {
+//            blurb = bundle.getString(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT);
+//        }
+//        if (TextUtils.isEmpty(blurb)) {
+//            blurb = getString(R.string.text_path_is_empty);
+//        }
+//        return blurb;
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
@@ -124,5 +125,27 @@ public class TaskPrefEditActivity extends AbstractAppCompatPluginActivity {
         if (resultCode == RESULT_OK) {
             mPreExecuteScript = data.getStringExtra(EXTRA_CONTENT);
         }
+    }
+
+    @Override
+    public boolean isJsonValid(@NonNull JSONObject jsonObject) {
+        return false;
+    }
+
+    @Override
+    public void onPostCreateWithPreviousResult(@NonNull JSONObject previousJsonObject, @NonNull String previousBlurb) {
+
+    }
+
+    @Nullable
+    @Override
+    public JSONObject getResultJson() {
+        return null;
+    }
+
+    @NonNull
+    @Override
+    public String getResultBlurb(@NonNull JSONObject jsonObject) {
+        return null;
     }
 }

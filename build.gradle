@@ -24,6 +24,14 @@ allprojects {
         }
         google()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven {
+            // GitHub Package Registry does not allow anonymous access
+            url = ("https://maven.pkg.github.com/twofortyfouram/android-monorepo")
+            credentials  {
+                username = "storytellerF"
+                password = "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"
+            }
+        }
     }
 }
 

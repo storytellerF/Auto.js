@@ -13,9 +13,9 @@
         <attr name="icon_color" format="color|reference" />
     </declare-styleable>
 
-    <declare-styleable name="PrefSwitch">
-        <attr name="key" format="string|reference" />
-        <attr name="defaultValue" format="boolean" />
+    <declare-styleable name="PrefSwitchCustom">
+        <attr name="keyCustom" format="string|reference" />
+        <attr name="defaultValueCustom" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="DrawerMenuItem">

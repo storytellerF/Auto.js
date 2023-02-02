@@ -34,5 +34,8 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.5.0'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api 'androidx.annotation:annotation:1.5.0'
-    api 'com.github.hyb1996:settingscompat:1.1.5'
+    api 'com.github.angcyo:settingscompat:1.1.4.1'
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation("androidx.drawerlayout:drawerlayout:1.1.1")
 }
