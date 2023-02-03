@@ -1,190 +1,157 @@
-package com.stardust.autojs.core.ui.dialog;
+package com.stardust.autojs.core.ui.dialog
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.os.Build;
-import android.os.Looper;
-import android.view.WindowManager;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
-import com.stardust.autojs.runtime.ScriptBridges;
-import com.stardust.autojs.runtime.ScriptRuntime;
-import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
-import com.stardust.concurrent.VolatileDispose;
-import com.stardust.util.ArrayUtils;
-import com.stardust.util.UiHandler;
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.DialogInterface
+import android.os.Build
+import android.os.Looper
+import android.view.View
+import android.view.WindowManager
+import com.afollestad.materialdialogs.DialogAction
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.Theme
+import com.stardust.autojs.runtime.ScriptBridges
+import com.stardust.autojs.runtime.ScriptRuntime
+import com.stardust.autojs.runtime.exception.ScriptInterruptedException
+import com.stardust.concurrent.VolatileDispose
+import com.stardust.util.ArrayUtils
+import com.stardust.util.UiHandler
 
 /**
  * Created by Stardust on 2017/5/8.
  */
-
-public class BlockedMaterialDialog extends MaterialDialog {
-
-    protected BlockedMaterialDialog(@NonNull MaterialDialog.Builder builder) {
-        super(builder);
-    }
-
-    @Override
-    public void show() {
-        if (!isActivityContext(getContext())) {
-            int type;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+class BlockedMaterialDialog protected constructor(builder: MaterialDialog.Builder) : MaterialDialog(builder) {
+    override fun show() {
+        if (!isActivityContext(context)) {
+            val type: Int
+            type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             } else {
-                type = WindowManager.LayoutParams.TYPE_PHONE;
+                WindowManager.LayoutParams.TYPE_PHONE
             }
-            getWindow().setType(type);
+            window!!.setType(type)
         }
-        super.show();
+        super.show()
     }
 
-    private boolean isActivityContext(@Nullable Context context) {
-        if (context == null)
-            return false;
-        if (context instanceof Activity) {
-            return !((Activity) context).isFinishing();
+    private fun isActivityContext(context: Context?): Boolean {
+        if (context == null) return false
+        if (context is Activity) {
+            return !context.isFinishing
         }
-        if (context instanceof ContextWrapper) {
-            return isActivityContext(((ContextWrapper) context).getBaseContext());
-        }
-        return false;
+        return if (context is ContextWrapper) {
+            isActivityContext(context.baseContext)
+        } else false
     }
 
+    class Builder(context: Context, runtime: ScriptRuntime, callback: Any?) : MaterialDialog.Builder(context) {
+        private val mUiHandler: UiHandler
+        private val mCallback: Any?
+        private val mScriptBridges: ScriptBridges
+        private var mResultBox: VolatileDispose<Any?>? = null
+        private var mNotified = false
 
-    public static class Builder extends MaterialDialog.Builder {
-
-        private final UiHandler mUiHandler;
-        private final Object mCallback;
-        private final ScriptBridges mScriptBridges;
-        private VolatileDispose<Object> mResultBox;
-        private boolean mNotified = false;
-
-        public Builder(@NonNull Context context, @NonNull ScriptRuntime runtime, Object callback) {
-            super(context);
-            super.theme(Theme.LIGHT);
-            mUiHandler = runtime.uiHandler;
-            mScriptBridges = runtime.bridges;
-            mCallback = callback;
+        init {
+            super.theme(Theme.LIGHT)
+            mUiHandler = runtime.uiHandler
+            mScriptBridges = runtime.bridges
+            mCallback = callback
             if (Looper.getMainLooper() != Looper.myLooper()) {
-                mResultBox = new VolatileDispose<>();
+                mResultBox = VolatileDispose()
             }
         }
 
-        @NonNull
-        public MaterialDialog.Builder input(@Nullable CharSequence hint, @Nullable CharSequence prefill, boolean allowEmptyInput) {
-            super.input(hint, prefill, allowEmptyInput, (dialog, input) -> setAndNotify(input.toString()));
-            cancelListener(dialog -> setAndNotify(null));
-            return this;
+        fun input(hint: CharSequence?, prefill: CharSequence?, allowEmptyInput: Boolean): MaterialDialog.Builder {
+            super.input(hint, prefill, allowEmptyInput) { dialog: MaterialDialog?, input: CharSequence -> setAndNotify(input.toString()) }
+            cancelListener { dialog: DialogInterface? -> setAndNotify(null) }
+            return this
         }
 
-        private void setAndNotify(Object r) {
+        private fun setAndNotify(r: Any?) {
             if (mNotified) {
-                return;
+                return
             }
-            mNotified = true;
+            mNotified = true
             if (mCallback != null) {
-                mScriptBridges.callFunction(mCallback, null, new Object[]{r});
+                mScriptBridges.callFunction(mCallback, null, arrayOf(r))
             }
-            if (mResultBox != null) {
-                mResultBox.setAndNotify(r);
-            }
+            mResultBox?.setAndNotify(r)
         }
 
-        private void setAndNotify(int r) {
+        private fun setAndNotify(r: Int) {
             if (mNotified) {
-                return;
+                return
             }
-            mNotified = true;
+            mNotified = true
             if (mCallback != null) {
-                mScriptBridges.callFunction(mCallback, null, new int[]{r});
+                mScriptBridges.callFunction(mCallback, null, intArrayOf(r))
             }
-            if (mResultBox != null) {
-                mResultBox.setAndNotify(r);
-            }
+            mResultBox?.setAndNotify(r)
         }
 
-        private void setAndNotify(boolean r) {
+        private fun setAndNotify(r: Boolean) {
             if (mNotified) {
-                return;
+                return
             }
-            mNotified = true;
+            mNotified = true
             if (mCallback != null) {
-                mScriptBridges.callFunction(mCallback, null, new boolean[]{r});
+                mScriptBridges.callFunction(mCallback, null, booleanArrayOf(r))
             }
-            if (mResultBox != null) {
-                mResultBox.setAndNotify(r);
+            mResultBox?.setAndNotify(r)
+        }
+
+        fun alert(): Builder {
+            dismissListener { dialog: DialogInterface? -> setAndNotify(null) }
+            onAny { dialog: MaterialDialog?, which: DialogAction? -> setAndNotify(null) }
+            return this
+        }
+
+        fun confirm(): Builder {
+            dismissListener { dialog: DialogInterface? -> setAndNotify(false) }
+            onAny { dialog: MaterialDialog?, which: DialogAction -> setAndNotify(which == DialogAction.POSITIVE) }
+            return this
+        }
+
+        fun itemsCallback(): MaterialDialog.Builder {
+            dismissListener { dialog: DialogInterface? -> setAndNotify(-1) }
+            super.itemsCallback { dialog: MaterialDialog?, itemView: View?, position: Int, text: CharSequence? -> setAndNotify(position) }
+            return this
+        }
+
+        fun itemsCallbackMultiChoice(selectedIndices: Array<Int?>?): MaterialDialog.Builder {
+            dismissListener { dialog: DialogInterface? -> setAndNotify(IntArray(0)) }
+            super.itemsCallbackMultiChoice(selectedIndices) { dialog: MaterialDialog?, which: Array<Int?>?, text: Array<CharSequence?>? ->
+                setAndNotify(
+                    ArrayUtils.unbox(
+                        which!!
+                    )
+                )
+                true
             }
+            return this
         }
 
-        @NonNull
-        public Builder alert() {
-            dismissListener(dialog -> setAndNotify(null));
-            onAny((dialog, which) -> setAndNotify(null));
-            return this;
+        fun itemsCallbackSingleChoice(selectedIndex: Int): MaterialDialog.Builder {
+            dismissListener { dialog: DialogInterface? -> setAndNotify(-1) }
+            super.itemsCallbackSingleChoice(selectedIndex) { dialog: MaterialDialog?, itemView: View?, which: Int, text: CharSequence? ->
+                setAndNotify(which)
+                true
+            }
+            return this
         }
 
-        @NonNull
-        public Builder confirm() {
-            dismissListener(dialog -> setAndNotify(false));
-            onAny((dialog, which) -> {
-                setAndNotify(which == DialogAction.POSITIVE);
-            });
-            return this;
-        }
-
-        @NonNull
-        public MaterialDialog.Builder itemsCallback() {
-            dismissListener(dialog -> setAndNotify(-1));
-            super.itemsCallback((dialog, itemView, position, text) -> setAndNotify(position));
-            return this;
-        }
-
-        @NonNull
-        public MaterialDialog.Builder itemsCallbackMultiChoice(@Nullable Integer[] selectedIndices) {
-            dismissListener(dialog -> setAndNotify(new int[0]));
-            super.itemsCallbackMultiChoice(selectedIndices, (dialog, which, text) -> {
-                setAndNotify(ArrayUtils.unbox(which));
-                return true;
-            });
-            return this;
-        }
-
-        @NonNull
-        public MaterialDialog.Builder itemsCallbackSingleChoice(int selectedIndex) {
-            dismissListener(dialog -> setAndNotify(-1));
-            super.itemsCallbackSingleChoice(selectedIndex, (dialog, itemView, which, text) -> {
-                setAndNotify(which);
-                return true;
-            });
-            return this;
-        }
-
-
-        @Nullable
-        public Object showAndGet() {
+        fun showAndGet(): Any? {
             if (Looper.myLooper() == Looper.getMainLooper()) {
-                super.show();
+                super.show()
             } else {
-                mUiHandler.post(Builder.super::show);
+                mUiHandler.post { super@Builder.show() }
             }
-            if (mResultBox != null) {
-                return mResultBox.blockedGetOrThrow(ScriptInterruptedException.class);
-            } else {
-                return null;
-            }
+            return mResultBox?.blockedGetOrThrow(ScriptInterruptedException::class.java)
         }
 
-        @NonNull
-        @Override
-        public MaterialDialog build() {
-            return new BlockedMaterialDialog(this);
+        override fun build(): MaterialDialog {
+            return BlockedMaterialDialog(this)
         }
-
     }
 }
