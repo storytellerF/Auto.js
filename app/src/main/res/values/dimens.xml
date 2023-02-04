@@ -23,4 +23,5 @@
     <dimen name="air_radio_button_padding_start">@dimen/air_baseline</dimen>
 
     <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="md_preference_content_inset">16dp</dimen>
 </resources>

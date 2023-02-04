@@ -311,7 +311,7 @@ public class JsDialog {
 
     @Deprecated
     public void setMessage(CharSequence message) {
-        mDialog.setMessage(message);
+        mDialog.setContent(message);
     }
 
     @Nullable
@@ -645,7 +645,9 @@ public class JsDialog {
     }
 
     public boolean onSearchRequested(@NonNull SearchEvent searchEvent) {
-        return mDialog.onSearchRequested(searchEvent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return mDialog.onSearchRequested(searchEvent);
+        } else return false;
     }
 
     public boolean onSearchRequested() {
@@ -653,7 +655,9 @@ public class JsDialog {
     }
 
     public SearchEvent getSearchEvent() {
-        return mDialog.getSearchEvent();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return mDialog.getSearchEvent();
+        } else return null;
     }
 
     public ActionMode onWindowStartingActionMode(ActionMode.Callback callback) {
@@ -661,7 +665,9 @@ public class JsDialog {
     }
 
     public ActionMode onWindowStartingActionMode(ActionMode.Callback callback, int type) {
-        return mDialog.onWindowStartingActionMode(callback, type);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return mDialog.onWindowStartingActionMode(callback, type);
+        } else return null;
     }
 
     public void onActionModeStarted(ActionMode mode) {
@@ -741,7 +747,10 @@ public class JsDialog {
     }
 
     public void onProvideKeyboardShortcuts(List<KeyboardShortcutGroup> data, @Nullable Menu menu, int deviceId) {
-        mDialog.onProvideKeyboardShortcuts(data, menu, deviceId);
+        //todo
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mDialog.onProvideKeyboardShortcuts(data, menu, deviceId);
+        }
     }
 
     @NonNull
