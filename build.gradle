@@ -9,7 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.0.0-rc01'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
     }
@@ -27,9 +27,9 @@ allprojects {
         maven {
             // GitHub Package Registry does not allow anonymous access
             url = ("https://maven.pkg.github.com/twofortyfouram/android-monorepo")
-            credentials  {
+            credentials {
                 username = "storytellerF"
-                password = "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"
+                password = "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"
             }
         }
     }

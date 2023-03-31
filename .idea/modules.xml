@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Auto.js.iml" filepath="$PROJECT_DIR$/.idea/modules/Auto.js.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/apkbuilder/Auto.js.apkbuilder.iml" filepath="$PROJECT_DIR$/.idea/modules/apkbuilder/Auto.js.apkbuilder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/apkbuilder/Auto.js.apkbuilder.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/apkbuilder/Auto.js.apkbuilder.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/apkbuilder/Auto.js.apkbuilder.main.iml" filepath="$PROJECT_DIR$/.idea/modules/apkbuilder/Auto.js.apkbuilder.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/apkbuilder/Auto.js.apkbuilder.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/apkbuilder/Auto.js.apkbuilder.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Auto.js.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Auto.js.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Auto.js.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Auto.js.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Auto.js.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Auto.js.app.main.iml" />

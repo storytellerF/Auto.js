@@ -60,7 +60,7 @@
             android:name=".ui.main.MainActivity"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.FullScreen"></activity>
+            android:theme="@style/AppTheme.FullScreen" />
         <activity
             android:name=".external.shortcut.ShortcutActivity"
             android:exported="true"
@@ -89,7 +89,7 @@
             android:launchMode="standard"
             android:multiprocess="true"
             android:taskAffinity="org.autojs.autojs.edit"
-            android:theme="@style/EditorTheme"></activity>
+            android:theme="@style/EditorTheme" />
         <activity android:name=".ui.settings.AboutActivity" />
         <activity
             android:name=".ui.settings.SettingsActivity"
